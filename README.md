@@ -23,6 +23,7 @@ Version				: 0.0.1
 
 **Resolution and Presentation**
 
+Render outside safe area	: False					\
 Default Orientation		: Portrait
 
 **Other Settings**
@@ -34,6 +35,11 @@ Minimum API Level		: 19					\
 Target API Level		: 30					\
 Scripting Backend		: IL2CPP				\
 Target Architectures - ARMv7	: Yes					\
-Target Architectures - ARM64	: Yes
-
+Target Architectures - ARM64	: Yes					\
+LogType				: None					\
+Error				: None					\
+Assert				: None					\
+Warning				: None					\
+Log				: None					\
+Exception			: None
 

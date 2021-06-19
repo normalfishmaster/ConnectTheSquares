@@ -16,6 +16,11 @@ public class EventManager : MonoBehaviour
 		_onDataInitComplete += callback;
 	}
 
+	public static void UnsubscribeDataInitCompleteEvent(DataInitCompleteEvent callback)
+	{
+		_onDataInitComplete -= callback;
+	}
+
 	public static void TriggerDataInitCompleteEvent()
 	{
 		if (_onDataInitComplete != null)

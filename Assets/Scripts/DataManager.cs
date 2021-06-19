@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,80 +6,118 @@ using UnityEngine;
 public class DataManager : MonoBehaviour
 {
 	private static DataManager _instance;
-	public  static DataManager Instance => _instance;
+	private static bool _initOnce = false;
 
-	private static bool initComplete = false;
+	// Keys and Default Values
 
-	// Int PlayerPrefs
+	public const string AUDIO_KEY		= "AudioKey";
+	public const int AUDIO_DEFAULT		= 1;
 
-	private int GetInt(string key, int defaultValue)
+	public const string HINT_KEY		= "HintKey";
+	public const int HINT_DEFAULT		= 3;
+
+	public const string ADFREE_KEY		= "AdFreeKey";
+	public const int ADFREE_DEFAULT		= 0;
+
+	// Data
+
+	public bool CheckAudio()		{ return PlayerPrefs.HasKey(AUDIO_KEY);				}
+	public int GetAudio()			{ return PlayerPrefs.GetInt(AUDIO_KEY);				}
+	public void SetAudio(int value)		{        PlayerPrefs.SetInt(AUDIO_KEY, value);			}
+	public void InitAudio()			{        PlayerPrefs.SetInt(AUDIO_KEY, AUDIO_DEFAULT);		}
+
+	public bool CheckHint()			{ return PlayerPrefs.HasKey(HINT_KEY);				}
+	public int GetHint()			{ return PlayerPrefs.GetInt(HINT_KEY);				}
+	public void SetHint(int value)		{        PlayerPrefs.SetInt(HINT_KEY, value);			}
+	public void InitHint()			{        PlayerPrefs.SetInt(HINT_KEY, HINT_DEFAULT);		}
+
+	public bool CheckAdFree()		{ return PlayerPrefs.HasKey(ADFREE_KEY);			}
+	public int GetAdFree()			{ return PlayerPrefs.GetInt(ADFREE_KEY);			}
+	public void SetAdFree(int value)	{        PlayerPrefs.SetInt(ADFREE_KEY, value);			}
+	public void InitAdFree()		{        PlayerPrefs.SetInt(ADFREE_KEY, ADFREE_DEFAULT);	}
+
+	// Operations by Key
+
+	public bool CheckByKey(string key)
 	{
-		if (PlayerPrefs.HasKey(key))
+		return PlayerPrefs.HasKey(key);
+	}
+
+	public string GetByKey(string key)
+	{
+		if (key == AUDIO_KEY)
 		{
-			return PlayerPrefs.GetInt(key);
+			return GetAudio().ToString();
+		}
+		else if (key == HINT_KEY)
+		{
+			return GetHint().ToString();
+		}
+		else if (key == ADFREE_KEY)
+		{
+			return GetAdFree().ToString();
 		}
 		else
 		{
-			PlayerPrefs.SetInt(key, defaultValue);
-			return defaultValue;
+			return "";
 		}
 	}
 
-	private void SetInt(string key, int value)
+	public int SetByKey(string key, string value)
 	{
-	        PlayerPrefs.SetInt(key, value);
+		try
+		{
+			if (key == AUDIO_KEY)
+			{
+				SetAudio(Convert.ToInt32(value));
+			}
+			else if (key == HINT_KEY)
+			{
+				SetHint(Convert.ToInt32(value));
+			}
+			else if (key == ADFREE_KEY)
+			{
+				SetAdFree(Convert.ToInt32(value));
+			}
+			else
+			{
+				return -1;
+			}
+		}
+		catch
+		{
+			return -1;
+		}
+		return 0;
 	}
 
-	// Float PlayerPrefs
-
-	private float GetFloat(string key, float defaultValue)
+	public int InitByKey(string key)
 	{
-		if (PlayerPrefs.HasKey(key))
+		if (key == AUDIO_KEY)
 		{
-			return PlayerPrefs.GetFloat(key);
+			InitAudio();
+		}
+		else if (key == HINT_KEY)
+		{
+			InitHint();
+		}
+		else if (key == ADFREE_KEY)
+		{
+			InitAdFree();
 		}
 		else
 		{
-			PlayerPrefs.SetFloat(key, defaultValue);
-			return defaultValue;
+			return -1;
 		}
+		return 0;
 	}
 
-	private void SetFloat(string key, float value)
+	// Manage Data
+
+	public void DeleteAll()
 	{
-	        PlayerPrefs.SetFloat(key, value);
+		PlayerPrefs.DeleteAll();
 	}
-
-	// String PlayerPrefs
-
-	private string GetString(string key, string defaultValue)
-	{
-		if (PlayerPrefs.HasKey(key))
-		{
-			return PlayerPrefs.GetString(key);
-		}
-		else
-		{
-			PlayerPrefs.SetString(key, defaultValue);
-			return defaultValue;
-		}
-	}
-
-	private void SetString(string key, string value)
-	{
-	        PlayerPrefs.SetString(key, value);
-	}
-
-	// Public Data
-
-	public int GetAudio()			{ return GetInt("AudioKey", 1);		}
-	public void SetAudio(int value)		{        SetInt("AudioKey", value);	}
-
-	public int GetHints()			{ return GetInt("HintsKey", 3);		}
-	public void SetHints(int value)		{        SetInt("HintsKey", value);	}
-
-	public int GetAdFree()			{ return GetInt("AdFreeKey", 0);	}
-	public void SetAdFree(int value)	{	 SetInt("AdFreeKey", value);	}
 
 	// Unity Lifecyle
 
@@ -98,16 +137,23 @@ public class DataManager : MonoBehaviour
 
 	private void Start()
 	{
-		// Initialize default values for all data fields
-
-		if (!initComplete)
+		if (_initOnce == false)
 		{
-			GetAudio();
-			GetHints();
-			GetAdFree();
+			if (CheckAudio() == false)
+			{
+				InitAudio();
+			}
+			if (CheckHint() == false)
+			{
+				InitHint();
+			}
+			if (CheckAdFree() == false)
+			{
+				InitAdFree();
+			}
 
+			_initOnce = true;
 			EventManager.TriggerDataInitCompleteEvent();
-			initComplete = true;
 		}
 	}
 }
