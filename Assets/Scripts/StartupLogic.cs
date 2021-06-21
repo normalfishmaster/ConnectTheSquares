@@ -7,9 +7,9 @@ public class StartupLogic : MonoBehaviour
 {
 	// Event Callbacks
 
-	private void DataInitCompleteCallback()
+	private void OnDataInitComplete()
 	{
-		EventManager.UnsubscribeDataInitCompleteEvent(DataInitCompleteCallback);
+		EventManager.UnsubscribeDataInitCompleteEvent(OnDataInitComplete);
 		SceneManager.LoadScene("TestScene");
 	}
 
@@ -17,6 +17,6 @@ public class StartupLogic : MonoBehaviour
 
 	private void Awake()
 	{
-		EventManager.SubscribeDataInitCompleteEvent(DataInitCompleteCallback);
+		EventManager.SubscribeDataInitCompleteEvent(OnDataInitComplete);
 	}
 }

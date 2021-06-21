@@ -43,3 +43,7 @@ Warning				: None					\
 Log				: None					\
 Exception			: None
 
+### Pre-Processors
+
+For Release Build		: BUILD_ANDROID_RELEASE			\
+For Debug Build			: BUILD_ANDROID_DEBUG

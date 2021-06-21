@@ -6,6 +6,7 @@ public class TestLogic : MonoBehaviour
 {
 	private TestUI _ui;
 	private DataManager _data;
+	private AdManager _ad;
 
 	// UI Events - Data
 
@@ -83,11 +84,59 @@ public class TestLogic : MonoBehaviour
 		_data.InitAdFree();
 	}
 
+	// UI Events - Ad
+
+	public void DoAdInterstitialButtonPressed()
+	{
+		if (_ad.ShowInterstitial() != 0)
+		{
+			Debug.Log("Showing interstitial ad failed");
+		}
+	}
+
+	public void DoAdInterstitialVideoButtonPressed()
+	{
+		if (_ad.ShowInterstitialVideo() != 0)
+		{
+			Debug.Log("Showing interstitial video ad failed");
+		}
+	}
+
+	public void DoAdRewardedButtonPressed()
+	{
+		_ad.ClearRewardStatus();
+		if (_ad.ShowRewarded() != 0)
+		{
+			Debug.Log("Showing rewarded ad failed");
+		}
+	}
+
 	// Unity Lifecycle
 
 	private void Awake()
 	{
 		_ui = GameObject.Find("TestUI").GetComponent<TestUI>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
+	}
+
+	private void Update()
+	{
+		AdManager.RewardStatus rewardStatus;
+
+		rewardStatus = _ad.GetRewardStatus();
+		if (rewardStatus != AdManager.RewardStatus.None)
+		{
+			if (rewardStatus == AdManager.RewardStatus.Fail)
+			{
+				Debug.Log("Rewarded ad failed to reward user");
+			}
+			else if (rewardStatus == AdManager.RewardStatus.Success)
+			{
+				Debug.Log("Rewarded ad successfully rewarded user");
+			}
+
+			_ad.ClearRewardStatus();
+		}
 	}
 }

@@ -63,11 +63,40 @@ public class TestUI : MonoBehaviour
 		_logic.DoDataResetAllButtonPressed();
 	}
 
+	// Ad
+
+	private Button _adInterstitialButton;
+	private Button _adInterstitialVideoButton;
+	private Button _adRewardedButton;
+
+	private void FindAdGameObject()
+	{
+		_adInterstitialButton = GameObject.Find("/Canvas/Ad/Interstitial").GetComponent<Button>();
+		_adInterstitialVideoButton = GameObject.Find("/Canvas/Ad/InterstitialVideo").GetComponent<Button>();
+		_adRewardedButton = GameObject.Find("/Canvas/Ad/Rewarded").GetComponent<Button>();
+	}
+
+	public void OnAdInterstitialButtonPressed()
+	{
+		_logic.DoAdInterstitialButtonPressed();
+	}
+
+	public void OnAdInterstitialVideoButtonPressed()
+	{
+		_logic.DoAdInterstitialVideoButtonPressed();
+	}
+
+	public void OnRewardedButtonPressed()
+	{
+		_logic.DoAdRewardedButtonPressed();
+	}
+
 	// Unity Lifecycle
 
 	private void Awake()
 	{
 		_logic = GameObject.Find("TestLogic").GetComponent<TestLogic>();
 		FindDataGameObject();
+		FindAdGameObject();
 	}
 }

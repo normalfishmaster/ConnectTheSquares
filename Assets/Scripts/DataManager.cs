@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-	private static DataManager _instance;
+	private static DataManager _instance = null;
 	private static bool _initOnce = false;
 
 	// Keys and Default Values
@@ -124,7 +124,6 @@ public class DataManager : MonoBehaviour
 	private void Awake()
 	{
 		// Singleton implementation
-
 	        if (_instance != null && _instance != this)
 		{
 			Destroy(this.gameObject);
