@@ -17,7 +17,7 @@ public class TestUI : MonoBehaviour
 	private Button _dataDeleteAllButton;
 	private Button _dataResetAllButton;
 
-	private void FindDataGameObject()
+	private void FindDataGameObjects()
 	{
 		_dataKeyText = GameObject.Find("/Canvas/Data/GetSet/Key/Text").GetComponent<Text>();
 		_dataValueText = GameObject.Find("/Canvas/Data/GetSet/Value/Text").GetComponent<Text>();
@@ -69,7 +69,7 @@ public class TestUI : MonoBehaviour
 	private Button _adInterstitialVideoButton;
 	private Button _adRewardedButton;
 
-	private void FindAdGameObject()
+	private void FindAdGameObjects()
 	{
 		_adInterstitialButton = GameObject.Find("/Canvas/Ad/Interstitial").GetComponent<Button>();
 		_adInterstitialVideoButton = GameObject.Find("/Canvas/Ad/InterstitialVideo").GetComponent<Button>();
@@ -86,7 +86,7 @@ public class TestUI : MonoBehaviour
 		_logic.DoAdInterstitialVideoButtonPressed();
 	}
 
-	public void OnRewardedButtonPressed()
+	public void OnAdRewardedButtonPressed()
 	{
 		_logic.DoAdRewardedButtonPressed();
 	}
@@ -96,7 +96,8 @@ public class TestUI : MonoBehaviour
 	private void Awake()
 	{
 		_logic = GameObject.Find("TestLogic").GetComponent<TestLogic>();
-		FindDataGameObject();
-		FindAdGameObject();
+
+		FindDataGameObjects();
+		FindAdGameObjects();
 	}
 }

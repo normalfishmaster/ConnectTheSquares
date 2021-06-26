@@ -10,7 +10,7 @@ public class StartupLogic : MonoBehaviour
 	private void OnDataInitComplete()
 	{
 		EventManager.UnsubscribeDataInitCompleteEvent(OnDataInitComplete);
-		SceneManager.LoadScene("TestScene");
+		SceneManager.LoadScene("MainMenuScene");
 	}
 
 	// Unity Lifecycle
