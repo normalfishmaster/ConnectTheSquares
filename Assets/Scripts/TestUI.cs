@@ -9,72 +9,73 @@ public class TestUI : MonoBehaviour
 
 	// Data
 
-	private Text _dataKeyText;
-	private Text _dataValueText;
-	private Button _dataGetButton;
-	private Button _dataSetButton;
-	private Button _dataDumpAllButton;
-	private Button _dataDeleteAllButton;
-	private Button _dataResetAllButton;
+	private Text _dataIntKeyText;
+	private Text _dataIntValueText;
+
+	private Text _dataFloatKeyText;
+	private Text _dataFloatValueText;
+
+	private Text _dataStringKeyText;
+	private Text _dataStringValueText;
 
 	private void FindDataGameObjects()
 	{
-		_dataKeyText = GameObject.Find("/Canvas/Data/GetSet/Key/Text").GetComponent<Text>();
-		_dataValueText = GameObject.Find("/Canvas/Data/GetSet/Value/Text").GetComponent<Text>();
-		_dataGetButton = GameObject.Find("/Canvas/Data/GetSet/Get").GetComponent<Button>();
-		_dataSetButton = GameObject.Find("/Canvas/Data/GetSet/Set").GetComponent<Button>();
-		_dataDumpAllButton = GameObject.Find("/Canvas/Data/DumpAll").GetComponent<Button>();
-		_dataDeleteAllButton = GameObject.Find("/Canvas/Data/DeleteAll").GetComponent<Button>();
-		_dataResetAllButton = GameObject.Find("/Canvas/Data/ResetAll").GetComponent<Button>();
+		_dataIntKeyText = GameObject.Find("/Canvas/Data/Int/Key/Text").GetComponent<Text>();
+		_dataIntValueText = GameObject.Find("/Canvas/Data/Int/Value/Text").GetComponent<Text>();
+
+		_dataFloatKeyText = GameObject.Find("/Canvas/Data/Float/Key/Text").GetComponent<Text>();
+		_dataFloatValueText = GameObject.Find("/Canvas/Data/Float/Value/Text").GetComponent<Text>();
+
+		_dataStringKeyText = GameObject.Find("/Canvas/Data/String/Key/Text").GetComponent<Text>();
+		_dataStringValueText = GameObject.Find("/Canvas/Data/String/Value/Text").GetComponent<Text>();
 	}
 
-	public string GetDataKeyText()
+	public void OnDataIntGetButtonPressed()
 	{
-		return _dataKeyText.text;
+		_logic.DoDataIntGetButtonPressed(_dataIntKeyText.text);
 	}
 
-	public string GetDataValueText()
+	public void OnDataIntSetButtonPressed()
 	{
-		return _dataValueText.text;
+		_logic.DoDataIntSetButtonPressed(_dataIntKeyText.text, _dataIntValueText.text);
 	}
 
-	public void OnDataGetButtonPressed()
+	public void OnDataFloatGetButtonPressed()
 	{
-		_logic.DoDataGetButtonPressed();
+		_logic.DoDataFloatGetButtonPressed(_dataFloatKeyText.text);
 	}
 
-	public void OnDataSetButtonPressed()
+	public void OnDataFloatSetButtonPressed()
 	{
-		_logic.DoDataSetButtonPressed();
+		_logic.DoDataFloatSetButtonPressed(_dataFloatKeyText.text, _dataFloatValueText.text);
 	}
 
-	public void OnDataDumpAllButtonPressed()
+	public void OnDataStringGetButtonPressed()
 	{
-		_logic.DoDataDumpAllButtonPressed();
+		_logic.DoDataStringGetButtonPressed(_dataStringKeyText.text);
 	}
 
-	public void OnDataDeleteAllButtonPressed()
+	public void OnDataStringSetButtonPressed()
 	{
-		_logic.DoDataDeleteAllButtonPressed();
+		_logic.DoDataStringSetButtonPressed(_dataStringKeyText.text, _dataStringValueText.text);
 	}
 
-	public void OnDataResetAllButtonPressed()
+	public void OnDataAllDumpButtonPressed()
 	{
-		_logic.DoDataResetAllButtonPressed();
+		_logic.DoDataAllDumpButtonPressed();
+	}
+
+	public void OnDataAllDeleteButtonPressed()
+	{
+		_logic.DoDataAllDeleteButtonPressed();
+	}
+
+	public void OnDataAllReinitButtonPressed()
+	{
+		_logic.DoDataAllReinitButtonPressed();
 	}
 
 	// Ad
-
-	private Button _adInterstitialButton;
-	private Button _adInterstitialVideoButton;
-	private Button _adRewardedButton;
-
-	private void FindAdGameObjects()
-	{
-		_adInterstitialButton = GameObject.Find("/Canvas/Ad/Interstitial").GetComponent<Button>();
-		_adInterstitialVideoButton = GameObject.Find("/Canvas/Ad/InterstitialVideo").GetComponent<Button>();
-		_adRewardedButton = GameObject.Find("/Canvas/Ad/Rewarded").GetComponent<Button>();
-	}
 
 	public void OnAdInterstitialButtonPressed()
 	{
@@ -98,6 +99,5 @@ public class TestUI : MonoBehaviour
 		_logic = GameObject.Find("TestLogic").GetComponent<TestLogic>();
 
 		FindDataGameObjects();
-		FindAdGameObjects();
 	}
 }

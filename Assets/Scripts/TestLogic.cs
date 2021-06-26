@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,72 +11,132 @@ public class TestLogic : MonoBehaviour
 
 	// UI Events - Data
 
-	public void DoDataGetButtonPressed()
+	public void DoDataIntGetButtonPressed(string key)
 	{
-		string key;
-		string value;
+		if (_data.CheckByKey(key) == false)
+		{
+			Debug.Log(key + ": Uninitialized");
+			return;
+		}
 
-		key = _ui.GetDataKeyText();
+		Debug.Log(key + ": " + _data.GetIntByKey(key));
+	}
+
+	public void DoDataIntSetButtonPressed(string key, string value)
+	{
+		int valueInt;
 
 		if (_data.CheckByKey(key) == false)
 		{
 			Debug.Log(key + ": Uninitialized");
+			return;
 		}
 
-		value = _data.GetByKey(key);
-		Debug.Log(key + ": " + value);
-	}
-
-	public void DoDataSetButtonPressed()
-	{
-		string key;
-		string value;
-
-		key = _ui.GetDataKeyText();
-		value = _ui.GetDataValueText();
-
-		if (_data.SetByKey(key, value) != 0)
+		try
 		{
-			Debug.Log(value + ": Invalid key or value");
+			valueInt = Convert.ToInt32(value);
 		}
+		catch
+		{
+			Debug.Log(value + ": Invalid value");
+			return;
+		}
+
+		_data.SetIntByKey(key, valueInt);
 	}
 
-	public void DoDataDumpAllButtonPressed()
+	public void DoDataFloatGetButtonPressed(string key)
+	{
+		if (_data.CheckByKey(key) == false)
+		{
+			Debug.Log(key + ": Uninitialized");
+			return;
+		}
+
+		Debug.Log(key + ": " + _data.GetFloatByKey(key));
+	}
+
+	public void DoDataFloatSetButtonPressed(string key, string value)
+	{
+		float valueFloat;
+
+		if (_data.CheckByKey(key) == false)
+		{
+			Debug.Log(key + ": Uninitialized");
+			return;
+		}
+
+		try
+		{
+			valueFloat = Convert.ToSingle(value);
+		}
+		catch
+		{
+			Debug.Log(value + ": Invalid value");
+			return;
+		}
+
+		_data.SetFloatByKey(key, valueFloat);
+	}
+
+	public void DoDataStringGetButtonPressed(string key)
+	{
+		if (_data.CheckByKey(key) == false)
+		{
+			Debug.Log(key + ": Uninitialized");
+			return;
+		}
+
+		Debug.Log(key + ": " + _data.GetStringByKey(key));
+	}
+
+	public void DoDataStringSetButtonPressed(string key, string value)
+	{
+		if (_data.CheckByKey(key) == false)
+		{
+			Debug.Log(key + ": Uninitialized");
+			return;
+		}
+
+		_data.SetStringByKey(key, value);
+	}
+
+	public void DoDataAllDumpButtonPressed()
 	{
 		if (_data.CheckAudio())
 		{
-			Debug.Log(DataManager.AUDIO_KEY + ": " + _data.GetAudio());
+			Debug.Log(_data.GetAudioKey() + ": " + _data.GetAudio());
 		}
 		else
 		{
-			Debug.Log(DataManager.AUDIO_KEY + ": Uninitialized");
+			Debug.Log(_data.GetAudioKey() + ": Uninitialized");
 		}
 
 		if (_data.CheckHint())
 		{
-			Debug.Log(DataManager.HINT_KEY + ": " + _data.GetHint());
+			Debug.Log(_data.GetHintKey() + ": " + _data.GetHint());
 		}
 		else
 		{
-			Debug.Log(DataManager.HINT_KEY + ": Uninitialized");
+			Debug.Log(_data.GetHintKey() + ": Uninitialized");
 		}
 
 		if (_data.CheckAdFree())
 		{
-			Debug.Log(DataManager.ADFREE_KEY + ": " + _data.GetAdFree());
+			Debug.Log(_data.GetAdFreeKey() + ": " + _data.GetAdFree());
 		}
 		else
 		{
-			Debug.Log(DataManager.ADFREE_KEY + ": Uninitialized");
+			Debug.Log(_data.GetAdFreeKey() + ": Uninitialized");
 		}
 	}
 
-	public void DoDataDeleteAllButtonPressed()
+	public void DoDataAllDeleteButtonPressed()
 	{
 		_data.DeleteAll();
 	}
 
-	public void DoDataResetAllButtonPressed()
+	public void DoDataAllReinitButtonPressed()
 	{
 		_data.DeleteAll();
 
