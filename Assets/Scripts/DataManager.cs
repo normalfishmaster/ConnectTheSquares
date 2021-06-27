@@ -19,10 +19,10 @@ public class DataManager : MonoBehaviour
 	public string GetHintKey()					{ return "HintKey";									}
 	public int    GetHintDefault()					{ return 3;										}
 
-	public string GetLevelLockKey(int color, int level)		{ return "LevelLockKey" + "_" + color + "_" + level;					}
+	public string GetLevelLockKey(int color, int map)		{ return "LevelLockKey" + "_" + color + "_" + map;					}
 	public int    GetLevelLockDefault()				{ return 1;										}
 
-	public string GetLevelStarKey(int color, int level)		{ return "LevelStarKey" + "_" + color + "_" + level;					}
+	public string GetLevelStarKey(int color, int map)		{ return "LevelStarKey" + "_" + color + "_" + map;					}
 	public int    GetLevelStarDefault()				{ return 0;										}
 
 	// Operations by Data Type
@@ -42,15 +42,15 @@ public class DataManager : MonoBehaviour
 	public void  SetAdFree(int value)				{        PlayerPrefs.SetInt(GetAdFreeKey(), value);					}
 	public void  InitAdFree()					{        PlayerPrefs.SetInt(GetAdFreeKey(), GetAdFreeDefault());			}
 
-	public bool  CheckLevelLock(int color, int level)		{ return PlayerPrefs.HasKey(GetLevelLockKey(color, level));				}
-	public int   GetLevelLock(int color, int level)			{ return PlayerPrefs.GetInt(GetLevelLockKey(color, level));				}
-	public void  SetLevelLock(int color, int level, int value)	{        PlayerPrefs.SetInt(GetLevelLockKey(color, level), value);			}
-	public void  InitLevelLock(int color, int level, int value)	{        PlayerPrefs.SetInt(GetLevelLockKey(color, level), GetLevelLockDefault());	}
+	public bool  CheckLevelLock(int color, int map)			{ return PlayerPrefs.HasKey(GetLevelLockKey(color, map));				}
+	public int   GetLevelLock(int color, int map)			{ return PlayerPrefs.GetInt(GetLevelLockKey(color, map));				}
+	public void  SetLevelLock(int color, int map, int value)	{        PlayerPrefs.SetInt(GetLevelLockKey(color, map), value);			}
+	public void  InitLevelLock(int color, int map, int value)	{        PlayerPrefs.SetInt(GetLevelLockKey(color, map), GetLevelLockDefault());	}
 
-	public bool  CheckLevelStar(int color, int level)		{ return PlayerPrefs.HasKey(GetLevelStarKey(color, level));				}
-	public int   GetLevelStar(int color, int level)			{ return PlayerPrefs.GetInt(GetLevelStarKey(color, level));				}
-	public void  SetLevelStar(int color, int level, int value)	{        PlayerPrefs.SetInt(GetLevelStarKey(color, level), value);			}
-	public void  InitLevelStar(int color, int level, int value)	{        PlayerPrefs.SetInt(GetLevelStarKey(color, level), GetLevelStarDefault());	}
+	public bool  CheckLevelStar(int color, int map)			{ return PlayerPrefs.HasKey(GetLevelStarKey(color, map));				}
+	public int   GetLevelStar(int color, int map)			{ return PlayerPrefs.GetInt(GetLevelStarKey(color, map));				}
+	public void  SetLevelStar(int color, int map, int value)	{        PlayerPrefs.SetInt(GetLevelStarKey(color, map), value);			}
+	public void  InitLevelStar(int color, int map, int value)	{        PlayerPrefs.SetInt(GetLevelStarKey(color, map), GetLevelStarDefault());	}
 
 	// Check by Key
 
