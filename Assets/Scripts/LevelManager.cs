@@ -4,79 +4,96 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-
 	private static LevelManager _instance = null;
 
-	private static Level[] _level =
+	private static int GREY   = 0;
+	private static int BLUE   = 1;
+	private static int GREEN  = 2;
+	private static int YELLOW = 3;
+	private static int RED    = 4;
+
+	private static int A      = 0;
+	private static int B      = 1;
+	private static int C      = 2;
+
+	private static Dictionary<int, Level[]> _tableLevel = new Dictionary<int, Level[]>()
 	{
-		new LevelGrey(),
-		new LevelBlue(),
-		new LevelGreen(),
-		new LevelYellow(),
-		new LevelRed()
+		{ GREY,	  new Level[] { new LevelGreyA(),                                           } },
+		{ BLUE,	  new Level[] { new LevelBlueA(),   new LevelBlueB(),   new LevelBlueC(),   } },
+		{ GREEN,  new Level[] { new LevelGreenA(),  new LevelGreenB(),  new LevelGreenC(),  } },
+		{ YELLOW, new Level[] { new LevelYellowA(), new LevelYellowB(), new LevelYellowC(), } },
+		{ RED,	  new Level[] { new LevelRedA(),    new LevelRedB(),    new LevelRedC(),    } },
+
 	};
 
-	private static string[] _levelColor =
+	private static Dictionary<int, string> _tableColor = new Dictionary<int, string>()
 	{
-		"Grey",
-		"Blue",
-		"Green",
-		"Yellow",
-		"Red"
+		{ GREY,   "Grey"   },
+		{ BLUE,   "Blue"   },
+		{ GREEN,  "Green"  },
+		{ YELLOW, "Yellow" },
+		{ RED,    "Red"    },
 	};
 
-	// Misc
+	private static Dictionary<int, string> _tableAlphabet = new Dictionary<int, string>()
+	{
+		{ A, "A" },
+		{ B, "B" },
+		{ C, "C" },
+	};
+
+	// Conversion
+
+	public string GetColorString(int color)
+	{
+		if (_tableColor.ContainsKey(color))
+		{
+			return _tableColor[color];
+		}
+		return "";
+	}
+
+	public string GetAlphabetString(int alphabet)
+	{
+		if (_tableAlphabet.ContainsKey(alphabet))
+		{
+			return _tableAlphabet[alphabet];
+		}
+		return "";
+	}
+
+	// Table operations
 
 	public int GetNumColors()
 	{
-		return _level.Length;
+		return _tableLevel.Count;
 	}
 
-	public string ColorIntToString(int color)
+	public int GetNumAlphabets(int color)
 	{
-		if (color >= GetNumColors())
+		if (_tableColor.ContainsKey(color))
 		{
-			return "";
+			return _tableLevel[color].Length;
 		}
-		else
-		{
-			return _levelColor[color];
-		}
-	}
-
-	public int ColorStringToInt(string color)
-	{
-		for (int i = 0; i < GetNumColors(); i++)
-		{
-			if (color == _levelColor[i])
-			{
-				return i;
-			}
-		}
-
 		return -1;
 	}
 
-	// Per color operations
-
-	public int GetColorNumMaps(int color)
+	public int GetNumMaps(int color, int alphabet)
 	{
-		if (color >= GetNumColors())
+		if (_tableColor.ContainsKey(color))
 		{
-			return -1;
+			return _tableLevel[color][alphabet]._map.Length;
 		}
-
-		return _level[color]._map.Length;
+		return -1;
 	}
 
-	public Level.Map? GetColorMap(int color, int map)
+	public Level.Map? GetMap(int color, int alphabet, int map)
 	{
-		if (color >= GetNumColors() || map >= GetColorNumMaps(color))
+		if (_tableColor.ContainsKey(color))
 		{
-			return null;
+			return _tableLevel[color][alphabet]._map[map];
 		}
-
-		return _level[color]._map[map];
+		return null;
 	}
 
 	// Unity Lifecycle

@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class LevelYellow : Level
+public class LevelYellowA : Level
 {
-	public LevelYellow()
+	public LevelYellowA()
 	{
 		_map = new Map[]
 		{
