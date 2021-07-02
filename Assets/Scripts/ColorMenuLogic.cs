@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ColorMenuLogic : MonoBehaviour
 {
@@ -10,6 +11,13 @@ public class ColorMenuLogic : MonoBehaviour
 
 	public void DoColorButtonPressed(string color)
 	{
+	}
+
+	// Back
+
+	public void DoBackButtonPressed()
+	{
+		SceneManager.LoadScene("MainMenuScene");
 	}
 
 	// Unity Lifecycle

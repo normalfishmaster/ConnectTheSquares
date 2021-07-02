@@ -38,11 +38,17 @@ public class ColorMenuUI : MonoBehaviour
 		}
 	}
 
-	private void OnColorButtonPressed(string color)
+	public void OnColorButtonPressed(string color)
 	{
 		_logic.DoColorButtonPressed(color);
 	}
 
+	// Back
+
+	public void OnBackButtonPressed()
+	{
+		_logic.DoBackButtonPressed();
+	}
 
 	// Unity Lifecycle
 
