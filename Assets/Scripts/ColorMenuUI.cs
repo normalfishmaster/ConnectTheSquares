@@ -22,23 +22,22 @@ public class ColorMenuUI : MonoBehaviour
 
 	private void SetupColor()
 	{
-		int numColors = _level.GetNumColors();
+		int numColor = _level.GetNumColor();
 
-		_colorButton = new GameObject[numColors];
+		_colorButton = new GameObject[numColor];
 
-		for (int i = 0; i < numColors; i++)
+		for (int i = 0; i < numColor; i++)
 		{
-			string color = _level.GetColorString(i);
-
+			int color = i;
 			_colorButton[i] = Instantiate(_colorButtonPrefab);
 			_colorButton[i].transform.SetParent(_colorContent.transform);
 			_colorButton[i].transform.localScale= new Vector3(1, 1, 1);
-			_colorButton[i].transform.Find("Label").GetComponent<Text>().text = color;
+			_colorButton[i].transform.Find("Label").GetComponent<Text>().text = _level.GetColorString(color);
 			_colorButton[i].GetComponent<Button>().onClick.AddListener(delegate { OnColorButtonPressed(color); });
 		}
 	}
 
-	public void OnColorButtonPressed(string color)
+	public void OnColorButtonPressed(int color)
 	{
 		_logic.DoColorButtonPressed(color);
 	}

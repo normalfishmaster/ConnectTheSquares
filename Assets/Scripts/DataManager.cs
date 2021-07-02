@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-	private static DataManager _instance = null;
+	private static DataManager _instance;
+	private static LevelManager _level;
+
 	private static bool _initOnce = false;
 
 	// Keys and Default Values
@@ -18,6 +20,12 @@ public class DataManager : MonoBehaviour
 
 	public string GetHintKey()						{ return "HintKey";										}
 	public int    GetHintDefault()						{ return 3;											}
+
+	public string GetMenuColorKey()						{ return "MenuColorKey";										}
+	public int    GetMenuColorDefault()					{ return 0;											}
+
+	public string GetMenuAlphabetKey()					{ return "MenuAlphabetKey";									}
+	public int    GetMenuAlphabetDefault()					{ return 0;											}
 
 	public string GetLevelLockKey(int color, int alphabet, int map)		{ return "LevelLockKey" + "_" + color + "_" + alphabet + "_" + map;				}
 	public int    GetLevelLockDefault()					{ return 1;											}
@@ -42,15 +50,25 @@ public class DataManager : MonoBehaviour
 	public void  SetAdFree(int value)					{        PlayerPrefs.SetInt(GetAdFreeKey(), value);						}
 	public void  InitAdFree()						{        PlayerPrefs.SetInt(GetAdFreeKey(), GetAdFreeDefault());				}
 
+	public bool  CheckMenuColor()						{ return PlayerPrefs.HasKey(GetMenuColorKey());							}
+	public int   GetMenuColor()						{ return PlayerPrefs.GetInt(GetMenuColorKey());							}
+	public void  SetMenuColor(int value)					{        PlayerPrefs.SetInt(GetMenuColorKey(), value);						}
+	public void  InitMenuColor()						{        PlayerPrefs.SetInt(GetMenuColorKey(), GetMenuColorDefault());				}
+
+	public bool  CheckMenuAlphabet()					{ return PlayerPrefs.HasKey(GetMenuAlphabetKey());						}
+	public int   GetMenuAlphabet()						{ return PlayerPrefs.GetInt(GetMenuAlphabetKey());						}
+	public void  SetMenuAlphabet(int value)					{        PlayerPrefs.SetInt(GetMenuAlphabetKey(), value);					}
+	public void  InitMenuAlphabet()						{        PlayerPrefs.SetInt(GetMenuAlphabetKey(), GetMenuAlphabetDefault());			}
+
 	public bool  CheckLevelLock(int color, int alphabet, int map)		{ return PlayerPrefs.HasKey(GetLevelLockKey(color, alphabet, map));				}
 	public int   GetLevelLock(int color, int alphabet, int map)		{ return PlayerPrefs.GetInt(GetLevelLockKey(color, alphabet, map));				}
 	public void  SetLevelLock(int color, int alphabet, int map, int value)	{        PlayerPrefs.SetInt(GetLevelLockKey(color, alphabet, map), value);			}
-	public void  InitLevelLock(int color, int alphabet, int map, int value)	{        PlayerPrefs.SetInt(GetLevelLockKey(color, alphabet, map), GetLevelLockDefault());	}
+	public void  InitLevelLock(int color, int alphabet, int map)		{        PlayerPrefs.SetInt(GetLevelLockKey(color, alphabet, map), GetLevelLockDefault());	}
 
 	public bool  CheckLevelStar(int color, int alphabet, int map)		{ return PlayerPrefs.HasKey(GetLevelStarKey(color, alphabet, map));				}
 	public int   GetLevelStar(int color, int alphabet, int map)		{ return PlayerPrefs.GetInt(GetLevelStarKey(color, alphabet, map));				}
 	public void  SetLevelStar(int color, int alphabet, int map, int value)	{        PlayerPrefs.SetInt(GetLevelStarKey(color, alphabet, map), value);			}
-	public void  InitLevelStar(int color, int alphabet, int map, int value)	{        PlayerPrefs.SetInt(GetLevelStarKey(color, alphabet, map), GetLevelStarDefault());	}
+	public void  InitLevelStar(int color, int alphabet, int map)		{        PlayerPrefs.SetInt(GetLevelStarKey(color, alphabet, map), GetLevelStarDefault());	}
 
 	// Check by Key
 
@@ -113,6 +131,8 @@ public class DataManager : MonoBehaviour
 
 		_instance = this;
 		DontDestroyOnLoad(this.gameObject);
+
+		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 	}
 
 	private void Start()
@@ -130,6 +150,38 @@ public class DataManager : MonoBehaviour
 			if (CheckAdFree() == false)
 			{
 				InitAdFree();
+			}
+			if (CheckMenuColor() == false)
+			{
+				InitMenuColor();
+			}
+			if (CheckMenuAlphabet() == false)
+			{
+				InitMenuAlphabet();
+			}
+
+			int numColor = _level.GetNumColor();
+
+			for (int i = 0; i < numColor; i++)
+			{
+				int numAlphabet = _level.GetNumAlphabet(i);
+
+				for (int j = 0; j < numAlphabet; j++)
+				{
+					int numMap = _level.GetNumMap(i, j);
+
+					for (int k = 0; k < numMap; k++)
+					{
+						if (CheckLevelLock(i, j, k) == false)
+						{
+							InitLevelLock(i, j, k);
+						}
+						if (CheckLevelStar(i, j, k) == false)
+						{
+							InitLevelStar(i, j, k);
+						}
+					}
+				}
 			}
 
 			_initOnce = true;

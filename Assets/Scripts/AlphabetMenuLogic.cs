@@ -3,31 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ColorMenuLogic : MonoBehaviour
+public class AlphabetMenuLogic : MonoBehaviour
 {
-	private ColorMenuUI _ui;
+	private AlphabetMenuUI _ui;
 	private DataManager _data;
 
-	// Color
+	// Alphabet
 
-	public void DoColorButtonPressed(int color)
+	public void DoAlphabetButtonPressed(int alphabet)
 	{
-		_data.SetMenuColor(color);
-		SceneManager.LoadScene("AlphabetMenuScene");
+		_data.SetMenuAlphabet(alphabet);
 	}
 
 	// Back
 
 	public void DoBackButtonPressed()
 	{
-		SceneManager.LoadScene("MainMenuScene");
+		SceneManager.LoadScene("ColorMenuScene");
 	}
 
 	// Unity Lifecycle
 
 	private void Awake()
 	{
-		_ui = GameObject.Find("ColorMenuUI").GetComponent<ColorMenuUI>();
+		_ui = GameObject.Find("AlphabetMenuUI").GetComponent<AlphabetMenuUI>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 	}
 }

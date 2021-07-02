@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/ColorMenuScene.unity
     guid: a13c318da18964bf9aeb43dac726a7ff
   - enabled: 1
+    path: Assets/Scenes/AlphabetMenuScene.unity
+    guid: c7e8c6ea52a5527c280219223384b815
+  - enabled: 1
     path: Assets/Scenes/TestScene.unity
     guid: 84e7ea425e44268a7821237c8d0fb5a8
   m_configObjects: {}

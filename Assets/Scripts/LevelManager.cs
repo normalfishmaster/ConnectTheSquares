@@ -64,12 +64,12 @@ public class LevelManager : MonoBehaviour
 
 	// Table operations
 
-	public int GetNumColors()
+	public int GetNumColor()
 	{
 		return _tableLevel.Count;
 	}
 
-	public int GetNumAlphabets(int color)
+	public int GetNumAlphabet(int color)
 	{
 		if (_tableColor.ContainsKey(color))
 		{
@@ -78,7 +78,7 @@ public class LevelManager : MonoBehaviour
 		return -1;
 	}
 
-	public int GetNumMaps(int color, int alphabet)
+	public int GetNumMap(int color, int alphabet)
 	{
 		if (_tableColor.ContainsKey(color))
 		{
