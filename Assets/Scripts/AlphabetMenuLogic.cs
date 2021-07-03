@@ -13,6 +13,7 @@ public class AlphabetMenuLogic : MonoBehaviour
 	public void DoAlphabetButtonPressed(int alphabet)
 	{
 		_data.SetMenuAlphabet(alphabet);
+		SceneManager.LoadScene("MapMenuScene");
 	}
 
 	// Back

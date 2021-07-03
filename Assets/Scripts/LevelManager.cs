@@ -62,6 +62,12 @@ public class LevelManager : MonoBehaviour
 		return "";
 	}
 
+	public string GetMapString(int map)
+	{
+		int val = map + 1;
+		return val.ToString();
+	}
+
 	// Table operations
 
 	public int GetNumColor()

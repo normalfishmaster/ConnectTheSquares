@@ -27,6 +27,9 @@ public class DataManager : MonoBehaviour
 	public string GetMenuAlphabetKey()					{ return "MenuAlphabetKey";									}
 	public int    GetMenuAlphabetDefault()					{ return 0;											}
 
+	public string GetMenuMapKey()						{ return "MenuMapKey";										}
+	public int    GetMenuMapDefault()					{ return 0;											}
+
 	public string GetLevelLockKey(int color, int alphabet, int map)		{ return "LevelLockKey" + "_" + color + "_" + alphabet + "_" + map;				}
 	public int    GetLevelLockDefault()					{ return 1;											}
 
@@ -59,6 +62,11 @@ public class DataManager : MonoBehaviour
 	public int   GetMenuAlphabet()						{ return PlayerPrefs.GetInt(GetMenuAlphabetKey());						}
 	public void  SetMenuAlphabet(int value)					{        PlayerPrefs.SetInt(GetMenuAlphabetKey(), value);					}
 	public void  InitMenuAlphabet()						{        PlayerPrefs.SetInt(GetMenuAlphabetKey(), GetMenuAlphabetDefault());			}
+
+	public bool  CheckMenuMap()						{ return PlayerPrefs.HasKey(GetMenuMapKey());							}
+	public int   GetMenuMap()						{ return PlayerPrefs.GetInt(GetMenuMapKey());							}
+	public void  SetMenuMap(int value)					{        PlayerPrefs.SetInt(GetMenuMapKey(), value);						}
+	public void  InitMenuMap()						{        PlayerPrefs.SetInt(GetMenuMapKey(), GetMenuMapDefault());				}
 
 	public bool  CheckLevelLock(int color, int alphabet, int map)		{ return PlayerPrefs.HasKey(GetLevelLockKey(color, alphabet, map));				}
 	public int   GetLevelLock(int color, int alphabet, int map)		{ return PlayerPrefs.GetInt(GetLevelLockKey(color, alphabet, map));				}
@@ -158,6 +166,10 @@ public class DataManager : MonoBehaviour
 			if (CheckMenuAlphabet() == false)
 			{
 				InitMenuAlphabet();
+			}
+			if (CheckMenuMap() == false)
+			{
+				InitMenuMap();
 			}
 
 			int numColor = _level.GetNumColor();

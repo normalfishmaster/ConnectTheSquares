@@ -24,12 +24,9 @@ public class AlphabetMenuUI : MonoBehaviour
 	private void SetupAlphabet()
 	{
 		int menuColor = _data.GetMenuColor();
-		Debug.Log("color:" + menuColor);
 		int numAlphabet = _level.GetNumAlphabet(menuColor);
 
 		_alphabetButton = new GameObject[numAlphabet];
-
-		Debug.Log("alphabet:" + numAlphabet);
 
 		for (int i = 0; i < numAlphabet; i++)
 		{
