@@ -13,6 +13,7 @@ public class MapMenuLogic : MonoBehaviour
 	public void DoMapButtonPressed(int map)
 	{
 		_data.SetMenuMap(map);
+		SceneManager.LoadScene("LevelScene");
 	}
 
 	// Back

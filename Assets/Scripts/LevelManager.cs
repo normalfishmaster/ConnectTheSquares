@@ -16,16 +16,6 @@ public class LevelManager : MonoBehaviour
 	private static int B      = 1;
 	private static int C      = 2;
 
-	private static Dictionary<int, Level[]> _tableLevel = new Dictionary<int, Level[]>()
-	{
-		{ GREY,	  new Level[] { new LevelGreyA(),                                           } },
-		{ BLUE,	  new Level[] { new LevelBlueA(),   new LevelBlueB(),   new LevelBlueC(),   } },
-		{ GREEN,  new Level[] { new LevelGreenA(),  new LevelGreenB(),  new LevelGreenC(),  } },
-		{ YELLOW, new Level[] { new LevelYellowA(), new LevelYellowB(), new LevelYellowC(), } },
-		{ RED,	  new Level[] { new LevelRedA(),    new LevelRedB(),    new LevelRedC(),    } },
-
-	};
-
 	private static Dictionary<int, string> _tableColor = new Dictionary<int, string>()
 	{
 		{ GREY,   "Grey"   },
@@ -40,6 +30,16 @@ public class LevelManager : MonoBehaviour
 		{ A, "A" },
 		{ B, "B" },
 		{ C, "C" },
+	};
+
+	private static Dictionary<int, Level[]> _tableLevel = new Dictionary<int, Level[]>()
+	{
+		{ GREY,	  new Level[] { new LevelGreyA(),                                           } },
+		{ BLUE,	  new Level[] { new LevelBlueA(),   new LevelBlueB(),   new LevelBlueC(),   } },
+		{ GREEN,  new Level[] { new LevelGreenA(),  new LevelGreenB(),  new LevelGreenC(),  } },
+		{ YELLOW, new Level[] { new LevelYellowA(), new LevelYellowB(), new LevelYellowC(), } },
+		{ RED,	  new Level[] { new LevelRedA(),    new LevelRedB(),    new LevelRedC(),    } },
+
 	};
 
 	// Conversion
@@ -77,7 +77,7 @@ public class LevelManager : MonoBehaviour
 
 	public int GetNumAlphabet(int color)
 	{
-		if (_tableColor.ContainsKey(color))
+		if (color < GetNumColor())
 		{
 			return _tableLevel[color].Length;
 		}
@@ -86,20 +86,20 @@ public class LevelManager : MonoBehaviour
 
 	public int GetNumMap(int color, int alphabet)
 	{
-		if (_tableColor.ContainsKey(color))
+		if (alphabet < GetNumAlphabet(color))
 		{
 			return _tableLevel[color][alphabet]._map.Length;
 		}
 		return -1;
 	}
 
-	public Level.Map? GetMap(int color, int alphabet, int map)
+	public Level.Map GetMap(int color, int alphabet, int map)
 	{
-		if (_tableColor.ContainsKey(color))
+		if (map < GetNumMap(color, alphabet))
 		{
 			return _tableLevel[color][alphabet]._map[map];
 		}
-		return null;
+		return new Level.Map();
 	}
 
 	// Unity Lifecycle

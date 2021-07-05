@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Layout
+    uniqueID: 3459365863
+    locked: 0
+  - name: Wall
+    uniqueID: 3302278593
+    locked: 0
+  - name: Square
+    uniqueID: 2954094751
+    locked: 0
