@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class LevelLogic : MonoBehaviour
 {
@@ -14,77 +16,579 @@ public class LevelLogic : MonoBehaviour
 	private int _menuAlphabet;
 	private int _menuMap;
 
-//	private Level.Map? _map;
-	private Level.Map _map;
+	private const int NUM_X = Level.NUM_COL;
+	private const int NUM_Y = Level.NUM_ROW;
+
+	private const int NUM_SQUARE = Level.NUM_SQUARE;
+
+	private Vector2 DIRECTION_NONE  = Vector2.zero;
+	private Vector2 DIRECTION_UP    = new Vector2( 0.0f,  1.0f);
+	private Vector2 DIRECTION_DOWN  = new Vector2( 0.0f, -1.0f);
+	private Vector2 DIRECTION_LEFT  = new Vector2(-1.0f,  0.0f);
+	private Vector2 DIRECTION_RIGHT = new Vector2( 1.0f,  0.0f);
 
 	// Level
 
-	private GameObject _board;
-	private GameObject[,] _wall;
-	private GameObject[] _square;
+	private GameObject[,] _levelWall;
+	private GameObject[] _levelSquare;
 
-	private float _rowOffset;
-	private float _colOffset;
+	private float _levelXOffset;
+	private float _levelYOffset;
 
 	private void FindLevelGameObject()
 	{
-		// Board
-
-		_board = GameObject.Find("Level/Board");
-
 		// Wall
 
-		_wall = new GameObject[Level.NUM_ROW, Level.NUM_COL];
+		_levelWall = new GameObject[NUM_X, NUM_Y];
 
-		for (int i = 0; i < Level.NUM_ROW; i++)
+		for (int x = 0; x < NUM_X; x++)
 		{
-			for (int j = 0; j < Level.NUM_COL; j++)
+			for (int y = 0; y < NUM_Y; y++)
 			{
-				_wall[i, j] = GameObject.Find("Level/Wall/R" + i + "/C" + j);
+				_levelWall[x, y] = GameObject.Find("Level/Wall/X" + x + "/Y" + y);
 			}
 		}
 
 		// Square
 
-		_square = new GameObject[Level.NUM_SQUARE];
+		_levelSquare = new GameObject[Level.NUM_SQUARE];
 
-		for (int i = 0; i < Level.NUM_SQUARE; i++)
+		for (int i = 0; i < NUM_SQUARE; i++)
 		{
-			_square[i] = GameObject.Find("Level/Square/S" + i);
+			_levelSquare[i] = GameObject.Find("Level/Square/S" + i);
 		}
 	}
 
 	private void SetupLevel()
 	{
-		_rowOffset = 3.5f;
-		_colOffset = -3.5f;
+		_levelXOffset = -3.5f;
+		_levelYOffset = -3.5f;
+	}
 
-		for (int i = 0; i < Level.NUM_ROW; i++)
+	private void DisableLevelWall(int x, int y)
+	{
+		_levelWall[x, y].GetComponent<SpriteRenderer>().color = new Color(140, 140, 140);
+	}
+
+	private void SetLevelSquarePos(int square, float x, float y)
+	{
+		_levelSquare[square].transform.position = new Vector2(_levelXOffset + x, _levelYOffset + y);
+	}
+
+	// Physics
+
+	private const float DECELERATION_RATE_START_TO_END = 0.07f;
+	private const float DECELERATION_RATE_START_TO_PRE_END = 0.07f;
+	private const float DECELERATION_RATE_PRE_END_TO_END = 2.00f;
+
+	private sbyte[,] _physicsMapLayout;
+	private Vector2[] _physicsSquarePos;
+
+	Vector2 _physicsDirection;
+
+	Vector2[] _physicsStartPos;
+	Vector2[] _physicsEndPos;
+	Vector2[] _physicsStartToEndDist;
+	int _physicsLongestDist;
+
+	Vector2[] _physicsPreEndPos;
+	Vector2[] _physicsStartToPreEndDist;
+	Vector2[] _physicsPreEndToEndDist;
+
+	float _physicsStartTime;
+
+	private void SetupPhysics()
+	{
+		// Convert level map to local physics map based on world coordinates:
+		// 1. Swap row and col
+		// 2. Invert col
+
+		_physicsMapLayout = new sbyte[Level.NUM_COL, Level.NUM_ROW];
+		_physicsSquarePos = new Vector2[Level.NUM_SQUARE];
+
+		Level.Map map = _level.GetMap(_menuColor, _menuAlphabet, _menuMap);
+
+		for (int x = 0; x < NUM_X; x++)
 		{
-			for (int j = 0; j < Level.NUM_COL; j++)
+			for (int y = 0; y < NUM_Y; y++)
 			{
-				Debug.Log("i:" + i + " j:" + j);
+				int tile = _physicsMapLayout[x, y] = map._layout[Level.NUM_ROW - y - 1, x];
 
-				int tile = _map._layout[i, j];
-
-				if (Level.IsEmpty(tile) || Level.IsSquare(tile))
+				if (Level.IsEmpty(tile))
 				{
-					Debug.Log("empty");
-					_wall[i, j].GetComponent<SpriteRenderer>().color = new Color(140, 140, 140);
-					Debug.Log("empty after");
+					DisableLevelWall(x, y);
 				}
+				else if (Level.IsSquare(tile))
+				{
+					int n = Level.GetSquareNumber(tile);
+
+					_physicsSquarePos[n] = new Vector2(x, y);
+
+					SetLevelSquarePos(n, x, y);
+					DisableLevelWall(x, y);
+				}
+			}
+		}
+
+		_physicsStartPos = new Vector2[NUM_SQUARE];
+		_physicsEndPos = new Vector2[NUM_SQUARE];
+		_physicsStartToEndDist = new Vector2[NUM_SQUARE];
+
+		_physicsPreEndPos = new Vector2[NUM_SQUARE];
+		_physicsStartToPreEndDist = new Vector2[NUM_SQUARE];
+		_physicsPreEndToEndDist = new Vector2[NUM_SQUARE];
+	}
+
+	private Vector2 GetSquareStartPos(int square)
+	{
+		return _physicsSquarePos[square];
+	}
+
+	private Vector2 GetSquareEndPos(int square, Vector2 direction)
+	{
+		int x = (int)_physicsSquarePos[square].x;
+		int y = (int)_physicsSquarePos[square].y;
+
+		int numSquare = 0;
+
+		if (direction == DIRECTION_UP || direction == DIRECTION_DOWN)
+		{
+			int add = direction == DIRECTION_UP ? 1 : -1;
+			int i;
+
+			for (i = y + add; i >= 0 && i < NUM_Y; i += add)
+			{
+				int tile = _physicsMapLayout[x, i];
 
 				if (Level.IsSquare(tile))
 				{
-					Debug.Log("square");
-					int square = Level.GetSquareNumber(tile);
-					_square[square].transform.position = new Vector2(_colOffset + j, _rowOffset - i);
+					numSquare++;
 				}
+				else if (Level.IsWall(tile))
+				{
+					break;
+				}
+			}
+
+			return new Vector2(x, i + (-1 * add) + (-1 * add * numSquare));
+		}
+		else if (direction == DIRECTION_LEFT || direction == DIRECTION_RIGHT)
+		{
+			int add = direction == DIRECTION_LEFT ? -1 : 1;
+			int i;
+
+			for (i = x + add; i >= 0 && i < NUM_X; i += add)
+			{
+				int tile = _physicsMapLayout[i, y];
+
+				if (Level.IsSquare(tile))
+				{
+					numSquare++;
+				}
+				else if (Level.IsWall(tile))
+				{
+					break;
+				}
+			}
+
+			return new Vector2(i + (-1 * add) + (-1 * add * numSquare), y);
+		}
+
+		return Vector2.zero;
+	}
+
+	bool IsSquareEndPosWinning()
+	{
+		for (int i = 0; i < NUM_SQUARE; i++)
+		{
+			int x = (int)_physicsEndPos[i].x;
+			int y = (int)_physicsEndPos[i].y;
+
+			Vector2 posUp = new Vector2(x, y + 1.0f);
+			Vector2 posDown = new Vector2(x, y - 1.0f);
+			Vector2 posLeft = new Vector2(x - 1.0f, y);
+			Vector2 posRight = new Vector2(x + 1.0f, y);
+
+			int hitTally = 0;
+
+			for (int j = 0; j < NUM_SQUARE; j++)
+			{
+				if (i == j)
+				{
+					continue;
+				}
+
+				if (posUp == _physicsEndPos[j])
+				{
+					hitTally += 1;
+				}
+				else if (posDown == _physicsEndPos[j])
+				{
+					hitTally += 1;
+				}
+				else if (posLeft == _physicsEndPos[j])
+				{
+					hitTally += 1;
+				}
+				else if (posRight == _physicsEndPos[j])
+				{
+					hitTally += 1;
+				}
+			}
+
+			if (hitTally != 2)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private bool StartSquareMovement(Vector2 direction)
+	{
+		Vector2[] startPos = new Vector2[NUM_SQUARE];
+		Vector2[] endPos = new Vector2[NUM_SQUARE];
+		Vector2[] startToEndDist = new Vector2[NUM_SQUARE];
+		int longestDist = 0;
+
+		Vector2[] preEndPos = new Vector2[NUM_SQUARE];
+		Vector2[] startToPreEndDist = new Vector2[NUM_SQUARE];
+		Vector2[] preEndToEndDist = new Vector2[NUM_SQUARE];
+		float preEndMultiplier = 0.0f;
+
+		bool legal = false;
+
+		for (int i = 0; i < NUM_SQUARE; i++)
+		{
+			startPos[i] = GetSquareStartPos(i);
+			endPos[i] = GetSquareEndPos(i, direction);
+
+			startToEndDist[i] = (int)Vector2.Distance(startPos[i], endPos[i]) * direction;
+
+			if (startToEndDist[i] != Vector2.zero)
+			{
+				legal = true;
+			}
+
+			if (startToEndDist[i].magnitude >= startToEndDist[longestDist].magnitude)
+			{
+				longestDist = i;
+			}
+		}
+
+		if (legal == false)
+		{
+			return false;
+		}
+
+		preEndPos[longestDist] = endPos[longestDist] - (direction * 1);
+
+		startToPreEndDist[longestDist] = Vector2.Distance(startPos[longestDist], preEndPos[longestDist]) * direction;
+		preEndToEndDist[longestDist] = Vector2.Distance(preEndPos[longestDist], endPos[longestDist]) * direction;
+
+		preEndMultiplier = startToPreEndDist[longestDist].magnitude / startToEndDist[longestDist].magnitude;
+
+		for (int i = 0; i < NUM_SQUARE; i++)
+		{
+			if (i == longestDist)
+			{
+				continue;
+			}
+
+			preEndPos[i] = startPos[i] + (preEndMultiplier * startToEndDist[i].magnitude) * direction;
+
+			startToPreEndDist[i] = Vector2.Distance(startPos[i], preEndPos[i]) * direction;
+			preEndToEndDist[i] = Vector2.Distance(preEndPos[i], endPos[i]) * direction;
+		}
+
+		_physicsDirection = direction;
+
+		_physicsStartPos = startPos;
+		_physicsEndPos = endPos;
+		_physicsStartToEndDist = startToEndDist;
+		_physicsLongestDist = longestDist;
+
+		_physicsPreEndPos = preEndPos;
+		_physicsStartToPreEndDist = startToPreEndDist;
+		_physicsPreEndToEndDist = preEndToEndDist;
+
+		_physicsStartTime = Time.time;
+
+		return true;
+	}
+
+	private bool MoveSquareToPos(float startTime, Vector2 direction,
+			Vector2[] startPos, Vector2[] endPos,
+			Vector2[] startToEndDist, int longestDist,
+			float decelerationRate)
+	{
+		float travelTime = startToEndDist[longestDist].magnitude * decelerationRate;
+		float deltaTime = Time.time - startTime;
+
+		if (deltaTime >= travelTime)
+		{
+			for (int i = 0; i < NUM_SQUARE; i++)
+			{
+				SetLevelSquarePos(i, endPos[i].x, endPos[i].y);
+			}
+			return true;
+		}
+
+		for (int i = 0; i < NUM_SQUARE; i++)
+		{
+			float totalDistance = startToEndDist[i].magnitude;
+
+			if (totalDistance == 0.0f)
+			{
+				continue;
+			}
+
+			float startSpeed = (2.0f * totalDistance) / travelTime;
+			float deceleration = -(startSpeed * startSpeed) / (2.0f * totalDistance);
+			float distance = (startSpeed * deltaTime) + ((0.5f * deceleration) * (deltaTime * deltaTime));
+			Vector2 movePos = startPos[i] + distance * direction;
+
+			SetLevelSquarePos(i, movePos.x, movePos.y);
+		}
+
+		return false;
+        }
+
+	private void CommitSquarePosToMapLayout(Vector2[] pos)
+	{
+		for (int i = 0; i < NUM_SQUARE; i++)
+		{
+			_physicsMapLayout[(int)_physicsSquarePos[i].x, (int)_physicsSquarePos[i].y] = Level.EMPTY;
+		}
+
+		for (int i = 0; i < NUM_SQUARE; i++)
+		{
+			_physicsMapLayout[(int)pos[i].x, (int)pos[i].y] = Level.GetSquare((sbyte)i);
+			_physicsSquarePos[i].x = pos[i].x;
+			_physicsSquarePos[i].y = pos[i].y;
+		}
+	}
+
+	private bool MoveSquareFromStartToEnd()
+	{
+		bool ret = MoveSquareToPos(_physicsStartTime, _physicsDirection,
+				_physicsStartPos, _physicsEndPos,
+				_physicsStartToEndDist, _physicsLongestDist,
+				DECELERATION_RATE_START_TO_END);
+
+		if (ret == true)
+		{
+			CommitSquarePosToMapLayout(_physicsEndPos);
+		}
+
+		return ret;
+	}
+
+	private bool MoveSquareFromStartToPreEnd()
+	{
+		bool ret = MoveSquareToPos(_physicsStartTime, _physicsDirection,
+				_physicsStartPos, _physicsPreEndPos,
+				_physicsStartToPreEndDist, _physicsLongestDist,
+				DECELERATION_RATE_START_TO_PRE_END);
+
+		if (ret == true)
+		{
+			_physicsStartTime = Time.time;
+		}
+
+		return ret;
+	}
+
+	private bool MoveSquareFromPreEndToEnd()
+	{
+		bool ret = MoveSquareToPos(_physicsStartTime, _physicsDirection,
+				_physicsPreEndPos, _physicsEndPos,
+				_physicsPreEndToEndDist, _physicsLongestDist,
+				DECELERATION_RATE_PRE_END_TO_END);
+
+		if (ret == true)
+		{
+			CommitSquarePosToMapLayout(_physicsEndPos);
+		}
+
+		return ret;
+	}
+
+	// Touch
+
+	private const float TOUCH_DIRECTION_MULTIPLIER = 1.5f;
+	private const float TOUCH_DIRECTION_OFFSET = 20.0f;
+
+	private const float TOUCH_HOLD_TIME = 1.0f;
+
+	private enum TouchState
+	{
+		NONE,
+		START,
+		START_TO_END,
+		START_TO_PRE_END,
+		PRE_END_TO_END,
+		WIN,
+	};
+
+	private TouchState _touchState;
+
+	private Vector2 _touchStartPos;
+	private float _touchStartTime;
+
+	private void SetupTouch()
+	{
+		_touchState = TouchState.NONE;
+	}
+
+	private Vector2 CalculateTouchDirection(Vector2 start, Vector2 end, float multiplier, float offset)
+	{
+		Vector2 dist = end - start;
+
+		if ((Mathf.Abs(dist.y) > Mathf.Abs(dist.x) * multiplier) && (Mathf.Abs(dist.y) > offset))
+		{
+			if (dist.y > 0.0f)
+			{
+				return DIRECTION_UP;
+			}
+			else if (dist.y < 0.0f)
+			{
+				return DIRECTION_DOWN;
+			}
+		}
+		else if ((Mathf.Abs(dist.x) > Mathf.Abs(dist.y) * multiplier) && (Mathf.Abs(dist.x) > offset))
+		{
+			if (dist.x > 0.0f)
+			{
+				return DIRECTION_RIGHT;
+			}
+			else if (dist.x < 0.0f)
+			{
+				return DIRECTION_LEFT;
+			}
+		}
+
+		return DIRECTION_NONE;
+	}
+
+	private void DoTouchStateNone()
+	{
+		if (Input.touchCount != 1)
+		{
+			return;
+		}
+
+		Touch touch = Input.GetTouch(0);
+
+		if (touch.phase != TouchPhase.Began)
+		{
+			return;
+		}
+
+		// Check if user is touching any UI elements
+		if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+		{
+			return;
+		}
+
+		_touchStartPos = touch.position;
+		_touchStartTime = Time.time;
+
+		_touchState = TouchState.START;
+	}
+
+	private void DoTouchStateStart()
+	{
+		Vector2 direction;
+
+		if (Input.touchCount != 1)
+		{
+			_touchState = TouchState.NONE;
+			return;
+		}
+
+		Touch touch = Input.GetTouch(0);
+
+		if (touch.phase == TouchPhase.Began)
+		{
+			_touchState = TouchState.NONE;
+			return;
+		}
+
+
+		if (touch.phase == TouchPhase.Ended)
+		{
+			// Move cube in a certain direction
+
+			direction = CalculateTouchDirection(
+					_touchStartPos,
+					touch.position,
+					TOUCH_DIRECTION_MULTIPLIER,
+					TOUCH_DIRECTION_OFFSET);
+
+			if (direction == DIRECTION_NONE)
+			{
+				_touchState = TouchState.NONE;
+				return;
+			}
+
+			if (StartSquareMovement(direction) == false)
+			{
+				_touchState = TouchState.NONE;
+				return;
+			}
+
+			if (IsSquareEndPosWinning() == true)
+			{
+				_touchState = TouchState.START_TO_PRE_END;
+				return;
+			}
+			else
+			{
+				_touchState = TouchState.START_TO_END;
+				return;
+			}
+		}
+		else
+		{
+			// Hold to cancel
+
+			if (Time.time - _touchStartTime > TOUCH_HOLD_TIME)
+			{
+				_touchState = TouchState.NONE;
+				return;
 			}
 		}
 	}
 
+	private void DoTouchStateStartToEnd()
+	{
+		if (MoveSquareFromStartToEnd() == true)
+		{
+			_touchState = TouchState.NONE;
+		}
+	}
 
+	private void DoTouchStateStartToPreEnd()
+	{
+		if (MoveSquareFromStartToPreEnd() == true)
+		{
+			_touchState = TouchState.PRE_END_TO_END;
+		}
+	}
+
+	private void DoTouchStatePreEndToEnd()
+	{
+		if (MoveSquareFromPreEndToEnd() == true)
+		{
+			_touchState = TouchState.WIN;
+		}
+	}
+
+	private void DoTouchStateWin()
+	{
+	}
 
 	// Unity Lifecyle
 
@@ -96,7 +600,6 @@ public class LevelLogic : MonoBehaviour
 		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
 
 		FindLevelGameObject();
-
 	}
 
 	private void Start()
@@ -105,12 +608,37 @@ public class LevelLogic : MonoBehaviour
 		_menuAlphabet = _data.GetMenuAlphabet();
 		_menuMap = _data.GetMenuMap();
 
-		Debug.Log("color:" + _menuColor);
-		Debug.Log("alphabet:" + _menuAlphabet);
-		Debug.Log("map:" + _menuMap);
+		SetupLevel();	// SetupLevel() must preceed SetupPhysics()
+		SetupPhysics();
+		SetupTouch();
+	}
 
-		_map = _level.GetMap(_menuColor, _menuAlphabet, _menuMap);
+	private void Update()
+	{
 
-		SetupLevel();
+		if (_touchState == TouchState.NONE)
+		{
+			DoTouchStateNone();
+		}
+		else if (_touchState == TouchState.START)
+		{
+			DoTouchStateStart();
+		}
+		else if (_touchState == TouchState.START_TO_END)
+		{
+			DoTouchStateStartToEnd();
+		}
+		else if (_touchState == TouchState.START_TO_PRE_END)
+		{
+			DoTouchStateStartToPreEnd();
+		}
+		else if (_touchState == TouchState.PRE_END_TO_END)
+		{
+			DoTouchStatePreEndToEnd();
+		}
+		else if (_touchState == TouchState.WIN)
+		{
+			DoTouchStateWin();
+		}
 	}
 }

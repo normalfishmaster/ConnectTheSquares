@@ -77,8 +77,14 @@ public class Level
 		return tile == RIGHT;
 	}
 
+	public static sbyte GetSquare(sbyte number)
+	{
+		return (sbyte)(number + SQUARE_0);
+	}
+
 	public static int GetSquareNumber(int square)
 	{
 		return square - SQUARE_0;
 	}
+
 }

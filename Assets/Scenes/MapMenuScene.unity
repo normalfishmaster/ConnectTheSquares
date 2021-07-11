@@ -1065,8 +1065,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AlphabetMenuUI, Assembly-CSharp
+      - m_Target: {fileID: 1919383522}
+        m_TargetAssemblyTypeName: MapMenuUI, Assembly-CSharp
         m_MethodName: OnBackButtonPressed
         m_Mode: 1
         m_Arguments:
