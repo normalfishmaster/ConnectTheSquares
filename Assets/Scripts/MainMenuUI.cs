@@ -84,14 +84,10 @@ public class MainMenuUI : MonoBehaviour
 	// Exit
 
 	private GameObject _exitPanel;
-	private Button _exitYesButton;
-	private Button _exitNoButton;
 
 	private void FindExitGameObjects()
 	{
-		_exitPanel = GameObject.Find("Canvas/Exit");
-		_exitYesButton = GameObject.Find("/Canvas/Exit/Yes").GetComponent<Button>();
-		_exitNoButton = GameObject.Find("/Canvas/No/Yes").GetComponent<Button>();
+		_exitPanel = GameObject.Find("/Canvas/Exit");
 	}
 
 	public void SetActiveExitPanel(bool active)
