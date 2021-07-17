@@ -38,17 +38,17 @@ public class Level
 
 	// Static Methods
 
-	public static bool IsEmpty(int tile)
+	public static bool IsEmpty(sbyte tile)
 	{
 		return tile == EMPTY;
 	}
 
-	public static bool IsWall(int tile)
+	public static bool IsWall(sbyte tile)
 	{
 		return tile == WALL;
 	}
 
-	public static bool IsSquare(int tile)
+	public static bool IsSquare(sbyte tile)
 	{
 		if (tile >= SQUARE_0 && tile <= SQUARE_3)
 		{
@@ -57,34 +57,14 @@ public class Level
 		return false;
 	}
 
-	public static bool IsUp(int tile)
-	{
-		return tile == UP;
-	}
-
-	public static bool IsDown(int tile)
-	{
-		return tile == DOWN;
-	}
-
-	public static bool IsLeft(int tile)
-	{
-		return tile == LEFT;
-	}
-
-	public static bool IsRight(int tile)
-	{
-		return tile == RIGHT;
-	}
-
 	public static sbyte GetSquare(sbyte number)
 	{
 		return (sbyte)(number + SQUARE_0);
 	}
 
-	public static int GetSquareNumber(int square)
+	public static sbyte GetSquareNumber(sbyte square)
 	{
-		return square - SQUARE_0;
+		return (sbyte)(square - SQUARE_0);
 	}
 
 }

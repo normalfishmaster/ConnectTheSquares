@@ -63,9 +63,4 @@ public class ColorMenuUI : MonoBehaviour
 	{
 		SetupColor();
 	}
-
-	private void Update()
-	{
-	}
-
 }
