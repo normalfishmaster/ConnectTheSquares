@@ -704,6 +704,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void SetupUITop()
 	{
+		_ui.SetTopNameFull(_menuColor, _menuAlphabet, _menuMap);
+
 		_ui.SetTopStarObtained(_data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap));
 
 		_ui.SetTopMoveUser(0);
