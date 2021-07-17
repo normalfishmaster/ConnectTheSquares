@@ -49,17 +49,44 @@ public class LevelUI : MonoBehaviour
 		_topMoveBestText.text = move.ToString();
 	}
 
+	// Hint
+
+	private GameObject _hintPanel;
+	private Text _hintDirectionText;
+
+	private void FindHintGameObject()
+	{
+		_hintPanel = GameObject.Find("/Canvas/Hint");
+		_hintDirectionText = GameObject.Find("/Canvas/Hint/Direction").GetComponent<Text>();
+	}
+
+	public void SetActiveHintPanel(bool active)
+	{
+		_hintPanel.SetActive(active);
+	}
+
+	public void SetHintDirection(char direction)
+	{
+		_hintDirectionText.text = direction.ToString();
+	}
+
 	// Control
 
 	private Button _controlPauseButton;
 	private Button _controlUndoButton;
 	private Button _controlResetButton;
+	private Button _controlHintButton;
+
+	private Text _controlHintText;
 
 	private void FindControlGameObject()
 	{
 		_controlPauseButton = GameObject.Find("/Canvas/Control/Pause").GetComponent<Button>();
 		_controlUndoButton = GameObject.Find("/Canvas/Control/Undo").GetComponent<Button>();
 		_controlResetButton = GameObject.Find("/Canvas/Control/Reset").GetComponent<Button>();
+		_controlHintButton = GameObject.Find("/Canvas/Control/Hint").GetComponent<Button>();
+
+		_controlHintText = GameObject.Find("/Canvas/Control/Hint/Text").GetComponent<Text>();
 	}
 
 	public void SetEnableControlButton(bool enable)
@@ -67,6 +94,7 @@ public class LevelUI : MonoBehaviour
 		_controlPauseButton.enabled = enable;
 		_controlUndoButton.enabled = enable;
 		_controlResetButton.enabled = enable;
+		_controlHintButton.enabled = enable;
 	}
 
 	public void SetInteractableControlButton(bool interactable)
@@ -74,6 +102,12 @@ public class LevelUI : MonoBehaviour
 		_controlPauseButton.interactable = interactable;
 		_controlUndoButton.interactable = interactable;
 		_controlResetButton.interactable = interactable;
+		_controlHintButton.interactable = interactable;
+	}
+
+	public void SetControlHintCount(int hint)
+	{
+		_controlHintText.text = "Hint\n(" + hint + ")";
 	}
 
 	public void OnControlPauseButtonPressed()
@@ -89,6 +123,11 @@ public class LevelUI : MonoBehaviour
 	public void OnControlResetButtonPressed()
 	{
 		_logic.DoControlResetButtonPressed();
+	}
+
+	public void OnControlHintButtonPressed()
+	{
+		_logic.DoControlHintButtonPressed();
 	}
 
 	// Pause
@@ -229,6 +268,7 @@ public class LevelUI : MonoBehaviour
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
 		FindTopGameObject();
+		FindHintGameObject();
 		FindControlGameObject();
 		FindPauseGameObject();
 		FindWinGameObject();
