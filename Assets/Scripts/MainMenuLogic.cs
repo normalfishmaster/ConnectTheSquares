@@ -7,12 +7,43 @@ public class MainMenuLogic : MonoBehaviour
 {
 	private MainMenuUI _ui;
 	private DataManager _data;
+	private LevelManager _level;
 	private AdManager _ad;
 
-	// UI Events - Front
+	// UI - Front
+
+	private void SetupFront()
+	{
+		if (_data.GetLastColor() == _data.GetLastColorDefault())
+		{
+			_ui.SetFrontContinueText("Start");
+		}
+		else
+		{
+			_ui.SetFrontContinueText("Continue");
+		}
+
+		_ui.SetEnableFrontButtons(true);
+	}
 
 	public void DoFrontContinueButtonPressed()
 	{
+		int color = 0;
+		int alphabet = 0;
+		int map = 0;
+
+		if (_data.GetLastColor() != _data.GetLastColorDefault())
+		{
+			color = _data.GetLastColor();
+			alphabet = _data.GetLastAlphabet();
+			map = _data.GetLastMap();
+		}
+
+		_data.SetMenuColor(color);
+		_data.SetMenuAlphabet(alphabet);
+		_data.SetMenuMap(map);
+
+		SceneManager.LoadScene("LevelScene");
 	}
 
 	public void DoFrontLevelsButtonPressed()
@@ -46,6 +77,11 @@ public class MainMenuLogic : MonoBehaviour
 
 	// UI Events - Exit
 
+	private void SetupExit()
+	{
+		_ui.SetActiveExitPanel(false);
+	}
+
 	public void DoExitYesButtonPressed()
 	{
 		Application.Quit();
@@ -63,13 +99,14 @@ public class MainMenuLogic : MonoBehaviour
 	{
 		_ui = GameObject.Find("MainMenuUI").GetComponent<MainMenuUI>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
 	}
 
 	private void Start()
 	{
-		_ui.SetActiveExitPanel(false);
-		_ui.SetEnableFrontButtons(true);
+		SetupFront();
+		SetupExit();
 	}
 
 	private void Update()

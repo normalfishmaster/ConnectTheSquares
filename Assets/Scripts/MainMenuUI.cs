@@ -18,6 +18,8 @@ public class MainMenuUI : MonoBehaviour
 	private Button _frontLanguageButton;
 	private Button _frontDailyRewardsButton;
 
+	private Text _frontContinueText;
+
 	private void FindFrontGameObjects()
 	{
 		_frontContinueButton = GameObject.Find("/Canvas/Front/Continue").GetComponent<Button>();
@@ -28,6 +30,8 @@ public class MainMenuUI : MonoBehaviour
 		_frontNoAdsButton = GameObject.Find("/Canvas/Front/NoAds").GetComponent<Button>();
 		_frontLanguageButton = GameObject.Find("/Canvas/Front/Language").GetComponent<Button>();
 		_frontDailyRewardsButton = GameObject.Find("/Canvas/Front/DailyRewards").GetComponent<Button>();
+
+		_frontContinueText = GameObject.Find("/Canvas/Front/Continue/Text").GetComponent<Text>();
 	}
 
 	public void SetEnableFrontButtons(bool enable)
@@ -39,6 +43,11 @@ public class MainMenuUI : MonoBehaviour
 		_frontLeaderboardButton.enabled = enable;
 		_frontNoAdsButton.enabled = enable;
 		_frontDailyRewardsButton.enabled = enable;
+	}
+
+	public void SetFrontContinueText(string text)
+	{
+		_frontContinueText.text = text;
 	}
 
 	public void OnFrontContinueButtonPressed()

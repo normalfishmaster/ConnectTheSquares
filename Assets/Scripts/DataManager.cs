@@ -21,14 +21,23 @@ public class DataManager : MonoBehaviour
 	public string GetHintKey()						{ return "HintKey";										}
 	public int    GetHintDefault()						{ return 3;											}
 
-	public string GetMenuColorKey()						{ return "MenuColorKey";										}
-	public int    GetMenuColorDefault()					{ return 0;											}
+	public string GetMenuColorKey()						{ return "MenuColorKey";									}
+	public int    GetMenuColorDefault()					{ return -1;											}
 
 	public string GetMenuAlphabetKey()					{ return "MenuAlphabetKey";									}
-	public int    GetMenuAlphabetDefault()					{ return 0;											}
+	public int    GetMenuAlphabetDefault()					{ return -1;											}
 
 	public string GetMenuMapKey()						{ return "MenuMapKey";										}
-	public int    GetMenuMapDefault()					{ return 0;											}
+	public int    GetMenuMapDefault()					{ return -1;											}
+
+	public string GetLastColorKey()						{ return "LastColorKey";									}
+	public int    GetLastColorDefault()					{ return -1;											}
+
+	public string GetLastAlphabetKey()					{ return "LastAlphabetKey";									}
+	public int    GetLastAlphabetDefault()					{ return -1;											}
+
+	public string GetLastMapKey()						{ return "LastMapKey";										}
+	public int    GetLastMapDefault()					{ return -1;											}
 
 	public string GetLevelLockKey(int color, int alphabet, int map)		{ return "LevelLockKey" + "_" + color + "_" + alphabet + "_" + map;				}
 	public int    GetLevelLockDefault()					{ return 1;											}
@@ -67,6 +76,21 @@ public class DataManager : MonoBehaviour
 	public int   GetMenuMap()						{ return PlayerPrefs.GetInt(GetMenuMapKey());							}
 	public void  SetMenuMap(int value)					{        PlayerPrefs.SetInt(GetMenuMapKey(), value);						}
 	public void  InitMenuMap()						{        PlayerPrefs.SetInt(GetMenuMapKey(), GetMenuMapDefault());				}
+
+	public bool  CheckLastColor()						{ return PlayerPrefs.HasKey(GetLastColorKey());							}
+	public int   GetLastColor()						{ return PlayerPrefs.GetInt(GetLastColorKey());							}
+	public void  SetLastColor(int value)					{        PlayerPrefs.SetInt(GetLastColorKey(), value);						}
+	public void  InitLastColor()						{        PlayerPrefs.SetInt(GetLastColorKey(), GetMenuColorDefault());				}
+
+	public bool  CheckLastAlphabet()					{ return PlayerPrefs.HasKey(GetLastAlphabetKey());						}
+	public int   GetLastAlphabet()						{ return PlayerPrefs.GetInt(GetLastAlphabetKey());						}
+	public void  SetLastAlphabet(int value)					{        PlayerPrefs.SetInt(GetLastAlphabetKey(), value);					}
+	public void  InitLastAlphabet()						{        PlayerPrefs.SetInt(GetLastAlphabetKey(), GetMenuAlphabetDefault());			}
+
+	public bool  CheckLastMap()						{ return PlayerPrefs.HasKey(GetLastMapKey());							}
+	public int   GetLastMap()						{ return PlayerPrefs.GetInt(GetLastMapKey());							}
+	public void  SetLastMap(int value)					{        PlayerPrefs.SetInt(GetLastMapKey(), value);						}
+	public void  InitLastMap()						{        PlayerPrefs.SetInt(GetLastMapKey(), GetMenuMapDefault());				}
 
 	public bool  CheckLevelLock(int color, int alphabet, int map)		{ return PlayerPrefs.HasKey(GetLevelLockKey(color, alphabet, map));				}
 	public int   GetLevelLock(int color, int alphabet, int map)		{ return PlayerPrefs.GetInt(GetLevelLockKey(color, alphabet, map));				}
@@ -170,6 +194,18 @@ public class DataManager : MonoBehaviour
 			if (CheckMenuMap() == false)
 			{
 				InitMenuMap();
+			}
+			if (CheckLastColor() == false)
+			{
+				InitLastColor();
+			}
+			if (CheckLastAlphabet() == false)
+			{
+				InitLastAlphabet();
+			}
+			if (CheckLastMap() == false)
+			{
+				InitLastMap();
 			}
 
 			int numColor = _level.GetNumColor();

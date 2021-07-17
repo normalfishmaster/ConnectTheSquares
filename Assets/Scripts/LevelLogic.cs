@@ -837,6 +837,10 @@ public class LevelLogic : MonoBehaviour
 
 		_levelMap = _level.GetMap(_menuColor, _menuAlphabet, _menuMap);
 
+		_data.SetLastColor(_menuColor);
+		_data.SetLastAlphabet(_menuAlphabet);
+		_data.SetLastMap(_menuMap);
+
 		SetupMap();	// SetupMap() must preceed SetupPhysics()
 		SetupPhysics();
 		SetupTouch();
