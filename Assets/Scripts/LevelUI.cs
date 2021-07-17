@@ -9,13 +9,22 @@ public class LevelUI : MonoBehaviour
 
 	// Top
 
+	Text _topStarObtainedText;
+
 	Text _topMoveUserText;
 	Text _topMoveBestText;
 
 	private void FindTopGameObject()
 	{
+		_topStarObtainedText = GameObject.Find("/Canvas/Top/Star/Obtained").GetComponent<Text>();
+
 		_topMoveUserText = GameObject.Find("/Canvas/Top/Move/User").GetComponent<Text>();
 		_topMoveBestText = GameObject.Find("/Canvas/Top/Move/Best").GetComponent<Text>();
+	}
+
+	public void SetTopStarObtained(int star)
+	{
+		_topStarObtainedText.text = star.ToString();
 	}
 
 	public void SetTopMoveUser(int move)
@@ -28,25 +37,25 @@ public class LevelUI : MonoBehaviour
 		_topMoveBestText.text = move.ToString();
 	}
 
-	// Control
+	// Controls
 
-	Button _controlUndoButton;
-	Button _controlResetButton;
+	Button _controlsUndoButton;
+	Button _controlsResetButton;
 
-	private void FindControlGameObject()
+	private void FindControlsGameObject()
 	{
-		_controlUndoButton = GameObject.Find("/Canvas/Control/Undo").GetComponent<Button>();
-		_controlResetButton = GameObject.Find("/Canvas/Control/Reset").GetComponent<Button>();
+		_controlsUndoButton = GameObject.Find("/Canvas/Controls/Undo").GetComponent<Button>();
+		_controlsResetButton = GameObject.Find("/Canvas/Controls/Reset").GetComponent<Button>();
 	}
 
-	public void OnControlUndoButtonPressed()
+	public void OnControlsUndoButtonPressed()
 	{
-		_logic.DoControlUndoButtonPressed();
+		_logic.DoControlsUndoButtonPressed();
 	}
 
-	public void OnControlResetButtonPressed()
+	public void OnControlsResetButtonPressed()
 	{
-		_logic.DoControlResetButtonPressed();
+		_logic.DoControlsResetButtonPressed();
 	}
 
 	// Unity Lifecycle
@@ -55,6 +64,6 @@ public class LevelUI : MonoBehaviour
 	{
 		_logic = GameObject.Find("LevelLogic").GetComponent<LevelLogic>();
 		FindTopGameObject();
-		FindControlGameObject();
+		FindControlsGameObject();
 	}
 }

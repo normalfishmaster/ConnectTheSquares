@@ -16,7 +16,7 @@ public class LevelLogic : MonoBehaviour
 	private int _menuAlphabet;
 	private int _menuMap;
 
-	Level.Map _map;
+	Level.Map _levelMap;
 
 	private const int NUM_X = Level.NUM_COL;
 	private const int NUM_Y = Level.NUM_ROW;
@@ -31,52 +31,52 @@ public class LevelLogic : MonoBehaviour
 
 	private const int MAX_MOVE_COUNT = 999;
 
-	// Level
+	// Map
 
-	private GameObject[,] _levelWall;
-	private GameObject[] _levelSquare;
+	private GameObject[,] _mapWall;
+	private GameObject[] _mapSquare;
 
-	private float _levelXOffset;
-	private float _levelYOffset;
+	private float _mapXOffset;
+	private float _mapYOffset;
 
-	private void FindLevelGameObject()
+	private void FindMapGameObject()
 	{
 		// Wall
 
-		_levelWall = new GameObject[NUM_X, NUM_Y];
+		_mapWall = new GameObject[NUM_X, NUM_Y];
 
 		for (int i = 0; i < NUM_X; i++)
 		{
 			for (int j = 0; j < NUM_Y; j++)
 			{
-				_levelWall[i, j] = GameObject.Find("Level/Wall/X" + i + "/Y" + j);
+				_mapWall[i, j] = GameObject.Find("Map/Wall/X" + i + "/Y" + j);
 			}
 		}
 
 		// Square
 
-		_levelSquare = new GameObject[Level.NUM_SQUARE];
+		_mapSquare = new GameObject[Level.NUM_SQUARE];
 
 		for (int i = 0; i < NUM_SQUARE; i++)
 		{
-			_levelSquare[i] = GameObject.Find("Level/Square/S" + i);
+			_mapSquare[i] = GameObject.Find("Map/Square/S" + i);
 		}
 	}
 
-	private void SetupLevel()
+	private void SetupMap()
 	{
-		_levelXOffset = -3.5f;
-		_levelYOffset = -3.5f;
+		_mapXOffset = -3.5f;
+		_mapYOffset = -3.5f;
 	}
 
-	private void DisableLevelWall(int x, int y)
+	private void DisableMapWall(int x, int y)
 	{
-		_levelWall[x, y].GetComponent<SpriteRenderer>().color = new Color(140, 140, 140);
+		_mapWall[x, y].GetComponent<SpriteRenderer>().color = new Color(140, 140, 140);
 	}
 
-	private void SetLevelSquarePos(int square, float x, float y)
+	private void SetMapSquarePos(int square, float x, float y)
 	{
-		_levelSquare[square].transform.position = new Vector2(_levelXOffset + x, _levelYOffset + y);
+		_mapSquare[square].transform.position = new Vector2(_mapXOffset + x, _mapYOffset + y);
 	}
 
 	// Physics
@@ -121,11 +121,11 @@ public class LevelLogic : MonoBehaviour
 		{
 			for (int j = 0; j < NUM_Y; j++)
 			{
-				sbyte tile = _physicsMapLayout[i, j] = _map._layout[Level.NUM_ROW - j - 1, i];
+				sbyte tile = _physicsMapLayout[i, j] = _levelMap._layout[Level.NUM_ROW - j - 1, i];
 
 				if (Level.IsEmpty(tile))
 				{
-					DisableLevelWall(i, j);
+					DisableMapWall(i, j);
 				}
 				else if (Level.IsSquare(tile))
 				{
@@ -134,8 +134,8 @@ public class LevelLogic : MonoBehaviour
 					_physicsSquarePos[n] = new Vector2(i, j);
 					_physicsPosStack[n].Push(new Vector2(i, j));
 
-					SetLevelSquarePos(n, i, j);
-					DisableLevelWall(i, j);
+					SetMapSquarePos(n, i, j);
+					DisableMapWall(i, j);
 				}
 			}
 		}
@@ -409,7 +409,7 @@ public class LevelLogic : MonoBehaviour
 		{
 			for (int i = 0; i < NUM_SQUARE; i++)
 			{
-				SetLevelSquarePos(i, endPos[i].x, endPos[i].y);
+				SetMapSquarePos(i, endPos[i].x, endPos[i].y);
 			}
 			return true;
 		}
@@ -428,7 +428,7 @@ public class LevelLogic : MonoBehaviour
 			float distance = (startSpeed * deltaTime) + ((0.5f * deceleration) * (deltaTime * deltaTime));
 			Vector2 movePos = startPos[i] + distance * direction;
 
-			SetLevelSquarePos(i, movePos.x, movePos.y);
+			SetMapSquarePos(i, movePos.x, movePos.y);
 		}
 
 		return false;
@@ -485,7 +485,7 @@ public class LevelLogic : MonoBehaviour
 
 		for (int i = 0; i < NUM_SQUARE; i++)
 		{
-			SetLevelSquarePos(i, _physicsSquarePos[i].x, _physicsSquarePos[i].y);
+			SetMapSquarePos(i, _physicsSquarePos[i].x, _physicsSquarePos[i].y);
 		}
 	}
 
@@ -495,7 +495,7 @@ public class LevelLogic : MonoBehaviour
 
 		for (int i = 0; i < NUM_SQUARE; i++)
 		{
-			SetLevelSquarePos(i, _physicsSquarePos[i].x, _physicsSquarePos[i].y);
+			SetMapSquarePos(i, _physicsSquarePos[i].x, _physicsSquarePos[i].y);
 		}
 	}
 
@@ -672,7 +672,26 @@ public class LevelLogic : MonoBehaviour
 	{
 		if (MoveSquareFromPreEndToEnd() == true)
 		{
+			int move = GetSquareMoveCount();
+			int star = 1;
+
+			if (move == _levelMap._hint.Length)
+			{
+				star = 3;
+			}
+			else if (move == _levelMap._hint.Length + 1)
+			{
+				star = 2;
+			}
+
+			if (star > _data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap))
+			{
+				_ui.SetTopStarObtained(star);
+				_data.SetLevelStar(_menuColor, _menuAlphabet, _menuMap, star);
+			}
+
 			_ui.SetTopMoveUser(GetSquareMoveCount());
+
 			_touchState = TouchState.WIN;
 		}
 	}
@@ -685,19 +704,21 @@ public class LevelLogic : MonoBehaviour
 
 	public void SetupUITop()
 	{
+		_ui.SetTopStarObtained(_data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap));
+
 		_ui.SetTopMoveUser(0);
-		_ui.SetTopMoveBest(_map._hint.Length);
+		_ui.SetTopMoveBest(_levelMap._hint.Length);
 	}
 
-	// UI - Control
+	// UI - Controls
 
-	public void DoControlUndoButtonPressed()
+	public void DoControlsUndoButtonPressed()
 	{
 		UndoSquarePos();
 		_ui.SetTopMoveUser(GetSquareMoveCount());
 	}
 
-	public void DoControlResetButtonPressed()
+	public void DoControlsResetButtonPressed()
 	{
 		ResetSquarePos();
 		_ui.SetTopMoveUser(GetSquareMoveCount());
@@ -713,7 +734,7 @@ public class LevelLogic : MonoBehaviour
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
 
-		FindLevelGameObject();
+		FindMapGameObject();
 	}
 
 	private void Start()
@@ -722,12 +743,15 @@ public class LevelLogic : MonoBehaviour
 		_menuAlphabet = _data.GetMenuAlphabet();
 		_menuMap = _data.GetMenuMap();
 
-		_map = _level.GetMap(_menuColor, _menuAlphabet, _menuMap);
+		_levelMap = _level.GetMap(_menuColor, _menuAlphabet, _menuMap);
 
-		SetupLevel();	// SetupLevel() must preceed SetupPhysics()
+		SetupMap();	// SetupMap() must preceed SetupPhysics()
 		SetupPhysics();
 		SetupTouch();
 		SetupUITop();
+
+
+		Debug.Log("hint:" + _levelMap._hint.Length);
 	}
 
 	private void Update()
