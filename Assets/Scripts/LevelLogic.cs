@@ -770,6 +770,11 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetActivePausePanel(false);
 	}
 
+	public void DoPauseMenuButtonPressed()
+	{
+		SceneManager.LoadScene("MapMenuScene");
+	}
+
 	public void DoPauseResumeButtonPressed()
 	{
 		_ui.SetActivePausePanel(false);

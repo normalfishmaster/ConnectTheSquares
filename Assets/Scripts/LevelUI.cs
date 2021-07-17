@@ -105,6 +105,11 @@ public class LevelUI : MonoBehaviour
 		_pausePanel.SetActive(active);
 	}
 
+	public void OnPauseMenuButtonPressed()
+	{
+		_logic.DoPauseMenuButtonPressed();
+	}
+
 	public void OnPauseResumeButtonPressed()
 	{
 		_logic.DoPauseResumeButtonPressed();
