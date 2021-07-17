@@ -701,7 +701,20 @@ public class LevelLogic : MonoBehaviour
 			}
 
 			_ui.SetTopMoveUser(GetSquareMoveCount());
-			_ui.SetInteractableControlButton(true);
+			_ui.SetEnableControlButton(false);
+			_ui.SetActiveWinPanel(true);
+			_ui.SetWinStar(star);
+
+			if ((_menuColor >= _level.GetNumColor() - 1) &&
+					(_menuAlphabet >= _level.GetNumAlphabet(_menuColor) - 1) &&
+					(_menuMap >= _level.GetNumMap(_menuColor, _menuAlphabet) - 1))
+			{
+				_ui.SetInteractableWinNextButton(false);
+			}
+			else
+			{
+				_ui.SetInteractableWinNextButton(true);
+			}
 
 			_touchState = TouchState.WIN;
 		}
@@ -764,6 +777,40 @@ public class LevelLogic : MonoBehaviour
 		_touchPause = false;
 	}
 
+	// UI - Win
+
+	private void SetupWin()
+	{
+		_ui.SetActiveWinPanel(false);
+	}
+
+	public void DoWinNextButtonPressed()
+	{
+		int nextColor = _menuColor;
+		int nextAlphabet = _menuAlphabet;
+		int nextMap = _menuMap;
+
+		nextMap += 1;
+
+		if (nextMap >= _level.GetNumMap(_menuColor, _menuAlphabet))
+		{
+			nextMap = 0;
+			nextAlphabet += 1;
+
+			if (nextAlphabet >= _level.GetNumAlphabet(_menuColor))
+			{
+				nextAlphabet = 0;
+				nextColor += 1;
+			}
+		}
+
+		_data.SetMenuColor(nextColor);
+		_data.SetMenuAlphabet(nextAlphabet);
+		_data.SetMenuMap(nextMap);
+
+		SceneManager.LoadScene("LevelScene");
+	}
+
 	// Unity Lifecyle
 
 	private void Awake()
@@ -791,11 +838,11 @@ public class LevelLogic : MonoBehaviour
 		SetupTop();
 		SetupControl();
 		SetupPause();
+		SetupWin();
 	}
 
 	private void Update()
 	{
-
 		if (_touchState == TouchState.NONE)
 		{
 			DoTouchStateNone();

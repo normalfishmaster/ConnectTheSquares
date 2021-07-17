@@ -110,6 +110,39 @@ public class LevelUI : MonoBehaviour
 		_logic.DoPauseResumeButtonPressed();
 	}
 
+	// Win
+
+	GameObject _winPanel;
+	Text _winStarText;
+	Button _winNextButton;
+
+	public void FindWinGameObject()
+	{
+		_winPanel = GameObject.Find("/Canvas/Win");
+		_winStarText = GameObject.Find("/Canvas/Win/Star").GetComponent<Text>();
+		_winNextButton = GameObject.Find("/Canvas/Win/Next").GetComponent<Button>();
+	}
+
+	public void SetActiveWinPanel(bool active)
+	{
+		_winPanel.SetActive(active);
+	}
+
+	public void SetWinStar(int star)
+	{
+		_winStarText.text = star.ToString();
+	}
+
+	public void SetInteractableWinNextButton(bool interactable)
+	{
+		_winNextButton.interactable = interactable;
+	}
+
+	public void OnWinNextButtonPressed()
+	{
+		_logic.DoWinNextButtonPressed();
+	}
+
 	// Unity Lifecycle
 
 	private void Awake()
@@ -120,5 +153,6 @@ public class LevelUI : MonoBehaviour
 		FindTopGameObject();
 		FindControlGameObject();
 		FindPauseGameObject();
+		FindWinGameObject();
 	}
 }
