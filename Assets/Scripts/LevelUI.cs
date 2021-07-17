@@ -5,17 +5,17 @@ using UnityEngine.UI;
 
 public class LevelUI : MonoBehaviour
 {
-	LevelLogic _logic;
-	LevelManager _level;
+	private LevelLogic _logic;
+	private LevelManager _level;
 
 	// Top
 
-	Text _topNameFullText;
+	private Text _topNameFullText;
 
-	Text _topStarObtainedText;
+	private Text _topStarObtainedText;
 
-	Text _topMoveUserText;
-	Text _topMoveBestText;
+	private Text _topMoveUserText;
+	private Text _topMoveBestText;
 
 	private void FindTopGameObject()
 	{
@@ -51,9 +51,9 @@ public class LevelUI : MonoBehaviour
 
 	// Control
 
-	Button _controlPauseButton;
-	Button _controlUndoButton;
-	Button _controlResetButton;
+	private Button _controlPauseButton;
+	private Button _controlUndoButton;
+	private Button _controlResetButton;
 
 	private void FindControlGameObject()
 	{
@@ -93,7 +93,7 @@ public class LevelUI : MonoBehaviour
 
 	// Pause
 
-	GameObject _pausePanel;
+	private GameObject _pausePanel;
 
 	public void FindPauseGameObject()
 	{
@@ -117,14 +117,20 @@ public class LevelUI : MonoBehaviour
 
 	// Win
 
-	GameObject _winPanel;
-	Text _winStarText;
-	Button _winNextButton;
+	private GameObject _winPanel;
+
+	private Text _winStarText;
+
+	private Button _winAdButton;
+	private Button _winNextButton;
 
 	public void FindWinGameObject()
 	{
 		_winPanel = GameObject.Find("/Canvas/Win");
+
 		_winStarText = GameObject.Find("/Canvas/Win/Star").GetComponent<Text>();
+
+		_winAdButton = GameObject.Find("/Canvas/Win/Ad").GetComponent<Button>();
 		_winNextButton = GameObject.Find("/Canvas/Win/Next").GetComponent<Button>();
 	}
 
@@ -143,9 +149,76 @@ public class LevelUI : MonoBehaviour
 		_winNextButton.interactable = interactable;
 	}
 
+	public void OnWinAdButtonPressed()
+	{
+		_logic.DoWinAdButtonPressed();
+	}
+
 	public void OnWinNextButtonPressed()
 	{
 		_logic.DoWinNextButtonPressed();
+	}
+
+	// Ad - Success
+
+	private GameObject _adSuccessPanel;
+
+	private void FindAdSuccessGameObject()
+	{
+		_adSuccessPanel = GameObject.Find("/Canvas/AdSuccess");
+	}
+
+	public void SetActiveAdSuccessPanel(bool active)
+	{
+		_adSuccessPanel.SetActive(active);
+	}
+
+	public void OnAdSuccessCloseButtonPressed()
+	{
+		_logic.DoAdSuccessCloseButtonPressed();
+	}
+
+	// Ad - Abort
+
+	private GameObject _adAbortPanel;
+
+	private void FindAdAbortGameObject()
+	{
+		_adAbortPanel = GameObject.Find("/Canvas/AdAbort");
+	}
+
+	public void SetActiveAdAbortPanel(bool active)
+	{
+		_adAbortPanel.SetActive(active);
+	}
+
+	public void OnAdAbortRewatchButtonPressed()
+	{
+		_logic.DoAdAbortRewatchButtonPressed();
+	}
+
+	public void OnAdAbortCloseButtonPressed()
+	{
+		_logic.DoAdAbortCloseButtonPressed();
+	}
+
+	// Ad - Fail
+
+	private GameObject _adFailPanel;
+
+	private void FindAdFailGameObject()
+	{
+		_adFailPanel = GameObject.Find("/Canvas/AdFail");
+	}
+
+	public void SetActiveAdFailPanel(bool active)
+	{
+		_adFailPanel.SetActive(active);
+	}
+
+	public void OnAdFailCloseButtonPressed()
+	{
+		_logic.DoAdFailCloseButtonPressed();
 	}
 
 	// Unity Lifecycle
@@ -159,5 +232,8 @@ public class LevelUI : MonoBehaviour
 		FindControlGameObject();
 		FindPauseGameObject();
 		FindWinGameObject();
+		FindAdSuccessGameObject();
+		FindAdAbortGameObject();
+		FindAdFailGameObject();
 	}
 }

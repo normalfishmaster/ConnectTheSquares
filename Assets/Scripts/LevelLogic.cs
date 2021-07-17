@@ -514,6 +514,7 @@ public class LevelLogic : MonoBehaviour
 		START_TO_PRE_END,
 		PRE_END_TO_END,
 		WIN,
+		WIN_AD,
 	};
 
 	private TouchState _touchState;
@@ -724,6 +725,23 @@ public class LevelLogic : MonoBehaviour
 	{
 	}
 
+	private void DoTouchStateWinAd()
+	{
+		AdManager.RewardStatus status = _ad.GetRewardStatus();
+
+		if (status == AdManager.RewardStatus.SUCCESS)
+		{
+			_data.SetHint(_data.GetHint() + 1);
+			_ui.SetActiveAdSuccessPanel(true);
+			_touchState = TouchState.WIN;
+		}
+		else if (status == AdManager.RewardStatus.FAIL)
+		{
+			_ui.SetActiveAdAbortPanel(true);
+			_touchState = TouchState.WIN;
+		}
+	}
+
 	// UI - Top
 
 	private void SetupTop()
@@ -789,6 +807,22 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetActiveWinPanel(false);
 	}
 
+	public void DoWinAdButtonPressed()
+	{
+		_ui.SetActiveWinPanel(false);
+
+		_ad.ClearRewardStatus();
+
+		if (_ad.ShowRewarded() == 0)
+		{
+			_touchState = TouchState.WIN_AD;
+		}
+		else
+		{
+			_ui.SetActiveAdFailPanel(true);
+		}
+	}
+
 	public void DoWinNextButtonPressed()
 	{
 		int nextColor = _menuColor;
@@ -814,6 +848,61 @@ public class LevelLogic : MonoBehaviour
 		_data.SetMenuMap(nextMap);
 
 		SceneManager.LoadScene("LevelScene");
+	}
+
+	// UI - AdSuccess
+
+	private void SetupAdSuccess()
+	{
+		_ui.SetActiveAdSuccessPanel(false);
+	}
+
+	public void DoAdSuccessCloseButtonPressed()
+	{
+		_ui.SetActiveAdSuccessPanel(false);
+		_ui.SetActiveWinPanel(true);
+	}
+
+	// UI - AdAbort
+
+	private void SetupAdAbort()
+	{
+		_ui.SetActiveAdAbortPanel(false);
+	}
+
+	public void DoAdAbortRewatchButtonPressed()
+	{
+		_ui.SetActiveAdAbortPanel(false);
+
+		_ad.ClearRewardStatus();
+
+		if (_ad.ShowRewarded() == 0)
+		{
+			_touchState = TouchState.WIN_AD;
+		}
+		else
+		{
+			_ui.SetActiveAdFailPanel(true);
+		}
+	}
+
+	public void DoAdAbortCloseButtonPressed()
+	{
+		_ui.SetActiveAdAbortPanel(false);
+		_ui.SetActiveWinPanel(true);
+	}
+
+	// UI - AdFail
+
+	private void SetupAdFail()
+	{
+		_ui.SetActiveAdFailPanel(false);
+	}
+
+	public void DoAdFailCloseButtonPressed()
+	{
+		_ui.SetActiveAdFailPanel(false);
+		_ui.SetActiveWinPanel(true);
 	}
 
 	// Unity Lifecyle
@@ -848,6 +937,9 @@ public class LevelLogic : MonoBehaviour
 		SetupControl();
 		SetupPause();
 		SetupWin();
+		SetupAdSuccess();
+		SetupAdAbort();
+		SetupAdFail();
 	}
 
 	private void Update()
@@ -875,6 +967,10 @@ public class LevelLogic : MonoBehaviour
 		else if (_touchState == TouchState.WIN)
 		{
 			DoTouchStateWin();
+		}
+		else if (_touchState == TouchState.WIN_AD)
+		{
+			DoTouchStateWinAd();
 		}
 	}
 }

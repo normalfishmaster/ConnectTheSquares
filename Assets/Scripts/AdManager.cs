@@ -15,12 +15,12 @@ public class AdManager : MonoBehaviour
 
 	public enum RewardStatus
 	{
-		None,
-		Fail,
-		Success
+		NONE,
+		FAIL,
+		SUCCESS,
 	}
 
-	private RewardStatus _rewardStatus = RewardStatus.None;
+	private static RewardStatus _rewardStatus;
 
 	// Interstitial Ad
 
@@ -156,23 +156,23 @@ public class AdManager : MonoBehaviour
 
 	private void OnRewardedAdFailedToShow(object sender, EventArgs args)
 	{
-		_rewardStatus = RewardStatus.Fail;
+		_rewardStatus = RewardStatus.FAIL;
 		RequestRewarded();
 	}
 
 	private void OnRewardedAdClosed(object sender, EventArgs args)
 	{
-		if (_rewardStatus != RewardStatus.Success)
+		if (_rewardStatus != RewardStatus.SUCCESS)
 		{
 			// User closed ad before reward has been succesfully awarded
-			_rewardStatus = RewardStatus.Fail;
+			_rewardStatus = RewardStatus.FAIL;
 		}
 		RequestRewarded();
 	}
 
 	private void OnRewardedUserEarnedReward(object sender, Reward args)
 	{
-		_rewardStatus = RewardStatus.Success;
+		_rewardStatus = RewardStatus.SUCCESS;
 		RequestRewarded();
 	}
 
@@ -196,7 +196,7 @@ public class AdManager : MonoBehaviour
 
 	public void ClearRewardStatus()
 	{
-		_rewardStatus = RewardStatus.None;
+		_rewardStatus = RewardStatus.NONE;
 	}
 
 	// Initialization complete callback
@@ -228,6 +228,8 @@ public class AdManager : MonoBehaviour
 
 		_instance = this;
 		DontDestroyOnLoad(this.gameObject);
+
+		_rewardStatus = RewardStatus.NONE;
 	}
 
 	private void Start()

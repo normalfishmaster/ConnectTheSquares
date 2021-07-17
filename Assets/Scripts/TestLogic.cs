@@ -186,13 +186,13 @@ public class TestLogic : MonoBehaviour
 		AdManager.RewardStatus rewardStatus;
 
 		rewardStatus = _ad.GetRewardStatus();
-		if (rewardStatus != AdManager.RewardStatus.None)
+		if (rewardStatus != AdManager.RewardStatus.NONE)
 		{
-			if (rewardStatus == AdManager.RewardStatus.Fail)
+			if (rewardStatus == AdManager.RewardStatus.FAIL)
 			{
 				Debug.Log("Rewarded ad failed to reward user");
 			}
-			else if (rewardStatus == AdManager.RewardStatus.Success)
+			else if (rewardStatus == AdManager.RewardStatus.SUCCESS)
 			{
 				Debug.Log("Rewarded ad successfully rewarded user");
 			}
