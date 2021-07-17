@@ -504,7 +504,7 @@ public class LevelLogic : MonoBehaviour
 	private const float TOUCH_DIRECTION_MULTIPLIER = 1.5f;
 	private const float TOUCH_DIRECTION_OFFSET = 20.0f;
 
-	private const float TOUCH_HOLD_TIME = 1.0f;
+	private const float TOUCH_HOLD_TIME = 0.7f;
 
 	private enum TouchState
 	{
@@ -517,6 +517,7 @@ public class LevelLogic : MonoBehaviour
 	};
 
 	private TouchState _touchState;
+	private bool _touchPause;
 
 	private Vector2 _touchStartPos;
 	private float _touchStartTime;
@@ -524,6 +525,7 @@ public class LevelLogic : MonoBehaviour
 	private void SetupTouch()
 	{
 		_touchState = TouchState.NONE;
+		_touchPause = false;
 	}
 
 	private Vector2 CalculateTouchDirection(Vector2 start, Vector2 end, float multiplier, float offset)
@@ -558,6 +560,11 @@ public class LevelLogic : MonoBehaviour
 
 	private void DoTouchStateNone()
 	{
+		if (_touchPause == true)
+		{
+			return;
+		}
+
 		if (Input.touchCount != 1)
 		{
 			return;
@@ -576,9 +583,10 @@ public class LevelLogic : MonoBehaviour
 			return;
 		}
 
+		_ui.SetInteractableControlButton(false);
+
 		_touchStartPos = touch.position;
 		_touchStartTime = Time.time;
-
 		_touchState = TouchState.START;
 	}
 
@@ -630,13 +638,11 @@ public class LevelLogic : MonoBehaviour
 
 			if (IsSquareEndPosWinning() == true)
 			{
-				_ui.SetInteractableControlButton(false);
 				_touchState = TouchState.START_TO_PRE_END;
 				return;
 			}
 			else
 			{
-				_ui.SetInteractableControlButton(false);
 				_touchState = TouchState.START_TO_END;
 				return;
 			}
@@ -647,6 +653,7 @@ public class LevelLogic : MonoBehaviour
 
 			if (Time.time - _touchStartTime > TOUCH_HOLD_TIME)
 			{
+				_ui.SetInteractableControlButton(true);
 				_touchState = TouchState.NONE;
 				return;
 			}
@@ -706,7 +713,7 @@ public class LevelLogic : MonoBehaviour
 
 	// UI - Top
 
-	public void SetupUITop()
+	private void SetupTop()
 	{
 		_ui.SetTopNameFull(_menuColor, _menuAlphabet, _menuMap);
 
@@ -717,6 +724,19 @@ public class LevelLogic : MonoBehaviour
 	}
 
 	// UI - Control
+
+	private void SetupControl()
+	{
+		_ui.SetEnableControlButton(true);
+		_ui.SetInteractableControlButton(true);
+	}
+
+	public void DoControlPauseButtonPressed()
+	{
+		_touchPause = true;
+		_ui.SetEnableControlButton(false);
+		_ui.SetActivePausePanel(true);
+	}
 
 	public void DoControlUndoButtonPressed()
 	{
@@ -730,10 +750,18 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetTopMoveUser(GetSquareMoveCount());
 	}
 
-	public void SetupUIControl()
+	// UI - Pause
+
+	private void SetupPause()
 	{
+		_ui.SetActivePausePanel(false);
+	}
+
+	public void DoPauseResumeButtonPressed()
+	{
+		_ui.SetActivePausePanel(false);
 		_ui.SetEnableControlButton(true);
-		_ui.SetInteractableControlButton(true);
+		_touchPause = false;
 	}
 
 	// Unity Lifecyle
@@ -760,8 +788,9 @@ public class LevelLogic : MonoBehaviour
 		SetupMap();	// SetupMap() must preceed SetupPhysics()
 		SetupPhysics();
 		SetupTouch();
-		SetupUITop();
-		SetupUIControl();
+		SetupTop();
+		SetupControl();
+		SetupPause();
 	}
 
 	private void Update()

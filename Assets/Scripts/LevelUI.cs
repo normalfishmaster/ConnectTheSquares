@@ -51,25 +51,34 @@ public class LevelUI : MonoBehaviour
 
 	// Control
 
+	Button _controlPauseButton;
 	Button _controlUndoButton;
 	Button _controlResetButton;
 
 	private void FindControlGameObject()
 	{
+		_controlPauseButton = GameObject.Find("/Canvas/Control/Pause").GetComponent<Button>();
 		_controlUndoButton = GameObject.Find("/Canvas/Control/Undo").GetComponent<Button>();
 		_controlResetButton = GameObject.Find("/Canvas/Control/Reset").GetComponent<Button>();
 	}
 
 	public void SetEnableControlButton(bool enable)
 	{
+		_controlPauseButton.enabled = enable;
 		_controlUndoButton.enabled = enable;
 		_controlResetButton.enabled = enable;
 	}
 
 	public void SetInteractableControlButton(bool interactable)
 	{
+		_controlPauseButton.interactable = interactable;
 		_controlUndoButton.interactable = interactable;
 		_controlResetButton.interactable = interactable;
+	}
+
+	public void OnControlPauseButtonPressed()
+	{
+		_logic.DoControlPauseButtonPressed();
 	}
 
 	public void OnControlUndoButtonPressed()
@@ -82,6 +91,25 @@ public class LevelUI : MonoBehaviour
 		_logic.DoControlResetButtonPressed();
 	}
 
+	// Pause
+
+	GameObject _pausePanel;
+
+	public void FindPauseGameObject()
+	{
+		_pausePanel = GameObject.Find("/Canvas/Pause");
+	}
+
+	public void SetActivePausePanel(bool active)
+	{
+		_pausePanel.SetActive(active);
+	}
+
+	public void OnPauseResumeButtonPressed()
+	{
+		_logic.DoPauseResumeButtonPressed();
+	}
+
 	// Unity Lifecycle
 
 	private void Awake()
@@ -91,5 +119,6 @@ public class LevelUI : MonoBehaviour
 
 		FindTopGameObject();
 		FindControlGameObject();
+		FindPauseGameObject();
 	}
 }
