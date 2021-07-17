@@ -630,11 +630,13 @@ public class LevelLogic : MonoBehaviour
 
 			if (IsSquareEndPosWinning() == true)
 			{
+				_ui.SetInteractableControlButton(false);
 				_touchState = TouchState.START_TO_PRE_END;
 				return;
 			}
 			else
 			{
+				_ui.SetInteractableControlButton(false);
 				_touchState = TouchState.START_TO_END;
 				return;
 			}
@@ -656,6 +658,7 @@ public class LevelLogic : MonoBehaviour
 		if (MoveSquareFromStartToEnd() == true)
 		{
 			_ui.SetTopMoveUser(GetSquareMoveCount());
+			_ui.SetInteractableControlButton(true);
 			_touchState = TouchState.NONE;
 		}
 	}
@@ -691,6 +694,7 @@ public class LevelLogic : MonoBehaviour
 			}
 
 			_ui.SetTopMoveUser(GetSquareMoveCount());
+			_ui.SetInteractableControlButton(true);
 
 			_touchState = TouchState.WIN;
 		}
@@ -712,18 +716,24 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetTopMoveBest(_levelMap._hint.Length);
 	}
 
-	// UI - Controls
+	// UI - Control
 
-	public void DoControlsUndoButtonPressed()
+	public void DoControlUndoButtonPressed()
 	{
 		UndoSquarePos();
 		_ui.SetTopMoveUser(GetSquareMoveCount());
 	}
 
-	public void DoControlsResetButtonPressed()
+	public void DoControlResetButtonPressed()
 	{
 		ResetSquarePos();
 		_ui.SetTopMoveUser(GetSquareMoveCount());
+	}
+
+	public void SetupUIControl()
+	{
+		_ui.SetEnableControlButton(true);
+		_ui.SetInteractableControlButton(true);
 	}
 
 	// Unity Lifecyle
@@ -751,9 +761,7 @@ public class LevelLogic : MonoBehaviour
 		SetupPhysics();
 		SetupTouch();
 		SetupUITop();
-
-
-		Debug.Log("hint:" + _levelMap._hint.Length);
+		SetupUIControl();
 	}
 
 	private void Update()

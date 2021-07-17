@@ -49,25 +49,37 @@ public class LevelUI : MonoBehaviour
 		_topMoveBestText.text = move.ToString();
 	}
 
-	// Controls
+	// Control
 
-	Button _controlsUndoButton;
-	Button _controlsResetButton;
+	Button _controlUndoButton;
+	Button _controlResetButton;
 
-	private void FindControlsGameObject()
+	private void FindControlGameObject()
 	{
-		_controlsUndoButton = GameObject.Find("/Canvas/Controls/Undo").GetComponent<Button>();
-		_controlsResetButton = GameObject.Find("/Canvas/Controls/Reset").GetComponent<Button>();
+		_controlUndoButton = GameObject.Find("/Canvas/Control/Undo").GetComponent<Button>();
+		_controlResetButton = GameObject.Find("/Canvas/Control/Reset").GetComponent<Button>();
 	}
 
-	public void OnControlsUndoButtonPressed()
+	public void SetEnableControlButton(bool enable)
 	{
-		_logic.DoControlsUndoButtonPressed();
+		_controlUndoButton.enabled = enable;
+		_controlResetButton.enabled = enable;
 	}
 
-	public void OnControlsResetButtonPressed()
+	public void SetInteractableControlButton(bool interactable)
 	{
-		_logic.DoControlsResetButtonPressed();
+		_controlUndoButton.interactable = interactable;
+		_controlResetButton.interactable = interactable;
+	}
+
+	public void OnControlUndoButtonPressed()
+	{
+		_logic.DoControlUndoButtonPressed();
+	}
+
+	public void OnControlResetButtonPressed()
+	{
+		_logic.DoControlResetButtonPressed();
 	}
 
 	// Unity Lifecycle
@@ -78,6 +90,6 @@ public class LevelUI : MonoBehaviour
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
 		FindTopGameObject();
-		FindControlsGameObject();
+		FindControlGameObject();
 	}
 }
