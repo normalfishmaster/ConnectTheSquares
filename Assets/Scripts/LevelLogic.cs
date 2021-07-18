@@ -33,6 +33,8 @@ public class LevelLogic : MonoBehaviour
 
 	private const int MAX_MOVE_COUNT = 999;
 
+	private const float MAX_AD_LOAD_TIME = 5.0f;
+
 	// Map
 
 	private GameObject[,] _mapWall;
@@ -541,7 +543,9 @@ public class LevelLogic : MonoBehaviour
 		START_TO_PRE_END,
 		PRE_END_TO_END,
 		WIN,
+		LOAD_AD,
 		AD,
+		WIN_LOAD_AD,
 		WIN_AD,
 	};
 
@@ -551,6 +555,8 @@ public class LevelLogic : MonoBehaviour
 
 	private Vector2 _touchStartPos;
 	private float _touchStartTime;
+
+	private float _touchLoadAdStartTime;
 
 	private void SetupTouch()
 	{
@@ -781,6 +787,23 @@ public class LevelLogic : MonoBehaviour
 	{
 	}
 
+	private void DoTouchStateLoadAd()
+	{
+		_ad.ClearRewardStatus();
+
+		if (_ad.ShowRewarded() == 0)
+		{
+			_ui.SetActiveAdLoadPanel(false);
+			_touchState = TouchState.AD;
+		}
+		else if (Time.time - _touchLoadAdStartTime > MAX_AD_LOAD_TIME)
+		{
+			_ui.SetActiveAdLoadPanel(false);
+			_ui.SetActiveAdFailPanel(true);
+			_touchState = TouchState.NONE;
+		}
+	}
+
 	private void DoTouchStateAd()
 	{
 		AdManager.RewardStatus status = _ad.GetRewardStatus();
@@ -798,6 +821,23 @@ public class LevelLogic : MonoBehaviour
 		{
 			_ui.SetActiveAdAbortPanel(true);
 			_touchState = TouchState.NONE;
+		}
+	}
+
+	private void DoTouchStateWinLoadAd()
+	{
+		_ad.ClearRewardStatus();
+
+		if (_ad.ShowRewarded() == 0)
+		{
+			_ui.SetActiveAdLoadPanel(false);
+			_touchState = TouchState.WIN_AD;
+		}
+		else if (Time.time - _touchLoadAdStartTime > MAX_AD_LOAD_TIME)
+		{
+			_ui.SetActiveAdLoadPanel(false);
+			_ui.SetActiveAdFailPanel(true);
+			_touchState = TouchState.WIN;
 		}
 	}
 
@@ -923,18 +963,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoControlAdButtonPressed()
 	{
-		_ui.SetActiveWinPanel(false);
-
-		_ad.ClearRewardStatus();
-
-		if (_ad.ShowRewarded() == 0)
-		{
-			_touchState = TouchState.AD;
-		}
-		else
-		{
-			_ui.SetActiveAdFailPanel(true);
-		}
+		_ui.SetActiveAdLoadPanel(true);
+		_touchLoadAdStartTime = Time.time;
+		_touchState = TouchState.LOAD_AD;
 	}
 
 	// UI - Pause
@@ -966,17 +997,9 @@ public class LevelLogic : MonoBehaviour
 	public void DoWinAdButtonPressed()
 	{
 		_ui.SetActiveWinPanel(false);
-
-		_ad.ClearRewardStatus();
-
-		if (_ad.ShowRewarded() == 0)
-		{
-			_touchState = TouchState.WIN_AD;
-		}
-		else
-		{
-			_ui.SetActiveAdFailPanel(true);
-		}
+		_ui.SetActiveAdLoadPanel(true);
+		_touchLoadAdStartTime = Time.time;
+		_touchState = TouchState.WIN_LOAD_AD;
 	}
 
 	public void DoWinMenuButtonPressed()
@@ -1014,6 +1037,13 @@ public class LevelLogic : MonoBehaviour
 		_data.SetMenuMap(nextMap);
 
 		SceneManager.LoadScene("LevelScene");
+	}
+
+	// UI - AdLoad
+
+	private void SetupAdLoad()
+	{
+		_ui.SetActiveAdLoadPanel(false);
 	}
 
 	// UI - AdSuccess
@@ -1102,6 +1132,7 @@ public class LevelLogic : MonoBehaviour
 		SetupControl();
 		SetupPause();
 		SetupWin();
+		SetupAdLoad();
 		SetupAdSuccess();
 		SetupAdAbort();
 		SetupAdFail();
@@ -1133,9 +1164,17 @@ public class LevelLogic : MonoBehaviour
 		{
 			DoTouchStateWin();
 		}
+		else if (_touchState == TouchState.LOAD_AD)
+		{
+			DoTouchStateLoadAd();
+		}
 		else if (_touchState == TouchState.AD)
 		{
 			DoTouchStateAd();
+		}
+		else if (_touchState == TouchState.WIN_LOAD_AD)
+		{
+			DoTouchStateWinLoadAd();
 		}
 		else if (_touchState == TouchState.WIN_AD)
 		{

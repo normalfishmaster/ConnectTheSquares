@@ -227,6 +227,20 @@ public class LevelUI : MonoBehaviour
 		_logic.DoWinNextButtonPressed();
 	}
 
+	// Ad - Load
+
+	private GameObject _adLoadPanel;
+
+	private void FindAdLoadGameObject()
+	{
+		_adLoadPanel = GameObject.Find("/Canvas/AdLoad");
+	}
+
+	public void SetActiveAdLoadPanel(bool active)
+	{
+		_adLoadPanel.SetActive(active);
+	}
+
 	// Ad - Success
 
 	private GameObject _adSuccessPanel;
@@ -296,6 +310,7 @@ public class LevelUI : MonoBehaviour
 		FindControlGameObject();
 		FindPauseGameObject();
 		FindWinGameObject();
+		FindAdLoadGameObject();
 		FindAdSuccessGameObject();
 		FindAdAbortGameObject();
 		FindAdFailGameObject();
