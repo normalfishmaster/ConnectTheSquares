@@ -929,6 +929,16 @@ public class LevelLogic : MonoBehaviour
 		}
 	}
 
+	public void DoWinMenuButtonPressed()
+	{
+		SceneManager.LoadScene("MapMenuScene");
+	}
+
+	public void DoWinReplayButtonPressed()
+	{
+		SceneManager.LoadScene("LevelScene");
+	}
+
 	public void DoWinNextButtonPressed()
 	{
 		int nextColor = _menuColor;

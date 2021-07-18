@@ -157,19 +157,13 @@ public class LevelUI : MonoBehaviour
 	// Win
 
 	private GameObject _winPanel;
-
 	private Text _winStarText;
-
-	private Button _winAdButton;
 	private Button _winNextButton;
 
 	public void FindWinGameObject()
 	{
 		_winPanel = GameObject.Find("/Canvas/Win");
-
 		_winStarText = GameObject.Find("/Canvas/Win/Star").GetComponent<Text>();
-
-		_winAdButton = GameObject.Find("/Canvas/Win/Ad").GetComponent<Button>();
 		_winNextButton = GameObject.Find("/Canvas/Win/Next").GetComponent<Button>();
 	}
 
@@ -191,6 +185,16 @@ public class LevelUI : MonoBehaviour
 	public void OnWinAdButtonPressed()
 	{
 		_logic.DoWinAdButtonPressed();
+	}
+
+	public void OnWinMenuButtonPressed()
+	{
+		_logic.DoWinMenuButtonPressed();
+	}
+
+	public void OnWinReplayButtonPressed()
+	{
+		_logic.DoWinReplayButtonPressed();
 	}
 
 	public void OnWinNextButtonPressed()
