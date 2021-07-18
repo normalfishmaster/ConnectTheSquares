@@ -76,6 +76,10 @@ public class LevelUI : MonoBehaviour
 	private Button _controlUndoButton;
 	private Button _controlResetButton;
 	private Button _controlHintButton;
+	private Button _controlAdButton;
+
+	private GameObject _controlHint;
+	private GameObject _controlAd;
 
 	private Text _controlHintText;
 
@@ -85,6 +89,10 @@ public class LevelUI : MonoBehaviour
 		_controlUndoButton = GameObject.Find("/Canvas/Control/Undo").GetComponent<Button>();
 		_controlResetButton = GameObject.Find("/Canvas/Control/Reset").GetComponent<Button>();
 		_controlHintButton = GameObject.Find("/Canvas/Control/Hint").GetComponent<Button>();
+		_controlAdButton = GameObject.Find("/Canvas/Control/Ad").GetComponent<Button>();
+
+		_controlHint = GameObject.Find("/Canvas/Control/Hint");
+		_controlAd = GameObject.Find("/Canvas/Control/Ad");
 
 		_controlHintText = GameObject.Find("/Canvas/Control/Hint/Text").GetComponent<Text>();
 	}
@@ -95,6 +103,7 @@ public class LevelUI : MonoBehaviour
 		_controlUndoButton.enabled = enable;
 		_controlResetButton.enabled = enable;
 		_controlHintButton.enabled = enable;
+		_controlAdButton.enabled = enable;
 	}
 
 	public void SetInteractableControlButton(bool interactable)
@@ -103,6 +112,17 @@ public class LevelUI : MonoBehaviour
 		_controlUndoButton.interactable = interactable;
 		_controlResetButton.interactable = interactable;
 		_controlHintButton.interactable = interactable;
+		_controlAdButton.interactable = interactable;
+	}
+
+	public void SetActiveControlHint(bool active)
+	{
+		_controlHint.SetActive(active);
+	}
+
+	public void SetActiveControlAd(bool active)
+	{
+		_controlAd.SetActive(active);
 	}
 
 	public void SetControlHintCount(int hint)
@@ -128,6 +148,11 @@ public class LevelUI : MonoBehaviour
 	public void OnControlHintButtonPressed()
 	{
 		_logic.DoControlHintButtonPressed();
+	}
+
+	public void OnControlAdButtonPressed()
+	{
+		_logic.DoControlAdButtonPressed();
 	}
 
 	// Pause
@@ -233,11 +258,6 @@ public class LevelUI : MonoBehaviour
 	public void SetActiveAdAbortPanel(bool active)
 	{
 		_adAbortPanel.SetActive(active);
-	}
-
-	public void OnAdAbortRewatchButtonPressed()
-	{
-		_logic.DoAdAbortRewatchButtonPressed();
 	}
 
 	public void OnAdAbortCloseButtonPressed()

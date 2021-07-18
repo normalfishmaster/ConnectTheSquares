@@ -541,6 +541,7 @@ public class LevelLogic : MonoBehaviour
 		START_TO_PRE_END,
 		PRE_END_TO_END,
 		WIN,
+		AD,
 		WIN_AD,
 	};
 
@@ -780,6 +781,26 @@ public class LevelLogic : MonoBehaviour
 	{
 	}
 
+	private void DoTouchStateAd()
+	{
+		AdManager.RewardStatus status = _ad.GetRewardStatus();
+
+		if (status == AdManager.RewardStatus.SUCCESS)
+		{
+			_data.SetHint(_data.GetHint() + 1);
+			_ui.SetControlHintCount(_data.GetHint());
+			_ui.SetActiveControlAd(false);
+			_ui.SetActiveControlHint(true);
+			_ui.SetActiveAdSuccessPanel(true);
+			_touchState = TouchState.NONE;
+		}
+		else if (status == AdManager.RewardStatus.FAIL)
+		{
+			_ui.SetActiveAdAbortPanel(true);
+			_touchState = TouchState.NONE;
+		}
+	}
+
 	private void DoTouchStateWinAd()
 	{
 		AdManager.RewardStatus status = _ad.GetRewardStatus();
@@ -788,6 +809,8 @@ public class LevelLogic : MonoBehaviour
 		{
 			_data.SetHint(_data.GetHint() + 1);
 			_ui.SetControlHintCount(_data.GetHint());
+			_ui.SetActiveControlAd(false);
+			_ui.SetActiveControlHint(true);
 			_ui.SetActiveAdSuccessPanel(true);
 			_touchState = TouchState.WIN;
 		}
@@ -825,6 +848,17 @@ public class LevelLogic : MonoBehaviour
 
 		_ui.SetEnableControlButton(true);
 		_ui.SetInteractableControlButton(true);
+
+		if (_data.GetHint() > 0)
+		{
+			_ui.SetActiveControlAd(false);
+			_ui.SetActiveControlHint(true);
+		}
+		else
+		{
+			_ui.SetActiveControlHint(false);
+			_ui.SetActiveControlAd(true);
+		}
 	}
 
 	public void DoControlPauseButtonPressed()
@@ -884,6 +918,22 @@ public class LevelLogic : MonoBehaviour
 			_ui.SetTopMoveUser(move);
 			_ui.SetActiveHintPanel(true);
 			_ui.SetHintDirection(_levelMap._hint[move]);
+		}
+	}
+
+	public void DoControlAdButtonPressed()
+	{
+		_ui.SetActiveWinPanel(false);
+
+		_ad.ClearRewardStatus();
+
+		if (_ad.ShowRewarded() == 0)
+		{
+			_touchState = TouchState.AD;
+		}
+		else
+		{
+			_ui.SetActiveAdFailPanel(true);
 		}
 	}
 
@@ -976,7 +1026,11 @@ public class LevelLogic : MonoBehaviour
 	public void DoAdSuccessCloseButtonPressed()
 	{
 		_ui.SetActiveAdSuccessPanel(false);
-		_ui.SetActiveWinPanel(true);
+
+		if (_touchState == TouchState.WIN)
+		{
+			_ui.SetActiveWinPanel(true);
+		}
 	}
 
 	// UI - AdAbort
@@ -986,26 +1040,14 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetActiveAdAbortPanel(false);
 	}
 
-	public void DoAdAbortRewatchButtonPressed()
-	{
-		_ui.SetActiveAdAbortPanel(false);
-
-		_ad.ClearRewardStatus();
-
-		if (_ad.ShowRewarded() == 0)
-		{
-			_touchState = TouchState.WIN_AD;
-		}
-		else
-		{
-			_ui.SetActiveAdFailPanel(true);
-		}
-	}
-
 	public void DoAdAbortCloseButtonPressed()
 	{
 		_ui.SetActiveAdAbortPanel(false);
-		_ui.SetActiveWinPanel(true);
+
+		if (_touchState == TouchState.WIN)
+		{
+			_ui.SetActiveWinPanel(true);
+		}
 	}
 
 	// UI - AdFail
@@ -1018,7 +1060,11 @@ public class LevelLogic : MonoBehaviour
 	public void DoAdFailCloseButtonPressed()
 	{
 		_ui.SetActiveAdFailPanel(false);
-		_ui.SetActiveWinPanel(true);
+
+		if (_touchState == TouchState.WIN)
+		{
+			_ui.SetActiveWinPanel(true);
+		}
 	}
 
 	// Unity Lifecyle
@@ -1086,6 +1132,10 @@ public class LevelLogic : MonoBehaviour
 		else if (_touchState == TouchState.WIN)
 		{
 			DoTouchStateWin();
+		}
+		else if (_touchState == TouchState.AD)
+		{
+			DoTouchStateAd();
 		}
 		else if (_touchState == TouchState.WIN_AD)
 		{
