@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelLogic : MonoBehaviour
 {
@@ -40,6 +41,8 @@ public class LevelLogic : MonoBehaviour
 	private GameObject[,] _mapWall;
 	private GameObject[] _mapSquare;
 
+	public Sprite[] _mapShadow;
+
 	private float _mapXOffset;
 	private float _mapYOffset;
 
@@ -73,20 +76,20 @@ public class LevelLogic : MonoBehaviour
 		_mapYOffset = -3.5f;
 	}
 
-	private void DisableMapWall(int x, int y)
-	{
-		_mapWall[x, y].GetComponent<SpriteRenderer>().color = new Color(140, 140, 140);
-	}
-
 	private void SetMapSquarePos(int square, float x, float y)
 	{
 		_mapSquare[square].transform.position = new Vector2(_mapXOffset + x, _mapYOffset + y);
 	}
 
+	private void SetMapShadow(int x, int y, int shadow)
+	{
+		_mapWall[x, y].GetComponent<SpriteRenderer>().sprite = _mapShadow[shadow];
+	}
+
 	// Physics
 
-	private const float DECELERATION_RATE_START_TO_END = 0.07f;
-	private const float DECELERATION_RATE_START_TO_PRE_END = 0.07f;
+	private const float DECELERATION_RATE_START_TO_END = 0.08f;
+	private const float DECELERATION_RATE_START_TO_PRE_END = 0.08f;
 	private const float DECELERATION_RATE_PRE_END_TO_END = 2.00f;
 
 	private sbyte[,] _physicsMapLayout;
@@ -127,20 +130,84 @@ public class LevelLogic : MonoBehaviour
 			{
 				sbyte tile = _physicsMapLayout[i, j] = _levelMap._layout[Level.NUM_ROW - j - 1, i];
 
-				if (Level.IsEmpty(tile))
-				{
-					DisableMapWall(i, j);
-				}
-				else if (Level.IsSquare(tile))
+				if (Level.IsSquare(tile))
 				{
 					int n = Level.GetSquareNumber(tile);
-
 					_physicsSquarePos[n] = new Vector2(i, j);
 					_physicsPosStack[n].Push(new Vector2(i, j));
-
-					SetMapSquarePos(n, i, j);
-					DisableMapWall(i, j);
 				}
+			}
+		}
+
+		// Assign shadow for empty tiles or those with squares
+
+		for (int i = 0; i < NUM_X; i++)
+		{
+			for (int j = 0; j < NUM_Y; j++)
+			{
+				sbyte tile = _physicsMapLayout[i, j];
+
+				if (Level.IsEmpty(tile) || Level.IsSquare(tile))
+				{
+					bool upFound = false;
+					bool rightFound = false;
+					bool downFound = false;
+					bool leftFound = false;
+					int shadow = 0;
+
+					if ((j + 1 >= NUM_Y) || Level.IsWall(_physicsMapLayout[i, j + 1]))
+					{
+						upFound = true;
+						shadow += 1;
+					}
+
+					if ((i + 1 >= NUM_X) || Level.IsWall(_physicsMapLayout[i + 1, j]))
+					{
+						rightFound = true;
+						shadow += 2;
+					}
+
+					if ((j - 1 < 0) || Level.IsWall(_physicsMapLayout[i, j - 1]))
+					{
+						downFound = true;
+						shadow += 4;
+					}
+
+					if ((i - 1 < 0) || Level.IsWall(_physicsMapLayout[i - 1, j]))
+					{
+						leftFound = true;
+						shadow += 8;
+					}
+
+					if (!upFound && !rightFound && (j + 1 < NUM_Y) && (i + 1 < NUM_Y) && Level.IsWall(_physicsMapLayout[i + 1, j + 1]))
+					{
+						shadow += 16;
+					}
+
+					if (!downFound && !rightFound && (j - 1 >= 0) && (i + 1 < NUM_Y) && Level.IsWall(_physicsMapLayout[i + 1, j - 1]))
+					{
+						shadow += 32;
+					}
+
+					if (!downFound && !leftFound && (j - 1 >= 0) && (i - 1 >= 0) && Level.IsWall(_physicsMapLayout[i - 1, j - 1]))
+					{
+						shadow += 64;
+					}
+
+					if (!upFound && !leftFound && (j + 1 < NUM_Y) && (i - 1 >= 0) && Level.IsWall(_physicsMapLayout[i - 1, j + 1]))
+					{
+						shadow += 128;
+					}
+
+					SetMapShadow(i, j, shadow);
+				}
+
+				if (Level.IsSquare(tile))
+				{
+					int n = Level.GetSquareNumber(tile);
+					SetMapSquarePos(n, i, j);
+				}
+
 			}
 		}
 
@@ -1112,6 +1179,8 @@ public class LevelLogic : MonoBehaviour
 
 	private void Start()
 	{
+
+//Application.targetFrameRate = 300;
 		_menuColor = _data.GetMenuColor();
 		_menuAlphabet = _data.GetMenuAlphabet();
 		_menuMap = _data.GetMenuMap();

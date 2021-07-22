@@ -17,6 +17,7 @@ public class StartupLogic : MonoBehaviour
 
 	private void Awake()
 	{
+		Application.targetFrameRate = 300;
 		EventManager.SubscribeDataInitCompleteEvent(OnDataInitComplete);
 	}
 }
