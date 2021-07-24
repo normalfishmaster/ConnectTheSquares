@@ -72,62 +72,78 @@ public class LevelUI : MonoBehaviour
 
 	// Control
 
+	private Button _controlHintAdButton;
+	private Button _controlHintOnButton;
+	private Button _controlHintOffButton;
 	private Button _controlPauseButton;
 	private Button _controlUndoButton;
 	private Button _controlResetButton;
-	private Button _controlHintButton;
-	private Button _controlAdButton;
 
-	private GameObject _controlHint;
-	private GameObject _controlAd;
+	private GameObject _controlHintAdPanel;
+	private GameObject _controlHintOnPanel;
+	private GameObject _controlHintOffPanel;
 
-	private Text _controlHintText;
+	private Text _controlHintOnText;
+	private Text _controlHintOffText;
 
 	private void FindControlGameObject()
 	{
-		_controlPauseButton = GameObject.Find("/Canvas/Control/Pause").GetComponent<Button>();
-		_controlUndoButton = GameObject.Find("/Canvas/Control/Undo").GetComponent<Button>();
-		_controlResetButton = GameObject.Find("/Canvas/Control/Reset").GetComponent<Button>();
-		_controlHintButton = GameObject.Find("/Canvas/Control/Hint").GetComponent<Button>();
-		_controlAdButton = GameObject.Find("/Canvas/Control/Ad").GetComponent<Button>();
+		_controlHintAdButton = GameObject.Find("/Canvas/ControlL/HintAd/Button").GetComponent<Button>();
+		_controlHintOnButton = GameObject.Find("/Canvas/ControlL/HintOn/Button").GetComponent<Button>();
+		_controlHintOffButton = GameObject.Find("/Canvas/ControlL/HintOff/Button").GetComponent<Button>();
+		_controlPauseButton = GameObject.Find("/Canvas/ControlL/Pause/Button").GetComponent<Button>();
+		_controlUndoButton = GameObject.Find("/Canvas/ControlR/Undo/Button").GetComponent<Button>();
+		_controlResetButton = GameObject.Find("/Canvas/ControlR/Reset/Button").GetComponent<Button>();
 
-		_controlHint = GameObject.Find("/Canvas/Control/Hint");
-		_controlAd = GameObject.Find("/Canvas/Control/Ad");
+		_controlHintAdPanel = GameObject.Find("/Canvas/ControlL/HintAd");
+		_controlHintOffPanel = GameObject.Find("/Canvas/ControlL/HintOff");
+		_controlHintOnPanel = GameObject.Find("/Canvas/ControlL/HintOn");
 
-		_controlHintText = GameObject.Find("/Canvas/Control/Hint/Text").GetComponent<Text>();
+		_controlHintOnText = GameObject.Find("/Canvas/ControlL/HintOn/Label").GetComponent<Text>();
+		_controlHintOffText = GameObject.Find("/Canvas/ControlL/HintOff/Label").GetComponent<Text>();
 	}
 
 	public void SetEnableControlButton(bool enable)
 	{
+		_controlHintAdButton.enabled = enable;
+		_controlHintOnButton.enabled = enable;
+		_controlHintOffButton.enabled = enable;
 		_controlPauseButton.enabled = enable;
 		_controlUndoButton.enabled = enable;
 		_controlResetButton.enabled = enable;
-		_controlHintButton.enabled = enable;
-		_controlAdButton.enabled = enable;
 	}
 
 	public void SetInteractableControlButton(bool interactable)
 	{
+		_controlHintAdButton.interactable = interactable;
+		_controlHintOnButton.interactable = interactable;
+		_controlHintOffButton.interactable = interactable;
 		_controlPauseButton.interactable = interactable;
 		_controlUndoButton.interactable = interactable;
 		_controlResetButton.interactable = interactable;
-		_controlHintButton.interactable = interactable;
-		_controlAdButton.interactable = interactable;
 	}
 
-	public void SetActiveControlHint(bool active)
+	public void SetActiveControlHintAdPanel(bool active)
 	{
-		_controlHint.SetActive(active);
+		_controlHintAdPanel.SetActive(active);
 	}
 
-	public void SetActiveControlAd(bool active)
+	public void SetActiveControlHintOnPanel(bool active)
 	{
-		_controlAd.SetActive(active);
+		_controlHintOnPanel.SetActive(active);
+	}
+
+	public void SetActiveControlHintOffPanel(bool active)
+	{
+		_controlHintOffPanel.SetActive(active);
 	}
 
 	public void SetControlHintCount(int hint)
 	{
-		_controlHintText.text = "Hint\n(" + hint + ")";
+		string text = "Hint (" + hint + ")";
+
+		_controlHintOnText.text = text;
+		_controlHintOffText.text = text;
 	}
 
 	public void OnControlPauseButtonPressed()
@@ -145,14 +161,19 @@ public class LevelUI : MonoBehaviour
 		_logic.DoControlResetButtonPressed();
 	}
 
-	public void OnControlHintButtonPressed()
+	public void OnControlHintAdButtonPressed()
 	{
-		_logic.DoControlHintButtonPressed();
+		_logic.DoControlHintAdButtonPressed();
 	}
 
-	public void OnControlAdButtonPressed()
+	public void OnControlHintOnButtonPressed()
 	{
-		_logic.DoControlAdButtonPressed();
+		_logic.DoControlHintOnButtonPressed();
+	}
+
+	public void OnControlHintOffButtonPressed()
+	{
+		_logic.DoControlHintOffButtonPressed();
 	}
 
 	// Pause

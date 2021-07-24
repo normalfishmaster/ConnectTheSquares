@@ -826,8 +826,10 @@ public class LevelLogic : MonoBehaviour
 
 			if (_touchHint)
 			{
-				_ui.SetActiveHintPanel(false);
 				_touchHint = false;
+				_ui.SetActiveControlHintOnPanel(false);
+				_ui.SetActiveControlHintOffPanel(true);
+				_ui.SetActiveHintPanel(false);
 			}
 
 			_ui.SetTopMoveUser(GetSquareMoveCount());
@@ -879,8 +881,9 @@ public class LevelLogic : MonoBehaviour
 		{
 			_data.SetHint(_data.GetHint() + 1);
 			_ui.SetControlHintCount(_data.GetHint());
-			_ui.SetActiveControlAd(false);
-			_ui.SetActiveControlHint(true);
+			_ui.SetActiveControlHintAdPanel(false);
+			_ui.SetActiveControlHintOnPanel(false);
+			_ui.SetActiveControlHintOffPanel(true);
 			_ui.SetActiveAdSuccessPanel(true);
 			_touchState = TouchState.NONE;
 		}
@@ -916,8 +919,9 @@ public class LevelLogic : MonoBehaviour
 		{
 			_data.SetHint(_data.GetHint() + 1);
 			_ui.SetControlHintCount(_data.GetHint());
-			_ui.SetActiveControlAd(false);
-			_ui.SetActiveControlHint(true);
+			_ui.SetActiveControlHintAdPanel(false);
+			_ui.SetActiveControlHintOnPanel(false);
+			_ui.SetActiveControlHintOffPanel(true);
 			_ui.SetActiveAdSuccessPanel(true);
 			_touchState = TouchState.WIN;
 		}
@@ -951,20 +955,22 @@ public class LevelLogic : MonoBehaviour
 
 	private void SetupControl()
 	{
-		_ui.SetControlHintCount(_data.GetHint());
-
 		_ui.SetEnableControlButton(true);
 		_ui.SetInteractableControlButton(true);
 
+		_ui.SetControlHintCount(_data.GetHint());
+
 		if (_data.GetHint() > 0)
 		{
-			_ui.SetActiveControlAd(false);
-			_ui.SetActiveControlHint(true);
+			_ui.SetActiveControlHintAdPanel(false);
+			_ui.SetActiveControlHintOnPanel(false);
+			_ui.SetActiveControlHintOffPanel(true);
 		}
 		else
 		{
-			_ui.SetActiveControlHint(false);
-			_ui.SetActiveControlAd(true);
+			_ui.SetActiveControlHintAdPanel(true);
+			_ui.SetActiveControlHintOnPanel(false);
+			_ui.SetActiveControlHintOffPanel(false);
 		}
 	}
 
@@ -1001,38 +1007,44 @@ public class LevelLogic : MonoBehaviour
 		}
 	}
 
-	public void DoControlHintButtonPressed()
-	{
-		if (_touchHint == true)
-		{
-			_touchHint = false;
-			_ui.SetActiveHintPanel(false);
-		}
-		else
-		{
-			_touchHint = true;
-
-			if (_hintUsed == false)
-			{
-				_data.SetHint(_data.GetHint() - 1);
-				_ui.SetControlHintCount(_data.GetHint());
-				_hintUsed = true;
-			}
-
-			ResetSquarePos();
-			int move = GetSquareMoveCount();
-
-			_ui.SetTopMoveUser(move);
-			_ui.SetActiveHintPanel(true);
-			_ui.SetHintDirection(_levelMap._hint[move]);
-		}
-	}
-
-	public void DoControlAdButtonPressed()
+	public void DoControlHintAdButtonPressed()
 	{
 		_ui.SetActiveAdLoadPanel(true);
 		_touchLoadAdStartTime = Time.time;
 		_touchState = TouchState.LOAD_AD;
+	}
+
+	public void DoControlHintOnButtonPressed()
+	{
+		_touchHint = false;
+		_ui.SetActiveControlHintOnPanel(false);
+		_ui.SetActiveControlHintOffPanel(true);
+		_ui.SetActiveHintPanel(false);
+	}
+
+	public void DoControlHintOffButtonPressed()
+	{
+		_touchHint = true;
+
+
+
+		_ui.SetActiveControlHintOffPanel(false);
+		_ui.SetActiveControlHintOnPanel(true);
+
+		if (_hintUsed == false)
+		{
+			_data.SetHint(_data.GetHint() - 1);
+			_ui.SetControlHintCount(_data.GetHint());
+			_hintUsed = true;
+		}
+
+		ResetSquarePos();
+		int move = GetSquareMoveCount();
+
+		_ui.SetTopMoveUser(move);
+		_ui.SetActiveHintPanel(true);
+		_ui.SetHintDirection(_levelMap._hint[move]);
+
 	}
 
 	// UI - Pause
