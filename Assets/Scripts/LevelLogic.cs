@@ -782,7 +782,7 @@ public class LevelLogic : MonoBehaviour
 		{
 			int move = GetSquareMoveCount();
 
-			_ui.SetTopMoveUser(move);
+			_ui.SetTopMoveCurrent(move);
 			_ui.SetInteractableControlButton(true);
 
 			if (_touchHint)
@@ -820,7 +820,7 @@ public class LevelLogic : MonoBehaviour
 
 			if (star > _data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap))
 			{
-				_ui.SetTopStarObtained(star);
+				_ui.SetTopStar(star);
 				_data.SetLevelStar(_menuColor, _menuAlphabet, _menuMap, star);
 			}
 
@@ -832,7 +832,16 @@ public class LevelLogic : MonoBehaviour
 				_ui.SetActiveHintPanel(false);
 			}
 
-			_ui.SetTopMoveUser(GetSquareMoveCount());
+			int moveCount = GetSquareMoveCount();
+
+			_ui.SetTopMoveCurrent(moveCount);
+
+			if (moveCount > _data.GetLevelMove(_menuColor, _menuAlphabet, _menuMap))
+			{
+				_data.SetLevelMove(_menuColor, _menuAlphabet, _menuMap, moveCount);
+				_ui.SetTopMoveBest(moveCount);
+			}
+
 			_ui.SetEnableControlButton(false);
 			_ui.SetActiveWinPanel(true);
 			_ui.SetWinStar(star);
@@ -936,12 +945,15 @@ public class LevelLogic : MonoBehaviour
 
 	private void SetupTop()
 	{
-		_ui.SetTopNameFull(_menuColor, _menuAlphabet, _menuMap);
+		_ui.SetTopColor(_menuColor);
+		_ui.SetTopAlphabet(_menuAlphabet);
+		_ui.SetTopMap(_menuMap);
 
-		_ui.SetTopStarObtained(_data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap));
+		_ui.SetTopMoveCurrent(0);
+		_ui.SetTopMoveTarget(_levelMap._hint.Length);
+		_ui.SetTopMoveBest(_data.GetLevelMove(_menuColor, _menuAlphabet, _menuMap));
 
-		_ui.SetTopMoveUser(0);
-		_ui.SetTopMoveBest(_levelMap._hint.Length);
+		_ui.SetTopStar(_data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap));
 	}
 
 	// UI - Hint
@@ -986,7 +998,7 @@ public class LevelLogic : MonoBehaviour
 		UndoSquarePos();
 
 		int move = GetSquareMoveCount();
-		_ui.SetTopMoveUser(move);
+		_ui.SetTopMoveCurrent(move);
 
 		if (_touchHint == true)
 		{
@@ -999,7 +1011,7 @@ public class LevelLogic : MonoBehaviour
 		ResetSquarePos();
 
 		int move = GetSquareMoveCount();
-		_ui.SetTopMoveUser(move);
+		_ui.SetTopMoveCurrent(move);
 
 		if (_touchHint == true)
 		{
@@ -1041,7 +1053,7 @@ public class LevelLogic : MonoBehaviour
 		ResetSquarePos();
 		int move = GetSquareMoveCount();
 
-		_ui.SetTopMoveUser(move);
+		_ui.SetTopMoveCurrent(move);
 		_ui.SetActiveHintPanel(true);
 		_ui.SetHintDirection(_levelMap._hint[move]);
 

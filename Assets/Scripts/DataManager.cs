@@ -45,6 +45,9 @@ public class DataManager : MonoBehaviour
 	public string GetLevelStarKey(int color, int alphabet, int map)		{ return "LevelStarKey" + "_" + color + "_" + alphabet + "_" + map;				}
 	public int    GetLevelStarDefault()					{ return 0;											}
 
+	public string GetLevelMoveKey(int color, int alphabet, int map)		{ return "levelMoveKey" + "_" + color + "_" + alphabet + "_" + map;				}
+	public int    GetLevelMoveDefault()					{ return 0;											}
+
 	// Operations by Data Type
 
 	public bool  CheckAudio()						{ return PlayerPrefs.HasKey(GetAudioKey());							}
@@ -101,6 +104,11 @@ public class DataManager : MonoBehaviour
 	public int   GetLevelStar(int color, int alphabet, int map)		{ return PlayerPrefs.GetInt(GetLevelStarKey(color, alphabet, map));				}
 	public void  SetLevelStar(int color, int alphabet, int map, int value)	{        PlayerPrefs.SetInt(GetLevelStarKey(color, alphabet, map), value);			}
 	public void  InitLevelStar(int color, int alphabet, int map)		{        PlayerPrefs.SetInt(GetLevelStarKey(color, alphabet, map), GetLevelStarDefault());	}
+
+	public bool  CheckLevelMove(int color, int alphabet, int map)		{ return PlayerPrefs.HasKey(GetLevelMoveKey(color, alphabet, map));				}
+	public int   GetLevelMove(int color, int alphabet, int map)		{ return PlayerPrefs.GetInt(GetLevelMoveKey(color, alphabet, map));				}
+	public void  SetLevelMove(int color, int alphabet, int map, int value)	{        PlayerPrefs.SetInt(GetLevelMoveKey(color, alphabet, map), value);			}
+	public void  InitLevelMove(int color, int alphabet, int map)		{        PlayerPrefs.SetInt(GetLevelMoveKey(color, alphabet, map), GetLevelMoveDefault());	}
 
 	// Check by Key
 
@@ -224,9 +232,15 @@ public class DataManager : MonoBehaviour
 						{
 							InitLevelLock(i, j, k);
 						}
+
 						if (CheckLevelStar(i, j, k) == false)
 						{
 							InitLevelStar(i, j, k);
+						}
+
+						if (CheckLevelMove(i, j, k) == false)
+						{
+							InitLevelMove(i, j, k);
 						}
 					}
 				}

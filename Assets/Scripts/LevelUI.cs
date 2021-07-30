@@ -10,43 +10,102 @@ public class LevelUI : MonoBehaviour
 
 	// Top
 
-	private Text _topNameFullText;
+	private Text _topColorText;
 
-	private Text _topStarObtainedText;
+	private GameObject _topAlphabetAPanel;
+	private GameObject _topAlphabetBPanel;
+	private GameObject _topAlphabetCPanel;
 
-	private Text _topMoveUserText;
+	private Text _topMapText;
+
+	private Text _topMoveCurrentText;
+	private Text _topMoveTargetText;
 	private Text _topMoveBestText;
+
+	private GameObject[] _topStarPanel;
 
 	private void FindTopGameObject()
 	{
-		_topNameFullText = GameObject.Find("/Canvas/Top/Name/Full").GetComponent<Text>();
+		_topColorText = GameObject.Find("/Canvas/Top/Color/Color").GetComponent<Text>();
 
-		_topStarObtainedText = GameObject.Find("/Canvas/Top/Star/Obtained").GetComponent<Text>();
+		_topAlphabetAPanel = GameObject.Find("/Canvas/Top/Alphabet/A");
+		_topAlphabetBPanel = GameObject.Find("/Canvas/Top/Alphabet/B");
+		_topAlphabetCPanel = GameObject.Find("/Canvas/Top/Alphabet/C");
 
-		_topMoveUserText = GameObject.Find("/Canvas/Top/Move/User").GetComponent<Text>();
+		_topMapText = GameObject.Find("/Canvas/Top/Map/Map").GetComponent<Text>();
+
+		_topMoveCurrentText = GameObject.Find("/Canvas/Top/Move/Current").GetComponent<Text>();
+		_topMoveTargetText = GameObject.Find("/Canvas/Top/Move/Target").GetComponent<Text>();
 		_topMoveBestText = GameObject.Find("/Canvas/Top/Move/Best").GetComponent<Text>();
+
+		_topStarPanel = new GameObject[3];
+
+		for (int i = 0; i < 3; i++)
+		{
+			_topStarPanel[i] = GameObject.Find("/Canvas/Top/Star/Star" + i);
+		}
 	}
 
-	public void SetTopNameFull(int color, int alphabet, int map)
+	public void SetTopColor(int color)
 	{
-		_topNameFullText.text = _level.GetColorString(color) +
-				" - " + _level.GetAlphabetString(alphabet) +
-				" - " + _level.GetMapString(map);
+		_topColorText.text = _level.GetColorString(color);
 	}
 
-	public void SetTopStarObtained(int star)
+	public void SetTopAlphabet(int alphabet)
 	{
-		_topStarObtainedText.text = star.ToString();
+		string str = _level.GetAlphabetString(alphabet);
+
+		_topAlphabetAPanel.SetActive(false);
+		_topAlphabetBPanel.SetActive(false);
+		_topAlphabetCPanel.SetActive(false);
+
+		if (str == "A")
+		{
+			_topAlphabetAPanel.SetActive(true);
+		}
+		else if (str == "B")
+		{
+			_topAlphabetBPanel.SetActive(true);
+		}
+		else if (str == "C")
+		{
+			_topAlphabetCPanel.SetActive(true);
+		}
 	}
 
-	public void SetTopMoveUser(int move)
+	public void SetTopMap(int map)
 	{
-		_topMoveUserText.text = move.ToString();
+		_topMapText.text = map.ToString();
 	}
 
-	public void SetTopMoveBest(int move)
+	public void SetTopMoveCurrent(int current)
 	{
-		_topMoveBestText.text = move.ToString();
+		_topMoveCurrentText.text = current.ToString();
+	}
+
+	public void SetTopMoveTarget(int target)
+	{
+		_topMoveTargetText.text = target.ToString();
+	}
+
+	public void SetTopMoveBest(int best)
+	{
+		_topMoveBestText.text = best.ToString();
+	}
+
+	public void SetTopStar(int star)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			if (i < star)
+			{
+				_topStarPanel[i].SetActive(true);
+			}
+			else
+			{
+				_topStarPanel[i].SetActive(false);
+			}
+		}
 	}
 
 	// Hint
