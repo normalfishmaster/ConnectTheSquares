@@ -752,13 +752,13 @@ public class LevelLogic : MonoBehaviour
 
 			if (IsSquareEndPosWinning() == true)
 			{
-				_ui.SetInteractableControlButton(true);
+				_ui.SetInteractableControlButton(false);
 				_touchState = TouchState.START_TO_PRE_END;
 				return;
 			}
 			else
 			{
-				_ui.SetInteractableControlButton(true);
+				_ui.SetInteractableControlButton(false);
 				_touchState = TouchState.START_TO_END;
 				return;
 			}
