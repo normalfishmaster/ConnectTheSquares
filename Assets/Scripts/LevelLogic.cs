@@ -39,9 +39,9 @@ public class LevelLogic : MonoBehaviour
 	// Map
 
 	private GameObject[,] _mapWall;
+	private GameObject[,] _mapWallShadow;
 	private GameObject[] _mapSquare;
-
-	public Sprite[] _mapShadow;
+	private GameObject[] _mapSquareShadow;
 
 	private float _mapXOffset;
 	private float _mapYOffset;
@@ -51,22 +51,26 @@ public class LevelLogic : MonoBehaviour
 		// Wall
 
 		_mapWall = new GameObject[NUM_X, NUM_Y];
+		_mapWallShadow = new GameObject[NUM_X, NUM_Y];
 
 		for (int i = 0; i < NUM_X; i++)
 		{
 			for (int j = 0; j < NUM_Y; j++)
 			{
-				_mapWall[i, j] = GameObject.Find("Map/Wall/X" + i + "/Y" + j);
+				_mapWall[i, j] = GameObject.Find("/Map/Wall/X" + i + "/Y" + j);
+				_mapWallShadow[i, j] = GameObject.Find("/Map/WallShadow/X" + i + "/Y" + j);
 			}
 		}
 
 		// Square
 
 		_mapSquare = new GameObject[Level.NUM_SQUARE];
+		_mapSquareShadow = new GameObject[Level.NUM_SQUARE];
 
 		for (int i = 0; i < NUM_SQUARE; i++)
 		{
-			_mapSquare[i] = GameObject.Find("Map/Square/S" + i);
+			_mapSquare[i] = GameObject.Find("/Map/Square/S" + i);
+			_mapSquareShadow[i] = GameObject.Find("/Map/SquareShadow/S" + i);
 		}
 	}
 
@@ -78,12 +82,15 @@ public class LevelLogic : MonoBehaviour
 
 	private void SetMapSquarePos(int square, float x, float y)
 	{
-		_mapSquare[square].transform.position = new Vector2(_mapXOffset + x, _mapYOffset + y);
+		Vector2 pos = new Vector2(_mapXOffset + x, _mapYOffset + y);
+		_mapSquare[square].transform.position = pos;
+		_mapSquareShadow[square].transform.position = pos;
 	}
 
-	private void SetMapShadow(int x, int y, int shadow)
+	private void DisableMapWall(int x, int y)
 	{
-		_mapWall[x, y].GetComponent<SpriteRenderer>().sprite = _mapShadow[shadow];
+		_mapWall[x, y].SetActive(false);
+		_mapWallShadow[x, y].SetActive(false);
 	}
 
 	// Physics
@@ -135,79 +142,13 @@ public class LevelLogic : MonoBehaviour
 					int n = Level.GetSquareNumber(tile);
 					_physicsSquarePos[n] = new Vector2(i, j);
 					_physicsPosStack[n].Push(new Vector2(i, j));
-				}
-			}
-		}
+                                        SetMapSquarePos(n, i, j);
+                                }
 
-		// Assign shadow for empty tiles or those with squares
-
-		for (int i = 0; i < NUM_X; i++)
-		{
-			for (int j = 0; j < NUM_Y; j++)
-			{
-				sbyte tile = _physicsMapLayout[i, j];
-
-				if (Level.IsEmpty(tile) || Level.IsSquare(tile))
+				if (Level.IsSquare(tile) || Level.IsEmpty(tile))
 				{
-					bool upFound = false;
-					bool rightFound = false;
-					bool downFound = false;
-					bool leftFound = false;
-					int shadow = 0;
-
-					if ((j + 1 >= NUM_Y) || Level.IsWall(_physicsMapLayout[i, j + 1]))
-					{
-						upFound = true;
-						shadow += 1;
-					}
-
-					if ((i + 1 >= NUM_X) || Level.IsWall(_physicsMapLayout[i + 1, j]))
-					{
-						rightFound = true;
-						shadow += 2;
-					}
-
-					if ((j - 1 < 0) || Level.IsWall(_physicsMapLayout[i, j - 1]))
-					{
-						downFound = true;
-						shadow += 4;
-					}
-
-					if ((i - 1 < 0) || Level.IsWall(_physicsMapLayout[i - 1, j]))
-					{
-						leftFound = true;
-						shadow += 8;
-					}
-
-					if (!upFound && !rightFound && (j + 1 < NUM_Y) && (i + 1 < NUM_Y) && Level.IsWall(_physicsMapLayout[i + 1, j + 1]))
-					{
-						shadow += 16;
-					}
-
-					if (!downFound && !rightFound && (j - 1 >= 0) && (i + 1 < NUM_Y) && Level.IsWall(_physicsMapLayout[i + 1, j - 1]))
-					{
-						shadow += 32;
-					}
-
-					if (!downFound && !leftFound && (j - 1 >= 0) && (i - 1 >= 0) && Level.IsWall(_physicsMapLayout[i - 1, j - 1]))
-					{
-						shadow += 64;
-					}
-
-					if (!upFound && !leftFound && (j + 1 < NUM_Y) && (i - 1 >= 0) && Level.IsWall(_physicsMapLayout[i - 1, j + 1]))
-					{
-						shadow += 128;
-					}
-
-					SetMapShadow(i, j, shadow);
+					DisableMapWall(i, j);
 				}
-
-				if (Level.IsSquare(tile))
-				{
-					int n = Level.GetSquareNumber(tile);
-					SetMapSquarePos(n, i, j);
-				}
-
 			}
 		}
 

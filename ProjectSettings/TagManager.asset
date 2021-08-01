@@ -44,11 +44,20 @@ TagManager:
   - name: Background
     uniqueID: 1291348753
     locked: 0
-  - name: Board
-    uniqueID: 3459365863
+  - name: BoardFloor
+    uniqueID: 699100619
+    locked: 0
+  - name: BoardFrame
+    uniqueID: 4193421945
+    locked: 0
+  - name: WallShadow
+    uniqueID: 2783327847
     locked: 0
   - name: Wall
     uniqueID: 3302278593
+    locked: 0
+  - name: SquareShadow
+    uniqueID: 3516915799
     locked: 0
   - name: Square
     uniqueID: 2954094751
