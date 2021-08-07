@@ -612,6 +612,7 @@ public class LevelLogic : MonoBehaviour
 
 		if (Input.touchCount != 1)
 		{
+			_ui.SetInteractableControlButton(true);
 			return;
 		}
 
@@ -619,12 +620,14 @@ public class LevelLogic : MonoBehaviour
 
 		if (touch.phase != TouchPhase.Began)
 		{
+			_ui.SetInteractableControlButton(true);
 			return;
 		}
 
 		// Check if user is touching any UI elements
 		if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
 		{
+			_ui.SetInteractableControlButton(true);
 			return;
 		}
 
@@ -641,6 +644,7 @@ public class LevelLogic : MonoBehaviour
 
 		if (Input.touchCount != 1)
 		{
+			_ui.SetInteractableControlButton(true);
 			_touchState = TouchState.NONE;
 			return;
 		}
@@ -649,6 +653,7 @@ public class LevelLogic : MonoBehaviour
 
 		if (touch.phase == TouchPhase.Began)
 		{
+			_ui.SetInteractableControlButton(true);
 			_touchState = TouchState.NONE;
 			return;
 		}
