@@ -95,8 +95,8 @@ public class LevelLogic : MonoBehaviour
 
 	// Physics
 
-	private const float DECELERATION_RATE_START_TO_END = 0.08f;
-	private const float DECELERATION_RATE_START_TO_PRE_END = 0.08f;
+	private const float DECELERATION_RATE_START_TO_END = 0.07f;
+	private const float DECELERATION_RATE_START_TO_PRE_END = 0.07f;
 	private const float DECELERATION_RATE_PRE_END_TO_END = 2.00f;
 
 	private sbyte[,] _physicsMapLayout;
@@ -1031,7 +1031,7 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetActiveWinPanel(false);
 	}
 
-	public void DoWinAdButtonPressed()
+	public void DoWinHintButtonPressed()
 	{
 		_ui.SetActiveWinPanel(false);
 		_ui.SetActiveAdLoadPanel(true);

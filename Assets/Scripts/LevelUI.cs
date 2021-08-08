@@ -262,14 +262,23 @@ public class LevelUI : MonoBehaviour
 	// Win
 
 	private GameObject _winPanel;
-	private Text _winStarText;
+
+	private GameObject[] _winStarPanel;
+
 	private Button _winNextButton;
 
 	public void FindWinGameObject()
 	{
 		_winPanel = GameObject.Find("/Canvas/Win");
-		_winStarText = GameObject.Find("/Canvas/Win/Star").GetComponent<Text>();
-		_winNextButton = GameObject.Find("/Canvas/Win/Next").GetComponent<Button>();
+
+		_winStarPanel = new GameObject[3];
+
+		for (int i = 0; i < 3; i++)
+		{
+			_winStarPanel[i] = GameObject.Find("/Canvas/Win/Panel/Star/Star" + i);
+		}
+
+		_winNextButton = GameObject.Find("/Canvas/Win/Panel/Next/Button").GetComponent<Button>();
 	}
 
 	public void SetActiveWinPanel(bool active)
@@ -279,7 +288,17 @@ public class LevelUI : MonoBehaviour
 
 	public void SetWinStar(int star)
 	{
-		_winStarText.text = star.ToString();
+		for (int i = 0; i < 3; i++)
+		{
+			if (i < star)
+			{
+				_winStarPanel[i].SetActive(true);
+			}
+			else
+			{
+				_winStarPanel[i].SetActive(false);
+			}
+		}
 	}
 
 	public void SetInteractableWinNextButton(bool interactable)
@@ -287,9 +306,9 @@ public class LevelUI : MonoBehaviour
 		_winNextButton.interactable = interactable;
 	}
 
-	public void OnWinAdButtonPressed()
+	public void OnWinHintButtonPressed()
 	{
-		_logic.DoWinAdButtonPressed();
+		_logic.DoWinHintButtonPressed();
 	}
 
 	public void OnWinMenuButtonPressed()
