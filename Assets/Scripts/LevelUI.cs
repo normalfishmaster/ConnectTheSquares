@@ -111,12 +111,19 @@ public class LevelUI : MonoBehaviour
 	// Hint
 
 	private GameObject _hintPanel;
-	private Text _hintDirectionText;
+
+	private GameObject _hintUpPanel;
+	private GameObject _hintDownPanel;
+	private GameObject _hintLeftPanel;
+	private GameObject _hintRightPanel;
 
 	private void FindHintGameObject()
 	{
 		_hintPanel = GameObject.Find("/Canvas/Hint");
-		_hintDirectionText = GameObject.Find("/Canvas/Hint/Direction").GetComponent<Text>();
+		_hintUpPanel = GameObject.Find("/Canvas/Hint/Up");
+		_hintDownPanel = GameObject.Find("/Canvas/Hint/Down");
+		_hintLeftPanel = GameObject.Find("/Canvas/Hint/Left");
+		_hintRightPanel = GameObject.Find("/Canvas/Hint/Right");
 	}
 
 	public void SetActiveHintPanel(bool active)
@@ -126,7 +133,29 @@ public class LevelUI : MonoBehaviour
 
 	public void SetHintDirection(char direction)
 	{
-		_hintDirectionText.text = direction.ToString();
+		char directionUpper = char.ToUpper(direction);
+
+		_hintUpPanel.SetActive(false);
+		_hintDownPanel.SetActive(false);
+		_hintLeftPanel.SetActive(false);
+		_hintRightPanel.SetActive(false);
+
+		if (directionUpper == 'U')
+		{
+			_hintUpPanel.SetActive(true);
+		}
+		else if (directionUpper == 'D')
+		{
+			_hintDownPanel.SetActive(true);
+		}
+		else if (directionUpper == 'L')
+		{
+			_hintLeftPanel.SetActive(true);
+		}
+		else if (directionUpper == 'R')
+		{
+			_hintRightPanel.SetActive(true);
+		}
 	}
 
 	// Control
