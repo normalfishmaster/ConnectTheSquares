@@ -10,6 +10,9 @@ public class LevelUI : MonoBehaviour
 
 	// Top
 
+	public Sprite[] _topColorSprite;
+
+	private GameObject _topColorPanel;
 	private Text _topColorText;
 
 	private GameObject _topAlphabetAPanel;
@@ -26,7 +29,8 @@ public class LevelUI : MonoBehaviour
 
 	private void FindTopGameObject()
 	{
-		_topColorText = GameObject.Find("/Canvas/Top/Color/Color").GetComponent<Text>();
+		_topColorPanel = GameObject.Find("/Canvas/Top/Color");
+		_topColorText = GameObject.Find("/Canvas/Top/Color/Label").GetComponent<Text>();
 
 		_topAlphabetAPanel = GameObject.Find("/Canvas/Top/Alphabet/A");
 		_topAlphabetBPanel = GameObject.Find("/Canvas/Top/Alphabet/B");
@@ -48,6 +52,7 @@ public class LevelUI : MonoBehaviour
 
 	public void SetTopColor(int color)
 	{
+		_topColorPanel.GetComponent<Image>().sprite = _topColorSprite[color];
 		_topColorText.text = _level.GetColorString(color);
 	}
 
@@ -290,8 +295,10 @@ public class LevelUI : MonoBehaviour
 
 	// Win
 
-	private GameObject _winPanel;
+	public Sprite[] _winColorSprite;
 
+	private GameObject _winPanel;
+	private GameObject _winColorPanel;
 	private GameObject[] _winStarPanel;
 
 	private Button _winNextButton;
@@ -299,6 +306,7 @@ public class LevelUI : MonoBehaviour
 	public void FindWinGameObject()
 	{
 		_winPanel = GameObject.Find("/Canvas/Win");
+		_winColorPanel = GameObject.Find("/Canvas/Win/Panel/Color");
 
 		_winStarPanel = new GameObject[3];
 
@@ -313,6 +321,11 @@ public class LevelUI : MonoBehaviour
 	public void SetActiveWinPanel(bool active)
 	{
 		_winPanel.SetActive(active);
+	}
+
+	public void SetWinColor(int color)
+	{
+		_winColorPanel.GetComponent<Image>().sprite = _winColorSprite[color];
 	}
 
 	public void SetWinStar(int star)
