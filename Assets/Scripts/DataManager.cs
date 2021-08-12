@@ -231,6 +231,7 @@ public class DataManager : MonoBehaviour
 						if (CheckLevelLock(i, j, k) == false)
 						{
 							InitLevelLock(i, j, k);
+							SetLevelLock(0, 0, 0, 0);
 						}
 
 						if (CheckLevelStar(i, j, k) == false)
