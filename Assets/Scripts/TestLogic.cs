@@ -8,6 +8,7 @@ public class TestLogic : MonoBehaviour
 	private TestUI _ui;
 	private DataManager _data;
 	private AdManager _ad;
+	private static LevelManager _level;
 
 	// UI Events - Data
 
@@ -143,6 +144,38 @@ public class TestLogic : MonoBehaviour
 		_data.InitAudio();
 		_data.InitHint();
 		_data.InitAdFree();
+		_data.InitMenuColor();
+		_data.InitMenuAlphabet();
+		_data.InitMenuMap();
+		_data.InitLastColor();
+		_data.InitLastAlphabet();
+		_data.InitLastMap();
+
+		int numColor = _level.GetNumColor();
+
+		for (int i = 0; i < numColor; i++)
+		{
+			int numAlphabet = _level.GetNumAlphabet(i);
+
+			for (int j = 0; j < numAlphabet; j++)
+			{
+				int numMap = _level.GetNumMap(i, j);
+
+				for (int k = 0; k < numMap; k++)
+				{
+					_data.InitLevelLock(i, j, k);
+
+					if (i == 0 && j == 0 && k == 0)
+					{
+						_data.SetLevelLock(0, 0, 0, 1);
+					}
+
+					_data.InitLevelStar(i, j, k);
+					_data.InitLevelMove(i, j, k);
+				}
+
+			}
+		}
 	}
 
 	// UI Events - Ad
@@ -179,6 +212,7 @@ public class TestLogic : MonoBehaviour
 		_ui = GameObject.Find("TestUI").GetComponent<TestUI>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
+		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 	}
 
 	private void Update()
