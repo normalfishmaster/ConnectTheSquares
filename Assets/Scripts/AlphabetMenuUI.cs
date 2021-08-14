@@ -12,6 +12,7 @@ public class AlphabetMenuUI : MonoBehaviour
 	// Alphabet
 
 	public GameObject _alphabetButtonPrefab;
+	public Sprite[] _alphabetButtonSprite;
 
 	private GameObject _alphabetContent;
 	private GameObject[] _alphabetButton;
@@ -21,27 +22,74 @@ public class AlphabetMenuUI : MonoBehaviour
 		_alphabetContent = GameObject.Find("/Canvas/Alphabet/Viewport/Content");
 	}
 
-	private void SetupAlphabet()
+	public void SetAlphabetSize(int size)
 	{
-		int menuColor = _data.GetMenuColor();
-		int numAlphabet = _level.GetNumAlphabet(menuColor);
+		_alphabetButton = new GameObject[size];
+	}
 
-		_alphabetButton = new GameObject[numAlphabet];
-
-		for (int i = 0; i < numAlphabet; i++)
-		{
-			int alphabet = i;
-			_alphabetButton[i] = Instantiate(_alphabetButtonPrefab);
-			_alphabetButton[i].transform.SetParent(_alphabetContent.transform);
-			_alphabetButton[i].transform.localScale= new Vector3(1, 1, 1);
-			_alphabetButton[i].transform.Find("Label").GetComponent<Text>().text = _level.GetAlphabetString(alphabet);
-			_alphabetButton[i].GetComponent<Button>().onClick.AddListener(delegate { OnAlphabetButtonPressed(alphabet); });
-		}
+	public void AddAlphabet(int color, int alphabet, int star)
+	{
+		_alphabetButton[alphabet] = Instantiate(_alphabetButtonPrefab);
+		_alphabetButton[alphabet].transform.SetParent(_alphabetContent.transform);
+		_alphabetButton[alphabet].transform.localScale = new Vector3(1, 1, 1);
+		_alphabetButton[alphabet].GetComponent<Image>().sprite = _alphabetButtonSprite[color];
+		_alphabetButton[alphabet].transform.Find("Alphabet").GetComponent<Text>().text = _level.GetAlphabetString(alphabet);
+		_alphabetButton[alphabet].transform.Find("StarCurrent").GetComponent<Text>().text = star.ToString();
+		_alphabetButton[alphabet].GetComponent<Button>().onClick.AddListener(delegate { OnAlphabetButtonPressed(alphabet); });
 	}
 
 	public void OnAlphabetButtonPressed(int alphabet)
 	{
 		_logic.DoAlphabetButtonPressed(alphabet);
+	}
+
+	// Top
+
+	public Sprite[] _topColorSprite;
+
+	private GameObject _topColorPanel;
+	private Text _topColorText;
+
+	private GameObject _topAlphabetAPanel;
+	private GameObject _topAlphabetBPanel;
+	private GameObject _topAlphabetCPanel;
+
+	private void FindTopGameObject()
+	{
+		_topColorPanel = GameObject.Find("/Canvas/Top/Color");
+		_topColorText = GameObject.Find("/Canvas/Top/Color/Label").GetComponent<Text>();
+
+		_topAlphabetAPanel = GameObject.Find("/Canvas/Top/Alphabet/A");
+		_topAlphabetBPanel = GameObject.Find("/Canvas/Top/Alphabet/B");
+		_topAlphabetCPanel = GameObject.Find("/Canvas/Top/Alphabet/C");
+	}
+
+	public void SetTopColor(int color)
+	{
+		_topColorPanel.GetComponent<Image>().sprite = _topColorSprite[color];
+		_topColorText.text = _level.GetColorString(color);
+	}
+
+	public void SetTopAlphabet(int alphabet)
+	{
+		string str = _level.GetAlphabetString(alphabet);
+
+		_topAlphabetAPanel.SetActive(false);
+		_topAlphabetBPanel.SetActive(false);
+		_topAlphabetCPanel.SetActive(false);
+
+		if (str == "A")
+		{
+			_topAlphabetAPanel.SetActive(true);
+		}
+		else if (str == "B")
+		{
+			_topAlphabetBPanel.SetActive(true);
+		}
+		else if (str == "C")
+		{
+			_topAlphabetCPanel.SetActive(true);
+		}
 	}
 
 	// Back
@@ -60,15 +108,6 @@ public class AlphabetMenuUI : MonoBehaviour
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
 		FindAlphabetGameObjects();
+		FindTopGameObject();
 	}
-
-	private void Start()
-	{
-		SetupAlphabet();
-	}
-
-	private void Update()
-	{
-	}
-
 }

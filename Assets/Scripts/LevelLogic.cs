@@ -779,29 +779,42 @@ public class LevelLogic : MonoBehaviour
 			}
 
 			int moveCount = GetSquareMoveCount();
-
 			_ui.SetTopMoveCurrent(moveCount);
-
 			if (moveCount > _data.GetLevelMove(_menuColor, _menuAlphabet, _menuMap))
 			{
 				_data.SetLevelMove(_menuColor, _menuAlphabet, _menuMap, moveCount);
 				_ui.SetTopMoveBest(moveCount);
 			}
 
-			_ui.SetEnableControlButton(false);
-			_ui.SetActiveWinPanel(true);
-			_ui.SetWinStar(star);
+			int nextColor = _menuColor;
+			int nextAlphabet = _menuAlphabet;
+			int nextMap = _menuMap + 1;
 
-			if ((_menuColor >= _level.GetNumColor() - 1) &&
-					(_menuAlphabet >= _level.GetNumAlphabet(_menuColor) - 1) &&
-					(_menuMap >= _level.GetNumMap(_menuColor, _menuAlphabet) - 1))
+			if (nextMap >= _level.GetNumMap(_menuColor, _menuAlphabet))
+			{
+				nextMap = 0;
+				nextAlphabet += 1;
+			}
+
+			if (nextAlphabet >= _level.GetNumAlphabet(_menuColor))
+			{
+				nextAlphabet = 0;
+				nextColor += 1;
+			}
+
+			if (nextColor >= _level.GetNumColor())
 			{
 				_ui.SetInteractableWinNextButton(false);
 			}
 			else
 			{
+				_data.SetLevelLock(nextColor, nextAlphabet, nextMap, 0);
 				_ui.SetInteractableWinNextButton(true);
 			}
+
+			_ui.SetEnableControlButton(false);
+			_ui.SetActiveWinPanel(true);
+			_ui.SetWinStar(star);
 
 			_touchState = TouchState.WIN;
 		}

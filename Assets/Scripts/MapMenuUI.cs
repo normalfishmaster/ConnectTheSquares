@@ -23,52 +23,6 @@ public class MapMenuUI : MonoBehaviour
 	{
 		_mapContent = GameObject.Find("/Canvas/Map/Viewport/Content");
 	}
-/*
-	private void SetupMap()
-	{
-		int menuColor = _data.GetMenuColor();
-		int menuAlphabet = _data.GetMenuAlphabet();
-		int numMap = _level.GetNumMap(menuColor, menuAlphabet);
-
-		_mapButton = new GameObject[numMap];
-
-		for (int i = 0; i < numMap; i++)
-		{
-			int map = i;
-			int locked = _data.GetLevelLock(menuColor, menuAlphabet, map);
-			int star = _data.GetLevelStar(menuColor, menuAlphabet, map);
-
-			if (locked == 1)
-			{
-				_mapButton[map] = Instantiate(_mapButtonLockedPrefab);
-				_mapButton[map].GetComponent<Button>().interactable = false;
-			}
-			else
-			{
-				_mapButton[map] = Instantiate(_mapButtonUnlockedPrefab);
-				_mapButton[map].GetComponent<Button>().interactable = true;
-				_mapButton[map].GetComponent<Image>().sprite = _mapButtonUnlockedSprite[menuColor];
-
-		                for (int j = 0; j < 3; j++)
-                		{
-		                        if (j < star)
-                		        {
-						_mapButton[map].transform.Find("Star" + j).GetComponent<Image>().sprite = _mapButtonStarSprite;
-		                        }
-                		        else
-		                        {
-						break;
-		                        }
-                		}
-			}
-
-			_mapButton[i].transform.SetParent(_mapContent.transform);
-			_mapButton[i].transform.localScale= new Vector3(1, 1, 1);
-			_mapButton[i].transform.Find("Label").GetComponent<Text>().text = _level.GetMapString(map);
-			_mapButton[i].GetComponent<Button>().onClick.AddListener(delegate { OnMapButtonPressed(map); });
-		}
-	}
-*/
 
 	public void SetMapSize(int size)
 	{
