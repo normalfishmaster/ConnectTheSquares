@@ -34,7 +34,7 @@ public class AlphabetMenuUI : MonoBehaviour
 		_alphabetButton[alphabet].transform.localScale = new Vector3(1, 1, 1);
 		_alphabetButton[alphabet].GetComponent<Image>().sprite = _alphabetButtonSprite[color];
 		_alphabetButton[alphabet].transform.Find("Alphabet").GetComponent<Text>().text = _level.GetAlphabetString(alphabet);
-		_alphabetButton[alphabet].transform.Find("StarCurrent").GetComponent<Text>().text = star.ToString();
+		_alphabetButton[alphabet].transform.Find("Star").GetComponent<Text>().text = star.ToString() + " / 180";
 		_alphabetButton[alphabet].GetComponent<Button>().onClick.AddListener(delegate { OnAlphabetButtonPressed(alphabet); });
 	}
 
