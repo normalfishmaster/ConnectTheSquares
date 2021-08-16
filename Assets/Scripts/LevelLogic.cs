@@ -764,10 +764,18 @@ public class LevelLogic : MonoBehaviour
 				star = 2;
 			}
 
-			if (star > _data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap))
+			int currentStar = _data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap);
+
+			if (star > currentStar)
 			{
 				_ui.SetTopStar(star);
 				_data.SetLevelStar(_menuColor, _menuAlphabet, _menuMap, star);
+
+				int currentAlphabetStar = _data.GetAlphabetStar(_menuColor, _menuAlphabet);
+				_data.SetAlphabetStar(_menuColor, _menuAlphabet, currentAlphabetStar + (star - currentStar));
+
+				int currentColorStar = _data.GetColorStar(_menuColor);
+				_data.SetColorStar(_menuColor, currentColorStar + (star - currentStar));
 			}
 
 			if (_touchHint)

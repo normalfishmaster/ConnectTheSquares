@@ -47,7 +47,7 @@ public class MapMenuLogic : MonoBehaviour
 
 	public void DoBackButtonPressed()
 	{
-		SceneManager.LoadScene("AlphabetMenuScene");
+		SceneManager.LoadScene("LevelMenuScene");
 	}
 
 	// Unity Lifecycle
