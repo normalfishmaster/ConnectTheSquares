@@ -48,7 +48,7 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void DoFrontLevelsButtonPressed()
 	{
-		SceneManager.LoadScene("ColorMenuScene");
+		SceneManager.LoadScene("LevelMenuScene");
 	}
 
 	public void DoFrontSettingsButtonPressed()

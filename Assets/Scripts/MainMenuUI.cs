@@ -13,12 +13,13 @@ public class MainMenuUI : MonoBehaviour
 	private Button _frontLevelsButton;
 	private Button _frontSettingsButton;
 	private Button _frontStoreButton;
-	private Button _frontLeaderboardButton;
-	private Button _frontNoAdsButton;
-	private Button _frontLanguageButton;
 	private Button _frontDailyRewardsButton;
 
 	private Text _frontContinueText;
+
+	private Button _frontLeaderboardButton;
+	private Button _frontNoAdsButton;
+	private Button _frontLanguageButton;
 
 	private void FindFrontGameObjects()
 	{
@@ -26,12 +27,14 @@ public class MainMenuUI : MonoBehaviour
 		_frontLevelsButton = GameObject.Find("/Canvas/Front/Levels").GetComponent<Button>();
 		_frontSettingsButton = GameObject.Find("/Canvas/Front/Settings").GetComponent<Button>();
 		_frontStoreButton = GameObject.Find("/Canvas/Front/Store").GetComponent<Button>();
-		_frontLeaderboardButton = GameObject.Find("/Canvas/Front/Leaderboard").GetComponent<Button>();
-		_frontNoAdsButton = GameObject.Find("/Canvas/Front/NoAds").GetComponent<Button>();
-		_frontLanguageButton = GameObject.Find("/Canvas/Front/Language").GetComponent<Button>();
-		_frontDailyRewardsButton = GameObject.Find("/Canvas/Front/DailyRewards").GetComponent<Button>();
 
 		_frontContinueText = GameObject.Find("/Canvas/Front/Continue/Text").GetComponent<Text>();
+
+		_frontDailyRewardsButton = GameObject.Find("/Canvas/DailyRewards").GetComponent<Button>();
+
+		_frontLeaderboardButton = GameObject.Find("/Canvas/Bottom/Leaderboard").GetComponent<Button>();
+		_frontNoAdsButton = GameObject.Find("/Canvas/Bottom/NoAds").GetComponent<Button>();
+		_frontLanguageButton = GameObject.Find("/Canvas/Bottom/Language").GetComponent<Button>();
 	}
 
 	public void SetEnableFrontButtons(bool enable)
