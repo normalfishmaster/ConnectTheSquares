@@ -13,13 +13,12 @@ public class MapMenuUI : MonoBehaviour
 
 	public GameObject _mapButtonLockedPrefab;
 	public GameObject _mapButtonUnlockedPrefab;
-	public Sprite[] _mapButtonUnlockedSprite;
 	public Sprite _mapButtonStarSprite;
 
 	private GameObject _mapContent;
 	private GameObject[] _mapButton;
 
-	private void FindMapGameObjects()
+	private void FindMapGameObject()
 	{
 		_mapContent = GameObject.Find("/Canvas/Map/Viewport/Content");
 	}
@@ -29,7 +28,7 @@ public class MapMenuUI : MonoBehaviour
 		_mapButton = new GameObject[size];
 	}
 
-	public void AddMap(int color, int alphabet, int map, int locked, int star)
+	public void AddMap(int map, int locked, int star)
 	{
 		if (locked == 1)
 		{
@@ -40,7 +39,6 @@ public class MapMenuUI : MonoBehaviour
 		{
 			_mapButton[map] = Instantiate(_mapButtonUnlockedPrefab);
 			_mapButton[map].GetComponent<Button>().interactable = true;
-			_mapButton[map].GetComponent<Image>().sprite = _mapButtonUnlockedSprite[color];
 
 	                for (int j = 0; j < 3; j++)
                		{
@@ -68,51 +66,16 @@ public class MapMenuUI : MonoBehaviour
 
 	// Top
 
-	public Sprite[] _topColorSprite;
-
-	private GameObject _topColorPanel;
-	private Text _topColorText;
-
-	private GameObject _topAlphabetAPanel;
-	private GameObject _topAlphabetBPanel;
-	private GameObject _topAlphabetCPanel;
+	private Text _topLabelText;
 
 	private void FindTopGameObject()
 	{
-		_topColorPanel = GameObject.Find("/Canvas/Top/Color");
-		_topColorText = GameObject.Find("/Canvas/Top/Color/Label").GetComponent<Text>();
-
-		_topAlphabetAPanel = GameObject.Find("/Canvas/Top/Alphabet/A");
-		_topAlphabetBPanel = GameObject.Find("/Canvas/Top/Alphabet/B");
-		_topAlphabetCPanel = GameObject.Find("/Canvas/Top/Alphabet/C");
+		_topLabelText = GameObject.Find("/Canvas/Top/Label").GetComponent<Text>();
 	}
 
-	public void SetTopColor(int color)
+	public void SetTopLabel(int color, int alphabet)
 	{
-		_topColorPanel.GetComponent<Image>().sprite = _topColorSprite[color];
-		_topColorText.text = _level.GetColorString(color);
-	}
-
-	public void SetTopAlphabet(int alphabet)
-	{
-		string str = _level.GetAlphabetString(alphabet);
-
-		_topAlphabetAPanel.SetActive(false);
-		_topAlphabetBPanel.SetActive(false);
-		_topAlphabetCPanel.SetActive(false);
-
-		if (str == "A")
-		{
-			_topAlphabetAPanel.SetActive(true);
-		}
-		else if (str == "B")
-		{
-			_topAlphabetBPanel.SetActive(true);
-		}
-		else if (str == "C")
-		{
-			_topAlphabetCPanel.SetActive(true);
-		}
+		_topLabelText.text = _level.GetColorString(color) + " - " + _level.GetAlphabetString(alphabet);
 	}
 
 	// Back
@@ -130,7 +93,7 @@ public class MapMenuUI : MonoBehaviour
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
-		FindMapGameObjects();
+		FindMapGameObject();
 		FindTopGameObject();
 	}
 }

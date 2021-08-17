@@ -25,7 +25,7 @@ public class MapMenuLogic : MonoBehaviour
 			int locked = _data.GetLevelLock(_menuColor, _menuAlphabet, i);
 			int star = _data.GetLevelStar(_menuColor, _menuAlphabet, i);
 
-			_ui.AddMap(_menuColor, _menuAlphabet, i, locked, star);
+			_ui.AddMap(i, locked, star);
 		}
 	}
 
@@ -39,8 +39,7 @@ public class MapMenuLogic : MonoBehaviour
 
 	public void SetupTop()
 	{
-		_ui.SetTopColor(_menuColor);
-		_ui.SetTopAlphabet(_menuAlphabet);
+		_ui.SetTopLabel(_menuColor, _menuAlphabet);
 	}
 
 	// UI - Back
