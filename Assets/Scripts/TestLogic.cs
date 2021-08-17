@@ -167,7 +167,7 @@ public class TestLogic : MonoBehaviour
 
 					if (i == 0 && j == 0 && k == 0)
 					{
-						_data.SetLevelLock(0, 0, 0, 1);
+						_data.SetLevelLock(0, 0, 0, 0);
 					}
 
 					_data.InitLevelStar(i, j, k);
