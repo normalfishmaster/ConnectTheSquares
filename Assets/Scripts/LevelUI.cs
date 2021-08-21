@@ -10,9 +10,6 @@ public class LevelUI : MonoBehaviour
 
 	// Top
 
-	public Sprite[] _topColorSprite;
-
-	private GameObject _topColorPanel;
 	private Text _topColorText;
 
 	private GameObject _topAlphabetAPanel;
@@ -29,7 +26,6 @@ public class LevelUI : MonoBehaviour
 
 	private void FindTopGameObject()
 	{
-		_topColorPanel = GameObject.Find("/Canvas/Top/Color");
 		_topColorText = GameObject.Find("/Canvas/Top/Color/Label").GetComponent<Text>();
 
 		_topAlphabetAPanel = GameObject.Find("/Canvas/Top/Alphabet/A");
@@ -52,7 +48,6 @@ public class LevelUI : MonoBehaviour
 
 	public void SetTopColor(int color)
 	{
-		_topColorPanel.GetComponent<Image>().sprite = _topColorSprite[color];
 		_topColorText.text = _level.GetColorString(color);
 	}
 
