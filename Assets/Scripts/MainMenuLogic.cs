@@ -14,34 +14,42 @@ public class MainMenuLogic : MonoBehaviour
 
 	private void SetupFront()
 	{
-		if (_data.GetLastColor() == _data.GetLastColorDefault())
+		string label = "Start";
+		int loadColor = 0;
+		int loadAlphabet = 0;
+		int loadMap = 0;
+
+		if (_data.GetLastColor() != _data.GetLastColorDefault())
 		{
-			_ui.SetFrontContinueText("Start");
+			label = "Continue";
+			loadColor = _data.GetLastColor();
+			loadAlphabet = _data.GetLastAlphabet();
+			loadMap = _data.GetLastMap();
+
 		}
-		else
-		{
-			_ui.SetFrontContinueText("Continue");
-		}
+
+		_ui.SetFrontContinueLabel(label);
+		_ui.SetFrontContinueLevel(loadColor, loadAlphabet, loadMap);
 
 		_ui.SetEnableFrontButtons(true);
 	}
 
 	public void DoFrontContinueButtonPressed()
 	{
-		int color = 0;
-		int alphabet = 0;
-		int map = 0;
+		int loadColor = 0;
+		int loadAlphabet = 0;
+		int loadMap = 0;
 
 		if (_data.GetLastColor() != _data.GetLastColorDefault())
 		{
-			color = _data.GetLastColor();
-			alphabet = _data.GetLastAlphabet();
-			map = _data.GetLastMap();
+			loadColor = _data.GetLastColor();
+			loadAlphabet = _data.GetLastAlphabet();
+			loadMap = _data.GetLastMap();
 		}
 
-		_data.SetMenuColor(color);
-		_data.SetMenuAlphabet(alphabet);
-		_data.SetMenuMap(map);
+		_data.SetMenuColor(loadColor);
+		_data.SetMenuAlphabet(loadAlphabet);
+		_data.SetMenuMap(loadMap);
 
 		SceneManager.LoadScene("LevelScene");
 	}

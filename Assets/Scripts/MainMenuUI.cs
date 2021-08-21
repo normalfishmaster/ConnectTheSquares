@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class MainMenuUI : MonoBehaviour
 {
 	private MainMenuLogic _logic;
+	private LevelManager _level;
 
 	// Front
 
@@ -15,7 +16,8 @@ public class MainMenuUI : MonoBehaviour
 	private Button _frontStoreButton;
 	private Button _frontDailyRewardsButton;
 
-	private Text _frontContinueText;
+	private Text _frontContinueLabelText;
+	private Text _frontContinueLevelText;
 
 	private Button _frontLeaderboardButton;
 	private Button _frontNoAdsButton;
@@ -28,7 +30,8 @@ public class MainMenuUI : MonoBehaviour
 		_frontSettingsButton = GameObject.Find("/Canvas/Front/Settings").GetComponent<Button>();
 		_frontStoreButton = GameObject.Find("/Canvas/Front/Store").GetComponent<Button>();
 
-		_frontContinueText = GameObject.Find("/Canvas/Front/Continue/Text").GetComponent<Text>();
+		_frontContinueLabelText = GameObject.Find("/Canvas/Front/Continue/Label").GetComponent<Text>();
+		_frontContinueLevelText = GameObject.Find("/Canvas/Front/Continue/Level").GetComponent<Text>();
 
 		_frontDailyRewardsButton = GameObject.Find("/Canvas/DailyRewards").GetComponent<Button>();
 
@@ -48,9 +51,15 @@ public class MainMenuUI : MonoBehaviour
 		_frontDailyRewardsButton.enabled = enable;
 	}
 
-	public void SetFrontContinueText(string text)
+	public void SetFrontContinueLabel(string text)
 	{
-		_frontContinueText.text = text;
+		_frontContinueLabelText.text = text;
+	}
+
+	public void SetFrontContinueLevel(int color, int alphabet, int map)
+	{
+		string str = _level.GetColorString(color) + " - " + _level.GetAlphabetString(alphabet) + " - " + _level.GetMapString(map);
+		_frontContinueLevelText.text = str;
 	}
 
 	public void OnFrontContinueButtonPressed()
@@ -122,6 +131,7 @@ public class MainMenuUI : MonoBehaviour
 	private void Awake()
 	{
 		_logic = GameObject.Find("MainMenuLogic").GetComponent<MainMenuLogic>();
+		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
 		FindFrontGameObjects();
 		FindExitGameObjects();
