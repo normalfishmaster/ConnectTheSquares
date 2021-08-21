@@ -283,6 +283,11 @@ public class LevelUI : MonoBehaviour
 		_logic.DoPauseMenuButtonPressed();
 	}
 
+	public void OnPauseHintAdButtonPressed()
+	{
+		_logic.DoPauseHintAdButtonPressed();
+	}
+
 	public void OnPauseResumeButtonPressed()
 	{
 		_logic.DoPauseResumeButtonPressed();

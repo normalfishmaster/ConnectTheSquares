@@ -550,15 +550,17 @@ public class LevelLogic : MonoBehaviour
 		START_TO_END,
 		START_TO_PRE_END,
 		PRE_END_TO_END,
+		PAUSE,
 		WIN,
 		LOAD_AD,
 		AD,
+		PAUSE_LOAD_AD,
+		PAUSE_AD,
 		WIN_LOAD_AD,
 		WIN_AD,
 	};
 
 	private TouchState _touchState;
-	private bool _touchPause;
 	private bool _touchHint;
 
 	private Vector2 _touchStartPos;
@@ -569,7 +571,6 @@ public class LevelLogic : MonoBehaviour
 	private void SetupTouch()
 	{
 		_touchState = TouchState.NONE;
-		_touchPause = false;
 		_touchHint = false;
 	}
 
@@ -605,11 +606,6 @@ public class LevelLogic : MonoBehaviour
 
 	private void DoTouchStateNone()
 	{
-		if (_touchPause == true)
-		{
-			return;
-		}
-
 		if (Input.touchCount != 1)
 		{
 			_ui.SetInteractableControlButton(true);
@@ -828,6 +824,10 @@ public class LevelLogic : MonoBehaviour
 		}
 	}
 
+	private void DoTouchStatePause()
+	{
+	}
+
 	private void DoTouchStateWin()
 	{
 	}
@@ -867,6 +867,44 @@ public class LevelLogic : MonoBehaviour
 		{
 			_ui.SetActiveAdAbortPanel(true);
 			_touchState = TouchState.NONE;
+		}
+	}
+
+	private void DoTouchStatePauseLoadAd()
+	{
+		_ad.ClearRewardStatus();
+
+		if (_ad.ShowRewarded() == 0)
+		{
+			_ui.SetActiveAdLoadPanel(false);
+			_touchState = TouchState.PAUSE_AD;
+		}
+		else if (Time.time - _touchLoadAdStartTime > MAX_AD_LOAD_TIME)
+		{
+			_ui.SetActiveAdLoadPanel(false);
+			_ui.SetActiveAdFailPanel(true);
+			_touchState = TouchState.PAUSE;
+		}
+	}
+
+	private void DoTouchStatePauseAd()
+	{
+		AdManager.RewardStatus status = _ad.GetRewardStatus();
+
+		if (status == AdManager.RewardStatus.SUCCESS)
+		{
+			_data.SetHint(_data.GetHint() + 1);
+			_ui.SetControlHintCount(_data.GetHint());
+			_ui.SetActiveControlHintAdPanel(false);
+			_ui.SetActiveControlHintOnPanel(false);
+			_ui.SetActiveControlHintOffPanel(true);
+			_ui.SetActiveAdSuccessPanel(true);
+			_touchState = TouchState.PAUSE;
+		}
+		else if (status == AdManager.RewardStatus.FAIL)
+		{
+			_ui.SetActiveAdAbortPanel(true);
+			_touchState = TouchState.PAUSE;
 		}
 	}
 
@@ -955,7 +993,7 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoControlPauseButtonPressed()
 	{
-		_touchPause = true;
+		_touchState = TouchState.PAUSE;
 		_ui.SetEnableControlButton(false);
 		_ui.SetActivePausePanel(true);
 	}
@@ -1038,11 +1076,19 @@ public class LevelLogic : MonoBehaviour
 		SceneManager.LoadScene("MapMenuScene");
 	}
 
+	public void DoPauseHintAdButtonPressed()
+	{
+		_ui.SetActivePausePanel(false);
+		_ui.SetActiveAdLoadPanel(true);
+		_touchLoadAdStartTime = Time.time;
+		_touchState = TouchState.PAUSE_LOAD_AD;
+	}
+
 	public void DoPauseResumeButtonPressed()
 	{
 		_ui.SetActivePausePanel(false);
 		_ui.SetEnableControlButton(true);
-		_touchPause = false;
+		_touchState = TouchState.NONE;
 	}
 
 	// UI - Win
@@ -1120,6 +1166,10 @@ public class LevelLogic : MonoBehaviour
 		{
 			_ui.SetActiveWinPanel(true);
 		}
+		else if (_touchState == TouchState.PAUSE)
+		{
+			_ui.SetActivePausePanel(true);
+		}
 	}
 
 	// UI - AdAbort
@@ -1137,6 +1187,10 @@ public class LevelLogic : MonoBehaviour
 		{
 			_ui.SetActiveWinPanel(true);
 		}
+		else if (_touchState == TouchState.PAUSE)
+		{
+			_ui.SetActivePausePanel(true);
+		}
 	}
 
 	// UI - AdFail
@@ -1153,6 +1207,10 @@ public class LevelLogic : MonoBehaviour
 		if (_touchState == TouchState.WIN)
 		{
 			_ui.SetActiveWinPanel(true);
+		}
+		else if (_touchState == TouchState.PAUSE)
+		{
+			_ui.SetActivePausePanel(true);
 		}
 	}
 
@@ -1219,6 +1277,10 @@ public class LevelLogic : MonoBehaviour
 		{
 			DoTouchStatePreEndToEnd();
 		}
+		else if (_touchState == TouchState.PAUSE)
+		{
+			DoTouchStatePause();
+		}
 		else if (_touchState == TouchState.WIN)
 		{
 			DoTouchStateWin();
@@ -1230,6 +1292,14 @@ public class LevelLogic : MonoBehaviour
 		else if (_touchState == TouchState.AD)
 		{
 			DoTouchStateAd();
+		}
+		else if (_touchState == TouchState.PAUSE_LOAD_AD)
+		{
+			DoTouchStatePauseLoadAd();
+		}
+		else if (_touchState == TouchState.PAUSE_AD)
+		{
+			DoTouchStatePauseAd();
 		}
 		else if (_touchState == TouchState.WIN_LOAD_AD)
 		{
