@@ -1096,7 +1096,6 @@ public class LevelLogic : MonoBehaviour
 	private void SetupWin()
 	{
 		_ui.SetActiveWinPanel(false);
-		_ui.SetWinColor(_menuColor);
 	}
 
 	public void DoWinHintButtonPressed()
