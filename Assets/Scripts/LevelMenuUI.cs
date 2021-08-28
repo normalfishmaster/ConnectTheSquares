@@ -29,6 +29,34 @@ public class LevelMenuUI : MonoBehaviour
 		_levelButton = new GameObject[size];
 	}
 
+	private void TweenPercentage(GameObject button, string name, float val)
+	{
+		Transform transform = button.transform.Find(name);
+		GameObject gameObject = transform.gameObject;
+
+		transform.localScale = Vector3.one;
+
+		LeanTween.cancel(gameObject);
+
+		LeanTween.scale(gameObject, Vector3.one * 1.3f, 2.0f).setEasePunch();
+
+		LeanTween.value(gameObject, 0.0f, val, 0.75f).setOnUpdate
+		(
+			(float val) =>
+			{
+				if (val == 0.0f || val == 100.0f)
+				{
+					transform.GetComponent<Text>().text = val.ToString("0") + "%";
+				}
+				else
+				{
+					transform.GetComponent<Text>().text = val.ToString("0.0") + "%";
+				}
+			}
+		)
+		.setEase(LeanTweenType.easeOutSine);
+	}
+
 	public void AddLevelSingle(int color, string moves, float percentA)
 	{
 		float pctA = (float)(Math.Floor((double)(percentA * 100)) / 100);
@@ -38,8 +66,9 @@ public class LevelMenuUI : MonoBehaviour
 		_levelButton[color].transform.localScale = new Vector3(1, 1, 1);
 		_levelButton[color].transform.Find("Color/Label").GetComponent<Text>().text = _level.GetColorString(color);
 		_levelButton[color].transform.Find("Moves").GetComponent<Text>().text = moves;
-		_levelButton[color].transform.Find("PercentA").GetComponent<Text>().text = pctA.ToString() + "%";
 		_levelButton[color].transform.Find("A").GetComponent<Button>().onClick.AddListener(delegate { OnLevelButtonPressed(color, 0); });
+
+		TweenPercentage(_levelButton[color], "PercentA", pctA);
 	}
 
 	public void AddALevelTriple(int color, string moves, float percentA, float percentB, float percentC)
@@ -53,40 +82,22 @@ public class LevelMenuUI : MonoBehaviour
 		_levelButton[color].transform.localScale = new Vector3(1, 1, 1);
 		_levelButton[color].transform.Find("Color/Label").GetComponent<Text>().text = _level.GetColorString(color);
 		_levelButton[color].transform.Find("Moves").GetComponent<Text>().text = moves;
-		_levelButton[color].transform.Find("PercentA").GetComponent<Text>().text = pctA.ToString() + "%";
-		_levelButton[color].transform.Find("PercentB").GetComponent<Text>().text = pctB.ToString() + "%";
-		_levelButton[color].transform.Find("PercentC").GetComponent<Text>().text = pctC.ToString() + "%";
 		_levelButton[color].transform.Find("A").GetComponent<Button>().onClick.AddListener(delegate { OnLevelButtonPressed(color, 0); });
 		_levelButton[color].transform.Find("B").GetComponent<Button>().onClick.AddListener(delegate { OnLevelButtonPressed(color, 1); });
 		_levelButton[color].transform.Find("C").GetComponent<Button>().onClick.AddListener(delegate { OnLevelButtonPressed(color, 2); });
+
+		pctA = 10f;
+		pctB = 100f;
+		pctC = 100f;
+
+		TweenPercentage(_levelButton[color], "PercentA", pctA);
+		TweenPercentage(_levelButton[color], "PercentB", pctB);
+		TweenPercentage(_levelButton[color], "PercentC", pctC);
 	}
 
 	public void OnLevelButtonPressed(int color, int alphabet)
 	{
 		_logic.DoLevelButtonPressed(color, alphabet);
-	}
-
-	// Top
-
-	public Sprite[] _topColorSprite;
-
-	private GameObject _topColorPanel;
-	private Text _topColorText;
-
-	private GameObject _topAlphabetAPanel;
-	private GameObject _topAlphabetBPanel;
-	private GameObject _topAlphabetCPanel;
-
-	private void FindTopGameObject()
-	{
-/*
-		_topColorPanel = GameObject.Find("/Canvas/Top/Color");
-		_topColorText = GameObject.Find("/Canvas/Top/Color/Label").GetComponent<Text>();
-
-		_topAlphabetAPanel = GameObject.Find("/Canvas/Top/Alphabet/A");
-		_topAlphabetBPanel = GameObject.Find("/Canvas/Top/Alphabet/B");
-		_topAlphabetCPanel = GameObject.Find("/Canvas/Top/Alphabet/C");
-*/
 	}
 
 	// Back
@@ -104,7 +115,6 @@ public class LevelMenuUI : MonoBehaviour
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
-		FindTopGameObject();
 		FindLevelGameObject();
 	}
 }
