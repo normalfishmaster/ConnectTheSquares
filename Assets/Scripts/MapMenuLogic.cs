@@ -27,6 +27,8 @@ public class MapMenuLogic : MonoBehaviour
 
 			_ui.AddMap(i, locked, star);
 		}
+
+		_ui.AnimateMapEnter();
 	}
 
 	public void DoMapButtonPressed(int map)

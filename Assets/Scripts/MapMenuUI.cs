@@ -15,11 +15,13 @@ public class MapMenuUI : MonoBehaviour
 	public GameObject _mapButtonUnlockedPrefab;
 	public Sprite _mapButtonStarSprite;
 
+	private GameObject _mapPanel;
 	private GameObject _mapContent;
 	private GameObject[] _mapButton;
 
 	private void FindMapGameObject()
 	{
+		_mapPanel = GameObject.Find("/Canvas/Map");
 		_mapContent = GameObject.Find("/Canvas/Map/Viewport/Content");
 	}
 
@@ -57,6 +59,18 @@ public class MapMenuUI : MonoBehaviour
 		_mapButton[map].transform.localScale = new Vector3(1, 1, 1);
 		_mapButton[map].transform.Find("Label").GetComponent<Text>().text = _level.GetMapString(map);
 		_mapButton[map].GetComponent<Button>().onClick.AddListener(delegate { OnMapButtonPressed(map); });
+	}
+
+	public void AnimateMapEnter()
+	{
+		RectTransform rt = (RectTransform)_mapPanel.transform;
+		Vector3 pos = rt.anchoredPosition;
+		float height = rt.rect.height;
+
+		rt.anchoredPosition = new Vector3(pos.x, pos.y - height, pos.z);
+
+		LeanTween.cancel(_mapPanel);
+		LeanTween.moveLocalY(_mapPanel, 0.0f, 0.25f).setEase(LeanTweenType.easeOutQuad);
 	}
 
 	public void OnMapButtonPressed(int map)
