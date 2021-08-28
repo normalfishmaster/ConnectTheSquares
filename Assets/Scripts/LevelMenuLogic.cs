@@ -48,6 +48,8 @@ public class LevelMenuLogic : MonoBehaviour
 				_ui.AddALevelTriple(i, moves, (starA / starATotal) * 100.0f, (starB / starBTotal) * 100.0f, (starC / starCTotal) * 100.0f);
 			}
 		}
+
+		_ui.AnimateLevelEnter();
 	}
 
 	public void DoLevelButtonPressed(int color, int alphabet)

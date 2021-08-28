@@ -12,6 +12,7 @@ public class LevelMenuUI : MonoBehaviour
 
 	// Level
 
+	public GameObject _levelPanel;
 	public GameObject _levelButtonSinglePrefab;
 	public GameObject _levelButtonTriplePrefab;
 
@@ -21,6 +22,7 @@ public class LevelMenuUI : MonoBehaviour
 
 	private void FindLevelGameObject()
         {
+		_levelPanel = GameObject.Find("/Canvas/Level");
 		_levelContent = GameObject.Find("/Canvas/Level/Viewport/Content");
 	}
 
@@ -38,20 +40,13 @@ public class LevelMenuUI : MonoBehaviour
 
 		LeanTween.cancel(gameObject);
 
-		LeanTween.scale(gameObject, Vector3.one * 1.3f, 2.0f).setEasePunch();
+		LeanTween.scale(gameObject, Vector3.one * 1.25f, 2.0f).setEasePunch();
 
-		LeanTween.value(gameObject, 0.0f, val, 0.75f).setOnUpdate
+		LeanTween.value(gameObject, 0.0f, val, 0.5f).setOnUpdate
 		(
 			(float val) =>
 			{
-				if (val == 0.0f || val == 100.0f)
-				{
-					transform.GetComponent<Text>().text = val.ToString("0") + "%";
-				}
-				else
-				{
-					transform.GetComponent<Text>().text = val.ToString("0.0") + "%";
-				}
+				transform.GetComponent<Text>().text = val.ToString("0") + "%";
 			}
 		)
 		.setEase(LeanTweenType.easeOutSine);
@@ -94,6 +89,18 @@ public class LevelMenuUI : MonoBehaviour
 		TweenPercentage(_levelButton[color], "PercentB", pctB);
 		TweenPercentage(_levelButton[color], "PercentC", pctC);
 	}
+
+        public void AnimateLevelEnter()
+        {
+                RectTransform rt = (RectTransform)_levelPanel.transform;
+                Vector3 pos = rt.anchoredPosition;
+                float height = rt.rect.height;
+
+                rt.anchoredPosition = new Vector3(pos.x, pos.y - height, pos.z);
+
+                LeanTween.cancel(_levelPanel);
+                LeanTween.moveLocalY(_levelPanel, 0.0f, 0.25f).setEase(LeanTweenType.easeOutQuad);
+        }
 
 	public void OnLevelButtonPressed(int color, int alphabet)
 	{
