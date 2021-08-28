@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelLogic : MonoBehaviour
 {
@@ -38,7 +39,9 @@ public class LevelLogic : MonoBehaviour
 	// Map
 
 	private GameObject[,] _mapWall;
+	private GameObject[,] _mapWallShadow;
 	private GameObject[] _mapSquare;
+	private GameObject[] _mapSquareShadow;
 
 	private float _mapXOffset;
 	private float _mapYOffset;
@@ -48,22 +51,26 @@ public class LevelLogic : MonoBehaviour
 		// Wall
 
 		_mapWall = new GameObject[NUM_X, NUM_Y];
+		_mapWallShadow = new GameObject[NUM_X, NUM_Y];
 
 		for (int i = 0; i < NUM_X; i++)
 		{
 			for (int j = 0; j < NUM_Y; j++)
 			{
-				_mapWall[i, j] = GameObject.Find("Map/Wall/X" + i + "/Y" + j);
+				_mapWall[i, j] = GameObject.Find("/Map/Wall/X" + i + "/Y" + j);
+				_mapWallShadow[i, j] = GameObject.Find("/Map/WallShadow/X" + i + "/Y" + j);
 			}
 		}
 
 		// Square
 
 		_mapSquare = new GameObject[Level.NUM_SQUARE];
+		_mapSquareShadow = new GameObject[Level.NUM_SQUARE];
 
 		for (int i = 0; i < NUM_SQUARE; i++)
 		{
-			_mapSquare[i] = GameObject.Find("Map/Square/S" + i);
+			_mapSquare[i] = GameObject.Find("/Map/Square/S" + i);
+			_mapSquareShadow[i] = GameObject.Find("/Map/SquareShadow/S" + i);
 		}
 	}
 
@@ -73,14 +80,17 @@ public class LevelLogic : MonoBehaviour
 		_mapYOffset = -3.5f;
 	}
 
-	private void DisableMapWall(int x, int y)
-	{
-		_mapWall[x, y].GetComponent<SpriteRenderer>().color = new Color(140, 140, 140);
-	}
-
 	private void SetMapSquarePos(int square, float x, float y)
 	{
-		_mapSquare[square].transform.position = new Vector2(_mapXOffset + x, _mapYOffset + y);
+		Vector2 pos = new Vector2(_mapXOffset + x, _mapYOffset + y);
+		_mapSquare[square].transform.position = pos;
+		_mapSquareShadow[square].transform.position = pos;
+	}
+
+	private void DisableMapWall(int x, int y)
+	{
+		_mapWall[x, y].SetActive(false);
+		_mapWallShadow[x, y].SetActive(false);
 	}
 
 	// Physics
@@ -127,18 +137,16 @@ public class LevelLogic : MonoBehaviour
 			{
 				sbyte tile = _physicsMapLayout[i, j] = _levelMap._layout[Level.NUM_ROW - j - 1, i];
 
-				if (Level.IsEmpty(tile))
-				{
-					DisableMapWall(i, j);
-				}
-				else if (Level.IsSquare(tile))
+				if (Level.IsSquare(tile))
 				{
 					int n = Level.GetSquareNumber(tile);
-
 					_physicsSquarePos[n] = new Vector2(i, j);
 					_physicsPosStack[n].Push(new Vector2(i, j));
+                                        SetMapSquarePos(n, i, j);
+                                }
 
-					SetMapSquarePos(n, i, j);
+				if (Level.IsSquare(tile) || Level.IsEmpty(tile))
+				{
 					DisableMapWall(i, j);
 				}
 			}
@@ -542,15 +550,17 @@ public class LevelLogic : MonoBehaviour
 		START_TO_END,
 		START_TO_PRE_END,
 		PRE_END_TO_END,
+		PAUSE,
 		WIN,
 		LOAD_AD,
 		AD,
+		PAUSE_LOAD_AD,
+		PAUSE_AD,
 		WIN_LOAD_AD,
 		WIN_AD,
 	};
 
 	private TouchState _touchState;
-	private bool _touchPause;
 	private bool _touchHint;
 
 	private Vector2 _touchStartPos;
@@ -561,7 +571,6 @@ public class LevelLogic : MonoBehaviour
 	private void SetupTouch()
 	{
 		_touchState = TouchState.NONE;
-		_touchPause = false;
 		_touchHint = false;
 	}
 
@@ -597,13 +606,9 @@ public class LevelLogic : MonoBehaviour
 
 	private void DoTouchStateNone()
 	{
-		if (_touchPause == true)
-		{
-			return;
-		}
-
 		if (Input.touchCount != 1)
 		{
+			_ui.SetInteractableControlButton(true);
 			return;
 		}
 
@@ -611,12 +616,14 @@ public class LevelLogic : MonoBehaviour
 
 		if (touch.phase != TouchPhase.Began)
 		{
+			_ui.SetInteractableControlButton(true);
 			return;
 		}
 
 		// Check if user is touching any UI elements
 		if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
 		{
+			_ui.SetInteractableControlButton(true);
 			return;
 		}
 
@@ -633,6 +640,7 @@ public class LevelLogic : MonoBehaviour
 
 		if (Input.touchCount != 1)
 		{
+			_ui.SetInteractableControlButton(true);
 			_touchState = TouchState.NONE;
 			return;
 		}
@@ -641,6 +649,7 @@ public class LevelLogic : MonoBehaviour
 
 		if (touch.phase == TouchPhase.Began)
 		{
+			_ui.SetInteractableControlButton(true);
 			_touchState = TouchState.NONE;
 			return;
 		}
@@ -685,13 +694,13 @@ public class LevelLogic : MonoBehaviour
 
 			if (IsSquareEndPosWinning() == true)
 			{
-				_ui.SetInteractableControlButton(true);
+				_ui.SetInteractableControlButton(false);
 				_touchState = TouchState.START_TO_PRE_END;
 				return;
 			}
 			else
 			{
-				_ui.SetInteractableControlButton(true);
+				_ui.SetInteractableControlButton(false);
 				_touchState = TouchState.START_TO_END;
 				return;
 			}
@@ -715,7 +724,7 @@ public class LevelLogic : MonoBehaviour
 		{
 			int move = GetSquareMoveCount();
 
-			_ui.SetTopMoveUser(move);
+			_ui.SetTopMoveCurrent(move);
 			_ui.SetInteractableControlButton(true);
 
 			if (_touchHint)
@@ -751,36 +760,72 @@ public class LevelLogic : MonoBehaviour
 				star = 2;
 			}
 
-			if (star > _data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap))
+			int currentStar = _data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap);
+
+			if (star > currentStar)
 			{
-				_ui.SetTopStarObtained(star);
+				_ui.SetTopStar(star);
 				_data.SetLevelStar(_menuColor, _menuAlphabet, _menuMap, star);
+
+				int currentAlphabetStar = _data.GetAlphabetStar(_menuColor, _menuAlphabet);
+				_data.SetAlphabetStar(_menuColor, _menuAlphabet, currentAlphabetStar + (star - currentStar));
+
+				int currentColorStar = _data.GetColorStar(_menuColor);
+				_data.SetColorStar(_menuColor, currentColorStar + (star - currentStar));
 			}
 
 			if (_touchHint)
 			{
-				_ui.SetActiveHintPanel(false);
 				_touchHint = false;
+				_ui.SetActiveControlHintOnPanel(false);
+				_ui.SetActiveControlHintOffPanel(true);
+				_ui.SetActiveHintPanel(false);
 			}
 
-			_ui.SetTopMoveUser(GetSquareMoveCount());
-			_ui.SetEnableControlButton(false);
-			_ui.SetActiveWinPanel(true);
-			_ui.SetWinStar(star);
+			int moveCount = GetSquareMoveCount();
+			_ui.SetTopMoveCurrent(moveCount);
+			if (moveCount > _data.GetLevelMove(_menuColor, _menuAlphabet, _menuMap))
+			{
+				_data.SetLevelMove(_menuColor, _menuAlphabet, _menuMap, moveCount);
+				_ui.SetTopMoveBest(moveCount);
+			}
 
-			if ((_menuColor >= _level.GetNumColor() - 1) &&
-					(_menuAlphabet >= _level.GetNumAlphabet(_menuColor) - 1) &&
-					(_menuMap >= _level.GetNumMap(_menuColor, _menuAlphabet) - 1))
+			int nextColor = _menuColor;
+			int nextAlphabet = _menuAlphabet;
+			int nextMap = _menuMap + 1;
+
+			if (nextMap >= _level.GetNumMap(_menuColor, _menuAlphabet))
+			{
+				nextMap = 0;
+				nextAlphabet += 1;
+			}
+
+			if (nextAlphabet >= _level.GetNumAlphabet(_menuColor))
+			{
+				nextAlphabet = 0;
+				nextColor += 1;
+			}
+
+			if (nextColor >= _level.GetNumColor())
 			{
 				_ui.SetInteractableWinNextButton(false);
 			}
 			else
 			{
+				_data.SetLevelLock(nextColor, nextAlphabet, nextMap, 0);
 				_ui.SetInteractableWinNextButton(true);
 			}
 
+			_ui.SetEnableControlButton(false);
+			_ui.SetActiveWinPanel(true);
+			_ui.SetWinStar(star);
+
 			_touchState = TouchState.WIN;
 		}
+	}
+
+	private void DoTouchStatePause()
+	{
 	}
 
 	private void DoTouchStateWin()
@@ -812,8 +857,9 @@ public class LevelLogic : MonoBehaviour
 		{
 			_data.SetHint(_data.GetHint() + 1);
 			_ui.SetControlHintCount(_data.GetHint());
-			_ui.SetActiveControlAd(false);
-			_ui.SetActiveControlHint(true);
+			_ui.SetActiveControlHintAdPanel(false);
+			_ui.SetActiveControlHintOnPanel(false);
+			_ui.SetActiveControlHintOffPanel(true);
 			_ui.SetActiveAdSuccessPanel(true);
 			_touchState = TouchState.NONE;
 		}
@@ -821,6 +867,44 @@ public class LevelLogic : MonoBehaviour
 		{
 			_ui.SetActiveAdAbortPanel(true);
 			_touchState = TouchState.NONE;
+		}
+	}
+
+	private void DoTouchStatePauseLoadAd()
+	{
+		_ad.ClearRewardStatus();
+
+		if (_ad.ShowRewarded() == 0)
+		{
+			_ui.SetActiveAdLoadPanel(false);
+			_touchState = TouchState.PAUSE_AD;
+		}
+		else if (Time.time - _touchLoadAdStartTime > MAX_AD_LOAD_TIME)
+		{
+			_ui.SetActiveAdLoadPanel(false);
+			_ui.SetActiveAdFailPanel(true);
+			_touchState = TouchState.PAUSE;
+		}
+	}
+
+	private void DoTouchStatePauseAd()
+	{
+		AdManager.RewardStatus status = _ad.GetRewardStatus();
+
+		if (status == AdManager.RewardStatus.SUCCESS)
+		{
+			_data.SetHint(_data.GetHint() + 1);
+			_ui.SetControlHintCount(_data.GetHint());
+			_ui.SetActiveControlHintAdPanel(false);
+			_ui.SetActiveControlHintOnPanel(false);
+			_ui.SetActiveControlHintOffPanel(true);
+			_ui.SetActiveAdSuccessPanel(true);
+			_touchState = TouchState.PAUSE;
+		}
+		else if (status == AdManager.RewardStatus.FAIL)
+		{
+			_ui.SetActiveAdAbortPanel(true);
+			_touchState = TouchState.PAUSE;
 		}
 	}
 
@@ -849,8 +933,9 @@ public class LevelLogic : MonoBehaviour
 		{
 			_data.SetHint(_data.GetHint() + 1);
 			_ui.SetControlHintCount(_data.GetHint());
-			_ui.SetActiveControlAd(false);
-			_ui.SetActiveControlHint(true);
+			_ui.SetActiveControlHintAdPanel(false);
+			_ui.SetActiveControlHintOnPanel(false);
+			_ui.SetActiveControlHintOffPanel(true);
 			_ui.SetActiveAdSuccessPanel(true);
 			_touchState = TouchState.WIN;
 		}
@@ -865,12 +950,15 @@ public class LevelLogic : MonoBehaviour
 
 	private void SetupTop()
 	{
-		_ui.SetTopNameFull(_menuColor, _menuAlphabet, _menuMap);
+		_ui.SetTopColor(_menuColor);
+		_ui.SetTopAlphabet(_menuAlphabet);
+		_ui.SetTopMap(_menuMap);
 
-		_ui.SetTopStarObtained(_data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap));
+		_ui.SetTopMoveCurrent(0);
+		_ui.SetTopMoveTarget(_levelMap._hint.Length);
+		_ui.SetTopMoveBest(_data.GetLevelMove(_menuColor, _menuAlphabet, _menuMap));
 
-		_ui.SetTopMoveUser(0);
-		_ui.SetTopMoveBest(_levelMap._hint.Length);
+		_ui.SetTopStar(_data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap));
 	}
 
 	// UI - Hint
@@ -884,26 +972,28 @@ public class LevelLogic : MonoBehaviour
 
 	private void SetupControl()
 	{
-		_ui.SetControlHintCount(_data.GetHint());
-
 		_ui.SetEnableControlButton(true);
 		_ui.SetInteractableControlButton(true);
 
+		_ui.SetControlHintCount(_data.GetHint());
+
 		if (_data.GetHint() > 0)
 		{
-			_ui.SetActiveControlAd(false);
-			_ui.SetActiveControlHint(true);
+			_ui.SetActiveControlHintAdPanel(false);
+			_ui.SetActiveControlHintOnPanel(false);
+			_ui.SetActiveControlHintOffPanel(true);
 		}
 		else
 		{
-			_ui.SetActiveControlHint(false);
-			_ui.SetActiveControlAd(true);
+			_ui.SetActiveControlHintAdPanel(true);
+			_ui.SetActiveControlHintOnPanel(false);
+			_ui.SetActiveControlHintOffPanel(false);
 		}
 	}
 
 	public void DoControlPauseButtonPressed()
 	{
-		_touchPause = true;
+		_touchState = TouchState.PAUSE;
 		_ui.SetEnableControlButton(false);
 		_ui.SetActivePausePanel(true);
 	}
@@ -913,7 +1003,7 @@ public class LevelLogic : MonoBehaviour
 		UndoSquarePos();
 
 		int move = GetSquareMoveCount();
-		_ui.SetTopMoveUser(move);
+		_ui.SetTopMoveCurrent(move);
 
 		if (_touchHint == true)
 		{
@@ -926,7 +1016,7 @@ public class LevelLogic : MonoBehaviour
 		ResetSquarePos();
 
 		int move = GetSquareMoveCount();
-		_ui.SetTopMoveUser(move);
+		_ui.SetTopMoveCurrent(move);
 
 		if (_touchHint == true)
 		{
@@ -934,38 +1024,44 @@ public class LevelLogic : MonoBehaviour
 		}
 	}
 
-	public void DoControlHintButtonPressed()
-	{
-		if (_touchHint == true)
-		{
-			_touchHint = false;
-			_ui.SetActiveHintPanel(false);
-		}
-		else
-		{
-			_touchHint = true;
-
-			if (_hintUsed == false)
-			{
-				_data.SetHint(_data.GetHint() - 1);
-				_ui.SetControlHintCount(_data.GetHint());
-				_hintUsed = true;
-			}
-
-			ResetSquarePos();
-			int move = GetSquareMoveCount();
-
-			_ui.SetTopMoveUser(move);
-			_ui.SetActiveHintPanel(true);
-			_ui.SetHintDirection(_levelMap._hint[move]);
-		}
-	}
-
-	public void DoControlAdButtonPressed()
+	public void DoControlHintAdButtonPressed()
 	{
 		_ui.SetActiveAdLoadPanel(true);
 		_touchLoadAdStartTime = Time.time;
 		_touchState = TouchState.LOAD_AD;
+	}
+
+	public void DoControlHintOnButtonPressed()
+	{
+		_touchHint = false;
+		_ui.SetActiveControlHintOnPanel(false);
+		_ui.SetActiveControlHintOffPanel(true);
+		_ui.SetActiveHintPanel(false);
+	}
+
+	public void DoControlHintOffButtonPressed()
+	{
+		_touchHint = true;
+
+
+
+		_ui.SetActiveControlHintOffPanel(false);
+		_ui.SetActiveControlHintOnPanel(true);
+
+		if (_hintUsed == false)
+		{
+			_data.SetHint(_data.GetHint() - 1);
+			_ui.SetControlHintCount(_data.GetHint());
+			_hintUsed = true;
+		}
+
+		ResetSquarePos();
+		int move = GetSquareMoveCount();
+
+		_ui.SetTopMoveCurrent(move);
+		_ui.SetActiveHintPanel(true);
+		_ui.SetHintDirection(_levelMap._hint[move]);
+
 	}
 
 	// UI - Pause
@@ -980,11 +1076,19 @@ public class LevelLogic : MonoBehaviour
 		SceneManager.LoadScene("MapMenuScene");
 	}
 
+	public void DoPauseHintAdButtonPressed()
+	{
+		_ui.SetActivePausePanel(false);
+		_ui.SetActiveAdLoadPanel(true);
+		_touchLoadAdStartTime = Time.time;
+		_touchState = TouchState.PAUSE_LOAD_AD;
+	}
+
 	public void DoPauseResumeButtonPressed()
 	{
 		_ui.SetActivePausePanel(false);
 		_ui.SetEnableControlButton(true);
-		_touchPause = false;
+		_touchState = TouchState.NONE;
 	}
 
 	// UI - Win
@@ -994,7 +1098,7 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetActiveWinPanel(false);
 	}
 
-	public void DoWinAdButtonPressed()
+	public void DoWinHintButtonPressed()
 	{
 		_ui.SetActiveWinPanel(false);
 		_ui.SetActiveAdLoadPanel(true);
@@ -1061,6 +1165,10 @@ public class LevelLogic : MonoBehaviour
 		{
 			_ui.SetActiveWinPanel(true);
 		}
+		else if (_touchState == TouchState.PAUSE)
+		{
+			_ui.SetActivePausePanel(true);
+		}
 	}
 
 	// UI - AdAbort
@@ -1078,6 +1186,10 @@ public class LevelLogic : MonoBehaviour
 		{
 			_ui.SetActiveWinPanel(true);
 		}
+		else if (_touchState == TouchState.PAUSE)
+		{
+			_ui.SetActivePausePanel(true);
+		}
 	}
 
 	// UI - AdFail
@@ -1094,6 +1206,10 @@ public class LevelLogic : MonoBehaviour
 		if (_touchState == TouchState.WIN)
 		{
 			_ui.SetActiveWinPanel(true);
+		}
+		else if (_touchState == TouchState.PAUSE)
+		{
+			_ui.SetActivePausePanel(true);
 		}
 	}
 
@@ -1160,6 +1276,10 @@ public class LevelLogic : MonoBehaviour
 		{
 			DoTouchStatePreEndToEnd();
 		}
+		else if (_touchState == TouchState.PAUSE)
+		{
+			DoTouchStatePause();
+		}
 		else if (_touchState == TouchState.WIN)
 		{
 			DoTouchStateWin();
@@ -1171,6 +1291,14 @@ public class LevelLogic : MonoBehaviour
 		else if (_touchState == TouchState.AD)
 		{
 			DoTouchStateAd();
+		}
+		else if (_touchState == TouchState.PAUSE_LOAD_AD)
+		{
+			DoTouchStatePauseLoadAd();
+		}
+		else if (_touchState == TouchState.PAUSE_AD)
+		{
+			DoTouchStatePauseAd();
 		}
 		else if (_touchState == TouchState.WIN_LOAD_AD)
 		{

@@ -42,8 +42,24 @@ public class DataManager : MonoBehaviour
 	public string GetLevelLockKey(int color, int alphabet, int map)		{ return "LevelLockKey" + "_" + color + "_" + alphabet + "_" + map;				}
 	public int    GetLevelLockDefault()					{ return 1;											}
 
+	public string GetLevelMoveKey(int color, int alphabet, int map)		{ return "levelMoveKey" + "_" + color + "_" + alphabet + "_" + map;				}
+	public int    GetLevelMoveDefault()					{ return 0;											}
+
 	public string GetLevelStarKey(int color, int alphabet, int map)		{ return "LevelStarKey" + "_" + color + "_" + alphabet + "_" + map;				}
 	public int    GetLevelStarDefault()					{ return 0;											}
+
+	public string GetAlphabetStarKey(int color, int alphabet)		{ return "LevelAlphabetStarKey" + "_" + color + "_" + alphabet;					}
+	public int    GetAlphabetStarDefault()					{ return 0;											}
+
+	public string GetAlphabetStarTotalKey(int color, int alphabet)		{ return "LevelAlphabetStarTotalKey" + "_" + color + "_" + alphabet;				}
+	public int    GetAlphabetStarTotalDefault()				{ return 0;											}
+
+	public string GetColorStarKey(int color)				{ return "LevelColorStarKey" + "_" + color;							}
+	public int    GetColorStarDefault()					{ return 0;											}
+
+	public string GetColorStarTotalKey(int color)				{ return "LevelColorStarTotalKey" + "_" + color;						}
+	public int    GetColorStarTotalDefault()				{ return 0;											}
+
 
 	// Operations by Data Type
 
@@ -97,10 +113,35 @@ public class DataManager : MonoBehaviour
 	public void  SetLevelLock(int color, int alphabet, int map, int value)	{        PlayerPrefs.SetInt(GetLevelLockKey(color, alphabet, map), value);			}
 	public void  InitLevelLock(int color, int alphabet, int map)		{        PlayerPrefs.SetInt(GetLevelLockKey(color, alphabet, map), GetLevelLockDefault());	}
 
+	public bool  CheckLevelMove(int color, int alphabet, int map)		{ return PlayerPrefs.HasKey(GetLevelMoveKey(color, alphabet, map));				}
+	public int   GetLevelMove(int color, int alphabet, int map)		{ return PlayerPrefs.GetInt(GetLevelMoveKey(color, alphabet, map));				}
+	public void  SetLevelMove(int color, int alphabet, int map, int value)	{        PlayerPrefs.SetInt(GetLevelMoveKey(color, alphabet, map), value);			}
+	public void  InitLevelMove(int color, int alphabet, int map)		{        PlayerPrefs.SetInt(GetLevelMoveKey(color, alphabet, map), GetLevelMoveDefault());	}
+
 	public bool  CheckLevelStar(int color, int alphabet, int map)		{ return PlayerPrefs.HasKey(GetLevelStarKey(color, alphabet, map));				}
 	public int   GetLevelStar(int color, int alphabet, int map)		{ return PlayerPrefs.GetInt(GetLevelStarKey(color, alphabet, map));				}
 	public void  SetLevelStar(int color, int alphabet, int map, int value)	{        PlayerPrefs.SetInt(GetLevelStarKey(color, alphabet, map), value);			}
 	public void  InitLevelStar(int color, int alphabet, int map)		{        PlayerPrefs.SetInt(GetLevelStarKey(color, alphabet, map), GetLevelStarDefault());	}
+
+	public bool  CheckAlphabetStar(int color, int alphabet)			{ return PlayerPrefs.HasKey(GetAlphabetStarKey(color, alphabet));				}
+	public int   GetAlphabetStar(int color, int alphabet)			{ return PlayerPrefs.GetInt(GetAlphabetStarKey(color, alphabet));				}
+	public void  SetAlphabetStar(int color, int alphabet, int value)	{        PlayerPrefs.SetInt(GetAlphabetStarKey(color, alphabet), value);			}
+	public void  InitAlphabetStar(int color, int alphabet)			{        PlayerPrefs.SetInt(GetAlphabetStarKey(color, alphabet), GetAlphabetStarDefault());	}
+
+	public bool  CheckAlphabetStarTotal(int color, int alphabet)		{ return PlayerPrefs.HasKey(GetAlphabetStarTotalKey(color, alphabet));				}
+	public int   GetAlphabetStarTotal(int color, int alphabet)		{ return PlayerPrefs.GetInt(GetAlphabetStarTotalKey(color, alphabet));				}
+	public void  SetAlphabetStarTotal(int color, int alphabet, int value)	{        PlayerPrefs.SetInt(GetAlphabetStarTotalKey(color, alphabet), value);			}
+	public void  InitAlphabetStarTotal(int color, int alphabet)		{        PlayerPrefs.SetInt(GetAlphabetStarTotalKey(color, alphabet), GetAlphabetStarTotalDefault()); }
+
+	public bool  CheckColorStar(int color)					{ return PlayerPrefs.HasKey(GetColorStarKey(color));						}
+	public int   GetColorStar(int color)					{ return PlayerPrefs.GetInt(GetColorStarKey(color));						}
+	public void  SetColorStar(int color, int value)				{        PlayerPrefs.SetInt(GetColorStarKey(color), value);					}
+	public void  InitColorStar(int color)					{        PlayerPrefs.SetInt(GetColorStarKey(color), GetAlphabetStarDefault());			}
+
+	public bool  CheckColorStarTotal(int color)				{ return PlayerPrefs.HasKey(GetColorStarTotalKey(color));					}
+	public int   GetColorStarTotal(int color)				{ return PlayerPrefs.GetInt(GetColorStarTotalKey(color));					}
+	public void  SetColorStarTotal(int color, int value)			{        PlayerPrefs.SetInt(GetColorStarTotalKey(color), value);				}
+	public void  InitColorStarTotal(int color)				{        PlayerPrefs.SetInt(GetColorStarTotalKey(color), GetAlphabetStarTotalDefault());	}
 
 	// Check by Key
 
@@ -223,13 +264,55 @@ public class DataManager : MonoBehaviour
 						if (CheckLevelLock(i, j, k) == false)
 						{
 							InitLevelLock(i, j, k);
+
+							if (i == 0 && j == 0 && k == 0)
+							{
+								SetLevelLock(0, 0, 0, 0);
+							}
 						}
+
 						if (CheckLevelStar(i, j, k) == false)
 						{
 							InitLevelStar(i, j, k);
 						}
+
+						if (CheckLevelMove(i, j, k) == false)
+						{
+							InitLevelMove(i, j, k);
+						}
 					}
 				}
+			}
+
+			// Calculate Color and Alphabet Star as well as Totals
+
+			for (int i = 0; i < numColor; i++)
+			{
+				int numAlphabet = _level.GetNumAlphabet(i);
+				int starColorEarned = 0;
+				int starColorTotal = 0;
+
+				for (int j = 0; j < numAlphabet; j++)
+				{
+					int numMap = _level.GetNumMap(i, j);
+					int starAlphabetEarned = 0;
+					int starAlphabetTotal = 0;
+
+					for (int k = 0; k < numMap; k++)
+					{
+						starAlphabetEarned += GetLevelStar(i, j, k);
+						starAlphabetTotal += 3;
+					}
+
+					SetAlphabetStar(i, j, starAlphabetEarned);
+					SetAlphabetStarTotal(i, j, starAlphabetTotal);
+
+					starColorEarned += starAlphabetEarned;
+					starColorTotal += starAlphabetTotal;
+				}
+
+				SetColorStar(i, starColorEarned);
+				SetColorStarTotal(i, starColorTotal);
 			}
 
 			_initOnce = true;

@@ -14,41 +14,48 @@ public class MainMenuLogic : MonoBehaviour
 
 	private void SetupFront()
 	{
-		if (_data.GetLastColor() == _data.GetLastColorDefault())
+		string label = "Start";
+		int loadColor = 0;
+		int loadAlphabet = 0;
+		int loadMap = 0;
+
+		if (_data.GetLastColor() != _data.GetLastColorDefault())
 		{
-			_ui.SetFrontContinueText("Start");
-		}
-		else
-		{
-			_ui.SetFrontContinueText("Continue");
+			label = "Continue";
+			loadColor = _data.GetLastColor();
+			loadAlphabet = _data.GetLastAlphabet();
+			loadMap = _data.GetLastMap();
 		}
 
-		_ui.SetEnableFrontButtons(true);
+		_ui.SetFrontContinueLabel(label);
+		_ui.SetFrontContinueLevel(loadColor, loadAlphabet, loadMap);
+
+		_ui.SetEnableFrontButton(true);
 	}
 
 	public void DoFrontContinueButtonPressed()
 	{
-		int color = 0;
-		int alphabet = 0;
-		int map = 0;
+		int loadColor = 0;
+		int loadAlphabet = 0;
+		int loadMap = 0;
 
 		if (_data.GetLastColor() != _data.GetLastColorDefault())
 		{
-			color = _data.GetLastColor();
-			alphabet = _data.GetLastAlphabet();
-			map = _data.GetLastMap();
+			loadColor = _data.GetLastColor();
+			loadAlphabet = _data.GetLastAlphabet();
+			loadMap = _data.GetLastMap();
 		}
 
-		_data.SetMenuColor(color);
-		_data.SetMenuAlphabet(alphabet);
-		_data.SetMenuMap(map);
+		_data.SetMenuColor(loadColor);
+		_data.SetMenuAlphabet(loadAlphabet);
+		_data.SetMenuMap(loadMap);
 
 		SceneManager.LoadScene("LevelScene");
 	}
 
 	public void DoFrontLevelsButtonPressed()
 	{
-		SceneManager.LoadScene("ColorMenuScene");
+		SceneManager.LoadScene("LevelMenuScene");
 	}
 
 	public void DoFrontSettingsButtonPressed()
@@ -59,23 +66,40 @@ public class MainMenuLogic : MonoBehaviour
 	{
 	}
 
-	public void DoFrontLeaderboardButtonPressed()
-	{
-	}
-
-	public void DoFrontNoAdsButtonPressed()
-	{
-	}
-
-	public void DoFrontLanguageButtonPressed()
-	{
-	}
-
 	public void DoFrontDailyRewardsButtonPressed()
 	{
 	}
 
-	// UI Events - Exit
+	// UI - Bottom
+
+	private void SetupBottom()
+	{
+		#if (BUILD_ANDROID_DEBUG || BUILD_ANDROID_RELEASE)
+			_ui.SetActiveBottomGameCenterPanel(false);
+		#else
+			_ui.SetActiveBottomGooglePlayPanel(false);
+		#endif
+
+		_ui.SetEnableBottomButton(true);
+	}
+
+	public void DoBottomGooglePlayButtonPressed()
+	{
+	}
+
+	public void DoBottomGameCenterButtonPressed()
+	{
+	}
+
+	public void DoBottomNoAdsButtonPressed()
+	{
+	}
+
+	public void DoBottomLanguageButtonPressed()
+	{
+	}
+
+	// UI - Exit
 
 	private void SetupExit()
 	{
@@ -90,7 +114,8 @@ public class MainMenuLogic : MonoBehaviour
 	public void DoExitNoButtonPressed()
 	{
 		_ui.SetActiveExitPanel(false);
-		_ui.SetEnableFrontButtons(true);
+		_ui.SetEnableFrontButton(true);
+		_ui.SetEnableBottomButton(true);
 	}
 
 	// Unity Lifecycle
@@ -106,6 +131,7 @@ public class MainMenuLogic : MonoBehaviour
 	private void Start()
 	{
 		SetupFront();
+		SetupBottom();
 		SetupExit();
 	}
 
@@ -114,7 +140,8 @@ public class MainMenuLogic : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			_ui.SetActiveExitPanel(true);
-			_ui.SetEnableFrontButtons(false);
+			_ui.SetEnableFrontButton(false);
+			_ui.SetEnableBottomButton(false);
 		}
 	}
 }

@@ -10,54 +10,120 @@ public class LevelUI : MonoBehaviour
 
 	// Top
 
-	private Text _topNameFullText;
+	private Text _topColorText;
 
-	private Text _topStarObtainedText;
+	private GameObject _topAlphabetAPanel;
+	private GameObject _topAlphabetBPanel;
+	private GameObject _topAlphabetCPanel;
 
-	private Text _topMoveUserText;
+	private Text _topMapText;
+
+	private Text _topMoveCurrentText;
+	private Text _topMoveTargetText;
 	private Text _topMoveBestText;
+
+	private GameObject[] _topStarPanel;
 
 	private void FindTopGameObject()
 	{
-		_topNameFullText = GameObject.Find("/Canvas/Top/Name/Full").GetComponent<Text>();
+		_topColorText = GameObject.Find("/Canvas/Top/Color/Label").GetComponent<Text>();
 
-		_topStarObtainedText = GameObject.Find("/Canvas/Top/Star/Obtained").GetComponent<Text>();
+		_topAlphabetAPanel = GameObject.Find("/Canvas/Top/Alphabet/A");
+		_topAlphabetBPanel = GameObject.Find("/Canvas/Top/Alphabet/B");
+		_topAlphabetCPanel = GameObject.Find("/Canvas/Top/Alphabet/C");
 
-		_topMoveUserText = GameObject.Find("/Canvas/Top/Move/User").GetComponent<Text>();
+		_topMapText = GameObject.Find("/Canvas/Top/Map/Map").GetComponent<Text>();
+
+		_topMoveCurrentText = GameObject.Find("/Canvas/Top/Move/Current").GetComponent<Text>();
+		_topMoveTargetText = GameObject.Find("/Canvas/Top/Move/Target").GetComponent<Text>();
 		_topMoveBestText = GameObject.Find("/Canvas/Top/Move/Best").GetComponent<Text>();
+
+		_topStarPanel = new GameObject[3];
+
+		for (int i = 0; i < 3; i++)
+		{
+			_topStarPanel[i] = GameObject.Find("/Canvas/Top/Star/Star" + i);
+		}
 	}
 
-	public void SetTopNameFull(int color, int alphabet, int map)
+	public void SetTopColor(int color)
 	{
-		_topNameFullText.text = _level.GetColorString(color) +
-				" - " + _level.GetAlphabetString(alphabet) +
-				" - " + _level.GetMapString(map);
+		_topColorText.text = _level.GetColorString(color);
 	}
 
-	public void SetTopStarObtained(int star)
+	public void SetTopAlphabet(int alphabet)
 	{
-		_topStarObtainedText.text = star.ToString();
+		string str = _level.GetAlphabetString(alphabet);
+
+		_topAlphabetAPanel.SetActive(false);
+		_topAlphabetBPanel.SetActive(false);
+		_topAlphabetCPanel.SetActive(false);
+
+		if (str == "A")
+		{
+			_topAlphabetAPanel.SetActive(true);
+		}
+		else if (str == "B")
+		{
+			_topAlphabetBPanel.SetActive(true);
+		}
+		else if (str == "C")
+		{
+			_topAlphabetCPanel.SetActive(true);
+		}
 	}
 
-	public void SetTopMoveUser(int move)
+	public void SetTopMap(int map)
 	{
-		_topMoveUserText.text = move.ToString();
+		_topMapText.text = map.ToString();
 	}
 
-	public void SetTopMoveBest(int move)
+	public void SetTopMoveCurrent(int current)
 	{
-		_topMoveBestText.text = move.ToString();
+		_topMoveCurrentText.text = current.ToString();
+	}
+
+	public void SetTopMoveTarget(int target)
+	{
+		_topMoveTargetText.text = target.ToString();
+	}
+
+	public void SetTopMoveBest(int best)
+	{
+		_topMoveBestText.text = best.ToString();
+	}
+
+	public void SetTopStar(int star)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			if (i < star)
+			{
+				_topStarPanel[i].SetActive(true);
+			}
+			else
+			{
+				_topStarPanel[i].SetActive(false);
+			}
+		}
 	}
 
 	// Hint
 
 	private GameObject _hintPanel;
-	private Text _hintDirectionText;
+
+	private GameObject _hintUpPanel;
+	private GameObject _hintDownPanel;
+	private GameObject _hintLeftPanel;
+	private GameObject _hintRightPanel;
 
 	private void FindHintGameObject()
 	{
 		_hintPanel = GameObject.Find("/Canvas/Hint");
-		_hintDirectionText = GameObject.Find("/Canvas/Hint/Direction").GetComponent<Text>();
+		_hintUpPanel = GameObject.Find("/Canvas/Hint/Up");
+		_hintDownPanel = GameObject.Find("/Canvas/Hint/Down");
+		_hintLeftPanel = GameObject.Find("/Canvas/Hint/Left");
+		_hintRightPanel = GameObject.Find("/Canvas/Hint/Right");
 	}
 
 	public void SetActiveHintPanel(bool active)
@@ -67,67 +133,105 @@ public class LevelUI : MonoBehaviour
 
 	public void SetHintDirection(char direction)
 	{
-		_hintDirectionText.text = direction.ToString();
+		char directionUpper = char.ToUpper(direction);
+
+		_hintUpPanel.SetActive(false);
+		_hintDownPanel.SetActive(false);
+		_hintLeftPanel.SetActive(false);
+		_hintRightPanel.SetActive(false);
+
+		if (directionUpper == 'U')
+		{
+			_hintUpPanel.SetActive(true);
+		}
+		else if (directionUpper == 'D')
+		{
+			_hintDownPanel.SetActive(true);
+		}
+		else if (directionUpper == 'L')
+		{
+			_hintLeftPanel.SetActive(true);
+		}
+		else if (directionUpper == 'R')
+		{
+			_hintRightPanel.SetActive(true);
+		}
 	}
 
 	// Control
 
+	private Button _controlHintAdButton;
+	private Button _controlHintOnButton;
+	private Button _controlHintOffButton;
 	private Button _controlPauseButton;
 	private Button _controlUndoButton;
 	private Button _controlResetButton;
-	private Button _controlHintButton;
-	private Button _controlAdButton;
 
-	private GameObject _controlHint;
-	private GameObject _controlAd;
+	private GameObject _controlHintAdPanel;
+	private GameObject _controlHintOnPanel;
+	private GameObject _controlHintOffPanel;
 
-	private Text _controlHintText;
+	private Text _controlHintOnText;
+	private Text _controlHintOffText;
 
 	private void FindControlGameObject()
 	{
-		_controlPauseButton = GameObject.Find("/Canvas/Control/Pause").GetComponent<Button>();
-		_controlUndoButton = GameObject.Find("/Canvas/Control/Undo").GetComponent<Button>();
-		_controlResetButton = GameObject.Find("/Canvas/Control/Reset").GetComponent<Button>();
-		_controlHintButton = GameObject.Find("/Canvas/Control/Hint").GetComponent<Button>();
-		_controlAdButton = GameObject.Find("/Canvas/Control/Ad").GetComponent<Button>();
+		_controlHintAdButton = GameObject.Find("/Canvas/ControlL/HintAd/Button").GetComponent<Button>();
+		_controlHintOnButton = GameObject.Find("/Canvas/ControlL/HintOn/Button").GetComponent<Button>();
+		_controlHintOffButton = GameObject.Find("/Canvas/ControlL/HintOff/Button").GetComponent<Button>();
+		_controlPauseButton = GameObject.Find("/Canvas/ControlL/Pause/Button").GetComponent<Button>();
+		_controlUndoButton = GameObject.Find("/Canvas/ControlR/Undo/Button").GetComponent<Button>();
+		_controlResetButton = GameObject.Find("/Canvas/ControlR/Reset/Button").GetComponent<Button>();
 
-		_controlHint = GameObject.Find("/Canvas/Control/Hint");
-		_controlAd = GameObject.Find("/Canvas/Control/Ad");
+		_controlHintAdPanel = GameObject.Find("/Canvas/ControlL/HintAd");
+		_controlHintOffPanel = GameObject.Find("/Canvas/ControlL/HintOff");
+		_controlHintOnPanel = GameObject.Find("/Canvas/ControlL/HintOn");
 
-		_controlHintText = GameObject.Find("/Canvas/Control/Hint/Text").GetComponent<Text>();
+		_controlHintOnText = GameObject.Find("/Canvas/ControlL/HintOn/Label").GetComponent<Text>();
+		_controlHintOffText = GameObject.Find("/Canvas/ControlL/HintOff/Label").GetComponent<Text>();
 	}
 
 	public void SetEnableControlButton(bool enable)
 	{
+		_controlHintAdButton.enabled = enable;
+		_controlHintOnButton.enabled = enable;
+		_controlHintOffButton.enabled = enable;
 		_controlPauseButton.enabled = enable;
 		_controlUndoButton.enabled = enable;
 		_controlResetButton.enabled = enable;
-		_controlHintButton.enabled = enable;
-		_controlAdButton.enabled = enable;
 	}
 
 	public void SetInteractableControlButton(bool interactable)
 	{
+		_controlHintAdButton.interactable = interactable;
+		_controlHintOnButton.interactable = interactable;
+		_controlHintOffButton.interactable = interactable;
 		_controlPauseButton.interactable = interactable;
 		_controlUndoButton.interactable = interactable;
 		_controlResetButton.interactable = interactable;
-		_controlHintButton.interactable = interactable;
-		_controlAdButton.interactable = interactable;
 	}
 
-	public void SetActiveControlHint(bool active)
+	public void SetActiveControlHintAdPanel(bool active)
 	{
-		_controlHint.SetActive(active);
+		_controlHintAdPanel.SetActive(active);
 	}
 
-	public void SetActiveControlAd(bool active)
+	public void SetActiveControlHintOnPanel(bool active)
 	{
-		_controlAd.SetActive(active);
+		_controlHintOnPanel.SetActive(active);
+	}
+
+	public void SetActiveControlHintOffPanel(bool active)
+	{
+		_controlHintOffPanel.SetActive(active);
 	}
 
 	public void SetControlHintCount(int hint)
 	{
-		_controlHintText.text = "Hint\n(" + hint + ")";
+		string text = "Hint (" + hint + ")";
+
+		_controlHintOnText.text = text;
+		_controlHintOffText.text = text;
 	}
 
 	public void OnControlPauseButtonPressed()
@@ -145,14 +249,19 @@ public class LevelUI : MonoBehaviour
 		_logic.DoControlResetButtonPressed();
 	}
 
-	public void OnControlHintButtonPressed()
+	public void OnControlHintAdButtonPressed()
 	{
-		_logic.DoControlHintButtonPressed();
+		_logic.DoControlHintAdButtonPressed();
 	}
 
-	public void OnControlAdButtonPressed()
+	public void OnControlHintOnButtonPressed()
 	{
-		_logic.DoControlAdButtonPressed();
+		_logic.DoControlHintOnButtonPressed();
+	}
+
+	public void OnControlHintOffButtonPressed()
+	{
+		_logic.DoControlHintOffButtonPressed();
 	}
 
 	// Pause
@@ -174,6 +283,11 @@ public class LevelUI : MonoBehaviour
 		_logic.DoPauseMenuButtonPressed();
 	}
 
+	public void OnPauseHintAdButtonPressed()
+	{
+		_logic.DoPauseHintAdButtonPressed();
+	}
+
 	public void OnPauseResumeButtonPressed()
 	{
 		_logic.DoPauseResumeButtonPressed();
@@ -182,14 +296,22 @@ public class LevelUI : MonoBehaviour
 	// Win
 
 	private GameObject _winPanel;
-	private Text _winStarText;
+	private GameObject[] _winStarPanel;
+
 	private Button _winNextButton;
 
 	public void FindWinGameObject()
 	{
 		_winPanel = GameObject.Find("/Canvas/Win");
-		_winStarText = GameObject.Find("/Canvas/Win/Star").GetComponent<Text>();
-		_winNextButton = GameObject.Find("/Canvas/Win/Next").GetComponent<Button>();
+
+		_winStarPanel = new GameObject[3];
+
+		for (int i = 0; i < 3; i++)
+		{
+			_winStarPanel[i] = GameObject.Find("/Canvas/Win/Panel/Star/Star" + i);
+		}
+
+		_winNextButton = GameObject.Find("/Canvas/Win/Panel/Next/Button").GetComponent<Button>();
 	}
 
 	public void SetActiveWinPanel(bool active)
@@ -199,7 +321,17 @@ public class LevelUI : MonoBehaviour
 
 	public void SetWinStar(int star)
 	{
-		_winStarText.text = star.ToString();
+		for (int i = 0; i < 3; i++)
+		{
+			if (i < star)
+			{
+				_winStarPanel[i].SetActive(true);
+			}
+			else
+			{
+				_winStarPanel[i].SetActive(false);
+			}
+		}
 	}
 
 	public void SetInteractableWinNextButton(bool interactable)
@@ -207,9 +339,9 @@ public class LevelUI : MonoBehaviour
 		_winNextButton.interactable = interactable;
 	}
 
-	public void OnWinAdButtonPressed()
+	public void OnWinHintButtonPressed()
 	{
-		_logic.DoWinAdButtonPressed();
+		_logic.DoWinHintButtonPressed();
 	}
 
 	public void OnWinMenuButtonPressed()

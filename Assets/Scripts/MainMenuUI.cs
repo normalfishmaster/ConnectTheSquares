@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class MainMenuUI : MonoBehaviour
 {
 	private MainMenuLogic _logic;
+	private LevelManager _level;
 
 	// Front
 
@@ -13,41 +14,42 @@ public class MainMenuUI : MonoBehaviour
 	private Button _frontLevelsButton;
 	private Button _frontSettingsButton;
 	private Button _frontStoreButton;
-	private Button _frontLeaderboardButton;
-	private Button _frontNoAdsButton;
-	private Button _frontLanguageButton;
 	private Button _frontDailyRewardsButton;
 
-	private Text _frontContinueText;
+	private Text _frontContinueLabelText;
+	private Text _frontContinueLevelText;
 
-	private void FindFrontGameObjects()
+	private void FindFrontGameObject()
 	{
 		_frontContinueButton = GameObject.Find("/Canvas/Front/Continue").GetComponent<Button>();
 		_frontLevelsButton = GameObject.Find("/Canvas/Front/Levels").GetComponent<Button>();
 		_frontSettingsButton = GameObject.Find("/Canvas/Front/Settings").GetComponent<Button>();
 		_frontStoreButton = GameObject.Find("/Canvas/Front/Store").GetComponent<Button>();
-		_frontLeaderboardButton = GameObject.Find("/Canvas/Front/Leaderboard").GetComponent<Button>();
-		_frontNoAdsButton = GameObject.Find("/Canvas/Front/NoAds").GetComponent<Button>();
-		_frontLanguageButton = GameObject.Find("/Canvas/Front/Language").GetComponent<Button>();
-		_frontDailyRewardsButton = GameObject.Find("/Canvas/Front/DailyRewards").GetComponent<Button>();
 
-		_frontContinueText = GameObject.Find("/Canvas/Front/Continue/Text").GetComponent<Text>();
+		_frontContinueLabelText = GameObject.Find("/Canvas/Front/Continue/Label").GetComponent<Text>();
+		_frontContinueLevelText = GameObject.Find("/Canvas/Front/Continue/Level").GetComponent<Text>();
+
+		_frontDailyRewardsButton = GameObject.Find("/Canvas/DailyRewards").GetComponent<Button>();
 	}
 
-	public void SetEnableFrontButtons(bool enable)
+	public void SetEnableFrontButton(bool enable)
 	{
 		_frontContinueButton.enabled = enable;
 		_frontLevelsButton.enabled = enable;
 		_frontSettingsButton.enabled = enable;
 		_frontStoreButton.enabled = enable;
-		_frontLeaderboardButton.enabled = enable;
-		_frontNoAdsButton.enabled = enable;
 		_frontDailyRewardsButton.enabled = enable;
 	}
 
-	public void SetFrontContinueText(string text)
+	public void SetFrontContinueLabel(string text)
 	{
-		_frontContinueText.text = text;
+		_frontContinueLabelText.text = text;
+	}
+
+	public void SetFrontContinueLevel(int color, int alphabet, int map)
+	{
+		string str = _level.GetColorString(color) + " - " + _level.GetAlphabetString(alphabet) + " - " + _level.GetMapString(map);
+		_frontContinueLevelText.text = str;
 	}
 
 	public void OnFrontContinueButtonPressed()
@@ -70,31 +72,75 @@ public class MainMenuUI : MonoBehaviour
 		_logic.DoFrontStoreButtonPressed();
 	}
 
-	public void OnFrontLeaderboardButtonPressed()
-	{
-		_logic.DoFrontLeaderboardButtonPressed();
-	}
-
-	public void OnFrontNoAdsButtonPressed()
-	{
-		_logic.DoFrontNoAdsButtonPressed();
-	}
-
-	public void OnFrontLanguageButtonPressed()
-	{
-		_logic.DoFrontLanguageButtonPressed();
-	}
-
 	public void OnFrontDailyRewardsButtonPressed()
 	{
 		_logic.DoFrontDailyRewardsButtonPressed();
+	}
+
+
+	// Bottom
+
+	private GameObject _bottomGooglePlayPanel;
+	private GameObject _bottomGameCenterPanel;
+
+	private Button _bottomGooglePlayButton;
+	private Button _bottomGameCenterButton;
+	private Button _bottomNoAdsButton;
+	private Button _bottomLanguageButton;
+
+	private void FindBottomGameObject()
+	{
+		_bottomGooglePlayPanel = GameObject.Find("/Canvas/Bottom/GooglePlay");
+		_bottomGameCenterPanel = GameObject.Find("/Canvas/Bottom/GameCenter");
+
+		_bottomGooglePlayButton = GameObject.Find("/Canvas/Bottom/GooglePlay/Button").GetComponent<Button>();
+		_bottomGameCenterButton = GameObject.Find("/Canvas/Bottom/GameCenter/Button").GetComponent<Button>();
+		_bottomNoAdsButton = GameObject.Find("/Canvas/Bottom/NoAds/Button").GetComponent<Button>();
+		_bottomLanguageButton = GameObject.Find("/Canvas/Bottom/Language/Button").GetComponent<Button>();
+	}
+
+	public void SetActiveBottomGooglePlayPanel(bool active)
+	{
+		_bottomGooglePlayPanel.SetActive(active);
+	}
+
+	public void SetActiveBottomGameCenterPanel(bool active)
+	{
+		_bottomGameCenterPanel.SetActive(active);
+	}
+
+	public void SetEnableBottomButton(bool enable)
+	{
+		_bottomGooglePlayButton.enabled = enable;
+		_bottomGameCenterButton.enabled = enable;
+		_bottomNoAdsButton.enabled = enable;
+	}
+
+	public void OnBottomGooglePlayButtonPressed()
+	{
+		_logic.DoBottomGooglePlayButtonPressed();
+	}
+
+	public void OnBottomGameCenterButtonPressed()
+	{
+		_logic.DoBottomGameCenterButtonPressed();
+	}
+
+	public void OnBottomNoAdsButtonPressed()
+	{
+		_logic.DoBottomNoAdsButtonPressed();
+	}
+
+	public void OnBottomLanguageButtonPressed()
+	{
+		_logic.DoBottomLanguageButtonPressed();
 	}
 
 	// Exit
 
 	private GameObject _exitPanel;
 
-	private void FindExitGameObjects()
+	private void FindExitGameObject()
 	{
 		_exitPanel = GameObject.Find("/Canvas/Exit");
 	}
@@ -119,8 +165,10 @@ public class MainMenuUI : MonoBehaviour
 	private void Awake()
 	{
 		_logic = GameObject.Find("MainMenuLogic").GetComponent<MainMenuLogic>();
+		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
-		FindFrontGameObjects();
-		FindExitGameObjects();
+		FindFrontGameObject();
+		FindBottomGameObject();
+		FindExitGameObject();
         }
 }

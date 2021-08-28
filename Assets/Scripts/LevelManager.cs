@@ -6,7 +6,7 @@ public class LevelManager : MonoBehaviour
 {
 	private static LevelManager _instance = null;
 
-	private static int GREY   = 0;
+	private static int BROWN  = 0;
 	private static int BLUE   = 1;
 	private static int GREEN  = 2;
 	private static int YELLOW = 3;
@@ -18,11 +18,11 @@ public class LevelManager : MonoBehaviour
 
 	private static Dictionary<int, string> _tableColor = new Dictionary<int, string>()
 	{
-		{ GREY,   "Grey"   },
-		{ BLUE,   "Blue"   },
-		{ GREEN,  "Green"  },
-		{ YELLOW, "Yellow" },
-		{ RED,    "Red"    },
+		{ BROWN,  "Tutorial" },
+		{ BLUE,   "Easy"     },
+		{ GREEN,  "Medium"   },
+		{ YELLOW, "Hard"     },
+		{ RED,    "Expert"   },
 	};
 
 	private static Dictionary<int, string> _tableAlphabet = new Dictionary<int, string>()
@@ -34,12 +34,11 @@ public class LevelManager : MonoBehaviour
 
 	private static Dictionary<int, Level[]> _tableLevel = new Dictionary<int, Level[]>()
 	{
-		{ GREY,	  new Level[] { new LevelGreyA(),                                           } },
+		{ BROWN,  new Level[] { new LevelBrownA(),                                          } },
 		{ BLUE,	  new Level[] { new LevelBlueA(),   new LevelBlueB(),   new LevelBlueC(),   } },
 		{ GREEN,  new Level[] { new LevelGreenA(),  new LevelGreenB(),  new LevelGreenC(),  } },
 		{ YELLOW, new Level[] { new LevelYellowA(), new LevelYellowB(), new LevelYellowC(), } },
 		{ RED,	  new Level[] { new LevelRedA(),    new LevelRedB(),    new LevelRedC(),    } },
-
 	};
 
 	// Conversion
