@@ -31,7 +31,7 @@ public class LevelMenuUI : MonoBehaviour
 		_levelButton = new GameObject[size];
 	}
 
-	private void TweenPercentage(GameObject button, string name, float val)
+	private void AnimatePercentage(GameObject button, string name, float val)
 	{
 		Transform transform = button.transform.Find(name);
 		GameObject gameObject = transform.gameObject;
@@ -63,7 +63,7 @@ public class LevelMenuUI : MonoBehaviour
 		_levelButton[color].transform.Find("Moves").GetComponent<Text>().text = moves;
 		_levelButton[color].transform.Find("A").GetComponent<Button>().onClick.AddListener(delegate { OnLevelButtonPressed(color, 0); });
 
-		TweenPercentage(_levelButton[color], "PercentA", pctA);
+		AnimatePercentage(_levelButton[color], "PercentA", pctA);
 	}
 
 	public void AddALevelTriple(int color, string moves, float percentA, float percentB, float percentC)
@@ -85,9 +85,9 @@ public class LevelMenuUI : MonoBehaviour
 		pctB = 100f;
 		pctC = 100f;
 
-		TweenPercentage(_levelButton[color], "PercentA", pctA);
-		TweenPercentage(_levelButton[color], "PercentB", pctB);
-		TweenPercentage(_levelButton[color], "PercentC", pctC);
+		AnimatePercentage(_levelButton[color], "PercentA", pctA);
+		AnimatePercentage(_levelButton[color], "PercentB", pctB);
+		AnimatePercentage(_levelButton[color], "PercentC", pctC);
 	}
 
         public void AnimateLevelEnter()

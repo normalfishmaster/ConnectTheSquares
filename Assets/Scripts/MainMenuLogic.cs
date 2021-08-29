@@ -30,7 +30,23 @@ public class MainMenuLogic : MonoBehaviour
 		_ui.SetFrontContinueLabel(label);
 		_ui.SetFrontContinueLevel(loadColor, loadAlphabet, loadMap);
 
+		_ui.SetEnableFrontButton(false);
+		_ui.AnimateFrontEnter(EnableFrontButton);
+	}
+
+	private void EnableFrontButton()
+	{
 		_ui.SetEnableFrontButton(true);
+	}
+
+	private void LoadLevelScene()
+	{
+		SceneManager.LoadScene("LevelScene");
+	}
+
+	private void LoadLevelMenuScene()
+	{
+		SceneManager.LoadScene("LevelMenuScene");
 	}
 
 	public void DoFrontContinueButtonPressed()
@@ -50,12 +66,18 @@ public class MainMenuLogic : MonoBehaviour
 		_data.SetMenuAlphabet(loadAlphabet);
 		_data.SetMenuMap(loadMap);
 
-		SceneManager.LoadScene("LevelScene");
+		_ui.SetEnableFrontButton(false);
+		_ui.SetEnableBottomButton(false);
+
+		_ui.AnimateFrontExit(LoadLevelScene);
 	}
 
 	public void DoFrontLevelsButtonPressed()
 	{
-		SceneManager.LoadScene("LevelMenuScene");
+		_ui.SetEnableFrontButton(false);
+		_ui.SetEnableBottomButton(false);
+
+		_ui.AnimateFrontExit(LoadLevelMenuScene);
 	}
 
 	public void DoFrontSettingsButtonPressed()

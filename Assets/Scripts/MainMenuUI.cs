@@ -8,7 +8,16 @@ public class MainMenuUI : MonoBehaviour
 	private MainMenuLogic _logic;
 	private LevelManager _level;
 
+	public delegate void AnimateComplete();
+
 	// Front
+
+	private GameObject _canvasPanel;
+	private GameObject _frontPanel;
+	private GameObject _frontContinuePanel;
+	private GameObject _frontLevelsPanel;
+	private GameObject _frontSettingsPanel;
+	private GameObject _frontStorePanel;
 
 	private Button _frontContinueButton;
 	private Button _frontLevelsButton;
@@ -21,6 +30,14 @@ public class MainMenuUI : MonoBehaviour
 
 	private void FindFrontGameObject()
 	{
+		_canvasPanel = GameObject.Find("/Canvas");
+		_frontPanel = GameObject.Find("/Canvas/Front");
+
+		_frontContinuePanel = GameObject.Find("/Canvas/Front/Continue");
+		_frontLevelsPanel = GameObject.Find("/Canvas/Front/Levels");
+		_frontSettingsPanel = GameObject.Find("/Canvas/Front/Settings");
+		_frontStorePanel = GameObject.Find("/Canvas/Front/Store");
+
 		_frontContinueButton = GameObject.Find("/Canvas/Front/Continue").GetComponent<Button>();
 		_frontLevelsButton = GameObject.Find("/Canvas/Front/Levels").GetComponent<Button>();
 		_frontSettingsButton = GameObject.Find("/Canvas/Front/Settings").GetComponent<Button>();
@@ -50,6 +67,62 @@ public class MainMenuUI : MonoBehaviour
 	{
 		string str = _level.GetColorString(color) + " - " + _level.GetAlphabetString(alphabet) + " - " + _level.GetMapString(map);
 		_frontContinueLevelText.text = str;
+	}
+
+	public void AnimateFrontEnter(AnimateComplete callback)
+	{
+		float width = _canvasPanel.GetComponent<CanvasScaler>().referenceResolution.x;
+		Vector2 diff = new Vector3(-1 * width, 0.0f);
+
+		RectTransform continueRt = (RectTransform)_frontContinuePanel.transform;
+		RectTransform levelsRt = (RectTransform)_frontLevelsPanel.transform;
+		RectTransform settingsRt = (RectTransform)_frontSettingsPanel.transform;
+		RectTransform storeRt = (RectTransform)_frontStorePanel.transform;
+
+		continueRt.anchoredPosition += diff;
+		levelsRt.anchoredPosition += diff;
+		settingsRt.anchoredPosition += diff;
+		storeRt.anchoredPosition += diff;
+
+		LeanTween.cancel(continueRt);
+		LeanTween.cancel(levelsRt);
+		LeanTween.cancel(settingsRt);
+		LeanTween.cancel(storeRt);
+
+		LeanTween.moveLocalX(_frontContinuePanel, 0.0f, 0.3f).setEase(LeanTweenType.easeOutQuad);
+		LeanTween.moveLocalX(_frontLevelsPanel, 0.0f, 0.3f).setEase(LeanTweenType.easeOutQuad).setDelay(0.15f);
+		LeanTween.moveLocalX(_frontSettingsPanel, 0.0f, 0.3f).setEase(LeanTweenType.easeOutQuad).setDelay(0.30f);
+		LeanTween.moveLocalX(_frontStorePanel, 0.0f, 0.3f).setEase(LeanTweenType.easeOutQuad).setDelay(0.45f).setOnComplete(
+			()=>
+			{
+				callback();
+			}
+		);
+	}
+
+	public void AnimateFrontExit(AnimateComplete callback)
+	{
+		float width = _canvasPanel.GetComponent<CanvasScaler>().referenceResolution.x;
+
+		RectTransform continueRt = (RectTransform)_frontContinuePanel.transform;
+		RectTransform levelsRt = (RectTransform)_frontLevelsPanel.transform;
+		RectTransform settingsRt = (RectTransform)_frontSettingsPanel.transform;
+		RectTransform storeRt = (RectTransform)_frontStorePanel.transform;
+
+		LeanTween.cancel(continueRt);
+		LeanTween.cancel(levelsRt);
+		LeanTween.cancel(settingsRt);
+		LeanTween.cancel(storeRt);
+
+		LeanTween.moveLocalX(_frontContinuePanel, width, 0.3f).setEase(LeanTweenType.easeOutQuad);
+		LeanTween.moveLocalX(_frontLevelsPanel, width, 0.3f).setEase(LeanTweenType.easeOutQuad).setDelay(0.15f);
+		LeanTween.moveLocalX(_frontSettingsPanel, width, 0.3f).setEase(LeanTweenType.easeOutQuad).setDelay(0.30f);
+		LeanTween.moveLocalX(_frontStorePanel, width, 0.3f).setEase(LeanTweenType.easeOutQuad).setDelay(0.45f).setOnComplete(
+			()=>
+			{
+				callback();
+			}
+		);
 	}
 
 	public void OnFrontContinueButtonPressed()
