@@ -30,18 +30,6 @@ public class MapMenuUI : MonoBehaviour
 		_mapButton = new GameObject[size];
 	}
 
-	private void AnimateStar(GameObject button, string star)
-	{
-		Transform transform = button.transform.Find(star);
-		GameObject gameObject = transform.gameObject;
-
-		transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
-
-		LeanTween.cancel(gameObject);
-		LeanTween.scale(gameObject, Vector3.one, 1.0f).setEase(LeanTweenType.easeInOutElastic);
-        }
-
-
 	public void AddMap(int map, int locked, int star)
 	{
 		if (locked == 1)
@@ -59,7 +47,6 @@ public class MapMenuUI : MonoBehaviour
 	                        if (j < star)
                		        {
 					_mapButton[map].transform.Find("Star" + j).GetComponent<Image>().sprite = _mapButtonStarSprite;
-					AnimateStar(_mapButton[map], "Star" + j);
 	                        }
                		        else
 	                        {
