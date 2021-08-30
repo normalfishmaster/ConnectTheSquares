@@ -281,6 +281,11 @@ public class LevelUI : MonoBehaviour
 		_goLabelPanel = GameObject.Find("/Canvas/Go/Label");
 	}
 
+	public void SetActiveGoPanel(bool enable)
+	{
+		_goPanel.SetActive(enable);
+	}
+
 	public void AnimateGoEnterAndExit(float bannerEnterExitTime, float labelEnterExitTime,
 				float bannerEnterDelay, float labelEnterDelay, float labelExitDelay,
 				AnimateComplete callback)

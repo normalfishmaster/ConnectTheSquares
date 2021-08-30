@@ -44,6 +44,11 @@ public class LevelLogic : MonoBehaviour
 	private const float MAP_ANIMATE_WALL_ENTER_TIME = 0.4f;
 	private const float MAP_ANIMATE_SQUARE_ENTER_TIME = 0.4f;
 
+	private const float MAP_ANIMATE_WALL_EXIT_ROTATION = 720.0f;
+	private const float MAP_ANIMATE_WALL_EXIT_INITIAL_SPEED = 30.0f;
+	private const float MAP_ANIMATE_WALL_EXIT_SPEED_MULTIPLIER = 0.6f;
+	private const float MAP_ANIMATE_WALL_EXIT_TIME = 1.5f;
+
 	private GameObject[,] _mapWall;
 	private GameObject[,] _mapWallShadow;
 	private GameObject[] _mapSquare;
@@ -51,6 +56,9 @@ public class LevelLogic : MonoBehaviour
 
 	private float _mapXOffset;
 	private float _mapYOffset;
+
+	Vector2[,] _mapWallOriginalPos;
+	float[,] _mapWallExitAngle;
 
 	private void FindMapGameObject()
 	{
@@ -133,7 +141,7 @@ public class LevelLogic : MonoBehaviour
 		LeanTween.rotateAround(_mapWallShadow[x, y], Vector3.forward, -MAP_ANIMATE_WALL_ENTER_ROTATION, MAP_ANIMATE_WALL_ENTER_TIME);
 	}
 
-	private void AnimateMapEnter()
+	private void AnimateMapEnter(AnimateComplete callback)
 	{
 		for (int i = 0; i < NUM_X; i++)
 		{
@@ -152,6 +160,83 @@ public class LevelLogic : MonoBehaviour
 				}
 			}
 		}
+
+		LeanTween.value(gameObject, 0.0f, 0.0f, MAP_ANIMATE_WALL_ENTER_TIME).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
+	}
+
+	void AnimateMapExit(AnimateComplete callback)
+	{
+		_mapWallOriginalPos = new Vector2[NUM_X, NUM_Y];
+		_mapWallExitAngle = new float[NUM_X, NUM_Y];
+
+		for (int i = 0; i < NUM_X; i++)
+		{
+			for (int j = 0; j < NUM_Y; j++)
+			{
+				sbyte tile = _levelMap._layout[Level.NUM_ROW - j - 1, i];
+
+				if (Level.IsWall(tile) == false)
+				{
+					continue;
+				}
+
+				_mapWall[i, j].GetComponent<SpriteRenderer>().sortingLayerName = "WallExit";
+				_mapWallOriginalPos[i, j] = _mapWall[i, j].transform.position;
+				_mapWallExitAngle[i, j] = Mathf.Atan(_mapWallOriginalPos[i, j].x / (_mapWallOriginalPos[i, j].y + 16.5F));
+
+				LeanTween.cancel(_mapWall[i, j]);
+				LeanTween.cancel(_mapWallShadow[i, j]);
+
+				// Rotation
+
+				if (i < NUM_X / 2)
+				{
+					LeanTween.rotateAround(_mapWall[i, j], Vector3.forward, -MAP_ANIMATE_WALL_EXIT_ROTATION, MAP_ANIMATE_WALL_EXIT_TIME);
+					LeanTween.rotateAround(_mapWallShadow[i, j], Vector3.forward, -MAP_ANIMATE_WALL_EXIT_ROTATION, MAP_ANIMATE_WALL_EXIT_TIME);
+				}
+				else
+				{
+					LeanTween.rotateAround(_mapWall[i, j], Vector3.back, -MAP_ANIMATE_WALL_EXIT_ROTATION, MAP_ANIMATE_WALL_EXIT_TIME);
+					LeanTween.rotateAround(_mapWallShadow[i, j], Vector3.back, -MAP_ANIMATE_WALL_EXIT_ROTATION, MAP_ANIMATE_WALL_EXIT_TIME);
+				}
+
+			}
+		}
+
+		// Parabolic movement
+
+		LeanTween.value(gameObject, 0.0f, MAP_ANIMATE_WALL_EXIT_TIME, MAP_ANIMATE_WALL_EXIT_TIME).setOnUpdate
+		(
+			(float duration) =>
+			{
+				float durationMod = duration * MAP_ANIMATE_WALL_EXIT_SPEED_MULTIPLIER;
+
+				for (int i = 0; i < NUM_X; i++)
+				{
+					for (int j = 0; j < NUM_Y; j++)
+					{
+						Vector2 distance = new Vector2(MAP_ANIMATE_WALL_EXIT_INITIAL_SPEED * Mathf.Sin(_mapWallExitAngle[i, j]) * durationMod,
+								(MAP_ANIMATE_WALL_EXIT_INITIAL_SPEED * Mathf.Cos(_mapWallExitAngle[i, j]) - 90.0F * durationMod) * durationMod);
+
+						_mapWall[i, j].transform.position = _mapWallOriginalPos[i, j] + distance;
+						_mapWallShadow[i, j].transform.position = _mapWallOriginalPos[i, j] + distance;
+					}
+				}
+			}
+		)
+		.setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
 	}
 
 	// Physics
@@ -883,10 +968,16 @@ public class LevelLogic : MonoBehaviour
 			}
 
 			_ui.SetEnableControlButton(false);
-			_ui.SetActiveWinPanel(true);
-			_ui.SetWinStar(star);
-
 			_touchState = TouchState.WIN;
+
+			AnimateMapExit(
+				()=>
+				{
+					_ui.SetActiveWinPanel(true);
+					_ui.SetWinStar(star);
+				}
+			);
+
 		}
 	}
 
@@ -1141,13 +1232,18 @@ public class LevelLogic : MonoBehaviour
 
 	private void SetupGo()
 	{
+		_ui.SetActiveGoPanel(false);
 	}
 
-	private void AnimateGoEnterAndExit(LevelUI.AnimateComplete callback)
+	private void AnimateGoEnterAndExit(AnimateComplete callback)
 	{
+		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
+
+		_ui.SetActiveGoPanel(true);
+
 		_ui.AnimateGoEnterAndExit(GO_ANIMATE_LABEL_ENTER_EXIT_TIME, GO_ANIMATE_LABEL_ENTER_EXIT_TIME,
 				GO_ANIMATE_BANNER_ENTER_DELAY, GO_ANIMATE_LABEL_ENTER_DELAY, GO_ANIMATE_LABEL_EXIT_DELAY,
-				callback);
+				uiCallback);
 	}
 
 	// UI - Pause
@@ -1332,6 +1428,7 @@ public class LevelLogic : MonoBehaviour
 		SetupTop();
 		SetupHint();
 		SetupControl();
+		SetupGo();
 		SetupPause();
 		SetupWin();
 		SetupAdLoad();
@@ -1339,13 +1436,20 @@ public class LevelLogic : MonoBehaviour
 		SetupAdAbort();
 		SetupAdFail();
 
-		AnimateMapEnter();
-		AnimateGoEnterAndExit(
+		AnimateMapEnter
+		(
 			()=>
 			{
-				_ui.SetEnableControlButton(true);
-				_ui.SetInteractableControlButton(true);
-				_touchState = TouchState.NONE;
+				AnimateGoEnterAndExit
+				(
+					()=>
+					{
+						_ui.SetEnableControlButton(true);
+						_ui.SetInteractableControlButton(true);
+						_touchState = TouchState.NONE;
+					}
+				);
+
 			}
 		);
 	}

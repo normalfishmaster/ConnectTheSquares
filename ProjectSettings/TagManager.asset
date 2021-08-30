@@ -65,3 +65,6 @@ TagManager:
   - name: UI
     uniqueID: 2691810077
     locked: 0
+  - name: WallExit
+    uniqueID: 2095781673
+    locked: 0
