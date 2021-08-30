@@ -92,14 +92,14 @@ public class LevelMenuUI : MonoBehaviour
 
         public void AnimateLevelEnter()
         {
-                RectTransform rt = (RectTransform)_levelPanel.transform;
-                Vector3 pos = rt.anchoredPosition;
-                float height = rt.rect.height;
+		RectTransform rectTransform = (RectTransform)_levelPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+		float height = rectTransform.rect.height;
 
-                rt.anchoredPosition = new Vector3(pos.x, pos.y - height, pos.z);
+		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y - height, pos.z);
 
-                LeanTween.cancel(_levelPanel);
-                LeanTween.moveLocalY(_levelPanel, 0.0f, 0.25f).setEase(LeanTweenType.easeOutQuad);
+		LeanTween.cancel(_levelPanel);
+		LeanTween.moveLocalY(_levelPanel, 0.0f, 0.3f).setEase(LeanTweenType.easeOutQuad);
         }
 
 	public void OnLevelButtonPressed(int color, int alphabet)

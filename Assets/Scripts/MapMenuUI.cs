@@ -70,7 +70,7 @@ public class MapMenuUI : MonoBehaviour
 		rt.anchoredPosition = new Vector3(pos.x, pos.y - height, pos.z);
 
 		LeanTween.cancel(_mapPanel);
-		LeanTween.moveLocalY(_mapPanel, 0.0f, 0.25f).setEase(LeanTweenType.easeOutQuad);
+		LeanTween.moveLocalY(_mapPanel, 0.0f, 0.3f).setEase(LeanTweenType.easeOutQuad);
 	}
 
 	public void OnMapButtonPressed(int map)

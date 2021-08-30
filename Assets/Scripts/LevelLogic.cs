@@ -36,7 +36,13 @@ public class LevelLogic : MonoBehaviour
 
 	private const float MAX_AD_LOAD_TIME = 5.0f;
 
+	public delegate void AnimateComplete();
+
 	// Map
+
+	private const float MAP_ANIMATE_WALL_ENTER_ROTATION = 180.0f;
+	private const float MAP_ANIMATE_WALL_ENTER_TIME = 0.4f;
+	private const float MAP_ANIMATE_SQUARE_ENTER_TIME = 0.4f;
 
 	private GameObject[,] _mapWall;
 	private GameObject[,] _mapWallShadow;
@@ -91,6 +97,61 @@ public class LevelLogic : MonoBehaviour
 	{
 		_mapWall[x, y].SetActive(false);
 		_mapWallShadow[x, y].SetActive(false);
+	}
+
+	private void AnimateSquareEnter(int square)
+	{
+		LeanTween.cancel(_mapSquare[square]);
+
+		// Animate scale
+
+		_mapSquare[square].transform.localScale = new Vector3(0, 0, 0);
+		_mapSquareShadow[square].transform.localScale = new Vector3(0, 0, 0);
+
+		LeanTween.scale(_mapSquare[square], Vector3.one, MAP_ANIMATE_SQUARE_ENTER_TIME).setEase(LeanTweenType.easeOutSine);
+		LeanTween.scale(_mapSquareShadow[square], Vector3.one, MAP_ANIMATE_SQUARE_ENTER_TIME).setEase(LeanTweenType.easeOutSine);
+	}
+
+	private void AnimateWallEnter(int x, int y)
+	{
+		LeanTween.cancel(_mapWall[x, y]);
+
+		// Animate scale
+
+		_mapWall[x, y].transform.localScale = new Vector3(0, 0, 0);
+		_mapWallShadow[x, y].transform.localScale = new Vector3(0, 0, 0);
+
+		LeanTween.scale(_mapWall[x, y], Vector3.one, MAP_ANIMATE_WALL_ENTER_TIME).setEase(LeanTweenType.easeOutSine);
+		LeanTween.scale(_mapWallShadow[x, y], Vector3.one, MAP_ANIMATE_WALL_ENTER_TIME).setEase(LeanTweenType.easeOutSine);
+
+		// Animate rotation
+
+		_mapWall[x, y].transform.eulerAngles = new Vector3(0, 0, MAP_ANIMATE_WALL_ENTER_ROTATION);
+		_mapWallShadow[x, y].transform.eulerAngles = new Vector3(0, 0, MAP_ANIMATE_WALL_ENTER_ROTATION);
+
+		LeanTween.rotateAround(_mapWall[x, y], Vector3.forward, -MAP_ANIMATE_WALL_ENTER_ROTATION, MAP_ANIMATE_WALL_ENTER_TIME);
+		LeanTween.rotateAround(_mapWallShadow[x, y], Vector3.forward, -MAP_ANIMATE_WALL_ENTER_ROTATION, MAP_ANIMATE_WALL_ENTER_TIME);
+	}
+
+	private void AnimateMapEnter()
+	{
+		for (int i = 0; i < NUM_X; i++)
+		{
+			for (int j = 0; j < NUM_Y; j++)
+			{
+				sbyte tile = _levelMap._layout[Level.NUM_ROW - j - 1, i];
+
+				if (Level.IsSquare(tile))
+				{
+					int n = Level.GetSquareNumber(tile);
+					AnimateSquareEnter(n);
+                                }
+				else if (Level.IsWall(tile))
+				{
+					AnimateWallEnter(i, j);
+				}
+			}
+		}
 	}
 
 	// Physics
@@ -545,6 +606,7 @@ public class LevelLogic : MonoBehaviour
 
 	private enum TouchState
 	{
+		WAIT,
 		NONE,
 		START,
 		START_TO_END,
@@ -570,7 +632,7 @@ public class LevelLogic : MonoBehaviour
 
 	private void SetupTouch()
 	{
-		_touchState = TouchState.NONE;
+		_touchState = TouchState.WAIT;
 		_touchHint = false;
 	}
 
@@ -602,6 +664,10 @@ public class LevelLogic : MonoBehaviour
 		}
 
 		return DIRECTION_NONE;
+	}
+
+	private void DoTouchStateWait()
+	{
 	}
 
 	private void DoTouchStateNone()
@@ -972,8 +1038,8 @@ public class LevelLogic : MonoBehaviour
 
 	private void SetupControl()
 	{
-		_ui.SetEnableControlButton(true);
-		_ui.SetInteractableControlButton(true);
+		_ui.SetEnableControlButton(false);
+		_ui.SetInteractableControlButton(false);
 
 		_ui.SetControlHintCount(_data.GetHint());
 
@@ -1062,6 +1128,26 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetActiveHintPanel(true);
 		_ui.SetHintDirection(_levelMap._hint[move]);
 
+	}
+
+	// UI - Go
+
+	private const float GO_ANIMATE_BANNER_ENTER_EXIT_TIME = 0.3f;
+	private const float GO_ANIMATE_LABEL_ENTER_EXIT_TIME = 0.3f;
+
+	private const float GO_ANIMATE_BANNER_ENTER_DELAY = MAP_ANIMATE_WALL_ENTER_TIME + 0.2f;
+	private const float GO_ANIMATE_LABEL_ENTER_DELAY = 0.3f;
+	private const float GO_ANIMATE_LABEL_EXIT_DELAY = 0.5f;
+
+	private void SetupGo()
+	{
+	}
+
+	private void AnimateGoEnterAndExit(LevelUI.AnimateComplete callback)
+	{
+		_ui.AnimateGoEnterAndExit(GO_ANIMATE_LABEL_ENTER_EXIT_TIME, GO_ANIMATE_LABEL_ENTER_EXIT_TIME,
+				GO_ANIMATE_BANNER_ENTER_DELAY, GO_ANIMATE_LABEL_ENTER_DELAY, GO_ANIMATE_LABEL_EXIT_DELAY,
+				callback);
 	}
 
 	// UI - Pause
@@ -1252,11 +1338,25 @@ public class LevelLogic : MonoBehaviour
 		SetupAdSuccess();
 		SetupAdAbort();
 		SetupAdFail();
+
+		AnimateMapEnter();
+		AnimateGoEnterAndExit(
+			()=>
+			{
+				_ui.SetEnableControlButton(true);
+				_ui.SetInteractableControlButton(true);
+				_touchState = TouchState.NONE;
+			}
+		);
 	}
 
 	private void Update()
 	{
-		if (_touchState == TouchState.NONE)
+		if (_touchState == TouchState.WAIT)
+		{
+			DoTouchStateWait();
+		}
+		else if (_touchState == TouchState.NONE)
 		{
 			DoTouchStateNone();
 		}

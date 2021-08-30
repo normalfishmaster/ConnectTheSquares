@@ -8,6 +8,8 @@ public class LevelUI : MonoBehaviour
 	private LevelLogic _logic;
 	private LevelManager _level;
 
+	public delegate void AnimateComplete();
+
 	// Top
 
 	private Text _topColorText;
@@ -264,6 +266,78 @@ public class LevelUI : MonoBehaviour
 		_logic.DoControlHintOffButtonPressed();
 	}
 
+	// Go
+
+	private GameObject _goPanel;
+	private GameObject _goBannerBlackPanel;
+	private GameObject _goBannerYellowPanel;
+	private GameObject _goLabelPanel;
+
+	private void FindGoGameObject()
+	{
+		_goPanel = GameObject.Find("/Canvas/Go");
+		_goBannerBlackPanel = GameObject.Find("/Canvas/Go/BannerBlack");
+		_goBannerYellowPanel = GameObject.Find("/Canvas/Go/BannerYellow");
+		_goLabelPanel = GameObject.Find("/Canvas/Go/Label");
+	}
+
+	public void AnimateGoEnterAndExit(float bannerEnterExitTime, float labelEnterExitTime,
+				float bannerEnterDelay, float labelEnterDelay, float labelExitDelay,
+				AnimateComplete callback)
+	{
+		RectTransform rectTransform;
+		Vector3 pos;
+		float width;
+
+		// Animate Banner Black
+
+		rectTransform = (RectTransform)_goBannerBlackPanel.transform;
+		pos = rectTransform.anchoredPosition;
+		width = rectTransform.rect.width;
+
+		rectTransform.anchoredPosition = new Vector3(pos.x - width, pos.y, pos.z);
+
+		LeanTween.cancel(_goBannerBlackPanel);
+		LeanTween.moveLocalX(_goBannerBlackPanel, 0.0f, bannerEnterExitTime).setEase(LeanTweenType.easeOutSine)
+				.setDelay(bannerEnterDelay);
+		LeanTween.moveLocalX(_goBannerBlackPanel, pos.x + width, bannerEnterExitTime).setEase(LeanTweenType.easeOutSine)
+				.setDelay(bannerEnterDelay + bannerEnterExitTime + +labelEnterDelay + labelEnterExitTime + labelExitDelay + labelEnterExitTime);
+
+		// Animate Banner Yellow
+
+		rectTransform = (RectTransform)_goBannerYellowPanel.transform;
+		pos = rectTransform.anchoredPosition;
+		width = rectTransform.rect.width;
+
+		rectTransform.anchoredPosition = new Vector3(pos.x + width, pos.y, pos.z);
+
+		LeanTween.cancel(_goBannerYellowPanel);
+		LeanTween.moveLocalX(_goBannerYellowPanel, 0.0f, bannerEnterExitTime).setEase(LeanTweenType.easeOutSine)
+				.setDelay(bannerEnterDelay);
+		LeanTween.moveLocalX(_goBannerYellowPanel, pos.x - width, bannerEnterExitTime).setEase(LeanTweenType.easeOutSine)
+				.setDelay(bannerEnterDelay + bannerEnterExitTime + +labelEnterDelay + labelEnterExitTime + labelExitDelay + labelEnterExitTime);
+
+		// Animate Label
+
+		rectTransform = (RectTransform)_goLabelPanel.transform;
+		pos = rectTransform.anchoredPosition;
+		width = rectTransform.rect.width;
+
+		rectTransform.anchoredPosition = new Vector3(pos.x - width, pos.y, pos.z);
+
+		LeanTween.cancel(_goLabelPanel);
+		LeanTween.moveLocalX(_goLabelPanel, 0.0f, labelEnterExitTime).setEase(LeanTweenType.easeOutSine)
+				.setDelay(bannerEnterDelay + bannerEnterExitTime + labelEnterDelay);
+		LeanTween.moveLocalX(_goLabelPanel, pos.x + width, bannerEnterExitTime).setEase(LeanTweenType.easeOutSine)
+				.setDelay(bannerEnterDelay + bannerEnterExitTime + labelEnterDelay + labelEnterExitTime + labelExitDelay)
+				.setOnComplete(
+					()=>
+					{
+						callback();
+					}
+				);
+	}
+
 	// Pause
 
 	private GameObject _pausePanel;
@@ -440,6 +514,7 @@ public class LevelUI : MonoBehaviour
 		FindTopGameObject();
 		FindHintGameObject();
 		FindControlGameObject();
+		FindGoGameObject();
 		FindPauseGameObject();
 		FindWinGameObject();
 		FindAdLoadGameObject();
