@@ -695,15 +695,61 @@ public class LevelUI : MonoBehaviour
 	// Ad - Abort
 
 	private GameObject _adAbortPanel;
+	private GameObject _adAbortBoardPanel;
+
+	private Button _adAbortCloseButton;
 
 	private void FindAdAbortGameObject()
 	{
 		_adAbortPanel = GameObject.Find("/Canvas/AdAbort");
+		_adAbortBoardPanel = GameObject.Find("/Canvas/AdAbort/Board");
+
+		_adAbortCloseButton = GameObject.Find("/Canvas/AdAbort/Board/Close").GetComponent<Button>();
 	}
 
 	public void SetActiveAdAbortPanel(bool active)
 	{
 		_adAbortPanel.SetActive(active);
+	}
+
+	public void SetInteractableAdAbortButton(bool interactable)
+	{
+		_adAbortCloseButton.interactable = interactable;
+	}
+
+	public void AnimateAdAbortBoardEnter(float enterTime, AnimateComplete callback)
+	{
+		float height = ((RectTransform)(_adAbortPanel.transform)).rect.height;
+
+		RectTransform rectTransform = (RectTransform)_adAbortBoardPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y + height, pos.z);
+
+		LeanTween.cancel(_adAbortBoardPanel);
+		LeanTween.moveLocalY(_adAbortBoardPanel, 0.0f, enterTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
+	}
+
+	public void AnimateAdAbortBoardExit(float exitTime, AnimateComplete callback)
+	{
+		float height = ((RectTransform)(_adAbortPanel.transform)).rect.height;
+
+		RectTransform rectTransform = (RectTransform)_adAbortBoardPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+
+		LeanTween.cancel(_adAbortBoardPanel);
+		LeanTween.moveLocalY(_adAbortBoardPanel, pos.y + height, exitTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
 	}
 
 	public void OnAdAbortCloseButtonPressed()
@@ -714,15 +760,61 @@ public class LevelUI : MonoBehaviour
 	// Ad - Fail
 
 	private GameObject _adFailPanel;
+	private GameObject _adFailBoardPanel;
+
+	private Button _adFailCloseButton;
 
 	private void FindAdFailGameObject()
 	{
 		_adFailPanel = GameObject.Find("/Canvas/AdFail");
+		_adFailBoardPanel = GameObject.Find("/Canvas/AdFail/Board");
+
+		_adFailCloseButton = GameObject.Find("/Canvas/AdFail/Board/Close").GetComponent<Button>();
 	}
 
 	public void SetActiveAdFailPanel(bool active)
 	{
 		_adFailPanel.SetActive(active);
+	}
+
+	public void SetInteractableAdFailButton(bool interactable)
+	{
+		_adFailCloseButton.interactable = interactable;
+	}
+
+	public void AnimateAdFailBoardEnter(float enterTime, AnimateComplete callback)
+	{
+		float height = ((RectTransform)(_adFailPanel.transform)).rect.height;
+
+		RectTransform rectTransform = (RectTransform)_adFailBoardPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y + height, pos.z);
+
+		LeanTween.cancel(_adFailBoardPanel);
+		LeanTween.moveLocalY(_adFailBoardPanel, 0.0f, enterTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
+	}
+
+	public void AnimateAdFailBoardExit(float exitTime, AnimateComplete callback)
+	{
+		float height = ((RectTransform)(_adFailPanel.transform)).rect.height;
+
+		RectTransform rectTransform = (RectTransform)_adFailBoardPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+
+		LeanTween.cancel(_adFailBoardPanel);
+		LeanTween.moveLocalY(_adFailBoardPanel, pos.y + height, exitTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
 	}
 
 	public void OnAdFailCloseButtonPressed()

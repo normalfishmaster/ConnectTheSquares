@@ -1017,6 +1017,14 @@ public class LevelLogic : MonoBehaviour
 			AnimateLoadSquareStop();
 			_ui.SetActiveLoadPanel(false);
 			_ui.SetActiveAdFailPanel(true);
+			_ui.SetInteractableAdFailButton(false);
+			AnimateAdFailBoardEnter
+			(
+				()=>
+				{
+					_ui.SetInteractableAdFailButton(true);
+				}
+			);
 			_touchState = TouchState.NONE;
 		}
 	}
@@ -1038,6 +1046,13 @@ public class LevelLogic : MonoBehaviour
 		else if (status == AdManager.RewardStatus.FAIL)
 		{
 			_ui.SetActiveAdAbortPanel(true);
+			_ui.SetInteractableAdAbortButton(false);
+			AnimateAdAbortBoardEnter(
+				()=>
+				{
+					_ui.SetInteractableAdAbortButton(true);
+				}
+			);
 			_touchState = TouchState.NONE;
 		}
 	}
@@ -1057,6 +1072,14 @@ public class LevelLogic : MonoBehaviour
 			AnimateLoadSquareStop();
 			_ui.SetActiveLoadPanel(false);
 			_ui.SetActiveAdFailPanel(true);
+			_ui.SetInteractableAdFailButton(false);
+			AnimateAdFailBoardEnter
+			(
+				()=>
+				{
+					_ui.SetInteractableAdFailButton(true);
+				}
+			);
 			_touchState = TouchState.PAUSE;
 		}
 	}
@@ -1078,6 +1101,13 @@ public class LevelLogic : MonoBehaviour
 		else if (status == AdManager.RewardStatus.FAIL)
 		{
 			_ui.SetActiveAdAbortPanel(true);
+			_ui.SetInteractableAdAbortButton(false);
+			AnimateAdAbortBoardEnter(
+				()=>
+				{
+					_ui.SetInteractableAdAbortButton(true);
+				}
+			);
 			_touchState = TouchState.PAUSE;
 		}
 	}
@@ -1097,6 +1127,14 @@ public class LevelLogic : MonoBehaviour
 			AnimateLoadSquareStop();
 			_ui.SetActiveLoadPanel(false);
 			_ui.SetActiveAdFailPanel(true);
+			_ui.SetInteractableAdFailButton(false);
+			AnimateAdFailBoardEnter
+			(
+				()=>
+				{
+					_ui.SetInteractableAdFailButton(true);
+				}
+			);
 			_touchState = TouchState.WIN;
 		}
 	}
@@ -1118,6 +1156,13 @@ public class LevelLogic : MonoBehaviour
 		else if (status == AdManager.RewardStatus.FAIL)
 		{
 			_ui.SetActiveAdAbortPanel(true);
+			_ui.SetInteractableAdAbortButton(false);
+			AnimateAdAbortBoardEnter(
+				()=>
+				{
+					_ui.SetInteractableAdAbortButton(true);
+				}
+			);
 			_touchState = TouchState.WIN;
 		}
 	}
@@ -1495,74 +1540,124 @@ public class LevelLogic : MonoBehaviour
 
 	// UI - AdAbort
 
+	private const float AD_ABORT_ANIMATE_BOARD_ENTER_TIME = 0.3f;
+	private const float AD_ABORT_ANIMATE_BOARD_EXIT_TIME = 0.3f;
+
 	private void SetupAdAbort()
 	{
 		_ui.SetActiveAdAbortPanel(false);
 	}
 
+	private void AnimateAdAbortBoardEnter(AnimateComplete callback)
+	{
+		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
+
+		_ui.AnimateAdAbortBoardEnter(AD_ABORT_ANIMATE_BOARD_ENTER_TIME, uiCallback);
+	}
+
+	private void AnimateAdAbortBoardExit(AnimateComplete callback)
+	{
+		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
+
+		_ui.AnimateAdAbortBoardExit(AD_ABORT_ANIMATE_BOARD_EXIT_TIME, uiCallback);
+	}
+
 	public void DoAdAbortCloseButtonPressed()
 	{
-		_ui.SetActiveAdAbortPanel(false);
+		_ui.SetInteractableAdAbortButton(false);
 
-		if (_touchState == TouchState.WIN)
-		{
-			_ui.SetActiveWinPanel(true);
+		AnimateAdAbortBoardExit
+		(
+			()=>
+			{
+				_ui.SetActiveAdAbortPanel(false);
 
-			AnimateWinBoardEnter
-			(
-				()=>
+				if (_touchState == TouchState.WIN)
 				{
-					_ui.SetInteractableWinButton(true);
-				}
-			);
-		}
-		else if (_touchState == TouchState.PAUSE)
-		{
-			_ui.SetActivePausePanel(true);
+					_ui.SetActiveWinPanel(true);
 
-			AnimatePauseBoardEnter(
-				()=>
-				{
-					_ui.SetInteractablePauseButton(true);
+					AnimateWinBoardEnter
+					(
+						()=>
+						{
+							_ui.SetInteractableWinButton(true);
+						}
+					);
 				}
-			);
-		}
+				else if (_touchState == TouchState.PAUSE)
+				{
+					_ui.SetActivePausePanel(true);
+
+					AnimatePauseBoardEnter(
+						()=>
+						{
+							_ui.SetInteractablePauseButton(true);
+						}
+					);
+				}
+			}
+		);
 	}
 
 	// UI - AdFail
+
+	private const float AD_FAIL_ANIMATE_BOARD_ENTER_TIME = 0.3f;
+	private const float AD_FAIL_ANIMATE_BOARD_EXIT_TIME = 0.3f;
 
 	private void SetupAdFail()
 	{
 		_ui.SetActiveAdFailPanel(false);
 	}
 
+	private void AnimateAdFailBoardEnter(AnimateComplete callback)
+	{
+		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
+
+		_ui.AnimateAdFailBoardEnter(AD_FAIL_ANIMATE_BOARD_ENTER_TIME, uiCallback);
+	}
+
+	private void AnimateAdFailBoardExit(AnimateComplete callback)
+	{
+		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
+
+		_ui.AnimateAdFailBoardExit(AD_FAIL_ANIMATE_BOARD_EXIT_TIME, uiCallback);
+	}
+
 	public void DoAdFailCloseButtonPressed()
 	{
-		_ui.SetActiveAdFailPanel(false);
+		_ui.SetInteractableAdFailButton(false);
 
-		if (_touchState == TouchState.WIN)
-		{
-			_ui.SetActiveWinPanel(true);
+		AnimateAdFailBoardExit
+		(
+			()=>
+			{
+				_ui.SetActiveAdFailPanel(false);
 
-			AnimateWinBoardEnter
-			(
-				()=>
+				if (_touchState == TouchState.WIN)
 				{
-					_ui.SetInteractableWinButton(true);
-				}
-			);
-		}
-		else if (_touchState == TouchState.PAUSE)
-		{
-			_ui.SetActivePausePanel(true);
+					_ui.SetActiveWinPanel(true);
 
-			AnimatePauseBoardEnter(
-				()=>
-				{
-					_ui.SetInteractablePauseButton(true);
+					AnimateWinBoardEnter
+					(
+						()=>
+						{
+							_ui.SetInteractableWinButton(true);
+						}
+					);
 				}
-			);
-		}
+				else if (_touchState == TouchState.PAUSE)
+				{
+					_ui.SetActivePausePanel(true);
+
+					AnimatePauseBoardEnter(
+						()=>
+						{
+							_ui.SetInteractablePauseButton(true);
+						}
+					);
+				}
+			}
+		);
 	}
 
 	// Unity Lifecyle
