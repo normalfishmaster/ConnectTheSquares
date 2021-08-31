@@ -460,6 +460,53 @@ public class LevelUI : MonoBehaviour
 		_winStarPanel[star].SetActive(active);
 	}
 
+	public void SetInteractableWinButton(bool interactable)
+	{
+		_winHintAdButton.interactable = interactable;
+		_winMenuButton.interactable = interactable;
+		_winResetButton.interactable = interactable;
+	}
+
+	public void SetInteractableWinNextButton(bool interactable)
+	{
+		_winNextButton.interactable = interactable;
+	}
+
+	public void AnimateWinBoardEnter(float enterTime, AnimateComplete callback)
+	{
+		float height = ((RectTransform)(_winPanel.transform)).rect.height;
+
+		RectTransform rectTransform = (RectTransform)_winBoardPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y + height, pos.z);
+
+		LeanTween.cancel(_winBoardPanel);
+		LeanTween.moveLocalY(_winBoardPanel, 0.0f, enterTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
+	}
+
+	public void AnimateWinBoardExit(float exitTime, AnimateComplete callback)
+	{
+		float height = ((RectTransform)(_winPanel.transform)).rect.height;
+
+		RectTransform rectTransform = (RectTransform)_winBoardPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+
+		LeanTween.cancel(_winBoardPanel);
+		LeanTween.moveLocalY(_winBoardPanel, pos.y + height, exitTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
+	}
+
 	private void AnimateWinStarEnterSingle(int star, float enterTime, AnimateComplete callback)
 	{
 		_winStarPanel[star].SetActive(true);
@@ -531,36 +578,6 @@ public class LevelUI : MonoBehaviour
 		}
 	}
 
-	public void AnimateWinBoardEnter(float enterTime, AnimateComplete callback)
-	{
-		float height = ((RectTransform)(_winPanel.transform)).rect.height;
-
-		RectTransform rectTransform = (RectTransform)_winBoardPanel.transform;
-		Vector3 pos = rectTransform.anchoredPosition;
-		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y + height, pos.z);
-
-		LeanTween.cancel(_winBoardPanel);
-		LeanTween.moveLocalY(_winBoardPanel, 0.0f, enterTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
-		(
-			()=>
-			{
-				callback();
-			}
-		);
-	}
-
-	public void SetInteractableWinButton(bool interactable)
-	{
-		_winHintAdButton.interactable = interactable;
-		_winMenuButton.interactable = interactable;
-		_winResetButton.interactable = interactable;
-	}
-
-	public void SetInteractableWinNextButton(bool interactable)
-	{
-		_winNextButton.interactable = interactable;
-	}
-
 	public void OnWinHintAdButtonPressed()
 	{
 		_logic.DoWinHintAdButtonPressed();
@@ -581,18 +598,79 @@ public class LevelUI : MonoBehaviour
 		_logic.DoWinNextButtonPressed();
 	}
 
-	// Ad - Load
+	// Load
 
-	private GameObject _adLoadPanel;
+	private GameObject _loadPanel;
 
-	private void FindAdLoadGameObject()
+	private GameObject[] _loadSquarePanel;
+
+	private void FindLoadGameObject()
 	{
-		_adLoadPanel = GameObject.Find("/Canvas/AdLoad");
+		_loadPanel = GameObject.Find("/Canvas/Load");
+
+		_loadSquarePanel = new GameObject[4];
+
+		for (int i = 0; i < 4; i++)
+		{
+			_loadSquarePanel[i] = GameObject.Find("/Canvas/Load/Board/Square" + i);
+		}
 	}
 
-	public void SetActiveAdLoadPanel(bool active)
+	public void SetActiveLoadPanel(bool active)
 	{
-		_adLoadPanel.SetActive(active);
+		_loadPanel.SetActive(active);
+	}
+
+	private void AnimateLoadSquareStopSingle(int square)
+	{
+		LeanTween.cancel(_loadSquarePanel[square]);
+	}
+
+	private void AnimateLoadSquareStartSingle(int square, float punchTime, AnimateComplete callback)
+	{
+		AnimateLoadSquareStopSingle(square);
+
+		_loadSquarePanel[square].transform.localScale = Vector3.one;
+
+		LeanTween.scale(_loadSquarePanel[square], Vector3.one * 1.5f, punchTime).setEasePunch().setOnComplete(
+			()=>
+			{
+				callback();
+			}
+		);
+	}
+
+	public void AnimateLoadSquareStop()
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			AnimateLoadSquareStopSingle(i);
+		}
+	}
+
+	public void AnimateLoadSquareStart(float punchTime)
+	{
+		AnimateLoadSquareStartSingle(0, punchTime,
+			()=>
+			{
+				AnimateLoadSquareStartSingle(1, punchTime,
+					()=>
+					{
+						AnimateLoadSquareStartSingle(2, punchTime,
+							()=>
+							{
+								AnimateLoadSquareStartSingle(3, punchTime,
+									()=>
+									{
+										AnimateLoadSquareStart(punchTime);
+									}
+								);
+							}
+						);
+					}
+				);
+			}
+		);
 	}
 
 	// Ad - Success
@@ -665,7 +743,7 @@ public class LevelUI : MonoBehaviour
 		FindGoGameObject();
 		FindPauseGameObject();
 		FindWinGameObject();
-		FindAdLoadGameObject();
+		FindLoadGameObject();
 		FindAdSuccessGameObject();
 		FindAdAbortGameObject();
 		FindAdFailGameObject();
