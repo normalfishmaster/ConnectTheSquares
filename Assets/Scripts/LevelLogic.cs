@@ -915,7 +915,6 @@ public class LevelLogic : MonoBehaviour
 
 			if (star > currentStar)
 			{
-				_ui.SetTopStar(star);
 				_data.SetLevelStar(_menuColor, _menuAlphabet, _menuMap, star);
 
 				int currentAlphabetStar = _data.GetAlphabetStar(_menuColor, _menuAlphabet);
@@ -944,6 +943,7 @@ public class LevelLogic : MonoBehaviour
 			int nextColor = _menuColor;
 			int nextAlphabet = _menuAlphabet;
 			int nextMap = _menuMap + 1;
+			bool enableWinNextButton;
 
 			if (nextMap >= _level.GetNumMap(_menuColor, _menuAlphabet))
 			{
@@ -959,22 +959,22 @@ public class LevelLogic : MonoBehaviour
 
 			if (nextColor >= _level.GetNumColor())
 			{
-				_ui.SetInteractableWinNextButton(false);
+				enableWinNextButton = false;
 			}
 			else
 			{
+				enableWinNextButton = true;
 				_data.SetLevelLock(nextColor, nextAlphabet, nextMap, 0);
-				_ui.SetInteractableWinNextButton(true);
 			}
 
 			_ui.SetEnableControlButton(false);
 			_touchState = TouchState.WIN;
 
+
 			AnimateMapExit(
 				()=>
 				{
-					_ui.SetActiveWinPanel(true);
-					_ui.SetWinStar(star);
+					AnimateWinEnter(star, enableWinNextButton);
 				}
 			);
 
@@ -1115,7 +1115,19 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetTopMoveTarget(_levelMap._hint.Length);
 		_ui.SetTopMoveBest(_data.GetLevelMove(_menuColor, _menuAlphabet, _menuMap));
 
-		_ui.SetTopStar(_data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap));
+		int star = _data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap);
+
+		for (int i = 0; i < 3; i++)
+		{
+			if (i < star)
+			{
+				_ui.SetActiveTopStar(i, true);
+			}
+			else
+			{
+				_ui.SetActiveTopStar(i, false);
+			}
+		}
 	}
 
 	// UI - Hint
@@ -1226,7 +1238,7 @@ public class LevelLogic : MonoBehaviour
 	private const float GO_ANIMATE_BANNER_ENTER_EXIT_TIME = 0.3f;
 	private const float GO_ANIMATE_LABEL_ENTER_EXIT_TIME = 0.3f;
 
-	private const float GO_ANIMATE_BANNER_ENTER_DELAY = MAP_ANIMATE_WALL_ENTER_TIME + 0.2f;
+	private const float GO_ANIMATE_BANNER_ENTER_DELAY = MAP_ANIMATE_WALL_ENTER_TIME + 0.1f;
 	private const float GO_ANIMATE_LABEL_ENTER_DELAY = 0.3f;
 	private const float GO_ANIMATE_LABEL_EXIT_DELAY = 0.5f;
 
@@ -1275,12 +1287,41 @@ public class LevelLogic : MonoBehaviour
 
 	// UI - Win
 
+	private const float WIN_ANIMATE_BOARD_ENTER_TIME = 0.3f;
+	private const float WIN_ANIMATE_STAR_ENTER_TIME = 0.2f;
+
 	private void SetupWin()
 	{
 		_ui.SetActiveWinPanel(false);
+
+		for (int i = 0; i < 3; i++)
+		{
+			_ui.SetActiveWinStarPanel(i, false);
+		}
 	}
 
-	public void DoWinHintButtonPressed()
+	private void AnimateWinEnter(int star, bool enableNext)
+	{
+		_ui.SetActiveWinPanel(true);
+		_ui.SetInteractableWinButton(false);
+		_ui.SetInteractableWinNextButton(false);
+
+		_ui.AnimateWinBoardEnter(WIN_ANIMATE_BOARD_ENTER_TIME,
+			()=>
+			{
+				_ui.AnimateWinStarEnter(star, WIN_ANIMATE_STAR_ENTER_TIME,
+					()=>
+					{
+						_ui.SetInteractableWinButton(true);
+						_ui.SetInteractableWinNextButton(enableNext);
+					}
+				);
+			}
+		);
+
+	}
+
+	public void DoWinHintAdButtonPressed()
 	{
 		_ui.SetActiveWinPanel(false);
 		_ui.SetActiveAdLoadPanel(true);
@@ -1449,7 +1490,6 @@ public class LevelLogic : MonoBehaviour
 						_touchState = TouchState.NONE;
 					}
 				);
-
 			}
 		);
 	}

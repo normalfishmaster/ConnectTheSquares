@@ -4148,7 +4148,7 @@ GameObject:
   - component: {fileID: 373612084}
   - component: {fileID: 373612083}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Board
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12799,7 +12799,7 @@ GameObject:
   - component: {fileID: 1239637686}
   - component: {fileID: 1239637685}
   m_Layer: 5
-  m_Name: Hint
+  m_Name: HintAd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

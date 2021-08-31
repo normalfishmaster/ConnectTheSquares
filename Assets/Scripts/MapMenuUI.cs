@@ -63,11 +63,11 @@ public class MapMenuUI : MonoBehaviour
 
 	public void AnimateMapEnter()
 	{
-		RectTransform rt = (RectTransform)_mapPanel.transform;
-		Vector3 pos = rt.anchoredPosition;
-		float height = rt.rect.height;
+		RectTransform rectTransform = (RectTransform)_mapPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+		float height = rectTransform.rect.height;
 
-		rt.anchoredPosition = new Vector3(pos.x, pos.y - height, pos.z);
+		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y - height, pos.z);
 
 		LeanTween.cancel(_mapPanel);
 		LeanTween.moveLocalY(_mapPanel, 0.0f, 0.3f).setEase(LeanTweenType.easeOutQuad);

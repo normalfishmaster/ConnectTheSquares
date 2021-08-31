@@ -95,19 +95,9 @@ public class LevelUI : MonoBehaviour
 		_topMoveBestText.text = best.ToString();
 	}
 
-	public void SetTopStar(int star)
+	public void SetActiveTopStar(int star, bool active)
 	{
-		for (int i = 0; i < 3; i++)
-		{
-			if (i < star)
-			{
-				_topStarPanel[i].SetActive(true);
-			}
-			else
-			{
-				_topStarPanel[i].SetActive(false);
-			}
-		}
+		_topStarPanel[star].SetActive(active);
 	}
 
 	// Hint
@@ -375,22 +365,31 @@ public class LevelUI : MonoBehaviour
 	// Win
 
 	private GameObject _winPanel;
+	private GameObject _winBoardPanel;
 	private GameObject[] _winStarPanel;
 
+	private Button _winHintAdButton;
+	private Button _winMenuButton;
+	private Button _winResetButton;
 	private Button _winNextButton;
+
+	int _winNumStar;
 
 	public void FindWinGameObject()
 	{
 		_winPanel = GameObject.Find("/Canvas/Win");
-
+		_winBoardPanel = GameObject.Find("/Canvas/Win/Board");
 		_winStarPanel = new GameObject[3];
 
 		for (int i = 0; i < 3; i++)
 		{
-			_winStarPanel[i] = GameObject.Find("/Canvas/Win/Panel/Star/Star" + i);
+			_winStarPanel[i] = GameObject.Find("/Canvas/Win/Board/Star/Star" + i);
 		}
 
-		_winNextButton = GameObject.Find("/Canvas/Win/Panel/Next/Button").GetComponent<Button>();
+		_winHintAdButton = GameObject.Find("/Canvas/Win/Board/HintAd/Button").GetComponent<Button>();
+		_winMenuButton = GameObject.Find("/Canvas/Win/Board/Menu/Button").GetComponent<Button>();
+		_winResetButton = GameObject.Find("/Canvas/Win/Board/Reset/Button").GetComponent<Button>();
+		_winNextButton = GameObject.Find("/Canvas/Win/Board/Next/Button").GetComponent<Button>();
 	}
 
 	public void SetActiveWinPanel(bool active)
@@ -398,19 +397,105 @@ public class LevelUI : MonoBehaviour
 		_winPanel.SetActive(active);
 	}
 
-	public void SetWinStar(int star)
+	public void SetActiveWinStarPanel(int star, bool active)
 	{
-		for (int i = 0; i < 3; i++)
+		_winStarPanel[star].SetActive(active);
+	}
+
+	private void AnimateWinStarEnterSingle(int star, float enterTime, AnimateComplete callback)
+	{
+		_winStarPanel[star].SetActive(true);
+
+		LeanTween.cancel(_winStarPanel[star]);
+
+		// X and Y
+
+		float height = ((RectTransform)(_winBoardPanel.transform)).rect.height * 0.4f;
+		float width = ((RectTransform)(_winBoardPanel.transform)).rect.width * 0.4f;
+
+		if (star == 0)
 		{
-			if (i < star)
-			{
-				_winStarPanel[i].SetActive(true);
-			}
-			else
-			{
-				_winStarPanel[i].SetActive(false);
-			}
+			width *= -1;
 		}
+		else if (star == 1)
+		{
+			width = 0;
+		}
+
+		Vector3 pos = ((RectTransform)_winStarPanel[star].transform).anchoredPosition;
+		((RectTransform)_winStarPanel[star].transform).anchoredPosition = new Vector3(pos.x + width, pos.y + height, pos.z);
+
+		LeanTween.moveLocalX(_winStarPanel[star], pos.x, enterTime).setEase(LeanTweenType.easeOutQuad);
+		LeanTween.moveLocalY(_winStarPanel[star], pos.y, enterTime).setEase(LeanTweenType.easeOutQuad);
+
+		// Scale
+
+		_winStarPanel[star].transform.localScale = Vector3.one * 5.0f;
+
+		LeanTween.scale(_winStarPanel[star], Vector3.one, enterTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				SetActiveTopStar(star, true);
+				callback();
+			}
+		);
+	}
+
+	public void AnimateWinStarEnter(int star, float enterTime, AnimateComplete callback)
+	{
+		if (star == 1)
+		{
+			AnimateWinStarEnterSingle(0, enterTime, callback);
+		}
+		else if (star == 2)
+		{
+			AnimateWinStarEnterSingle(0, enterTime,
+				()=>
+				{
+					AnimateWinStarEnterSingle(1, enterTime, callback);
+				}
+			);
+		}
+		else if (star == 3)
+		{
+			AnimateWinStarEnterSingle(0, enterTime,
+				()=>
+				{
+					AnimateWinStarEnterSingle(1, enterTime,
+						()=>
+						{
+							AnimateWinStarEnterSingle(2, enterTime, callback);
+						}
+					);
+				}
+			);
+		}
+	}
+
+	public void AnimateWinBoardEnter(float enterTime, AnimateComplete callback)
+	{
+		float height = ((RectTransform)(_winPanel.transform)).rect.height;
+
+		RectTransform rectTransform = (RectTransform)_winBoardPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y + height, pos.z);
+
+		LeanTween.cancel(_winBoardPanel);
+		LeanTween.moveLocalY(_winBoardPanel, 0.0f, enterTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
+	}
+
+	public void SetInteractableWinButton(bool interactable)
+	{
+		_winHintAdButton.interactable = interactable;
+		_winMenuButton.interactable = interactable;
+		_winResetButton.interactable = interactable;
 	}
 
 	public void SetInteractableWinNextButton(bool interactable)
@@ -418,9 +503,9 @@ public class LevelUI : MonoBehaviour
 		_winNextButton.interactable = interactable;
 	}
 
-	public void OnWinHintButtonPressed()
+	public void OnWinHintAdButtonPressed()
 	{
-		_logic.DoWinHintButtonPressed();
+		_logic.DoWinHintAdButtonPressed();
 	}
 
 	public void OnWinMenuButtonPressed()
