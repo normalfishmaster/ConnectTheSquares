@@ -336,15 +336,73 @@ public class LevelUI : MonoBehaviour
 	// Pause
 
 	private GameObject _pausePanel;
+	private GameObject _pauseBoardPanel;
+
+	private Button _pauseAudioOnButton;
+	private Button _pauseAudioOffButton;
+	private Button _pauseMenuButton;
+	private Button _pauseHintAdButton;
+	private Button _pauseResumeButton;
 
 	public void FindPauseGameObject()
 	{
 		_pausePanel = GameObject.Find("/Canvas/Pause");
+		_pauseBoardPanel = GameObject.Find("/Canvas/Pause/Board");
+
+		_pauseAudioOnButton = GameObject.Find("/Canvas/Pause/Board/AudioOn").GetComponent<Button>();
+		_pauseAudioOffButton = GameObject.Find("/Canvas/Pause/Board/AudioOff").GetComponent<Button>();
+		_pauseMenuButton = GameObject.Find("/Canvas/Pause/Board/Menu").GetComponent<Button>();
+		_pauseHintAdButton = GameObject.Find("/Canvas/Pause/Board/HintAd").GetComponent<Button>();
+		_pauseResumeButton = GameObject.Find("/Canvas/Pause/Board/Resume").GetComponent<Button>();
 	}
 
 	public void SetActivePausePanel(bool active)
 	{
 		_pausePanel.SetActive(active);
+	}
+
+	public void SetInteractablePauseButton(bool interactable)
+	{
+		_pauseAudioOnButton.interactable = interactable;
+		_pauseAudioOffButton.interactable = interactable;
+		_pauseMenuButton.interactable = interactable;
+		_pauseHintAdButton.interactable = interactable;
+		_pauseResumeButton.interactable = interactable;
+	}
+
+	public void AnimatePauseBoardEnter(float enterTime, AnimateComplete callback)
+	{
+		float height = ((RectTransform)(_pausePanel.transform)).rect.height;
+
+		RectTransform rectTransform = (RectTransform)_pauseBoardPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y + height, pos.z);
+
+		LeanTween.cancel(_pauseBoardPanel);
+		LeanTween.moveLocalY(_pauseBoardPanel, 0.0f, enterTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
+	}
+
+	public void AnimatePauseBoardExit(float exitTime, AnimateComplete callback)
+	{
+		float height = ((RectTransform)(_pausePanel.transform)).rect.height;
+
+		RectTransform rectTransform = (RectTransform)_pauseBoardPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+
+		LeanTween.cancel(_pauseBoardPanel);
+		LeanTween.moveLocalY(_pauseBoardPanel, pos.y + height, exitTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
 	}
 
 	public void OnPauseMenuButtonPressed()

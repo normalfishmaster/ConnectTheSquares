@@ -943,7 +943,7 @@ public class LevelLogic : MonoBehaviour
 			int nextColor = _menuColor;
 			int nextAlphabet = _menuAlphabet;
 			int nextMap = _menuMap + 1;
-			bool enableWinNextButton;
+			bool enableNext;
 
 			if (nextMap >= _level.GetNumMap(_menuColor, _menuAlphabet))
 			{
@@ -959,25 +959,38 @@ public class LevelLogic : MonoBehaviour
 
 			if (nextColor >= _level.GetNumColor())
 			{
-				enableWinNextButton = false;
+				enableNext = false;
 			}
 			else
 			{
-				enableWinNextButton = true;
+				enableNext = true;
 				_data.SetLevelLock(nextColor, nextAlphabet, nextMap, 0);
 			}
 
 			_ui.SetEnableControlButton(false);
 			_touchState = TouchState.WIN;
 
-
 			AnimateMapExit(
 				()=>
 				{
-					AnimateWinEnter(star, enableWinNextButton);
+					_ui.SetActiveWinPanel(true);
+					_ui.SetInteractableWinButton(false);
+					_ui.SetInteractableWinNextButton(false);
+
+					AnimateWinBoardEnter(
+						()=>
+						{
+							AnimateWinStarEnter(star,
+								()=>
+								{
+									_ui.SetInteractableWinButton(true);
+									_ui.SetInteractableWinNextButton(enableNext);
+								}
+							);
+						}
+					);
 				}
 			);
-
 		}
 	}
 
@@ -1165,6 +1178,15 @@ public class LevelLogic : MonoBehaviour
 		_touchState = TouchState.PAUSE;
 		_ui.SetEnableControlButton(false);
 		_ui.SetActivePausePanel(true);
+		_ui.SetInteractablePauseButton(false);
+
+		AnimatePauseBoardEnter
+		(
+			()=>
+			{
+				_ui.SetInteractablePauseButton(true);
+			}
+		);
 	}
 
 	public void DoControlUndoButtonPressed()
@@ -1260,9 +1282,26 @@ public class LevelLogic : MonoBehaviour
 
 	// UI - Pause
 
+	private const float PAUSE_ANIMATE_BOARD_ENTER_TIME = 0.3f;
+	private const float PAUSE_ANIMATE_BOARD_EXIT_TIME = 0.3f;
+
 	private void SetupPause()
 	{
 		_ui.SetActivePausePanel(false);
+	}
+
+	private void AnimatePauseBoardEnter(AnimateComplete callback)
+	{
+		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
+
+		_ui.AnimatePauseBoardEnter(PAUSE_ANIMATE_BOARD_ENTER_TIME, uiCallback);
+	}
+
+	private void AnimatePauseBoardExit(AnimateComplete callback)
+	{
+		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
+
+		_ui.AnimatePauseBoardExit(PAUSE_ANIMATE_BOARD_EXIT_TIME, uiCallback);
 	}
 
 	public void DoPauseMenuButtonPressed()
@@ -1280,9 +1319,16 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoPauseResumeButtonPressed()
 	{
-		_ui.SetActivePausePanel(false);
-		_ui.SetEnableControlButton(true);
-		_touchState = TouchState.NONE;
+		_ui.SetInteractablePauseButton(false);
+
+		AnimatePauseBoardExit(
+			()=>
+			{
+				_ui.SetActivePausePanel(false);
+				_ui.SetEnableControlButton(true);
+				_touchState = TouchState.NONE;
+			}
+		);
 	}
 
 	// UI - Win
@@ -1300,25 +1346,18 @@ public class LevelLogic : MonoBehaviour
 		}
 	}
 
-	private void AnimateWinEnter(int star, bool enableNext)
+	private void AnimateWinBoardEnter(AnimateComplete callback)
 	{
-		_ui.SetActiveWinPanel(true);
-		_ui.SetInteractableWinButton(false);
-		_ui.SetInteractableWinNextButton(false);
+		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
 
-		_ui.AnimateWinBoardEnter(WIN_ANIMATE_BOARD_ENTER_TIME,
-			()=>
-			{
-				_ui.AnimateWinStarEnter(star, WIN_ANIMATE_STAR_ENTER_TIME,
-					()=>
-					{
-						_ui.SetInteractableWinButton(true);
-						_ui.SetInteractableWinNextButton(enableNext);
-					}
-				);
-			}
-		);
+		_ui.AnimateWinBoardEnter(WIN_ANIMATE_BOARD_ENTER_TIME, uiCallback);
+	}
 
+	private void AnimateWinStarEnter(int star, AnimateComplete callback)
+	{
+		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
+
+		_ui.AnimateWinStarEnter(star, WIN_ANIMATE_STAR_ENTER_TIME, uiCallback);
 	}
 
 	public void DoWinHintAdButtonPressed()
