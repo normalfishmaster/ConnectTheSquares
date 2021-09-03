@@ -372,10 +372,10 @@ public class LevelUI : MonoBehaviour
 
 	public void AnimatePauseBoardEnter(float enterTime, AnimateComplete callback)
 	{
-		float height = ((RectTransform)(_pausePanel.transform)).rect.height;
-
 		RectTransform rectTransform = (RectTransform)_pauseBoardPanel.transform;
 		Vector3 pos = rectTransform.anchoredPosition;
+		float height = (rectTransform.rect.height / 2) + (((RectTransform)(_pausePanel.transform)).rect.height / 2);
+
 		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y + height, pos.z);
 
 		LeanTween.cancel(_pauseBoardPanel);
@@ -390,10 +390,10 @@ public class LevelUI : MonoBehaviour
 
 	public void AnimatePauseBoardExit(float exitTime, AnimateComplete callback)
 	{
-		float height = ((RectTransform)(_pausePanel.transform)).rect.height;
-
 		RectTransform rectTransform = (RectTransform)_pauseBoardPanel.transform;
 		Vector3 pos = rectTransform.anchoredPosition;
+
+		float height = (rectTransform.rect.height / 2) + (((RectTransform)(_pausePanel.transform)).rect.height / 2);
 
 		LeanTween.cancel(_pauseBoardPanel);
 		LeanTween.moveLocalY(_pauseBoardPanel, pos.y + height, exitTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
@@ -474,10 +474,10 @@ public class LevelUI : MonoBehaviour
 
 	public void AnimateWinBoardEnter(float enterTime, AnimateComplete callback)
 	{
-		float height = ((RectTransform)(_winPanel.transform)).rect.height;
-
 		RectTransform rectTransform = (RectTransform)_winBoardPanel.transform;
 		Vector3 pos = rectTransform.anchoredPosition;
+		float height = (rectTransform.rect.height / 2) + (((RectTransform)(_winPanel.transform)).rect.height / 2);
+
 		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y + height, pos.z);
 
 		LeanTween.cancel(_winBoardPanel);
@@ -492,10 +492,9 @@ public class LevelUI : MonoBehaviour
 
 	public void AnimateWinBoardExit(float exitTime, AnimateComplete callback)
 	{
-		float height = ((RectTransform)(_winPanel.transform)).rect.height;
-
 		RectTransform rectTransform = (RectTransform)_winBoardPanel.transform;
 		Vector3 pos = rectTransform.anchoredPosition;
+		float height = (rectTransform.rect.height / 2) + (((RectTransform)(_winPanel.transform)).rect.height / 2);
 
 		LeanTween.cancel(_winBoardPanel);
 		LeanTween.moveLocalY(_winBoardPanel, pos.y + height, exitTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
@@ -719,10 +718,10 @@ public class LevelUI : MonoBehaviour
 
 	public void AnimateAdAbortBoardEnter(float enterTime, AnimateComplete callback)
 	{
-		float height = ((RectTransform)(_adAbortPanel.transform)).rect.height;
-
 		RectTransform rectTransform = (RectTransform)_adAbortBoardPanel.transform;
 		Vector3 pos = rectTransform.anchoredPosition;
+		float height = (rectTransform.rect.height / 2) + (((RectTransform)(_adAbortPanel.transform)).rect.height / 2);
+
 		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y + height, pos.z);
 
 		LeanTween.cancel(_adAbortBoardPanel);
@@ -737,10 +736,9 @@ public class LevelUI : MonoBehaviour
 
 	public void AnimateAdAbortBoardExit(float exitTime, AnimateComplete callback)
 	{
-		float height = ((RectTransform)(_adAbortPanel.transform)).rect.height;
-
 		RectTransform rectTransform = (RectTransform)_adAbortBoardPanel.transform;
 		Vector3 pos = rectTransform.anchoredPosition;
+		float height = (rectTransform.rect.height / 2) + (((RectTransform)(_adAbortPanel.transform)).rect.height / 2);
 
 		LeanTween.cancel(_adAbortBoardPanel);
 		LeanTween.moveLocalY(_adAbortBoardPanel, pos.y + height, exitTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
@@ -784,10 +782,10 @@ public class LevelUI : MonoBehaviour
 
 	public void AnimateAdFailBoardEnter(float enterTime, AnimateComplete callback)
 	{
-		float height = ((RectTransform)(_adFailPanel.transform)).rect.height;
-
 		RectTransform rectTransform = (RectTransform)_adFailBoardPanel.transform;
 		Vector3 pos = rectTransform.anchoredPosition;
+		float height = (rectTransform.rect.height / 2) + (((RectTransform)(_adFailPanel.transform)).rect.height / 2);
+
 		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y + height, pos.z);
 
 		LeanTween.cancel(_adFailBoardPanel);
@@ -802,10 +800,9 @@ public class LevelUI : MonoBehaviour
 
 	public void AnimateAdFailBoardExit(float exitTime, AnimateComplete callback)
 	{
-		float height = ((RectTransform)(_adFailPanel.transform)).rect.height;
-
 		RectTransform rectTransform = (RectTransform)_adFailBoardPanel.transform;
 		Vector3 pos = rectTransform.anchoredPosition;
+		float height = (rectTransform.rect.height / 2) + (((RectTransform)(_adFailPanel.transform)).rect.height / 2);
 
 		LeanTween.cancel(_adFailBoardPanel);
 		LeanTween.moveLocalY(_adFailBoardPanel, pos.y + height, exitTime).setEase(LeanTweenType.easeOutQuad).setOnComplete

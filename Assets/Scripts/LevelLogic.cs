@@ -1433,7 +1433,8 @@ public class LevelLogic : MonoBehaviour
 	{
 		_ui.SetInteractableWinButton(false);
 
-		AnimateWinBoardExit(
+		AnimateWinBoardExit
+		(
 			()=>
 			{
 				_ui.SetActiveWinPanel(false);
@@ -1447,12 +1448,28 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoWinMenuButtonPressed()
 	{
-		SceneManager.LoadScene("MapMenuScene");
+		_ui.SetInteractableWinButton(false);
+
+		AnimateWinBoardExit
+		(
+			()=>
+			{
+				SceneManager.LoadScene("MapMenuScene");
+			}
+		);
 	}
 
 	public void DoWinReplayButtonPressed()
 	{
-		SceneManager.LoadScene("LevelScene");
+		_ui.SetInteractableWinButton(false);
+
+		AnimateWinBoardExit
+		(
+			()=>
+			{
+				SceneManager.LoadScene("LevelScene");
+			}
+		);
 	}
 
 	public void DoWinNextButtonPressed()
@@ -1479,7 +1496,15 @@ public class LevelLogic : MonoBehaviour
 		_data.SetMenuAlphabet(nextAlphabet);
 		_data.SetMenuMap(nextMap);
 
-		SceneManager.LoadScene("LevelScene");
+		_ui.SetInteractableWinButton(false);
+
+		AnimateWinBoardExit
+		(
+			()=>
+			{
+				SceneManager.LoadScene("LevelScene");
+			}
+		);
 	}
 
 	// UI - Load
