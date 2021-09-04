@@ -123,7 +123,7 @@ public class LevelUI : MonoBehaviour
 		_hintPanel.SetActive(active);
 	}
 
-	public void SetHintDirection(char direction)
+	public void SetActiveHintDirectionPanel(char direction)
 	{
 		char directionUpper = char.ToUpper(direction);
 
@@ -147,6 +147,128 @@ public class LevelUI : MonoBehaviour
 		else if (directionUpper == 'R')
 		{
 			_hintRightPanel.SetActive(true);
+		}
+	}
+
+	private void AnimateHintDirectionUpStop()
+	{
+		LeanTween.cancel(_hintUpPanel);
+	}
+
+	private void AnimateHintDirectionDownStop()
+	{
+		LeanTween.cancel(_hintDownPanel);
+	}
+
+	private void AnimateHintDirectionLeftStop()
+	{
+		LeanTween.cancel(_hintLeftPanel);
+	}
+
+	private void AnimateHintDirectionRightStop()
+	{
+		LeanTween.cancel(_hintRightPanel);
+	}
+
+	private void AnimateHintDirectionUpStart(float animateTime)
+	{
+		RectTransform rectTransform = (RectTransform)_hintUpPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+		float delta = ((((RectTransform)(_hintPanel.transform)).rect.height / 2) - (rectTransform.rect.height / 2)) / 2;
+
+		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y - delta, pos.z);
+
+		LeanTween.moveLocalY(_hintUpPanel, pos.y + delta, animateTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				rectTransform.anchoredPosition = new Vector3(pos.x, pos.y, pos.z);
+				AnimateHintDirectionUpStart(animateTime);
+			}
+		);
+	}
+
+	private void AnimateHintDirectionDownStart(float animateTime)
+	{
+		RectTransform rectTransform = (RectTransform)_hintDownPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+		float delta = ((((RectTransform)(_hintPanel.transform)).rect.height / 2) - (rectTransform.rect.height / 2)) / 2;
+
+		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y + delta, pos.z);
+
+		LeanTween.moveLocalY(_hintDownPanel, pos.y - delta, animateTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				rectTransform.anchoredPosition = new Vector3(pos.x, pos.y, pos.z);
+				AnimateHintDirectionDownStart(animateTime);
+			}
+		);
+	}
+
+	private void AnimateHintDirectionLeftStart(float animateTime)
+	{
+		RectTransform rectTransform = (RectTransform)_hintLeftPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+		float delta = ((((RectTransform)(_hintPanel.transform)).rect.height / 2) - (rectTransform.rect.height / 2)) / 2;
+
+		rectTransform.anchoredPosition = new Vector3(pos.x + delta, pos.y, pos.z);
+
+		LeanTween.moveLocalX(_hintLeftPanel, pos.x - delta, animateTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				rectTransform.anchoredPosition = new Vector3(pos.x, pos.y, pos.z);
+				AnimateHintDirectionLeftStart(animateTime);
+			}
+		);
+	}
+
+	private void AnimateHintDirectionRightStart(float animateTime)
+	{
+		RectTransform rectTransform = (RectTransform)_hintRightPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+		float delta = ((((RectTransform)(_hintPanel.transform)).rect.height / 2) - (rectTransform.rect.height / 2)) / 2;
+
+		rectTransform.anchoredPosition = new Vector3(pos.x - delta, pos.y, pos.z);
+
+		LeanTween.moveLocalX(_hintRightPanel, pos.x + delta, animateTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				rectTransform.anchoredPosition = new Vector3(pos.x, pos.y, pos.z);
+				AnimateHintDirectionRightStart(animateTime);
+			}
+		);
+	}
+
+	public void AnimateHintDirectionStop()
+	{
+		AnimateHintDirectionUpStop();
+		AnimateHintDirectionDownStop();
+		AnimateHintDirectionLeftStop();
+		AnimateHintDirectionRightStop();
+	}
+
+	public void AnimateHintDirectionStart(char direction, float animateTime)
+	{
+		char directionUpper = char.ToUpper(direction);
+
+		if (directionUpper == 'U')
+		{
+			AnimateHintDirectionUpStart(animateTime);
+		}
+		else if (directionUpper == 'D')
+		{
+			AnimateHintDirectionDownStart(animateTime);
+		}
+		else if (directionUpper == 'L')
+		{
+			AnimateHintDirectionLeftStart(animateTime);
+		}
+		else if (directionUpper == 'R')
+		{
+			AnimateHintDirectionRightStart(animateTime);
 		}
 	}
 

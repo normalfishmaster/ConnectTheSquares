@@ -880,7 +880,9 @@ public class LevelLogic : MonoBehaviour
 
 			if (_touchHint)
 			{
-				_ui.SetHintDirection(_levelMap._hint[move]);
+				_ui.SetActiveHintDirectionPanel(_levelMap._hint[move]);
+				AnimateHintDirectionStop();
+				AnimateHintDirectionStart(_levelMap._hint[move]);
 			}
 
 			_touchState = TouchState.NONE;
@@ -929,7 +931,9 @@ public class LevelLogic : MonoBehaviour
 				_touchHint = false;
 				_ui.SetActiveControlHintOnPanel(false);
 				_ui.SetActiveControlHintOffPanel(true);
+
 				_ui.SetActiveHintPanel(false);
+				AnimateHintDirectionStop();
 			}
 
 			int moveCount = GetSquareMoveCount();
@@ -1133,9 +1137,21 @@ public class LevelLogic : MonoBehaviour
 
 	// UI - Hint
 
+	private const float HINT_ANIMATE_DIRECTION_TIME = 0.75f;
+
 	private void SetupHint()
 	{
 		_ui.SetActiveHintPanel(false);
+	}
+
+	private void AnimateHintDirectionStop()
+	{
+		_ui.AnimateHintDirectionStop();
+	}
+
+	private void AnimateHintDirectionStart(char direction)
+	{
+		_ui.AnimateHintDirectionStart(direction, HINT_ANIMATE_DIRECTION_TIME);
 	}
 
 	// UI - Control
@@ -1168,6 +1184,17 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetActivePausePanel(true);
 		_ui.SetInteractablePauseButton(false);
 
+		if (_touchHint == true)
+		{
+			_touchHint = false;
+
+			_ui.SetActiveControlHintOnPanel(false);
+			_ui.SetActiveControlHintOffPanel(true);
+
+			AnimateHintDirectionStop();
+			_ui.SetActiveHintPanel(false);
+		}
+
 		AnimatePauseBoardEnter
 		(
 			()=>
@@ -1186,7 +1213,9 @@ public class LevelLogic : MonoBehaviour
 
 		if (_touchHint == true)
 		{
-			_ui.SetHintDirection(_levelMap._hint[move]);
+			_ui.SetActiveHintDirectionPanel(_levelMap._hint[move]);
+			AnimateHintDirectionStop();
+			AnimateHintDirectionStart(_levelMap._hint[move]);
 		}
 	}
 
@@ -1199,7 +1228,9 @@ public class LevelLogic : MonoBehaviour
 
 		if (_touchHint == true)
 		{
-			_ui.SetHintDirection(_levelMap._hint[move]);
+			_ui.SetActiveHintDirectionPanel(_levelMap._hint[move]);
+			AnimateHintDirectionStop();
+			AnimateHintDirectionStart(_levelMap._hint[move]);
 		}
 	}
 
@@ -1214,16 +1245,17 @@ public class LevelLogic : MonoBehaviour
 	public void DoControlHintOnButtonPressed()
 	{
 		_touchHint = false;
+
 		_ui.SetActiveControlHintOnPanel(false);
 		_ui.SetActiveControlHintOffPanel(true);
+
+		AnimateHintDirectionStop();
 		_ui.SetActiveHintPanel(false);
 	}
 
 	public void DoControlHintOffButtonPressed()
 	{
 		_touchHint = true;
-
-
 
 		_ui.SetActiveControlHintOffPanel(false);
 		_ui.SetActiveControlHintOnPanel(true);
@@ -1239,9 +1271,11 @@ public class LevelLogic : MonoBehaviour
 		int move = GetSquareMoveCount();
 
 		_ui.SetTopMoveCurrent(move);
-		_ui.SetActiveHintPanel(true);
-		_ui.SetHintDirection(_levelMap._hint[move]);
 
+		_ui.SetActiveHintPanel(true);
+		_ui.SetActiveHintDirectionPanel(_levelMap._hint[move]);
+		AnimateHintDirectionStop();
+		AnimateHintDirectionStart(_levelMap._hint[move]);
 	}
 
 	// UI - Go
