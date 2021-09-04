@@ -675,15 +675,83 @@ public class LevelUI : MonoBehaviour
 	// Ad - Success
 
 	private GameObject _adSuccessPanel;
+	private GameObject _adSuccessBoardPanel;
+	private GameObject _adSuccessHintPanel;
+	private GameObject _adSuccessFlarePanel;
+
+	private Button _adSuccessCloseButton;
 
 	private void FindAdSuccessGameObject()
 	{
 		_adSuccessPanel = GameObject.Find("/Canvas/AdSuccess");
+		_adSuccessBoardPanel = GameObject.Find("/Canvas/AdSuccess/Board");
+		_adSuccessHintPanel = GameObject.Find("/Canvas/AdSuccess/Board/Hint");
+		_adSuccessFlarePanel = GameObject.Find("/Canvas/AdSuccess/Board/Flare");
+
+		_adSuccessCloseButton = GameObject.Find("/Canvas/AdSuccess/Board/Close").GetComponent<Button>();
 	}
 
 	public void SetActiveAdSuccessPanel(bool active)
 	{
 		_adSuccessPanel.SetActive(active);
+	}
+
+	public void SetActiveAdSuccessHintPanel(bool active)
+	{
+		_adSuccessHintPanel.SetActive(active);
+		_adSuccessFlarePanel.SetActive(active);
+	}
+
+	public void SetInteractableAdSuccessButton(bool interactable)
+	{
+		_adSuccessCloseButton.interactable = interactable;
+	}
+
+	public void AnimateAdSuccessBoardEnter(float enterTime, AnimateComplete callback)
+	{
+		RectTransform rectTransform = (RectTransform)_adSuccessBoardPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+		float height = (rectTransform.rect.height / 2) + (((RectTransform)(_adSuccessPanel.transform)).rect.height / 2);
+
+		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y + height, pos.z);
+
+		LeanTween.cancel(_adSuccessBoardPanel);
+		LeanTween.moveLocalY(_adSuccessBoardPanel, 0.0f, enterTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
+	}
+
+	public void AnimateAdSuccessHintEnter(float enterTime, AnimateComplete callback)
+	{
+		_adSuccessHintPanel.transform.localScale = Vector3.one * 3.0f;
+
+		LeanTween.scale(_adSuccessHintPanel, Vector3.one, enterTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
+	}
+
+	public void AnimateAdSuccessBoardExit(float boardExitTime, AnimateComplete callback)
+	{
+		RectTransform rectTransform = (RectTransform)_adSuccessBoardPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+		float height = (rectTransform.rect.height / 2) + (((RectTransform)(_adSuccessPanel.transform)).rect.height / 2);
+
+		LeanTween.cancel(_adSuccessBoardPanel);
+		LeanTween.moveLocalY(_adSuccessBoardPanel, pos.y + height, boardExitTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
 	}
 
 	public void OnAdSuccessCloseButtonPressed()
