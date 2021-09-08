@@ -9,6 +9,8 @@ public class MapMenuUI : MonoBehaviour
 	private DataManager _data;
 	private LevelManager _level;
 
+	public delegate void AnimateComplete();
+
 	// Map
 
 	public GameObject _mapButtonLockedPrefab;
@@ -18,6 +20,7 @@ public class MapMenuUI : MonoBehaviour
 	private GameObject _mapPanel;
 	private GameObject _mapContent;
 	private GameObject[] _mapButton;
+	private bool[] _mapButtonLock;
 
 	private void FindMapGameObject()
 	{
@@ -28,19 +31,34 @@ public class MapMenuUI : MonoBehaviour
 	public void SetMapSize(int size)
 	{
 		_mapButton = new GameObject[size];
+		_mapButtonLock = new bool[size];
+	}
+
+	public void SetEnableMapButton(bool enable)
+	{
+		for (int i = 0; i < _mapButton.Length; i++)
+		{
+			if (_mapButtonLock[i] == false)
+			{
+				_mapButton[i].GetComponent<Button>().enabled = enable;
+			}
+		}
 	}
 
 	public void AddMap(int map, int locked, int star)
 	{
 		if (locked == 1)
 		{
+			_mapButtonLock[map] = true;
+
 			_mapButton[map] = Instantiate(_mapButtonLockedPrefab);
-			_mapButton[map].GetComponent<Button>().interactable = false;
+			_mapButton[map].GetComponent<Button>().enabled = false;
 		}
 		else
 		{
+			_mapButtonLock[map] = false;
+
 			_mapButton[map] = Instantiate(_mapButtonUnlockedPrefab);
-			_mapButton[map].GetComponent<Button>().interactable = true;
 
 	                for (int j = 0; j < 3; j++)
                		{
@@ -61,7 +79,7 @@ public class MapMenuUI : MonoBehaviour
 		_mapButton[map].GetComponent<Button>().onClick.AddListener(delegate { OnMapButtonPressed(map); });
 	}
 
-	public void AnimateMapEnter()
+	public void AnimateMapEnter(float enterTime, AnimateComplete callback)
 	{
 		RectTransform rectTransform = (RectTransform)_mapPanel.transform;
 		Vector3 pos = rectTransform.anchoredPosition;
@@ -70,7 +88,13 @@ public class MapMenuUI : MonoBehaviour
 		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y - height, pos.z);
 
 		LeanTween.cancel(_mapPanel);
-		LeanTween.moveLocalY(_mapPanel, 0.0f, 0.3f).setEase(LeanTweenType.easeOutQuad);
+		LeanTween.moveLocalY(_mapPanel, 0.0f, enterTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
 	}
 
 	public void OnMapButtonPressed(int map)

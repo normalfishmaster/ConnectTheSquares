@@ -978,8 +978,8 @@ public class LevelLogic : MonoBehaviour
 				()=>
 				{
 					_ui.SetActiveWinPanel(true);
-					_ui.SetInteractableWinButton(false);
-					_ui.SetInteractableWinNextButton(false);
+					_ui.SetEnableWinButton(false);
+					_ui.SetInteractableWinNextButton(enableNext);
 
 					AnimateWinBoardEnter(
 						()=>
@@ -987,7 +987,7 @@ public class LevelLogic : MonoBehaviour
 							AnimateWinStarEnter(star,
 								()=>
 								{
-									_ui.SetInteractableWinButton(true);
+									_ui.SetEnableWinButton(true);
 									_ui.SetInteractableWinNextButton(enableNext);
 								}
 							);
@@ -1021,12 +1021,12 @@ public class LevelLogic : MonoBehaviour
 			AnimateLoadSquareStop();
 			_ui.SetActiveLoadPanel(false);
 			_ui.SetActiveAdFailPanel(true);
-			_ui.SetInteractableAdFailButton(false);
+			_ui.SetEnableAdFailButton(false);
 			AnimateAdFailBoardEnter
 			(
 				()=>
 				{
-					_ui.SetInteractableAdFailButton(true);
+					_ui.SetEnableAdFailButton(true);
 				}
 			);
 			_touchState = postAdState;
@@ -1046,7 +1046,7 @@ public class LevelLogic : MonoBehaviour
 			_ui.SetActiveControlHintOffPanel(true);
 			_ui.SetActiveAdSuccessPanel(true);
 			_ui.SetActiveAdSuccessHintPanel(false);
-			_ui.SetInteractableAdSuccessButton(false);
+			_ui.SetEnableAdSuccessButton(false);
 			AnimateAdSuccessBoardEnter
 			(
 				()=>
@@ -1056,7 +1056,7 @@ public class LevelLogic : MonoBehaviour
 					(
 						()=>
 						{
-							_ui.SetInteractableAdSuccessButton(true);
+							_ui.SetEnableAdSuccessButton(true);
 						}
 					);
 				}
@@ -1066,12 +1066,12 @@ public class LevelLogic : MonoBehaviour
 		else if (status == AdManager.RewardStatus.FAIL)
 		{
 			_ui.SetActiveAdAbortPanel(true);
-			_ui.SetInteractableAdAbortButton(false);
+			_ui.SetEnableAdAbortButton(false);
 			AnimateAdAbortBoardEnter
 			(
 				()=>
 				{
-					_ui.SetInteractableAdAbortButton(true);
+					_ui.SetEnableAdAbortButton(true);
 				}
 			);
 			_touchState = postAdState;
@@ -1182,7 +1182,7 @@ public class LevelLogic : MonoBehaviour
 		_touchState = TouchState.PAUSE;
 		_ui.SetEnableControlButton(false);
 		_ui.SetActivePausePanel(true);
-		_ui.SetInteractablePauseButton(false);
+		_ui.SetEnablePauseButton(false);
 
 		if (_touchHint == true)
 		{
@@ -1199,7 +1199,7 @@ public class LevelLogic : MonoBehaviour
 		(
 			()=>
 			{
-				_ui.SetInteractablePauseButton(true);
+				_ui.SetEnablePauseButton(true);
 			}
 		);
 	}
@@ -1296,8 +1296,6 @@ public class LevelLogic : MonoBehaviour
 	{
 		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
 
-		_ui.SetActiveGoPanel(true);
-
 		_ui.AnimateGoEnterAndExit(GO_ANIMATE_LABEL_ENTER_EXIT_TIME, GO_ANIMATE_LABEL_ENTER_EXIT_TIME,
 				GO_ANIMATE_BANNER_ENTER_DELAY, GO_ANIMATE_LABEL_ENTER_DELAY, GO_ANIMATE_LABEL_EXIT_DELAY,
 				uiCallback);
@@ -1329,12 +1327,19 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoPauseMenuButtonPressed()
 	{
-		SceneManager.LoadScene("MapMenuScene");
+		_ui.SetEnablePauseButton(false);
+
+		AnimatePauseBoardExit(
+			()=>
+			{
+				SceneManager.LoadScene("MapMenuScene");
+			}
+		);
 	}
 
 	public void DoPauseHintAdButtonPressed()
 	{
-		_ui.SetInteractablePauseButton(false);
+		_ui.SetEnablePauseButton(false);
 
 		AnimatePauseBoardExit(
 			()=>
@@ -1350,7 +1355,7 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoPauseResumeButtonPressed()
 	{
-		_ui.SetInteractablePauseButton(false);
+		_ui.SetEnablePauseButton(false);
 
 		AnimatePauseBoardExit(
 			()=>
@@ -1402,7 +1407,7 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoWinHintAdButtonPressed()
 	{
-		_ui.SetInteractableWinButton(false);
+		_ui.SetEnableWinButton(false);
 
 		AnimateWinBoardExit
 		(
@@ -1419,7 +1424,7 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoWinMenuButtonPressed()
 	{
-		_ui.SetInteractableWinButton(false);
+		_ui.SetEnableWinButton(false);
 
 		AnimateWinBoardExit
 		(
@@ -1432,7 +1437,7 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoWinReplayButtonPressed()
 	{
-		_ui.SetInteractableWinButton(false);
+		_ui.SetEnableWinButton(false);
 
 		AnimateWinBoardExit
 		(
@@ -1467,7 +1472,7 @@ public class LevelLogic : MonoBehaviour
 		_data.SetMenuAlphabet(nextAlphabet);
 		_data.SetMenuMap(nextMap);
 
-		_ui.SetInteractableWinButton(false);
+		_ui.SetEnableWinButton(false);
 
 		AnimateWinBoardExit
 		(
@@ -1532,7 +1537,7 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoAdSuccessCloseButtonPressed()
 	{
-		_ui.SetInteractableAdSuccessButton(false);
+		_ui.SetEnableAdSuccessButton(false);
 
 		AnimateAdSuccessBoardExit
 		(
@@ -1548,7 +1553,7 @@ public class LevelLogic : MonoBehaviour
 					(
 						()=>
 						{
-							_ui.SetInteractableWinButton(true);
+							_ui.SetEnableWinButton(true);
 						}
 					);
 				}
@@ -1560,7 +1565,7 @@ public class LevelLogic : MonoBehaviour
 					(
 						()=>
 						{
-							_ui.SetInteractablePauseButton(true);
+							_ui.SetEnablePauseButton(true);
 						}
 					);
 				}
@@ -1594,7 +1599,7 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoAdAbortCloseButtonPressed()
 	{
-		_ui.SetInteractableAdAbortButton(false);
+		_ui.SetEnableAdAbortButton(false);
 
 		AnimateAdAbortBoardExit
 		(
@@ -1610,7 +1615,7 @@ public class LevelLogic : MonoBehaviour
 					(
 						()=>
 						{
-							_ui.SetInteractableWinButton(true);
+							_ui.SetEnableWinButton(true);
 						}
 					);
 				}
@@ -1621,7 +1626,7 @@ public class LevelLogic : MonoBehaviour
 					AnimatePauseBoardEnter(
 						()=>
 						{
-							_ui.SetInteractablePauseButton(true);
+							_ui.SetEnablePauseButton(true);
 						}
 					);
 				}
@@ -1655,7 +1660,7 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoAdFailCloseButtonPressed()
 	{
-		_ui.SetInteractableAdFailButton(false);
+		_ui.SetEnableAdFailButton(false);
 
 		AnimateAdFailBoardExit
 		(
@@ -1671,7 +1676,7 @@ public class LevelLogic : MonoBehaviour
 					(
 						()=>
 						{
-							_ui.SetInteractableWinButton(true);
+							_ui.SetEnableWinButton(true);
 						}
 					);
 				}
@@ -1682,7 +1687,7 @@ public class LevelLogic : MonoBehaviour
 					AnimatePauseBoardEnter(
 						()=>
 						{
-							_ui.SetInteractablePauseButton(true);
+							_ui.SetEnablePauseButton(true);
 						}
 					);
 				}
@@ -1735,6 +1740,7 @@ public class LevelLogic : MonoBehaviour
 		(
 			()=>
 			{
+				_ui.SetActiveGoPanel(true);
 				AnimateGoEnterAndExit
 				(
 					()=>

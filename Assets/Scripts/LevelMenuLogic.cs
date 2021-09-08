@@ -11,7 +11,12 @@ public class LevelMenuLogic : MonoBehaviour
 
 	private int _menuColor;
 
+	private delegate void AnimateComplete();
+
 	// UI - Level
+
+	private const float LEVEL_ANIMATE_PANEL_ENTER_TIME = 0.3f;
+	private const float LEVEL_ANIMATE_PERCENTAGE_ANIMATE_TIME = 0.3f;
 
 	private void SetupLevel()
 	{
@@ -45,11 +50,21 @@ public class LevelMenuLogic : MonoBehaviour
 				int move = 4 + i;
 				string moves = "Moves:  " + move.ToString();
 
-				_ui.AddALevelTriple(i, moves, (starA / starATotal) * 100.0f, (starB / starBTotal) * 100.0f, (starC / starCTotal) * 100.0f);
+				_ui.AddLevelTriple(i, moves, (starA / starATotal) * 100.0f, (starB / starBTotal) * 100.0f, (starC / starCTotal) * 100.0f);
 			}
 		}
+	}
 
-		_ui.AnimateLevelEnter();
+	private void AnimateLevelEnter(AnimateComplete callback)
+	{
+		LevelMenuUI.AnimateComplete uiCallback = new LevelMenuUI.AnimateComplete(callback);
+
+		_ui.AnimateLevelEnter(LEVEL_ANIMATE_PERCENTAGE_ANIMATE_TIME, uiCallback);
+	}
+
+	private void AnimateLevelPercentage()
+	{
+		_ui.AnimateLevelPercentage(LEVEL_ANIMATE_PANEL_ENTER_TIME);
 	}
 
 	public void DoLevelButtonPressed(int color, int alphabet)
@@ -80,5 +95,15 @@ public class LevelMenuLogic : MonoBehaviour
 		_menuColor = _data.GetMenuColor();
 
 		SetupLevel();
+
+		_ui.SetEnableLevelButton(false);
+		AnimateLevelEnter
+		(
+			()=>
+			{
+				_ui.SetEnableLevelButton(true);
+				AnimateLevelPercentage();
+			}
+		);
         }
 }

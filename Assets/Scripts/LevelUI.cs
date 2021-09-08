@@ -483,13 +483,13 @@ public class LevelUI : MonoBehaviour
 		_pausePanel.SetActive(active);
 	}
 
-	public void SetInteractablePauseButton(bool interactable)
+	public void SetEnablePauseButton(bool enable)
 	{
-		_pauseAudioOnButton.interactable = interactable;
-		_pauseAudioOffButton.interactable = interactable;
-		_pauseMenuButton.interactable = interactable;
-		_pauseHintAdButton.interactable = interactable;
-		_pauseResumeButton.interactable = interactable;
+		_pauseAudioOnButton.enabled = enable;
+		_pauseAudioOffButton.enabled = enable;
+		_pauseMenuButton.enabled = enable;
+		_pauseHintAdButton.enabled = enable;
+		_pauseResumeButton.enabled = enable;
 	}
 
 	public void AnimatePauseBoardEnter(float enterTime, AnimateComplete callback)
@@ -582,11 +582,12 @@ public class LevelUI : MonoBehaviour
 		_winStarPanel[star].SetActive(active);
 	}
 
-	public void SetInteractableWinButton(bool interactable)
+	public void SetEnableWinButton(bool enable)
 	{
-		_winHintAdButton.interactable = interactable;
-		_winMenuButton.interactable = interactable;
-		_winResetButton.interactable = interactable;
+		_winHintAdButton.enabled = enable;
+		_winMenuButton.enabled = enable;
+		_winResetButton.enabled = enable;
+		_winNextButton.enabled = enable;
 	}
 
 	public void SetInteractableWinNextButton(bool interactable)
@@ -824,9 +825,9 @@ public class LevelUI : MonoBehaviour
 		_adSuccessFlarePanel.SetActive(active);
 	}
 
-	public void SetInteractableAdSuccessButton(bool interactable)
+	public void SetEnableAdSuccessButton(bool enable)
 	{
-		_adSuccessCloseButton.interactable = interactable;
+		_adSuccessCloseButton.enabled = enable;
 	}
 
 	public void AnimateAdSuccessBoardEnter(float enterTime, AnimateComplete callback)
@@ -901,9 +902,9 @@ public class LevelUI : MonoBehaviour
 		_adAbortPanel.SetActive(active);
 	}
 
-	public void SetInteractableAdAbortButton(bool interactable)
+	public void SetEnableAdAbortButton(bool enable)
 	{
-		_adAbortCloseButton.interactable = interactable;
+		_adAbortCloseButton.enabled = enable;
 	}
 
 	public void AnimateAdAbortBoardEnter(float enterTime, AnimateComplete callback)
@@ -965,9 +966,9 @@ public class LevelUI : MonoBehaviour
 		_adFailPanel.SetActive(active);
 	}
 
-	public void SetInteractableAdFailButton(bool interactable)
+	public void SetEnableAdFailButton(bool enable)
 	{
-		_adFailCloseButton.interactable = interactable;
+		_adFailCloseButton.enabled = enable;
 	}
 
 	public void AnimateAdFailBoardEnter(float enterTime, AnimateComplete callback)

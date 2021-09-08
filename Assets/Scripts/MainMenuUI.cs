@@ -8,76 +8,89 @@ public class MainMenuUI : MonoBehaviour
 	private MainMenuLogic _logic;
 	private LevelManager _level;
 
-	public delegate void AnimateComplete();
+	// Canvas
+
+	private GameObject _canvas;
+
+	private void FindCanvasGameObject()
+	{
+		_canvas = GameObject.Find("/Canvas");
+	}
 
 	// Front
 
-	private GameObject _canvasPanel;
-	private GameObject _frontPanel;
-	private GameObject _frontContinuePanel;
-	private GameObject _frontLevelsPanel;
-	private GameObject _frontSettingsPanel;
-	private GameObject _frontStorePanel;
+	public float FRONT_ANIMATE_ENTER_DURATION;
+	public float FRONT_ANIMATE_ENTER_DELAY;
 
-	private Button _frontContinueButton;
-	private Button _frontLevelsButton;
-	private Button _frontSettingsButton;
-	private Button _frontStoreButton;
-	private Button _frontDailyRewardsButton;
+	public float FRONT_ANIMATE_EXIT_DURATION;
+	public float FRONT_ANIMATE_EXIT_DELAY;
 
-	private Text _frontContinueLabelText;
-	private Text _frontContinueLevelText;
+	public float FRONT_ANIMATE_BUTTON_PRESSED_SCALE;
+	public float FRONT_ANIMATE_BUTTON_PRESSED_DURATION;
+
+	private GameObject _front;
+
+	private GameObject _frontContinue;
+	private GameObject _frontContinueButton;
+	private GameObject _frontContinueButtonLabel;
+	private GameObject _frontContinueLevel;
+
+	private GameObject _frontLevels;
+	private GameObject _frontLevelsButton;
+
+	private GameObject _frontSettings;
+	private GameObject _frontSettingsButton;
+
+	private GameObject _frontStore;
+	private GameObject _frontStoreButton;
 
 	private void FindFrontGameObject()
 	{
-		_canvasPanel = GameObject.Find("/Canvas");
-		_frontPanel = GameObject.Find("/Canvas/Front");
+		_front = GameObject.Find("/Canvas/Front");
 
-		_frontContinuePanel = GameObject.Find("/Canvas/Front/Continue");
-		_frontLevelsPanel = GameObject.Find("/Canvas/Front/Levels");
-		_frontSettingsPanel = GameObject.Find("/Canvas/Front/Settings");
-		_frontStorePanel = GameObject.Find("/Canvas/Front/Store");
+		_frontContinue = GameObject.Find("/Canvas/Front/Continue");
+		_frontContinueButton = GameObject.Find("/Canvas/Front/Continue/Button");
+		_frontContinueButtonLabel = GameObject.Find("/Canvas/Front/Continue/Button/Label");
+		_frontContinueLevel = GameObject.Find("/Canvas/Front/Continue/Level");
 
-		_frontContinueButton = GameObject.Find("/Canvas/Front/Continue").GetComponent<Button>();
-		_frontLevelsButton = GameObject.Find("/Canvas/Front/Levels").GetComponent<Button>();
-		_frontSettingsButton = GameObject.Find("/Canvas/Front/Settings").GetComponent<Button>();
-		_frontStoreButton = GameObject.Find("/Canvas/Front/Store").GetComponent<Button>();
+		_frontLevels = GameObject.Find("/Canvas/Front/Levels");
+		_frontLevelsButton = GameObject.Find("/Canvas/Front/Levels/Button");
 
-		_frontContinueLabelText = GameObject.Find("/Canvas/Front/Continue/Label").GetComponent<Text>();
-		_frontContinueLevelText = GameObject.Find("/Canvas/Front/Continue/Level").GetComponent<Text>();
+		_frontSettings = GameObject.Find("/Canvas/Front/Settings");
+		_frontSettingsButton = GameObject.Find("/Canvas/Front/Settings/Button");
 
-		_frontDailyRewardsButton = GameObject.Find("/Canvas/DailyRewards").GetComponent<Button>();
+		_frontStore = GameObject.Find("/Canvas/Front/Store");
+		_frontStoreButton = GameObject.Find("/Canvas/Front/Store/Button");
 	}
 
 	public void SetEnableFrontButton(bool enable)
 	{
-		_frontContinueButton.enabled = enable;
-		_frontLevelsButton.enabled = enable;
-		_frontSettingsButton.enabled = enable;
-		_frontStoreButton.enabled = enable;
-		_frontDailyRewardsButton.enabled = enable;
+		_frontContinueButton.GetComponent<Button>().enabled = enable;
+		_frontLevelsButton.GetComponent<Button>().enabled = enable;
+		_frontSettingsButton.GetComponent<Button>().enabled = enable;
+		_frontStoreButton.GetComponent<Button>().enabled = enable;
 	}
 
-	public void SetFrontContinueLabel(string text)
+	public void SetFrontContinueButtonLabel(string text)
 	{
-		_frontContinueLabelText.text = text;
+		_frontContinueButtonLabel.GetComponent<Text>().text = text;
 	}
 
 	public void SetFrontContinueLevel(int color, int alphabet, int map)
 	{
 		string str = _level.GetColorString(color) + " - " + _level.GetAlphabetString(alphabet) + " - " + _level.GetMapString(map);
-		_frontContinueLevelText.text = str;
+		_frontContinueLevel.GetComponent<Text>().text = str;
 	}
 
-	public void AnimateFrontEnter(AnimateComplete callback)
+	public void AnimateFrontEnter(Animate.AnimateComplete callback)
 	{
-		float width = _canvasPanel.GetComponent<CanvasScaler>().referenceResolution.x;
+		float width = _canvas.GetComponent<CanvasScaler>().referenceResolution.x;
 		Vector2 diff = new Vector3(-1 * width, 0.0f);
 
-		RectTransform continueRt = (RectTransform)_frontContinuePanel.transform;
-		RectTransform levelsRt = (RectTransform)_frontLevelsPanel.transform;
-		RectTransform settingsRt = (RectTransform)_frontSettingsPanel.transform;
-		RectTransform storeRt = (RectTransform)_frontStorePanel.transform;
+		RectTransform continueRt = (RectTransform)_frontContinue.transform;
+		RectTransform levelsRt = (RectTransform)_frontLevels.transform;
+		RectTransform settingsRt = (RectTransform)_frontSettings.transform;
+		RectTransform storeRt = (RectTransform)_frontStore.transform;
 
 		continueRt.anchoredPosition += diff;
 		levelsRt.anchoredPosition += diff;
@@ -89,10 +102,11 @@ public class MainMenuUI : MonoBehaviour
 		LeanTween.cancel(settingsRt);
 		LeanTween.cancel(storeRt);
 
-		LeanTween.moveLocalX(_frontContinuePanel, 0.0f, 0.3f).setEase(LeanTweenType.easeOutQuad);
-		LeanTween.moveLocalX(_frontLevelsPanel, 0.0f, 0.3f).setEase(LeanTweenType.easeOutQuad).setDelay(0.15f);
-		LeanTween.moveLocalX(_frontSettingsPanel, 0.0f, 0.3f).setEase(LeanTweenType.easeOutQuad).setDelay(0.30f);
-		LeanTween.moveLocalX(_frontStorePanel, 0.0f, 0.3f).setEase(LeanTweenType.easeOutQuad).setDelay(0.45f).setOnComplete(
+		LeanTween.moveLocalX(_frontContinue, 0.0f, FRONT_ANIMATE_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad);
+		LeanTween.moveLocalX(_frontLevels, 0.0f, FRONT_ANIMATE_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad).setDelay(FRONT_ANIMATE_ENTER_DELAY);
+		LeanTween.moveLocalX(_frontSettings, 0.0f, FRONT_ANIMATE_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad).setDelay(FRONT_ANIMATE_ENTER_DELAY * 2);
+		LeanTween.moveLocalX(_frontStore, 0.0f, FRONT_ANIMATE_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad).setDelay(FRONT_ANIMATE_ENTER_DELAY * 3).setOnComplete
+		(
 			()=>
 			{
 				callback();
@@ -100,29 +114,49 @@ public class MainMenuUI : MonoBehaviour
 		);
 	}
 
-	public void AnimateFrontExit(AnimateComplete callback)
+	public void AnimateFrontExit(Animate.AnimateComplete callback)
 	{
-		float width = _canvasPanel.GetComponent<CanvasScaler>().referenceResolution.x;
+		float width = _canvas.GetComponent<CanvasScaler>().referenceResolution.x;
 
-		RectTransform continueRt = (RectTransform)_frontContinuePanel.transform;
-		RectTransform levelsRt = (RectTransform)_frontLevelsPanel.transform;
-		RectTransform settingsRt = (RectTransform)_frontSettingsPanel.transform;
-		RectTransform storeRt = (RectTransform)_frontStorePanel.transform;
+		RectTransform continueRt = (RectTransform)_frontContinue.transform;
+		RectTransform levelsRt = (RectTransform)_frontLevels.transform;
+		RectTransform settingsRt = (RectTransform)_frontSettings.transform;
+		RectTransform storeRt = (RectTransform)_frontStore.transform;
 
 		LeanTween.cancel(continueRt);
 		LeanTween.cancel(levelsRt);
 		LeanTween.cancel(settingsRt);
 		LeanTween.cancel(storeRt);
 
-		LeanTween.moveLocalX(_frontContinuePanel, width, 0.3f).setEase(LeanTweenType.easeOutQuad);
-		LeanTween.moveLocalX(_frontLevelsPanel, width, 0.3f).setEase(LeanTweenType.easeOutQuad).setDelay(0.15f);
-		LeanTween.moveLocalX(_frontSettingsPanel, width, 0.3f).setEase(LeanTweenType.easeOutQuad).setDelay(0.30f);
-		LeanTween.moveLocalX(_frontStorePanel, width, 0.3f).setEase(LeanTweenType.easeOutQuad).setDelay(0.45f).setOnComplete(
+		LeanTween.moveLocalX(_frontContinue, width, FRONT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeOutQuad);
+		LeanTween.moveLocalX(_frontLevels, width, FRONT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeOutQuad).setDelay(FRONT_ANIMATE_EXIT_DELAY);
+		LeanTween.moveLocalX(_frontSettings, width, FRONT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeOutQuad).setDelay(FRONT_ANIMATE_EXIT_DELAY * 2);
+		LeanTween.moveLocalX(_frontStore, width, FRONT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeOutQuad).setDelay(FRONT_ANIMATE_EXIT_DELAY * 3).setOnComplete(
 			()=>
 			{
 				callback();
 			}
 		);
+	}
+
+	public void AnimateFrontContinueButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_frontContinueButton, FRONT_ANIMATE_BUTTON_PRESSED_SCALE, FRONT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateFrontLevelsButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_frontLevelsButton, FRONT_ANIMATE_BUTTON_PRESSED_SCALE, FRONT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateFrontSettingsButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_frontSettingsButton, FRONT_ANIMATE_BUTTON_PRESSED_SCALE, FRONT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateFrontStoreButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_frontStoreButton, FRONT_ANIMATE_BUTTON_PRESSED_SCALE, FRONT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	public void OnFrontContinueButtonPressed()
@@ -145,48 +179,73 @@ public class MainMenuUI : MonoBehaviour
 		_logic.DoFrontStoreButtonPressed();
 	}
 
-	public void OnFrontDailyRewardsButtonPressed()
-	{
-		_logic.DoFrontDailyRewardsButtonPressed();
-	}
-
-
 	// Bottom
 
-	private GameObject _bottomGooglePlayPanel;
-	private GameObject _bottomGameCenterPanel;
+	public float BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE;
+	public float BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION;
 
-	private Button _bottomGooglePlayButton;
-	private Button _bottomGameCenterButton;
-	private Button _bottomNoAdsButton;
-	private Button _bottomLanguageButton;
+	private GameObject _bottomGooglePlay;
+	private GameObject _bottomGooglePlayButton;
+	private GameObject _bottomGameCenter;
+	private GameObject _bottomGameCenterButton;
+
+	private GameObject _bottomNoAds;
+	private GameObject _bottomNoAdsButton;
+
+	private GameObject _bottomLanguage;
+	private GameObject _bottomLanguageButton;
 
 	private void FindBottomGameObject()
 	{
-		_bottomGooglePlayPanel = GameObject.Find("/Canvas/Bottom/GooglePlay");
-		_bottomGameCenterPanel = GameObject.Find("/Canvas/Bottom/GameCenter");
+		_bottomGooglePlay = GameObject.Find("/Canvas/Bottom/GooglePlay");
+		_bottomGooglePlayButton = GameObject.Find("/Canvas/Bottom/GooglePlay/Button");
 
-		_bottomGooglePlayButton = GameObject.Find("/Canvas/Bottom/GooglePlay/Button").GetComponent<Button>();
-		_bottomGameCenterButton = GameObject.Find("/Canvas/Bottom/GameCenter/Button").GetComponent<Button>();
-		_bottomNoAdsButton = GameObject.Find("/Canvas/Bottom/NoAds/Button").GetComponent<Button>();
-		_bottomLanguageButton = GameObject.Find("/Canvas/Bottom/Language/Button").GetComponent<Button>();
+		_bottomGameCenter = GameObject.Find("/Canvas/Bottom/GameCenter");
+		_bottomGameCenterButton = GameObject.Find("/Canvas/Bottom/GameCenter/Button");
+
+		_bottomNoAds = GameObject.Find("/Canvas/Bottom/NoAds");
+		_bottomNoAdsButton = GameObject.Find("/Canvas/Bottom/NoAds/Button");
+
+		_bottomLanguage = GameObject.Find("/Canvas/Bottom/Language");
+		_bottomLanguageButton = GameObject.Find("/Canvas/Bottom/Language/Button");
 	}
 
-	public void SetActiveBottomGooglePlayPanel(bool active)
+	public void SetActiveBottomGooglePlay(bool active)
 	{
-		_bottomGooglePlayPanel.SetActive(active);
+		_bottomGooglePlay.SetActive(active);
 	}
 
-	public void SetActiveBottomGameCenterPanel(bool active)
+	public void SetActiveBottomGameCenter(bool active)
 	{
-		_bottomGameCenterPanel.SetActive(active);
+		_bottomGameCenter.SetActive(active);
 	}
 
 	public void SetEnableBottomButton(bool enable)
 	{
-		_bottomGooglePlayButton.enabled = enable;
-		_bottomGameCenterButton.enabled = enable;
-		_bottomNoAdsButton.enabled = enable;
+		_bottomGooglePlayButton.GetComponent<Button>().enabled = enable;
+		_bottomGameCenterButton.GetComponent<Button>().enabled = enable;
+		_bottomNoAdsButton.GetComponent<Button>().enabled = enable;
+		_bottomLanguageButton.GetComponent<Button>().enabled = enable;
+	}
+
+	public void AnimateBottomGooglePlayButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_bottomGooglePlayButton, BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE, BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateBottomGameCenterButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_bottomGameCenterButton, BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE, BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateBottomNoAdsButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_bottomNoAdsButton, BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE, BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateBottomLanguageButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_bottomLanguageButton, BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE, BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	public void OnBottomGooglePlayButtonPressed()
@@ -211,16 +270,62 @@ public class MainMenuUI : MonoBehaviour
 
 	// Exit
 
-	private GameObject _exitPanel;
+	public float EXIT_ANIMATE_BOARD_ENTER_DURATION;
+	public float EXIT_ANIMATE_BOARD_EXIT_DURATION;
+
+	public float EXIT_ANIMATE_BUTTON_PRESSED_SCALE;
+	public float EXIT_ANIMATE_BUTTON_PRESSED_DURATION;
+
+	private GameObject _exit;
+	private GameObject _exitBoard;
+
+	private GameObject _exitYes;
+	private GameObject _exitYesButton;
+
+	private GameObject _exitNo;
+	private GameObject _exitNoButton;
 
 	private void FindExitGameObject()
 	{
-		_exitPanel = GameObject.Find("/Canvas/Exit");
+		_exit = GameObject.Find("/Canvas/Exit");
+		_exitBoard = GameObject.Find("/Canvas/Exit/Board");
+
+		_exitYes = GameObject.Find("/Canvas/Exit/Board/Yes");
+		_exitYesButton = GameObject.Find("/Canvas/Exit/Board/Yes/Button");
+
+		_exitNo = GameObject.Find("/Canvas/Exit/Board/No");
+		_exitNoButton = GameObject.Find("/Canvas/Exit/Board/No/Button");
 	}
 
-	public void SetActiveExitPanel(bool active)
+	public void SetActiveExit(bool active)
 	{
-		_exitPanel.SetActive(active);
+		_exit.SetActive(active);
+	}
+
+	public void SetEnableExitButton(bool enable)
+	{
+		_exitYesButton.GetComponent<Button>().enabled = enable;
+		_exitNoButton.GetComponent<Button>().enabled = enable;
+	}
+
+	public void AnimateExitBoardEnter(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateBoardEnter(_exit, _exitBoard, EXIT_ANIMATE_BOARD_ENTER_DURATION, callback);
+	}
+
+	public void AnimateExitBoardExit(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateBoardExit(_exit, _exitBoard, EXIT_ANIMATE_BOARD_EXIT_DURATION, callback);
+	}
+
+	public void AnimateExitYesButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_exitYesButton, EXIT_ANIMATE_BUTTON_PRESSED_SCALE, EXIT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateExitNoButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_exitNoButton, EXIT_ANIMATE_BUTTON_PRESSED_SCALE, EXIT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	public void OnExitYesButtonPressed()
@@ -240,6 +345,7 @@ public class MainMenuUI : MonoBehaviour
 		_logic = GameObject.Find("MainMenuLogic").GetComponent<MainMenuLogic>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
+		FindCanvasGameObject();
 		FindFrontGameObject();
 		FindBottomGameObject();
 		FindExitGameObject();

@@ -12,9 +12,13 @@ public class MapMenuLogic : MonoBehaviour
 	private int _menuColor;
 	private int _menuAlphabet;
 
+	private delegate void AnimateComplete();
+
 	// UI - Map
 
-	public void SetupMap()
+	private const float MAP_ANIMATE_ENTER_TIME = 0.3f;
+
+	private void SetupMap()
 	{
 		int numMap = _level.GetNumMap(_menuColor, _menuAlphabet);
 
@@ -27,8 +31,13 @@ public class MapMenuLogic : MonoBehaviour
 
 			_ui.AddMap(i, locked, star);
 		}
+	}
 
-		_ui.AnimateMapEnter();
+	private void AnimateMapEnter(AnimateComplete callback)
+	{
+		MapMenuUI.AnimateComplete uiCallback = new MapMenuUI.AnimateComplete(callback);
+
+		_ui.AnimateMapEnter(MAP_ANIMATE_ENTER_TIME, uiCallback);
 	}
 
 	public void DoMapButtonPressed(int map)
@@ -39,7 +48,7 @@ public class MapMenuLogic : MonoBehaviour
 
 	// UI - Top
 
-	public void SetupTop()
+	private void SetupTop()
 	{
 		_ui.SetTopLabel(_menuColor, _menuAlphabet);
 	}
@@ -67,5 +76,14 @@ public class MapMenuLogic : MonoBehaviour
 
 		SetupTop();
 		SetupMap();
+
+		_ui.SetEnableMapButton(false);
+		AnimateMapEnter
+		(
+			()=>
+			{
+				_ui.SetEnableMapButton(true);
+			}
+		);
 	}
 }
