@@ -14,6 +14,12 @@ public class LevelMenuUI : MonoBehaviour
 
 	// Level
 
+	public float LEVEL_ANIMATE_ENTER_DURATION;
+	public float LEVEL_ANIMATE_PERCENTAGE_DURATION;
+
+	public float LEVEL_ANIMATE_BUTTON_PRESSED_SCALE;
+	public float LEVEL_ANIMATE_BUTTON_PRESSED_DURATION;
+
 	private enum LevelButtonType
 	{
 		SINGLE,
@@ -96,7 +102,7 @@ public class LevelMenuUI : MonoBehaviour
 		_levelButton[color].transform.Find("C").GetComponent<Button>().onClick.AddListener(delegate { OnLevelButtonPressed(color, 2); });
 	}
 
-        public void AnimateLevelEnter(float enterTime, AnimateComplete callback)
+        public void AnimateLevelEnter(Animate.AnimateComplete callback)
         {
 		RectTransform rectTransform = (RectTransform)_levelPanel.transform;
 		Vector3 pos = rectTransform.anchoredPosition;
@@ -105,7 +111,7 @@ public class LevelMenuUI : MonoBehaviour
 		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y - height, pos.z);
 
 		LeanTween.cancel(_levelPanel);
-		LeanTween.moveLocalY(_levelPanel, 0.0f, enterTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		LeanTween.moveLocalY(_levelPanel, 0.0f, LEVEL_ANIMATE_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad).setOnComplete
 		(
 			()=>
 			{
@@ -114,7 +120,7 @@ public class LevelMenuUI : MonoBehaviour
 		);
         }
 
-	private void AnimateLevelPercentageSingle(GameObject button, string name, float val, float animateTime)
+	private void AnimateLevelPercentageSingle(GameObject button, string name, float val)
 	{
 		Transform transform = button.transform.Find(name);
 		GameObject gameObject = transform.gameObject;
@@ -123,9 +129,9 @@ public class LevelMenuUI : MonoBehaviour
 
 		LeanTween.cancel(gameObject);
 
-		LeanTween.scale(gameObject, Vector3.one * 1.25f, animateTime).setEasePunch();
+		LeanTween.scale(gameObject, Vector3.one * 1.25f, LEVEL_ANIMATE_PERCENTAGE_DURATION).setEasePunch();
 
-		LeanTween.value(gameObject, 0.0f, val, animateTime).setEase(LeanTweenType.easeOutSine).setOnUpdate
+		LeanTween.value(gameObject, 0.0f, val, LEVEL_ANIMATE_PERCENTAGE_DURATION).setEase(LeanTweenType.easeOutSine).setOnUpdate
 		(
 			(float val) =>
 			{
@@ -134,21 +140,27 @@ public class LevelMenuUI : MonoBehaviour
 		);
 	}
 
-	public void AnimateLevelPercentage(float animateTime)
+	public void AnimateLevelPercentage()
 	{
 		for (int i = 0; i < _levelButton.Length; i++)
 		{
 			if (_levelButtonType[i] == LevelButtonType.SINGLE)
 			{
-				AnimateLevelPercentageSingle(_levelButton[i], "PercentA", _levelPercentA[i], animateTime);
+				AnimateLevelPercentageSingle(_levelButton[i], "PercentA", _levelPercentA[i]);
 			}
 			else
 			{
-				AnimateLevelPercentageSingle(_levelButton[i], "PercentA", _levelPercentA[i], animateTime);
-				AnimateLevelPercentageSingle(_levelButton[i], "PercentB", _levelPercentB[i], animateTime);
-				AnimateLevelPercentageSingle(_levelButton[i], "PercentC", _levelPercentC[i], animateTime);
+				AnimateLevelPercentageSingle(_levelButton[i], "PercentA", _levelPercentA[i]);
+				AnimateLevelPercentageSingle(_levelButton[i], "PercentB", _levelPercentB[i]);
+				AnimateLevelPercentageSingle(_levelButton[i], "PercentC", _levelPercentC[i]);
 			}
 		}
+	}
+
+	public void AnimateLevelButtonPressed(int color, int alphabet, Animate.AnimateComplete callback)
+	{
+		GameObject button = _levelButton[color].transform.Find(_level.GetAlphabetString(alphabet)).gameObject;
+		Animate.AnimateButtonPressed(button, LEVEL_ANIMATE_BUTTON_PRESSED_SCALE, LEVEL_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	public void OnLevelButtonPressed(int color, int alphabet)
@@ -156,11 +168,26 @@ public class LevelMenuUI : MonoBehaviour
 		_logic.DoLevelButtonPressed(color, alphabet);
 	}
 
-	// Back
+	// Bottom
 
-	public void OnBackButtonPressed()
+	public float BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE;
+	public float BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION;
+
+	private GameObject _bottomBackButton;
+
+	private void FindBottomGameObject()
 	{
-		_logic.DoBackButtonPressed();
+		_bottomBackButton = GameObject.Find("/Canvas/Bottom/Back/Button");
+	}
+
+	public void AnimateBottomBackButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_bottomBackButton, BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE, BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void OnBottomBackButtonPressed()
+	{
+		_logic.DoBottomBackButtonPressed();
 	}
 
 	// Unity Lifecycle
@@ -172,5 +199,6 @@ public class LevelMenuUI : MonoBehaviour
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
 		FindLevelGameObject();
+		FindBottomGameObject();
 	}
 }

@@ -55,30 +55,29 @@ public class LevelMenuLogic : MonoBehaviour
 		}
 	}
 
-	private void AnimateLevelEnter(AnimateComplete callback)
-	{
-		LevelMenuUI.AnimateComplete uiCallback = new LevelMenuUI.AnimateComplete(callback);
-
-		_ui.AnimateLevelEnter(LEVEL_ANIMATE_PERCENTAGE_ANIMATE_TIME, uiCallback);
-	}
-
-	private void AnimateLevelPercentage()
-	{
-		_ui.AnimateLevelPercentage(LEVEL_ANIMATE_PANEL_ENTER_TIME);
-	}
-
 	public void DoLevelButtonPressed(int color, int alphabet)
 	{
-		_data.SetMenuColor(color);
-		_data.SetMenuAlphabet(alphabet);
-		SceneManager.LoadScene("MapMenuScene");
+		_ui.AnimateLevelButtonPressed(color, alphabet,
+			()=>
+			{
+				_data.SetMenuColor(color);
+				_data.SetMenuAlphabet(alphabet);
+				SceneManager.LoadScene("MapMenuScene");
+			}
+		);
 	}
 
-	// UI - Back
+	// UI - Bottom
 
-	public void DoBackButtonPressed()
+	public void DoBottomBackButtonPressed()
 	{
-		SceneManager.LoadScene("MainMenuScene");
+		_ui.AnimateBottomBackButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("MainMenuScene");
+			}
+		);
 	}
 
 	// Unity Lifecycle
@@ -97,12 +96,12 @@ public class LevelMenuLogic : MonoBehaviour
 		SetupLevel();
 
 		_ui.SetEnableLevelButton(false);
-		AnimateLevelEnter
+		_ui.AnimateLevelEnter
 		(
 			()=>
 			{
 				_ui.SetEnableLevelButton(true);
-				AnimateLevelPercentage();
+				_ui.AnimateLevelPercentage();
 			}
 		);
         }
