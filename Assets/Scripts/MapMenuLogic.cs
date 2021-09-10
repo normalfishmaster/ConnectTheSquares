@@ -33,17 +33,16 @@ public class MapMenuLogic : MonoBehaviour
 		}
 	}
 
-	private void AnimateMapEnter(AnimateComplete callback)
-	{
-		MapMenuUI.AnimateComplete uiCallback = new MapMenuUI.AnimateComplete(callback);
-
-		_ui.AnimateMapEnter(MAP_ANIMATE_ENTER_TIME, uiCallback);
-	}
-
 	public void DoMapButtonPressed(int map)
 	{
 		_data.SetMenuMap(map);
-		SceneManager.LoadScene("LevelScene");
+
+		_ui.AnimateMapButtonPressed(map,
+			()=>
+			{
+				SceneManager.LoadScene("LevelScene");
+			}
+		);
 	}
 
 	// UI - Top
@@ -53,11 +52,17 @@ public class MapMenuLogic : MonoBehaviour
 		_ui.SetTopLabel(_menuColor, _menuAlphabet);
 	}
 
-	// UI - Back
+	// UI - Bottom
 
-	public void DoBackButtonPressed()
+	public void DoBottomBackButtonPressed()
 	{
-		SceneManager.LoadScene("LevelMenuScene");
+		_ui.AnimateBottomBackButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("LevelMenuScene");
+			}
+		);
 	}
 
 	// Unity Lifecycle
@@ -78,7 +83,7 @@ public class MapMenuLogic : MonoBehaviour
 		SetupMap();
 
 		_ui.SetEnableMapButton(false);
-		AnimateMapEnter
+		_ui.AnimateMapEnter
 		(
 			()=>
 			{

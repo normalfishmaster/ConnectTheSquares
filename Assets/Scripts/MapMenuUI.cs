@@ -13,6 +13,11 @@ public class MapMenuUI : MonoBehaviour
 
 	// Map
 
+	public float MAP_ANIMATE_ENTER_DURATION;
+
+	public float MAP_ANIMATE_BUTTON_PRESSED_SCALE;
+	public float MAP_ANIMATE_BUTTON_PRESSED_DURATION;
+
 	public GameObject _mapButtonLockedPrefab;
 	public GameObject _mapButtonUnlockedPrefab;
 	public Sprite _mapButtonStarSprite;
@@ -79,7 +84,7 @@ public class MapMenuUI : MonoBehaviour
 		_mapButton[map].GetComponent<Button>().onClick.AddListener(delegate { OnMapButtonPressed(map); });
 	}
 
-	public void AnimateMapEnter(float enterTime, AnimateComplete callback)
+	public void AnimateMapEnter(Animate.AnimateComplete callback)
 	{
 		RectTransform rectTransform = (RectTransform)_mapPanel.transform;
 		Vector3 pos = rectTransform.anchoredPosition;
@@ -88,13 +93,18 @@ public class MapMenuUI : MonoBehaviour
 		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y - height, pos.z);
 
 		LeanTween.cancel(_mapPanel);
-		LeanTween.moveLocalY(_mapPanel, 0.0f, enterTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		LeanTween.moveLocalY(_mapPanel, 0.0f, MAP_ANIMATE_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad).setOnComplete
 		(
 			()=>
 			{
 				callback();
 			}
 		);
+	}
+
+	public void AnimateMapButtonPressed(int map, Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_mapButton[map], MAP_ANIMATE_BUTTON_PRESSED_SCALE, MAP_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	public void OnMapButtonPressed(int map)
@@ -116,11 +126,26 @@ public class MapMenuUI : MonoBehaviour
 		_topLabelText.text = _level.GetColorString(color) + " - " + _level.GetAlphabetString(alphabet);
 	}
 
-	// Back
+	// Bottom
 
-	public void OnBackButtonPressed()
+	public float BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE;
+	public float BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION;
+
+	private GameObject _bottomBackButton;
+
+	private void FindBottomGameObject()
 	{
-		_logic.DoBackButtonPressed();
+		_bottomBackButton = GameObject.Find("/Canvas/Bottom/Back/Button");
+	}
+
+	public void AnimateBottomBackButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_bottomBackButton, BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE, BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void OnBottomBackButtonPressed()
+	{
+		_logic.DoBottomBackButtonPressed();
 	}
 
 	// Unity Lifecycle
@@ -133,5 +158,6 @@ public class MapMenuUI : MonoBehaviour
 
 		FindMapGameObject();
 		FindTopGameObject();
+		FindBottomGameObject();
 	}
 }
