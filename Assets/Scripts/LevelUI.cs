@@ -100,6 +100,17 @@ public class LevelUI : MonoBehaviour
 		_topStar[star].SetActive(active);
 	}
 
+	private void AnimateTopStarEnterSingle(int star, float duration)
+	{
+		LeanTween.cancel(_topStar[star]);
+
+		// Scale
+
+		_topStar[star].transform.localScale = Vector3.one * 2.0f;
+
+		LeanTween.scale(_topStar[star], Vector3.one, duration).setEase(LeanTweenType.easeOutQuad);
+	}
+
 	// Hint
 
 	private GameObject _hint;
@@ -700,13 +711,18 @@ public class LevelUI : MonoBehaviour
 		(
 			()=>
 			{
-				SetActiveTopStar(star, true);
-
 				_winStarParticleSystem[star].GetComponent<ParticleSystem>().Play();
-
 				callback();
 			}
 		);
+
+		// Top Star
+
+		if (!_topStar[star].activeSelf)
+		{
+			SetActiveTopStar(star, true);
+			AnimateTopStarEnterSingle(star, WIN_ANIMATE_STAR_ENTER_DURATION);
+		}
 	}
 
 	public void AnimateWinStarEnter(int star, Animate.AnimateComplete callback)
