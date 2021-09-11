@@ -40,14 +40,14 @@ public class LevelLogic : MonoBehaviour
 
 	// Map
 
-	private const float MAP_ANIMATE_WALL_ENTER_ROTATION = 180.0f;
-	private const float MAP_ANIMATE_WALL_ENTER_TIME = 0.4f;
-	private const float MAP_ANIMATE_SQUARE_ENTER_TIME = 0.4f;
+	public float MAP_ANIMATE_WALL_ENTER_ROTATION;
+	public float MAP_ANIMATE_WALL_ENTER_TIME;
+	public float MAP_ANIMATE_SQUARE_ENTER_TIME;
 
-	private const float MAP_ANIMATE_WALL_EXIT_ROTATION = 720.0f;
-	private const float MAP_ANIMATE_WALL_EXIT_INITIAL_SPEED = 30.0f;
-	private const float MAP_ANIMATE_WALL_EXIT_SPEED_MULTIPLIER = 0.6f;
-	private const float MAP_ANIMATE_WALL_EXIT_TIME = 1.5f;
+	public float MAP_ANIMATE_WALL_EXIT_ROTATION;
+	public float MAP_ANIMATE_WALL_EXIT_INITIAL_SPEED;
+	public float MAP_ANIMATE_WALL_EXIT_SPEED_MULTIPLIER;
+	public float MAP_ANIMATE_WALL_EXIT_TIME;
 
 	private GameObject[,] _mapWall;
 	private GameObject[,] _mapWallShadow;
@@ -880,7 +880,7 @@ public class LevelLogic : MonoBehaviour
 
 			if (_touchHint)
 			{
-				_ui.SetActiveHintDirectionPanel(_levelMap._hint[move]);
+				_ui.SetActiveHintDirection(_levelMap._hint[move]);
 				AnimateHintDirectionStop();
 				AnimateHintDirectionStart(_levelMap._hint[move]);
 			}
@@ -929,10 +929,10 @@ public class LevelLogic : MonoBehaviour
 			if (_touchHint)
 			{
 				_touchHint = false;
-				_ui.SetActiveControlHintOnPanel(false);
-				_ui.SetActiveControlHintOffPanel(true);
+				_ui.SetActiveControlHintOn(false);
+				_ui.SetActiveControlHintOff(true);
 
-				_ui.SetActiveHintPanel(false);
+				_ui.SetActiveHint(false);
 				AnimateHintDirectionStop();
 			}
 
@@ -977,14 +977,14 @@ public class LevelLogic : MonoBehaviour
 			AnimateMapExit(
 				()=>
 				{
-					_ui.SetActiveWinPanel(true);
+					_ui.SetActiveWin(true);
 					_ui.SetEnableWinButton(false);
 					_ui.SetInteractableWinNextButton(enableNext);
 
-					AnimateWinBoardEnter(
+					_ui.AnimateWinBoardEnter(
 						()=>
 						{
-							AnimateWinStarEnter(star,
+							_ui.AnimateWinStarEnter(star,
 								()=>
 								{
 									_ui.SetEnableWinButton(true);
@@ -1012,17 +1012,17 @@ public class LevelLogic : MonoBehaviour
 
 		if (_ad.ShowRewarded() == 0)
 		{
-			AnimateLoadSquareStop();
-			_ui.SetActiveLoadPanel(false);
+			_ui.AnimateLoadSquareStop();
+			_ui.SetActiveLoad(false);
 			_touchState = adState;
 		}
 		else if (Time.time - _touchLoadAdStartTime > MAX_AD_LOAD_TIME)
 		{
-			AnimateLoadSquareStop();
-			_ui.SetActiveLoadPanel(false);
-			_ui.SetActiveAdFailPanel(true);
+			_ui.AnimateLoadSquareStop();
+			_ui.SetActiveLoad(false);
+			_ui.SetActiveAdFail(true);
 			_ui.SetEnableAdFailButton(false);
-			AnimateAdFailBoardEnter
+			_ui.AnimateAdFailBoardEnter
 			(
 				()=>
 				{
@@ -1041,18 +1041,18 @@ public class LevelLogic : MonoBehaviour
 		{
 			_data.SetHint(_data.GetHint() + 1);
 			_ui.SetControlHintCount(_data.GetHint());
-			_ui.SetActiveControlHintAdPanel(false);
-			_ui.SetActiveControlHintOnPanel(false);
-			_ui.SetActiveControlHintOffPanel(true);
-			_ui.SetActiveAdSuccessPanel(true);
-			_ui.SetActiveAdSuccessHintPanel(false);
+			_ui.SetActiveControlHintAd(false);
+			_ui.SetActiveControlHintOn(false);
+			_ui.SetActiveControlHintOff(true);
+			_ui.SetActiveAdSuccess(true);
+			_ui.SetActiveAdSuccessHint(false);
 			_ui.SetEnableAdSuccessButton(false);
-			AnimateAdSuccessBoardEnter
+			_ui.AnimateAdSuccessBoardEnter
 			(
 				()=>
 				{
-					_ui.SetActiveAdSuccessHintPanel(true);
-					AnimateAdSuccessHintEnter
+					_ui.SetActiveAdSuccessHint(true);
+					_ui.AnimateAdSuccessHintEnter
 					(
 						()=>
 						{
@@ -1065,9 +1065,9 @@ public class LevelLogic : MonoBehaviour
 		}
 		else if (status == AdManager.RewardStatus.FAIL)
 		{
-			_ui.SetActiveAdAbortPanel(true);
+			_ui.SetActiveAdAbort(true);
 			_ui.SetEnableAdAbortButton(false);
-			AnimateAdAbortBoardEnter
+			_ui.AnimateAdAbortBoardEnter
 			(
 				()=>
 				{
@@ -1141,7 +1141,7 @@ public class LevelLogic : MonoBehaviour
 
 	private void SetupHint()
 	{
-		_ui.SetActiveHintPanel(false);
+		_ui.SetActiveHint(false);
 	}
 
 	private void AnimateHintDirectionStop()
@@ -1165,15 +1165,15 @@ public class LevelLogic : MonoBehaviour
 
 		if (_data.GetHint() > 0)
 		{
-			_ui.SetActiveControlHintAdPanel(false);
-			_ui.SetActiveControlHintOnPanel(false);
-			_ui.SetActiveControlHintOffPanel(true);
+			_ui.SetActiveControlHintAd(false);
+			_ui.SetActiveControlHintOn(false);
+			_ui.SetActiveControlHintOff(true);
 		}
 		else
 		{
-			_ui.SetActiveControlHintAdPanel(true);
-			_ui.SetActiveControlHintOnPanel(false);
-			_ui.SetActiveControlHintOffPanel(false);
+			_ui.SetActiveControlHintAd(true);
+			_ui.SetActiveControlHintOn(false);
+			_ui.SetActiveControlHintOff(false);
 		}
 	}
 
@@ -1181,21 +1181,23 @@ public class LevelLogic : MonoBehaviour
 	{
 		_touchState = TouchState.PAUSE;
 		_ui.SetEnableControlButton(false);
-		_ui.SetActivePausePanel(true);
+		_ui.SetActivePause(true);
 		_ui.SetEnablePauseButton(false);
 
 		if (_touchHint == true)
 		{
 			_touchHint = false;
 
-			_ui.SetActiveControlHintOnPanel(false);
-			_ui.SetActiveControlHintOffPanel(true);
+			_ui.SetActiveControlHintOn(false);
+			_ui.SetActiveControlHintOff(true);
 
 			AnimateHintDirectionStop();
-			_ui.SetActiveHintPanel(false);
+			_ui.SetActiveHint(false);
 		}
 
-		AnimatePauseBoardEnter
+		_ui.AnimateControlPauseButtonPressed(()=>{});
+
+		_ui.AnimatePauseBoardEnter
 		(
 			()=>
 			{
@@ -1213,10 +1215,12 @@ public class LevelLogic : MonoBehaviour
 
 		if (_touchHint == true)
 		{
-			_ui.SetActiveHintDirectionPanel(_levelMap._hint[move]);
+			_ui.SetActiveHintDirection(_levelMap._hint[move]);
 			AnimateHintDirectionStop();
 			AnimateHintDirectionStart(_levelMap._hint[move]);
 		}
+
+		_ui.AnimateControlUndoButtonPressed(()=>{});
 	}
 
 	public void DoControlResetButtonPressed()
@@ -1228,16 +1232,19 @@ public class LevelLogic : MonoBehaviour
 
 		if (_touchHint == true)
 		{
-			_ui.SetActiveHintDirectionPanel(_levelMap._hint[move]);
+			_ui.SetActiveHintDirection(_levelMap._hint[move]);
 			AnimateHintDirectionStop();
 			AnimateHintDirectionStart(_levelMap._hint[move]);
 		}
+
+		_ui.AnimateControlResetButtonPressed(()=>{});
 	}
 
 	public void DoControlHintAdButtonPressed()
 	{
-		_ui.SetActiveLoadPanel(true);
-		AnimateLoadSquareStart();
+		_ui.AnimateControlHintAdButtonPressed(()=>{});
+		_ui.SetActiveLoad(true);
+		_ui.AnimateLoadSquareStart();
 		_touchLoadAdStartTime = Time.time;
 		_touchState = TouchState.LOAD_AD;
 	}
@@ -1246,19 +1253,21 @@ public class LevelLogic : MonoBehaviour
 	{
 		_touchHint = false;
 
-		_ui.SetActiveControlHintOnPanel(false);
-		_ui.SetActiveControlHintOffPanel(true);
+		_ui.SetActiveControlHintOn(false);
+		_ui.SetActiveControlHintOff(true);
 
 		AnimateHintDirectionStop();
-		_ui.SetActiveHintPanel(false);
+		_ui.SetActiveHint(false);
+
+		_ui.AnimateControlHintOffButtonPressed(()=>{});
 	}
 
 	public void DoControlHintOffButtonPressed()
 	{
 		_touchHint = true;
 
-		_ui.SetActiveControlHintOffPanel(false);
-		_ui.SetActiveControlHintOnPanel(true);
+		_ui.SetActiveControlHintOff(false);
+		_ui.SetActiveControlHintOn(true);
 
 		if (_hintUsed == false)
 		{
@@ -1272,67 +1281,43 @@ public class LevelLogic : MonoBehaviour
 
 		_ui.SetTopMoveCurrent(move);
 
-		_ui.SetActiveHintPanel(true);
-		_ui.SetActiveHintDirectionPanel(_levelMap._hint[move]);
+		_ui.SetActiveHint(true);
+		_ui.SetActiveHintDirection(_levelMap._hint[move]);
 		AnimateHintDirectionStop();
 		AnimateHintDirectionStart(_levelMap._hint[move]);
+
+		_ui.AnimateControlHintOnButtonPressed(()=>{});
 	}
 
 	// UI - Go
 
-	private const float GO_ANIMATE_BANNER_ENTER_EXIT_TIME = 0.3f;
-	private const float GO_ANIMATE_LABEL_ENTER_EXIT_TIME = 0.3f;
-
-	private const float GO_ANIMATE_BANNER_ENTER_DELAY = MAP_ANIMATE_WALL_ENTER_TIME + 0.1f;
-	private const float GO_ANIMATE_LABEL_ENTER_DELAY = 0.3f;
-	private const float GO_ANIMATE_LABEL_EXIT_DELAY = 0.5f;
-
 	private void SetupGo()
 	{
-		_ui.SetActiveGoPanel(false);
-	}
-
-	private void AnimateGoEnterAndExit(AnimateComplete callback)
-	{
-		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
-
-		_ui.AnimateGoEnterAndExit(GO_ANIMATE_LABEL_ENTER_EXIT_TIME, GO_ANIMATE_LABEL_ENTER_EXIT_TIME,
-				GO_ANIMATE_BANNER_ENTER_DELAY, GO_ANIMATE_LABEL_ENTER_DELAY, GO_ANIMATE_LABEL_EXIT_DELAY,
-				uiCallback);
+		_ui.SetActiveGo(false);
 	}
 
 	// UI - Pause
 
-	private const float PAUSE_ANIMATE_BOARD_ENTER_TIME = 0.3f;
-	private const float PAUSE_ANIMATE_BOARD_EXIT_TIME = 0.3f;
-
 	private void SetupPause()
 	{
-		_ui.SetActivePausePanel(false);
-	}
-
-	private void AnimatePauseBoardEnter(AnimateComplete callback)
-	{
-		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
-
-		_ui.AnimatePauseBoardEnter(PAUSE_ANIMATE_BOARD_ENTER_TIME, uiCallback);
-	}
-
-	private void AnimatePauseBoardExit(AnimateComplete callback)
-	{
-		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
-
-		_ui.AnimatePauseBoardExit(PAUSE_ANIMATE_BOARD_EXIT_TIME, uiCallback);
+		_ui.SetActivePause(false);
 	}
 
 	public void DoPauseMenuButtonPressed()
 	{
 		_ui.SetEnablePauseButton(false);
 
-		AnimatePauseBoardExit(
+		_ui.AnimatePauseMenuButtonPressed
+		(
 			()=>
 			{
-				SceneManager.LoadScene("MapMenuScene");
+				_ui.AnimatePauseBoardExit
+				(
+					()=>
+					{
+						SceneManager.LoadScene("MapMenuScene");
+					}
+				);
 			}
 		);
 	}
@@ -1341,14 +1326,21 @@ public class LevelLogic : MonoBehaviour
 	{
 		_ui.SetEnablePauseButton(false);
 
-		AnimatePauseBoardExit(
+		_ui.AnimatePauseHintAdButtonPressed
+		(
 			()=>
 			{
-				_ui.SetActivePausePanel(false);
-				_ui.SetActiveLoadPanel(true);
-				AnimateLoadSquareStart();
-				_touchLoadAdStartTime = Time.time;
-				_touchState = TouchState.PAUSE_LOAD_AD;
+				_ui.AnimatePauseBoardExit
+				(
+					()=>
+					{
+						_ui.SetActivePause(false);
+						_ui.SetActiveLoad(true);
+						_ui.AnimateLoadSquareStart();
+						_touchLoadAdStartTime = Time.time;
+						_touchState = TouchState.PAUSE_LOAD_AD;
+					}
+				);
 			}
 		);
 	}
@@ -1357,12 +1349,19 @@ public class LevelLogic : MonoBehaviour
 	{
 		_ui.SetEnablePauseButton(false);
 
-		AnimatePauseBoardExit(
+		_ui.AnimatePauseResumeButtonPressed
+		(
 			()=>
 			{
-				_ui.SetActivePausePanel(false);
-				_ui.SetEnableControlButton(true);
-				_touchState = TouchState.NONE;
+				_ui.AnimatePauseBoardExit
+				(
+					()=>
+					{
+						_ui.SetActivePause(false);
+						_ui.SetEnableControlButton(true);
+						_touchState = TouchState.NONE;
+					}
+				);
 			}
 		);
 	}
@@ -1376,48 +1375,33 @@ public class LevelLogic : MonoBehaviour
 
 	private void SetupWin()
 	{
-		_ui.SetActiveWinPanel(false);
+		_ui.SetActiveWin(false);
 
 		for (int i = 0; i < 3; i++)
 		{
-			_ui.SetActiveWinStarPanel(i, false);
+			_ui.SetActiveWinStar(i, false);
 		}
-	}
-
-	private void AnimateWinBoardEnter(AnimateComplete callback)
-	{
-		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
-
-		_ui.AnimateWinBoardEnter(WIN_ANIMATE_BOARD_ENTER_TIME, uiCallback);
-	}
-
-	private void AnimateWinBoardExit(AnimateComplete callback)
-	{
-		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
-
-		_ui.AnimateWinBoardExit(WIN_ANIMATE_BOARD_EXIT_TIME, uiCallback);
-	}
-
-	private void AnimateWinStarEnter(int star, AnimateComplete callback)
-	{
-		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
-
-		_ui.AnimateWinStarEnter(star, WIN_ANIMATE_STAR_ENTER_TIME, uiCallback);
 	}
 
 	public void DoWinHintAdButtonPressed()
 	{
 		_ui.SetEnableWinButton(false);
 
-		AnimateWinBoardExit
+		_ui.AnimateWinHintAdButtonPressed
 		(
 			()=>
 			{
-				_ui.SetActiveWinPanel(false);
-				_ui.SetActiveLoadPanel(true);
-				AnimateLoadSquareStart();
-				_touchLoadAdStartTime = Time.time;
-				_touchState = TouchState.WIN_LOAD_AD;
+				_ui.AnimateWinBoardExit
+				(
+					()=>
+					{
+						_ui.SetActiveWin(false);
+						_ui.SetActiveLoad(true);
+						_ui.AnimateLoadSquareStart();
+						_touchLoadAdStartTime = Time.time;
+						_touchState = TouchState.WIN_LOAD_AD;
+					}
+				);
 			}
 		);
 	}
@@ -1426,11 +1410,17 @@ public class LevelLogic : MonoBehaviour
 	{
 		_ui.SetEnableWinButton(false);
 
-		AnimateWinBoardExit
+		_ui.AnimateWinMenuButtonPressed
 		(
 			()=>
 			{
-				SceneManager.LoadScene("MapMenuScene");
+				_ui.AnimateWinBoardExit
+				(
+					()=>
+					{
+						SceneManager.LoadScene("MapMenuScene");
+					}
+				);
 			}
 		);
 	}
@@ -1439,11 +1429,17 @@ public class LevelLogic : MonoBehaviour
 	{
 		_ui.SetEnableWinButton(false);
 
-		AnimateWinBoardExit
+		_ui.AnimateWinReplayButtonPressed
 		(
 			()=>
 			{
-				SceneManager.LoadScene("LevelScene");
+				_ui.AnimateWinBoardExit
+				(
+					()=>
+					{
+						SceneManager.LoadScene("LevelScene");
+					}
+				);
 			}
 		);
 	}
@@ -1474,144 +1470,101 @@ public class LevelLogic : MonoBehaviour
 
 		_ui.SetEnableWinButton(false);
 
-		AnimateWinBoardExit
+		_ui.AnimateWinNextButtonPressed
 		(
 			()=>
 			{
-				SceneManager.LoadScene("LevelScene");
+				_ui.AnimateWinBoardExit
+				(
+					()=>
+					{
+						SceneManager.LoadScene("LevelScene");
+					}
+				);
 			}
 		);
 	}
 
 	// UI - Load
 
-	private const float LOAD_ANIMATE_SQUARE_PUNCH_TIME = 0.5f;
-
 	private void SetupLoad()
 	{
-		_ui.SetActiveLoadPanel(false);
-	}
-
-	private void AnimateLoadSquareStart()
-	{
-		_ui.AnimateLoadSquareStart(LOAD_ANIMATE_SQUARE_PUNCH_TIME);
-	}
-
-	private void AnimateLoadSquareStop()
-	{
-		_ui.AnimateLoadSquareStop();
+		_ui.SetActiveLoad(false);
 	}
 
 	// UI - AdSuccess
 
-	private const float AD_SUCCESS_ANIMATE_BOARD_ENTER_TIME = 0.3f;
-	private const float AD_SUCCESS_ANIMATE_BOARD_EXIT_TIME = 0.3f;
-
-	private const float AD_SUCCESS_ANIMATE_HINT_ENTER_TIME = 0.5f;
-
 	private void SetupAdSuccess()
 	{
-		_ui.SetActiveAdSuccessPanel(false);
-	}
-
-	private void AnimateAdSuccessBoardEnter(AnimateComplete callback)
-	{
-		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
-
-		_ui.AnimateAdSuccessBoardEnter(AD_SUCCESS_ANIMATE_BOARD_ENTER_TIME, uiCallback);
-	}
-
-	private void AnimateAdSuccessHintEnter(AnimateComplete callback)
-	{
-		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
-
-		_ui.AnimateAdSuccessHintEnter(AD_SUCCESS_ANIMATE_HINT_ENTER_TIME, uiCallback);
-	}
-
-	private void AnimateAdSuccessBoardExit(AnimateComplete callback)
-	{
-		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
-
-		_ui.AnimateAdSuccessBoardExit(AD_SUCCESS_ANIMATE_BOARD_EXIT_TIME, uiCallback);
+		_ui.SetActiveAdSuccess(false);
 	}
 
 	public void DoAdSuccessCloseButtonPressed()
 	{
 		_ui.SetEnableAdSuccessButton(false);
 
-		AnimateAdSuccessBoardExit
+		_ui.AnimateAdSuccessCloseButtonPressed
 		(
 			()=>
 			{
-				_ui.SetActiveAdSuccessPanel(false);
+				_ui.AnimateAdSuccessBoardExit
+				(
+					()=>
+					{
+						_ui.SetActiveAdSuccess(false);
 
-				if (_touchState == TouchState.WIN)
-				{
-					_ui.SetActiveWinPanel(true);
-
-					AnimateWinBoardEnter
-					(
-						()=>
+						if (_touchState == TouchState.WIN)
 						{
-							_ui.SetEnableWinButton(true);
-						}
-					);
-				}
-				else if (_touchState == TouchState.PAUSE)
-				{
-					_ui.SetActivePausePanel(true);
+							_ui.SetActiveWin(true);
 
-					AnimatePauseBoardEnter
-					(
-						()=>
-						{
-							_ui.SetEnablePauseButton(true);
+							_ui.AnimateWinBoardEnter
+							(
+								()=>
+								{
+									_ui.SetEnableWinButton(true);
+								}
+							);
 						}
-					);
-				}
+						else if (_touchState == TouchState.PAUSE)
+						{
+							_ui.SetActivePause(true);
+
+							_ui.AnimatePauseBoardEnter
+							(
+								()=>
+								{
+									_ui.SetEnablePauseButton(true);
+								}
+							);
+						}
+					}
+				);
 			}
 		);
 	}
 
 	// UI - AdAbort
 
-	private const float AD_ABORT_ANIMATE_BOARD_ENTER_TIME = 0.3f;
-	private const float AD_ABORT_ANIMATE_BOARD_EXIT_TIME = 0.3f;
-
 	private void SetupAdAbort()
 	{
-		_ui.SetActiveAdAbortPanel(false);
-	}
-
-	private void AnimateAdAbortBoardEnter(AnimateComplete callback)
-	{
-		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
-
-		_ui.AnimateAdAbortBoardEnter(AD_ABORT_ANIMATE_BOARD_ENTER_TIME, uiCallback);
-	}
-
-	private void AnimateAdAbortBoardExit(AnimateComplete callback)
-	{
-		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
-
-		_ui.AnimateAdAbortBoardExit(AD_ABORT_ANIMATE_BOARD_EXIT_TIME, uiCallback);
+		_ui.SetActiveAdAbort(false);
 	}
 
 	public void DoAdAbortCloseButtonPressed()
 	{
 		_ui.SetEnableAdAbortButton(false);
 
-		AnimateAdAbortBoardExit
+		_ui.AnimateAdAbortBoardExit
 		(
 			()=>
 			{
-				_ui.SetActiveAdAbortPanel(false);
+				_ui.SetActiveAdAbort(false);
 
 				if (_touchState == TouchState.WIN)
 				{
-					_ui.SetActiveWinPanel(true);
+					_ui.SetActiveWin(true);
 
-					AnimateWinBoardEnter
+					_ui.AnimateWinBoardEnter
 					(
 						()=>
 						{
@@ -1621,9 +1574,9 @@ public class LevelLogic : MonoBehaviour
 				}
 				else if (_touchState == TouchState.PAUSE)
 				{
-					_ui.SetActivePausePanel(true);
+					_ui.SetActivePause(true);
 
-					AnimatePauseBoardEnter(
+					_ui.AnimatePauseBoardEnter(
 						()=>
 						{
 							_ui.SetEnablePauseButton(true);
@@ -1636,43 +1589,26 @@ public class LevelLogic : MonoBehaviour
 
 	// UI - AdFail
 
-	private const float AD_FAIL_ANIMATE_BOARD_ENTER_TIME = 0.3f;
-	private const float AD_FAIL_ANIMATE_BOARD_EXIT_TIME = 0.3f;
-
 	private void SetupAdFail()
 	{
-		_ui.SetActiveAdFailPanel(false);
-	}
-
-	private void AnimateAdFailBoardEnter(AnimateComplete callback)
-	{
-		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
-
-		_ui.AnimateAdFailBoardEnter(AD_FAIL_ANIMATE_BOARD_ENTER_TIME, uiCallback);
-	}
-
-	private void AnimateAdFailBoardExit(AnimateComplete callback)
-	{
-		LevelUI.AnimateComplete uiCallback = new LevelUI.AnimateComplete(callback);
-
-		_ui.AnimateAdFailBoardExit(AD_FAIL_ANIMATE_BOARD_EXIT_TIME, uiCallback);
+		_ui.SetActiveAdFail(false);
 	}
 
 	public void DoAdFailCloseButtonPressed()
 	{
 		_ui.SetEnableAdFailButton(false);
 
-		AnimateAdFailBoardExit
+		_ui.AnimateAdFailBoardExit
 		(
 			()=>
 			{
-				_ui.SetActiveAdFailPanel(false);
+				_ui.SetActiveAdFail(false);
 
 				if (_touchState == TouchState.WIN)
 				{
-					_ui.SetActiveWinPanel(true);
+					_ui.SetActiveWin(true);
 
-					AnimateWinBoardEnter
+					_ui.AnimateWinBoardEnter
 					(
 						()=>
 						{
@@ -1682,9 +1618,9 @@ public class LevelLogic : MonoBehaviour
 				}
 				else if (_touchState == TouchState.PAUSE)
 				{
-					_ui.SetActivePausePanel(true);
+					_ui.SetActivePause(true);
 
-					AnimatePauseBoardEnter(
+					_ui.AnimatePauseBoardEnter(
 						()=>
 						{
 							_ui.SetEnablePauseButton(true);
@@ -1740,8 +1676,8 @@ public class LevelLogic : MonoBehaviour
 		(
 			()=>
 			{
-				_ui.SetActiveGoPanel(true);
-				AnimateGoEnterAndExit
+				_ui.SetActiveGo(true);
+				_ui.AnimateGoEnterAndExit
 				(
 					()=>
 					{

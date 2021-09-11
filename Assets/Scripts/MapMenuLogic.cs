@@ -12,8 +12,6 @@ public class MapMenuLogic : MonoBehaviour
 	private int _menuColor;
 	private int _menuAlphabet;
 
-	private delegate void AnimateComplete();
-
 	// UI - Map
 
 	private const float MAP_ANIMATE_ENTER_TIME = 0.3f;

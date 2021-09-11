@@ -10,8 +10,6 @@ public class LevelMenuUI : MonoBehaviour
 	private DataManager _data;
 	private LevelManager _level;
 
-	public delegate void AnimateComplete();
-
 	// Level
 
 	public float LEVEL_ANIMATE_ENTER_DURATION;

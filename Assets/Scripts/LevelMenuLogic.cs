@@ -11,8 +11,6 @@ public class LevelMenuLogic : MonoBehaviour
 
 	private int _menuColor;
 
-	private delegate void AnimateComplete();
-
 	// UI - Level
 
 	private const float LEVEL_ANIMATE_PANEL_ENTER_TIME = 0.3f;
