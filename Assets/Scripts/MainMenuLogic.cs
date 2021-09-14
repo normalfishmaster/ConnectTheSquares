@@ -27,10 +27,8 @@ public class MainMenuLogic : MonoBehaviour
 			loadMap = _data.GetLastMap();
 		}
 
-		_ui.SetFrontContinueLabel(label);
+		_ui.SetFrontContinueButtonLabel(label);
 		_ui.SetFrontContinueLevel(loadColor, loadAlphabet, loadMap);
-
-		_ui.SetEnableFrontButton(true);
 	}
 
 	public void DoFrontContinueButtonPressed()
@@ -50,24 +48,62 @@ public class MainMenuLogic : MonoBehaviour
 		_data.SetMenuAlphabet(loadAlphabet);
 		_data.SetMenuMap(loadMap);
 
-		SceneManager.LoadScene("LevelScene");
+		_ui.SetEnableFrontButton(false);
+		_ui.SetEnableBottomButton(false);
+
+		_ui.AnimateFrontContinueButtonPressed
+		(
+			()=>
+			{
+				_ui.AnimateFrontExit
+				(
+					()=>
+					{
+						SceneManager.LoadScene("LevelScene");
+					}
+				);
+			}
+		);
 	}
 
 	public void DoFrontLevelsButtonPressed()
 	{
-		SceneManager.LoadScene("LevelMenuScene");
+		_ui.SetEnableFrontButton(false);
+		_ui.SetEnableBottomButton(false);
+
+		_ui.AnimateFrontLevelsButtonPressed
+		(
+			()=>
+			{
+				_ui.AnimateFrontExit
+				(
+					()=>
+					{
+						SceneManager.LoadScene("LevelMenuScene");
+					}
+				);
+			}
+		);
 	}
 
 	public void DoFrontSettingsButtonPressed()
 	{
+		_ui.AnimateFrontSettingsButtonPressed
+		(
+			()=>
+			{
+			}
+		);
 	}
 
 	public void DoFrontStoreButtonPressed()
 	{
-	}
-
-	public void DoFrontDailyRewardsButtonPressed()
-	{
+		_ui.AnimateFrontStoreButtonPressed
+		(
+			()=>
+			{
+			}
+		);
 	}
 
 	// UI - Bottom
@@ -75,9 +111,9 @@ public class MainMenuLogic : MonoBehaviour
 	private void SetupBottom()
 	{
 		#if (BUILD_ANDROID_DEBUG || BUILD_ANDROID_RELEASE)
-			_ui.SetActiveBottomGameCenterPanel(false);
+			_ui.SetActiveBottomGameCenter(false);
 		#else
-			_ui.SetActiveBottomGooglePlayPanel(false);
+			_ui.SetActiveBottomGooglePlay(false);
 		#endif
 
 		_ui.SetEnableBottomButton(true);
@@ -85,37 +121,105 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void DoBottomGooglePlayButtonPressed()
 	{
+		_ui.AnimateBottomGooglePlayButtonPressed
+		(
+			()=>
+			{
+			}
+		);
 	}
 
 	public void DoBottomGameCenterButtonPressed()
 	{
+		_ui.AnimateBottomGameCenterButtonPressed
+		(
+			()=>
+			{
+			}
+		);
 	}
 
 	public void DoBottomNoAdsButtonPressed()
 	{
+		_ui.AnimateBottomNoAdsButtonPressed
+		(
+			()=>
+			{
+			}
+		);
 	}
 
 	public void DoBottomLanguageButtonPressed()
 	{
+		_ui.AnimateBottomLanguageButtonPressed
+		(
+			()=>
+			{
+			}
+		);
 	}
 
 	// UI - Exit
 
 	private void SetupExit()
 	{
-		_ui.SetActiveExitPanel(false);
+		_ui.SetEnableExitButton(false);
+		_ui.SetActiveExit(false);
+	}
+
+	public void DoExitButtonPressed()
+	{
+		_ui.SetActiveExit(true);
+		_ui.SetEnableFrontButton(false);
+		_ui.SetEnableBottomButton(false);
+
+		_ui.AnimateExitBoardEnter
+		(
+			()=>
+			{
+				_ui.SetEnableExitButton(true);
+			}
+		);
 	}
 
 	public void DoExitYesButtonPressed()
 	{
-		Application.Quit();
+		_ui.SetEnableExitButton(false);
+
+		_ui.AnimateExitYesButtonPressed
+		(
+			()=>
+			{
+				_ui.AnimateExitBoardExit
+				(
+					()=>
+					{
+						Application.Quit();
+					}
+				);
+			}
+		);
 	}
 
 	public void DoExitNoButtonPressed()
 	{
-		_ui.SetActiveExitPanel(false);
-		_ui.SetEnableFrontButton(true);
-		_ui.SetEnableBottomButton(true);
+		_ui.SetEnableExitButton(false);
+
+		_ui.AnimateExitNoButtonPressed
+		(
+			()=>
+			{
+				_ui.AnimateExitBoardExit
+				(
+					()=>
+					{
+						_ui.SetActiveExit(false);
+						_ui.SetEnableFrontButton(true);
+						_ui.SetEnableBottomButton(true);
+					}
+				);
+			}
+		);
 	}
 
 	// Unity Lifecycle
@@ -133,15 +237,22 @@ public class MainMenuLogic : MonoBehaviour
 		SetupFront();
 		SetupBottom();
 		SetupExit();
+
+		_ui.SetEnableFrontButton(false);
+		_ui.AnimateFrontEnter
+		(
+			()=>
+			{
+				_ui.SetEnableFrontButton(true);
+			}
+		);
 	}
 
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			_ui.SetActiveExitPanel(true);
-			_ui.SetEnableFrontButton(false);
-			_ui.SetEnableBottomButton(false);
+			DoExitButtonPressed();
 		}
 	}
 }

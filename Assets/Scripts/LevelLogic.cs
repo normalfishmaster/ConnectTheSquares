@@ -36,7 +36,18 @@ public class LevelLogic : MonoBehaviour
 
 	private const float MAX_AD_LOAD_TIME = 5.0f;
 
+	public delegate void AnimateComplete();
+
 	// Map
+
+	public float MAP_ANIMATE_WALL_ENTER_ROTATION;
+	public float MAP_ANIMATE_WALL_ENTER_TIME;
+	public float MAP_ANIMATE_SQUARE_ENTER_TIME;
+
+	public float MAP_ANIMATE_WALL_EXIT_ROTATION;
+	public float MAP_ANIMATE_WALL_EXIT_INITIAL_SPEED;
+	public float MAP_ANIMATE_WALL_EXIT_SPEED_MULTIPLIER;
+	public float MAP_ANIMATE_WALL_EXIT_TIME;
 
 	private GameObject[,] _mapWall;
 	private GameObject[,] _mapWallShadow;
@@ -45,6 +56,9 @@ public class LevelLogic : MonoBehaviour
 
 	private float _mapXOffset;
 	private float _mapYOffset;
+
+	Vector2[,] _mapWallOriginalPos;
+	float[,] _mapWallExitAngle;
 
 	private void FindMapGameObject()
 	{
@@ -91,6 +105,138 @@ public class LevelLogic : MonoBehaviour
 	{
 		_mapWall[x, y].SetActive(false);
 		_mapWallShadow[x, y].SetActive(false);
+	}
+
+	private void AnimateSquareEnter(int square)
+	{
+		LeanTween.cancel(_mapSquare[square]);
+
+		// Animate scale
+
+		_mapSquare[square].transform.localScale = new Vector3(0, 0, 0);
+		_mapSquareShadow[square].transform.localScale = new Vector3(0, 0, 0);
+
+		LeanTween.scale(_mapSquare[square], Vector3.one, MAP_ANIMATE_SQUARE_ENTER_TIME).setEase(LeanTweenType.easeOutSine);
+		LeanTween.scale(_mapSquareShadow[square], Vector3.one, MAP_ANIMATE_SQUARE_ENTER_TIME).setEase(LeanTweenType.easeOutSine);
+	}
+
+	private void AnimateWallEnter(int x, int y)
+	{
+		LeanTween.cancel(_mapWall[x, y]);
+
+		// Animate scale
+
+		_mapWall[x, y].transform.localScale = new Vector3(0, 0, 0);
+		_mapWallShadow[x, y].transform.localScale = new Vector3(0, 0, 0);
+
+		LeanTween.scale(_mapWall[x, y], Vector3.one, MAP_ANIMATE_WALL_ENTER_TIME).setEase(LeanTweenType.easeOutSine);
+		LeanTween.scale(_mapWallShadow[x, y], Vector3.one, MAP_ANIMATE_WALL_ENTER_TIME).setEase(LeanTweenType.easeOutSine);
+
+		// Animate rotation
+
+		_mapWall[x, y].transform.eulerAngles = new Vector3(0, 0, MAP_ANIMATE_WALL_ENTER_ROTATION);
+		_mapWallShadow[x, y].transform.eulerAngles = new Vector3(0, 0, MAP_ANIMATE_WALL_ENTER_ROTATION);
+
+		LeanTween.rotateAround(_mapWall[x, y], Vector3.forward, -MAP_ANIMATE_WALL_ENTER_ROTATION, MAP_ANIMATE_WALL_ENTER_TIME);
+		LeanTween.rotateAround(_mapWallShadow[x, y], Vector3.forward, -MAP_ANIMATE_WALL_ENTER_ROTATION, MAP_ANIMATE_WALL_ENTER_TIME);
+	}
+
+	private void AnimateMapEnter(AnimateComplete callback)
+	{
+		for (int i = 0; i < NUM_X; i++)
+		{
+			for (int j = 0; j < NUM_Y; j++)
+			{
+				sbyte tile = _levelMap._layout[Level.NUM_ROW - j - 1, i];
+
+				if (Level.IsSquare(tile))
+				{
+					int n = Level.GetSquareNumber(tile);
+					AnimateSquareEnter(n);
+                                }
+				else if (Level.IsWall(tile))
+				{
+					AnimateWallEnter(i, j);
+				}
+			}
+		}
+
+		LeanTween.value(gameObject, 0.0f, 0.0f, MAP_ANIMATE_WALL_ENTER_TIME).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
+	}
+
+	void AnimateMapExit(AnimateComplete callback)
+	{
+		_mapWallOriginalPos = new Vector2[NUM_X, NUM_Y];
+		_mapWallExitAngle = new float[NUM_X, NUM_Y];
+
+		for (int i = 0; i < NUM_X; i++)
+		{
+			for (int j = 0; j < NUM_Y; j++)
+			{
+				sbyte tile = _levelMap._layout[Level.NUM_ROW - j - 1, i];
+
+				if (Level.IsWall(tile) == false)
+				{
+					continue;
+				}
+
+				_mapWall[i, j].GetComponent<SpriteRenderer>().sortingLayerName = "WallExit";
+				_mapWallOriginalPos[i, j] = _mapWall[i, j].transform.position;
+				_mapWallExitAngle[i, j] = Mathf.Atan(_mapWallOriginalPos[i, j].x / (_mapWallOriginalPos[i, j].y + 16.5F));
+
+				LeanTween.cancel(_mapWall[i, j]);
+				LeanTween.cancel(_mapWallShadow[i, j]);
+
+				// Rotation
+
+				if (i < NUM_X / 2)
+				{
+					LeanTween.rotateAround(_mapWall[i, j], Vector3.forward, -MAP_ANIMATE_WALL_EXIT_ROTATION, MAP_ANIMATE_WALL_EXIT_TIME);
+					LeanTween.rotateAround(_mapWallShadow[i, j], Vector3.forward, -MAP_ANIMATE_WALL_EXIT_ROTATION, MAP_ANIMATE_WALL_EXIT_TIME);
+				}
+				else
+				{
+					LeanTween.rotateAround(_mapWall[i, j], Vector3.back, -MAP_ANIMATE_WALL_EXIT_ROTATION, MAP_ANIMATE_WALL_EXIT_TIME);
+					LeanTween.rotateAround(_mapWallShadow[i, j], Vector3.back, -MAP_ANIMATE_WALL_EXIT_ROTATION, MAP_ANIMATE_WALL_EXIT_TIME);
+				}
+
+			}
+		}
+
+		// Parabolic movement
+
+		LeanTween.value(gameObject, 0.0f, MAP_ANIMATE_WALL_EXIT_TIME, MAP_ANIMATE_WALL_EXIT_TIME).setOnUpdate
+		(
+			(float duration) =>
+			{
+				float durationMod = duration * MAP_ANIMATE_WALL_EXIT_SPEED_MULTIPLIER;
+
+				for (int i = 0; i < NUM_X; i++)
+				{
+					for (int j = 0; j < NUM_Y; j++)
+					{
+						Vector2 distance = new Vector2(MAP_ANIMATE_WALL_EXIT_INITIAL_SPEED * Mathf.Sin(_mapWallExitAngle[i, j]) * durationMod,
+								(MAP_ANIMATE_WALL_EXIT_INITIAL_SPEED * Mathf.Cos(_mapWallExitAngle[i, j]) - 90.0F * durationMod) * durationMod);
+
+						_mapWall[i, j].transform.position = _mapWallOriginalPos[i, j] + distance;
+						_mapWallShadow[i, j].transform.position = _mapWallOriginalPos[i, j] + distance;
+					}
+				}
+			}
+		)
+		.setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
 	}
 
 	// Physics
@@ -545,6 +691,7 @@ public class LevelLogic : MonoBehaviour
 
 	private enum TouchState
 	{
+		WAIT,
 		NONE,
 		START,
 		START_TO_END,
@@ -570,7 +717,7 @@ public class LevelLogic : MonoBehaviour
 
 	private void SetupTouch()
 	{
-		_touchState = TouchState.NONE;
+		_touchState = TouchState.WAIT;
 		_touchHint = false;
 	}
 
@@ -602,6 +749,10 @@ public class LevelLogic : MonoBehaviour
 		}
 
 		return DIRECTION_NONE;
+	}
+
+	private void DoTouchStateWait()
+	{
 	}
 
 	private void DoTouchStateNone()
@@ -729,7 +880,9 @@ public class LevelLogic : MonoBehaviour
 
 			if (_touchHint)
 			{
-				_ui.SetHintDirection(_levelMap._hint[move]);
+				_ui.SetActiveHintDirection(_levelMap._hint[move]);
+				AnimateHintDirectionStop();
+				AnimateHintDirectionStart(_levelMap._hint[move]);
 			}
 
 			_touchState = TouchState.NONE;
@@ -764,7 +917,6 @@ public class LevelLogic : MonoBehaviour
 
 			if (star > currentStar)
 			{
-				_ui.SetTopStar(star);
 				_data.SetLevelStar(_menuColor, _menuAlphabet, _menuMap, star);
 
 				int currentAlphabetStar = _data.GetAlphabetStar(_menuColor, _menuAlphabet);
@@ -777,9 +929,11 @@ public class LevelLogic : MonoBehaviour
 			if (_touchHint)
 			{
 				_touchHint = false;
-				_ui.SetActiveControlHintOnPanel(false);
-				_ui.SetActiveControlHintOffPanel(true);
-				_ui.SetActiveHintPanel(false);
+				_ui.SetActiveControlHintOn(false);
+				_ui.SetActiveControlHintOff(true);
+
+				_ui.SetActiveHint(false);
+				AnimateHintDirectionStop();
 			}
 
 			int moveCount = GetSquareMoveCount();
@@ -793,6 +947,7 @@ public class LevelLogic : MonoBehaviour
 			int nextColor = _menuColor;
 			int nextAlphabet = _menuAlphabet;
 			int nextMap = _menuMap + 1;
+			bool enableNext;
 
 			if (nextMap >= _level.GetNumMap(_menuColor, _menuAlphabet))
 			{
@@ -808,19 +963,38 @@ public class LevelLogic : MonoBehaviour
 
 			if (nextColor >= _level.GetNumColor())
 			{
-				_ui.SetInteractableWinNextButton(false);
+				enableNext = false;
 			}
 			else
 			{
+				enableNext = true;
 				_data.SetLevelLock(nextColor, nextAlphabet, nextMap, 0);
-				_ui.SetInteractableWinNextButton(true);
 			}
 
 			_ui.SetEnableControlButton(false);
-			_ui.SetActiveWinPanel(true);
-			_ui.SetWinStar(star);
-
 			_touchState = TouchState.WIN;
+
+			AnimateMapExit(
+				()=>
+				{
+					_ui.SetActiveWin(true);
+					_ui.SetEnableWinButton(false);
+					_ui.SetInteractableWinNextButton(enableNext);
+
+					_ui.AnimateWinBoardEnter(
+						()=>
+						{
+							_ui.AnimateWinStarEnter(star,
+								()=>
+								{
+									_ui.SetEnableWinButton(true);
+									_ui.SetInteractableWinNextButton(enableNext);
+								}
+							);
+						}
+					);
+				}
+			);
 		}
 	}
 
@@ -832,118 +1006,106 @@ public class LevelLogic : MonoBehaviour
 	{
 	}
 
-	private void DoTouchStateLoadAd()
+	private void CommonLoadAd(TouchState adState, TouchState postAdState)
 	{
 		_ad.ClearRewardStatus();
 
 		if (_ad.ShowRewarded() == 0)
 		{
-			_ui.SetActiveAdLoadPanel(false);
-			_touchState = TouchState.AD;
+			_ui.AnimateLoadSquareStop();
+			_ui.SetActiveLoad(false);
+			_touchState = adState;
 		}
 		else if (Time.time - _touchLoadAdStartTime > MAX_AD_LOAD_TIME)
 		{
-			_ui.SetActiveAdLoadPanel(false);
-			_ui.SetActiveAdFailPanel(true);
-			_touchState = TouchState.NONE;
+			_ui.AnimateLoadSquareStop();
+			_ui.SetActiveLoad(false);
+			_ui.SetActiveAdFail(true);
+			_ui.SetEnableAdFailButton(false);
+			_ui.AnimateAdFailBoardEnter
+			(
+				()=>
+				{
+					_ui.SetEnableAdFailButton(true);
+				}
+			);
+			_touchState = postAdState;
 		}
+	}
+
+	private void CommonAd(TouchState postAdState)
+	{
+		AdManager.RewardStatus status = _ad.GetRewardStatus();
+
+		if (status == AdManager.RewardStatus.SUCCESS)
+		{
+			_data.SetHint(_data.GetHint() + 1);
+			_ui.SetControlHintCount(_data.GetHint());
+			_ui.SetActiveControlHintAd(false);
+			_ui.SetActiveControlHintOn(false);
+			_ui.SetActiveControlHintOff(true);
+			_ui.SetActiveAdSuccess(true);
+			_ui.SetActiveAdSuccessHint(false);
+			_ui.SetEnableAdSuccessButton(false);
+			_ui.AnimateAdSuccessBoardEnter
+			(
+				()=>
+				{
+					_ui.SetActiveAdSuccessHint(true);
+					_ui.AnimateAdSuccessHintEnter
+					(
+						()=>
+						{
+							_ui.SetEnableAdSuccessButton(true);
+						}
+					);
+				}
+			);
+			_touchState = postAdState;
+		}
+		else if (status == AdManager.RewardStatus.FAIL)
+		{
+			_ui.SetActiveAdAbort(true);
+			_ui.SetEnableAdAbortButton(false);
+			_ui.AnimateAdAbortBoardEnter
+			(
+				()=>
+				{
+					_ui.SetEnableAdAbortButton(true);
+				}
+			);
+			_touchState = postAdState;
+		}
+	}
+
+	private void DoTouchStateLoadAd()
+	{
+		CommonLoadAd(TouchState.AD, TouchState.NONE);
 	}
 
 	private void DoTouchStateAd()
 	{
-		AdManager.RewardStatus status = _ad.GetRewardStatus();
-
-		if (status == AdManager.RewardStatus.SUCCESS)
-		{
-			_data.SetHint(_data.GetHint() + 1);
-			_ui.SetControlHintCount(_data.GetHint());
-			_ui.SetActiveControlHintAdPanel(false);
-			_ui.SetActiveControlHintOnPanel(false);
-			_ui.SetActiveControlHintOffPanel(true);
-			_ui.SetActiveAdSuccessPanel(true);
-			_touchState = TouchState.NONE;
-		}
-		else if (status == AdManager.RewardStatus.FAIL)
-		{
-			_ui.SetActiveAdAbortPanel(true);
-			_touchState = TouchState.NONE;
-		}
+		CommonAd(TouchState.NONE);
 	}
 
 	private void DoTouchStatePauseLoadAd()
 	{
-		_ad.ClearRewardStatus();
-
-		if (_ad.ShowRewarded() == 0)
-		{
-			_ui.SetActiveAdLoadPanel(false);
-			_touchState = TouchState.PAUSE_AD;
-		}
-		else if (Time.time - _touchLoadAdStartTime > MAX_AD_LOAD_TIME)
-		{
-			_ui.SetActiveAdLoadPanel(false);
-			_ui.SetActiveAdFailPanel(true);
-			_touchState = TouchState.PAUSE;
-		}
+		CommonLoadAd(TouchState.PAUSE_AD, TouchState.PAUSE);
 	}
 
 	private void DoTouchStatePauseAd()
 	{
-		AdManager.RewardStatus status = _ad.GetRewardStatus();
-
-		if (status == AdManager.RewardStatus.SUCCESS)
-		{
-			_data.SetHint(_data.GetHint() + 1);
-			_ui.SetControlHintCount(_data.GetHint());
-			_ui.SetActiveControlHintAdPanel(false);
-			_ui.SetActiveControlHintOnPanel(false);
-			_ui.SetActiveControlHintOffPanel(true);
-			_ui.SetActiveAdSuccessPanel(true);
-			_touchState = TouchState.PAUSE;
-		}
-		else if (status == AdManager.RewardStatus.FAIL)
-		{
-			_ui.SetActiveAdAbortPanel(true);
-			_touchState = TouchState.PAUSE;
-		}
+		CommonAd(TouchState.PAUSE);
 	}
 
 	private void DoTouchStateWinLoadAd()
 	{
-		_ad.ClearRewardStatus();
-
-		if (_ad.ShowRewarded() == 0)
-		{
-			_ui.SetActiveAdLoadPanel(false);
-			_touchState = TouchState.WIN_AD;
-		}
-		else if (Time.time - _touchLoadAdStartTime > MAX_AD_LOAD_TIME)
-		{
-			_ui.SetActiveAdLoadPanel(false);
-			_ui.SetActiveAdFailPanel(true);
-			_touchState = TouchState.WIN;
-		}
+		CommonLoadAd(TouchState.WIN_AD, TouchState.WIN);
 	}
 
 	private void DoTouchStateWinAd()
 	{
-		AdManager.RewardStatus status = _ad.GetRewardStatus();
-
-		if (status == AdManager.RewardStatus.SUCCESS)
-		{
-			_data.SetHint(_data.GetHint() + 1);
-			_ui.SetControlHintCount(_data.GetHint());
-			_ui.SetActiveControlHintAdPanel(false);
-			_ui.SetActiveControlHintOnPanel(false);
-			_ui.SetActiveControlHintOffPanel(true);
-			_ui.SetActiveAdSuccessPanel(true);
-			_touchState = TouchState.WIN;
-		}
-		else if (status == AdManager.RewardStatus.FAIL)
-		{
-			_ui.SetActiveAdAbortPanel(true);
-			_touchState = TouchState.WIN;
-		}
+		CommonAd(TouchState.WIN);
 	}
 
 	// UI - Top
@@ -958,36 +1120,60 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetTopMoveTarget(_levelMap._hint.Length);
 		_ui.SetTopMoveBest(_data.GetLevelMove(_menuColor, _menuAlphabet, _menuMap));
 
-		_ui.SetTopStar(_data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap));
+		int star = _data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap);
+
+		for (int i = 0; i < 3; i++)
+		{
+			if (i < star)
+			{
+				_ui.SetActiveTopStar(i, true);
+			}
+			else
+			{
+				_ui.SetActiveTopStar(i, false);
+			}
+		}
 	}
 
 	// UI - Hint
 
+	private const float HINT_ANIMATE_DIRECTION_TIME = 0.75f;
+
 	private void SetupHint()
 	{
-		_ui.SetActiveHintPanel(false);
+		_ui.SetActiveHint(false);
+	}
+
+	private void AnimateHintDirectionStop()
+	{
+		_ui.AnimateHintDirectionStop();
+	}
+
+	private void AnimateHintDirectionStart(char direction)
+	{
+		_ui.AnimateHintDirectionStart(direction, HINT_ANIMATE_DIRECTION_TIME);
 	}
 
 	// UI - Control
 
 	private void SetupControl()
 	{
-		_ui.SetEnableControlButton(true);
-		_ui.SetInteractableControlButton(true);
+		_ui.SetEnableControlButton(false);
+		_ui.SetInteractableControlButton(false);
 
 		_ui.SetControlHintCount(_data.GetHint());
 
 		if (_data.GetHint() > 0)
 		{
-			_ui.SetActiveControlHintAdPanel(false);
-			_ui.SetActiveControlHintOnPanel(false);
-			_ui.SetActiveControlHintOffPanel(true);
+			_ui.SetActiveControlHintAd(false);
+			_ui.SetActiveControlHintOn(false);
+			_ui.SetActiveControlHintOff(true);
 		}
 		else
 		{
-			_ui.SetActiveControlHintAdPanel(true);
-			_ui.SetActiveControlHintOnPanel(false);
-			_ui.SetActiveControlHintOffPanel(false);
+			_ui.SetActiveControlHintAd(true);
+			_ui.SetActiveControlHintOn(false);
+			_ui.SetActiveControlHintOff(false);
 		}
 	}
 
@@ -995,7 +1181,29 @@ public class LevelLogic : MonoBehaviour
 	{
 		_touchState = TouchState.PAUSE;
 		_ui.SetEnableControlButton(false);
-		_ui.SetActivePausePanel(true);
+		_ui.SetActivePause(true);
+		_ui.SetEnablePauseButton(false);
+
+		if (_touchHint == true)
+		{
+			_touchHint = false;
+
+			_ui.SetActiveControlHintOn(false);
+			_ui.SetActiveControlHintOff(true);
+
+			AnimateHintDirectionStop();
+			_ui.SetActiveHint(false);
+		}
+
+		_ui.AnimateControlPauseButtonPressed(()=>{});
+
+		_ui.AnimatePauseBoardEnter
+		(
+			()=>
+			{
+				_ui.SetEnablePauseButton(true);
+			}
+		);
 	}
 
 	public void DoControlUndoButtonPressed()
@@ -1007,8 +1215,12 @@ public class LevelLogic : MonoBehaviour
 
 		if (_touchHint == true)
 		{
-			_ui.SetHintDirection(_levelMap._hint[move]);
+			_ui.SetActiveHintDirection(_levelMap._hint[move]);
+			AnimateHintDirectionStop();
+			AnimateHintDirectionStart(_levelMap._hint[move]);
 		}
+
+		_ui.AnimateControlUndoButtonPressed(()=>{});
 	}
 
 	public void DoControlResetButtonPressed()
@@ -1020,13 +1232,19 @@ public class LevelLogic : MonoBehaviour
 
 		if (_touchHint == true)
 		{
-			_ui.SetHintDirection(_levelMap._hint[move]);
+			_ui.SetActiveHintDirection(_levelMap._hint[move]);
+			AnimateHintDirectionStop();
+			AnimateHintDirectionStart(_levelMap._hint[move]);
 		}
+
+		_ui.AnimateControlResetButtonPressed(()=>{});
 	}
 
 	public void DoControlHintAdButtonPressed()
 	{
-		_ui.SetActiveAdLoadPanel(true);
+		_ui.AnimateControlHintAdButtonPressed(()=>{});
+		_ui.SetActiveLoad(true);
+		_ui.AnimateLoadSquareStart();
 		_touchLoadAdStartTime = Time.time;
 		_touchState = TouchState.LOAD_AD;
 	}
@@ -1034,19 +1252,22 @@ public class LevelLogic : MonoBehaviour
 	public void DoControlHintOnButtonPressed()
 	{
 		_touchHint = false;
-		_ui.SetActiveControlHintOnPanel(false);
-		_ui.SetActiveControlHintOffPanel(true);
-		_ui.SetActiveHintPanel(false);
+
+		_ui.SetActiveControlHintOn(false);
+		_ui.SetActiveControlHintOff(true);
+
+		AnimateHintDirectionStop();
+		_ui.SetActiveHint(false);
+
+		_ui.AnimateControlHintOffButtonPressed(()=>{});
 	}
 
 	public void DoControlHintOffButtonPressed()
 	{
 		_touchHint = true;
 
-
-
-		_ui.SetActiveControlHintOffPanel(false);
-		_ui.SetActiveControlHintOnPanel(true);
+		_ui.SetActiveControlHintOff(false);
+		_ui.SetActiveControlHintOn(true);
 
 		if (_hintUsed == false)
 		{
@@ -1059,61 +1280,168 @@ public class LevelLogic : MonoBehaviour
 		int move = GetSquareMoveCount();
 
 		_ui.SetTopMoveCurrent(move);
-		_ui.SetActiveHintPanel(true);
-		_ui.SetHintDirection(_levelMap._hint[move]);
 
+		_ui.SetActiveHint(true);
+		_ui.SetActiveHintDirection(_levelMap._hint[move]);
+		AnimateHintDirectionStop();
+		AnimateHintDirectionStart(_levelMap._hint[move]);
+
+		_ui.AnimateControlHintOnButtonPressed(()=>{});
+	}
+
+	// UI - Go
+
+	private void SetupGo()
+	{
+		_ui.SetActiveGo(false);
 	}
 
 	// UI - Pause
 
 	private void SetupPause()
 	{
-		_ui.SetActivePausePanel(false);
+		_ui.SetActivePause(false);
 	}
 
 	public void DoPauseMenuButtonPressed()
 	{
-		SceneManager.LoadScene("MapMenuScene");
+		_ui.SetEnablePauseButton(false);
+
+		_ui.AnimatePauseMenuButtonPressed
+		(
+			()=>
+			{
+				_ui.AnimatePauseBoardExit
+				(
+					()=>
+					{
+						SceneManager.LoadScene("MapMenuScene");
+					}
+				);
+			}
+		);
 	}
 
 	public void DoPauseHintAdButtonPressed()
 	{
-		_ui.SetActivePausePanel(false);
-		_ui.SetActiveAdLoadPanel(true);
-		_touchLoadAdStartTime = Time.time;
-		_touchState = TouchState.PAUSE_LOAD_AD;
+		_ui.SetEnablePauseButton(false);
+
+		_ui.AnimatePauseHintAdButtonPressed
+		(
+			()=>
+			{
+				_ui.AnimatePauseBoardExit
+				(
+					()=>
+					{
+						_ui.SetActivePause(false);
+						_ui.SetActiveLoad(true);
+						_ui.AnimateLoadSquareStart();
+						_touchLoadAdStartTime = Time.time;
+						_touchState = TouchState.PAUSE_LOAD_AD;
+					}
+				);
+			}
+		);
 	}
 
 	public void DoPauseResumeButtonPressed()
 	{
-		_ui.SetActivePausePanel(false);
-		_ui.SetEnableControlButton(true);
-		_touchState = TouchState.NONE;
+		_ui.SetEnablePauseButton(false);
+
+		_ui.AnimatePauseResumeButtonPressed
+		(
+			()=>
+			{
+				_ui.AnimatePauseBoardExit
+				(
+					()=>
+					{
+						_ui.SetActivePause(false);
+						_ui.SetEnableControlButton(true);
+						_touchState = TouchState.NONE;
+					}
+				);
+			}
+		);
 	}
 
 	// UI - Win
 
+	private const float WIN_ANIMATE_BOARD_ENTER_TIME = 0.3f;
+	private const float WIN_ANIMATE_BOARD_EXIT_TIME = 0.3f;
+
+	private const float WIN_ANIMATE_STAR_ENTER_TIME = 0.2f;
+
 	private void SetupWin()
 	{
-		_ui.SetActiveWinPanel(false);
+		_ui.SetActiveWin(false);
+
+		for (int i = 0; i < 3; i++)
+		{
+			_ui.SetActiveWinStar(i, false);
+		}
 	}
 
-	public void DoWinHintButtonPressed()
+	public void DoWinHintAdButtonPressed()
 	{
-		_ui.SetActiveWinPanel(false);
-		_ui.SetActiveAdLoadPanel(true);
-		_touchLoadAdStartTime = Time.time;
-		_touchState = TouchState.WIN_LOAD_AD;
+		_ui.SetEnableWinButton(false);
+
+		_ui.AnimateWinHintAdButtonPressed
+		(
+			()=>
+			{
+				_ui.AnimateWinBoardExit
+				(
+					()=>
+					{
+						_ui.SetActiveWin(false);
+						_ui.SetActiveLoad(true);
+						_ui.AnimateLoadSquareStart();
+						_touchLoadAdStartTime = Time.time;
+						_touchState = TouchState.WIN_LOAD_AD;
+					}
+				);
+			}
+		);
 	}
 
 	public void DoWinMenuButtonPressed()
 	{
-		SceneManager.LoadScene("MapMenuScene");
+		_ui.SetEnableWinButton(false);
+
+		_ui.AnimateWinMenuButtonPressed
+		(
+			()=>
+			{
+				_ui.AnimateWinBoardExit
+				(
+					()=>
+					{
+						SceneManager.LoadScene("MapMenuScene");
+					}
+				);
+			}
+		);
 	}
 
 	public void DoWinReplayButtonPressed()
 	{
-		SceneManager.LoadScene("LevelScene");
+		_ui.SetEnableWinButton(false);
+
+		_ui.AnimateWinReplayButtonPressed
+		(
+			()=>
+			{
+				_ui.AnimateWinBoardExit
+				(
+					()=>
+					{
+						SceneManager.LoadScene("LevelScene");
+					}
+				);
+			}
+		);
 	}
 
 	public void DoWinNextButtonPressed()
@@ -1140,77 +1468,167 @@ public class LevelLogic : MonoBehaviour
 		_data.SetMenuAlphabet(nextAlphabet);
 		_data.SetMenuMap(nextMap);
 
-		SceneManager.LoadScene("LevelScene");
+		_ui.SetEnableWinButton(false);
+
+		_ui.AnimateWinNextButtonPressed
+		(
+			()=>
+			{
+				_ui.AnimateWinBoardExit
+				(
+					()=>
+					{
+						SceneManager.LoadScene("LevelScene");
+					}
+				);
+			}
+		);
 	}
 
-	// UI - AdLoad
+	// UI - Load
 
-	private void SetupAdLoad()
+	private void SetupLoad()
 	{
-		_ui.SetActiveAdLoadPanel(false);
+		_ui.SetActiveLoad(false);
 	}
 
 	// UI - AdSuccess
 
 	private void SetupAdSuccess()
 	{
-		_ui.SetActiveAdSuccessPanel(false);
+		_ui.SetActiveAdSuccess(false);
 	}
 
 	public void DoAdSuccessCloseButtonPressed()
 	{
-		_ui.SetActiveAdSuccessPanel(false);
+		_ui.SetEnableAdSuccessButton(false);
 
-		if (_touchState == TouchState.WIN)
-		{
-			_ui.SetActiveWinPanel(true);
-		}
-		else if (_touchState == TouchState.PAUSE)
-		{
-			_ui.SetActivePausePanel(true);
-		}
+		_ui.AnimateAdSuccessCloseButtonPressed
+		(
+			()=>
+			{
+				_ui.AnimateAdSuccessBoardExit
+				(
+					()=>
+					{
+						_ui.SetActiveAdSuccess(false);
+
+						if (_touchState == TouchState.WIN)
+						{
+							_ui.SetActiveWin(true);
+
+							_ui.AnimateWinBoardEnter
+							(
+								()=>
+								{
+									_ui.SetEnableWinButton(true);
+								}
+							);
+						}
+						else if (_touchState == TouchState.PAUSE)
+						{
+							_ui.SetActivePause(true);
+
+							_ui.AnimatePauseBoardEnter
+							(
+								()=>
+								{
+									_ui.SetEnablePauseButton(true);
+								}
+							);
+						}
+					}
+				);
+			}
+		);
 	}
 
 	// UI - AdAbort
 
 	private void SetupAdAbort()
 	{
-		_ui.SetActiveAdAbortPanel(false);
+		_ui.SetActiveAdAbort(false);
 	}
 
 	public void DoAdAbortCloseButtonPressed()
 	{
-		_ui.SetActiveAdAbortPanel(false);
+		_ui.SetEnableAdAbortButton(false);
 
-		if (_touchState == TouchState.WIN)
-		{
-			_ui.SetActiveWinPanel(true);
-		}
-		else if (_touchState == TouchState.PAUSE)
-		{
-			_ui.SetActivePausePanel(true);
-		}
+		_ui.AnimateAdAbortBoardExit
+		(
+			()=>
+			{
+				_ui.SetActiveAdAbort(false);
+
+				if (_touchState == TouchState.WIN)
+				{
+					_ui.SetActiveWin(true);
+
+					_ui.AnimateWinBoardEnter
+					(
+						()=>
+						{
+							_ui.SetEnableWinButton(true);
+						}
+					);
+				}
+				else if (_touchState == TouchState.PAUSE)
+				{
+					_ui.SetActivePause(true);
+
+					_ui.AnimatePauseBoardEnter(
+						()=>
+						{
+							_ui.SetEnablePauseButton(true);
+						}
+					);
+				}
+			}
+		);
 	}
 
 	// UI - AdFail
 
 	private void SetupAdFail()
 	{
-		_ui.SetActiveAdFailPanel(false);
+		_ui.SetActiveAdFail(false);
 	}
 
 	public void DoAdFailCloseButtonPressed()
 	{
-		_ui.SetActiveAdFailPanel(false);
+		_ui.SetEnableAdFailButton(false);
 
-		if (_touchState == TouchState.WIN)
-		{
-			_ui.SetActiveWinPanel(true);
-		}
-		else if (_touchState == TouchState.PAUSE)
-		{
-			_ui.SetActivePausePanel(true);
-		}
+		_ui.AnimateAdFailBoardExit
+		(
+			()=>
+			{
+				_ui.SetActiveAdFail(false);
+
+				if (_touchState == TouchState.WIN)
+				{
+					_ui.SetActiveWin(true);
+
+					_ui.AnimateWinBoardEnter
+					(
+						()=>
+						{
+							_ui.SetEnableWinButton(true);
+						}
+					);
+				}
+				else if (_touchState == TouchState.PAUSE)
+				{
+					_ui.SetActivePause(true);
+
+					_ui.AnimatePauseBoardEnter(
+						()=>
+						{
+							_ui.SetEnablePauseButton(true);
+						}
+					);
+				}
+			}
+		);
 	}
 
 	// Unity Lifecyle
@@ -1246,17 +1664,39 @@ public class LevelLogic : MonoBehaviour
 		SetupTop();
 		SetupHint();
 		SetupControl();
+		SetupGo();
 		SetupPause();
 		SetupWin();
-		SetupAdLoad();
+		SetupLoad();
 		SetupAdSuccess();
 		SetupAdAbort();
 		SetupAdFail();
+
+		AnimateMapEnter
+		(
+			()=>
+			{
+				_ui.SetActiveGo(true);
+				_ui.AnimateGoEnterAndExit
+				(
+					()=>
+					{
+						_ui.SetEnableControlButton(true);
+						_ui.SetInteractableControlButton(true);
+						_touchState = TouchState.NONE;
+					}
+				);
+			}
+		);
 	}
 
 	private void Update()
 	{
-		if (_touchState == TouchState.NONE)
+		if (_touchState == TouchState.WAIT)
+		{
+			DoTouchStateWait();
+		}
+		else if (_touchState == TouchState.NONE)
 		{
 			DoTouchStateNone();
 		}

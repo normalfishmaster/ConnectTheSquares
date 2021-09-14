@@ -13,6 +13,9 @@ public class LevelMenuLogic : MonoBehaviour
 
 	// UI - Level
 
+	private const float LEVEL_ANIMATE_PANEL_ENTER_TIME = 0.3f;
+	private const float LEVEL_ANIMATE_PERCENTAGE_ANIMATE_TIME = 0.3f;
+
 	private void SetupLevel()
 	{
 		int numColor = _level.GetNumColor();
@@ -45,23 +48,34 @@ public class LevelMenuLogic : MonoBehaviour
 				int move = 4 + i;
 				string moves = "Moves:  " + move.ToString();
 
-				_ui.AddALevelTriple(i, moves, (starA / starATotal) * 100.0f, (starB / starBTotal) * 100.0f, (starC / starCTotal) * 100.0f);
+				_ui.AddLevelTriple(i, moves, (starA / starATotal) * 100.0f, (starB / starBTotal) * 100.0f, (starC / starCTotal) * 100.0f);
 			}
 		}
 	}
 
 	public void DoLevelButtonPressed(int color, int alphabet)
 	{
-		_data.SetMenuColor(color);
-		_data.SetMenuAlphabet(alphabet);
-		SceneManager.LoadScene("MapMenuScene");
+		_ui.AnimateLevelButtonPressed(color, alphabet,
+			()=>
+			{
+				_data.SetMenuColor(color);
+				_data.SetMenuAlphabet(alphabet);
+				SceneManager.LoadScene("MapMenuScene");
+			}
+		);
 	}
 
-	// UI - Back
+	// UI - Bottom
 
-	public void DoBackButtonPressed()
+	public void DoBottomBackButtonPressed()
 	{
-		SceneManager.LoadScene("MainMenuScene");
+		_ui.AnimateBottomBackButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("MainMenuScene");
+			}
+		);
 	}
 
 	// Unity Lifecycle
@@ -78,5 +92,15 @@ public class LevelMenuLogic : MonoBehaviour
 		_menuColor = _data.GetMenuColor();
 
 		SetupLevel();
+
+		_ui.SetEnableLevelButton(false);
+		_ui.AnimateLevelEnter
+		(
+			()=>
+			{
+				_ui.SetEnableLevelButton(true);
+				_ui.AnimateLevelPercentage();
+			}
+		);
         }
 }
