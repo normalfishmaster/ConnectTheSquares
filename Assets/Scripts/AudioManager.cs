@@ -49,6 +49,16 @@ public class AudioManager : MonoBehaviour
 		}
 	}
 
+	public AudioClip _clipMapExit;
+
+	public void PlayMapExit()
+	{
+		if (_enable = true)
+		{
+			_source.PlayOneShot(_clipMapExit);
+		}
+	}
+
 	public AudioClip _clipGoEnter;
 
 	public void PlayGoEnter()

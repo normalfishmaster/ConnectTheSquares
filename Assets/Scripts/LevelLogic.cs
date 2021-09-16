@@ -905,7 +905,7 @@ public class LevelLogic : MonoBehaviour
 	{
 		if (MoveSquareFromPreEndToEnd() == true)
 		{
-			_audio.PlayMoveStartToEnd();
+			_audio.PlayMapExit();
 
 			int move = GetSquareMoveCount();
 			int star = 1;
