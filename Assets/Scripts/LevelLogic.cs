@@ -886,6 +886,8 @@ public class LevelLogic : MonoBehaviour
 				AnimateHintDirectionStart(_levelMap._hint[move]);
 			}
 
+			_audio.PlayMoveStartToEnd();
+
 			_touchState = TouchState.NONE;
 		}
 	}
@@ -894,6 +896,7 @@ public class LevelLogic : MonoBehaviour
 	{
 		if (MoveSquareFromStartToPreEnd() == true)
 		{
+			_audio.PlayMovePreEndToEnd();
 			_touchState = TouchState.PRE_END_TO_END;
 		}
 	}
@@ -902,6 +905,8 @@ public class LevelLogic : MonoBehaviour
 	{
 		if (MoveSquareFromPreEndToEnd() == true)
 		{
+			_audio.PlayMoveStartToEnd();
+
 			int move = GetSquareMoveCount();
 			int star = 1;
 

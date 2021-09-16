@@ -59,6 +59,26 @@ public class AudioManager : MonoBehaviour
 		}
 	}
 
+	public AudioClip _clipMoveStartToEnd;
+
+	public void PlayMoveStartToEnd()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipMoveStartToEnd);
+		}
+	}
+
+	public AudioClip _clipMovePreEndToEnd;
+
+	public void PlayMovePreEndToEnd()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipMovePreEndToEnd);
+		}
+	}
+
 	// Unity Lifecyle
 
 	private void Awake()
