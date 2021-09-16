@@ -46,3 +46,4 @@ MonoBehaviour:
   _clipButtonPressed: {fileID: 8300000, guid: f7fded83852ecb08e8411c69af71a2ed, type: 3}
   _clipHintPressed: {fileID: 8300000, guid: 16e444f7421ef7c4c9aa1890fcdd8481, type: 3}
   _clipMapEnter: {fileID: 8300000, guid: 30b4f19d41039e470942165fcfe7569e, type: 3}
+  _clipGoEnter: {fileID: 8300000, guid: 76e01c0150088077e8985f9edc6cee76, type: 3}

@@ -1699,6 +1699,7 @@ public class LevelLogic : MonoBehaviour
 		(
 			()=>
 			{
+				_audio.PlayGoEnter();
 				_ui.SetActiveGo(true);
 				_ui.AnimateGoEnterAndExit
 				(

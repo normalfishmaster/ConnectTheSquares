@@ -49,6 +49,16 @@ public class AudioManager : MonoBehaviour
 		}
 	}
 
+	public AudioClip _clipGoEnter;
+
+	public void PlayGoEnter()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipGoEnter);
+		}
+	}
+
 	// Unity Lifecyle
 
 	private void Awake()
