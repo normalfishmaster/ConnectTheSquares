@@ -11,6 +11,7 @@ public class LevelLogic : MonoBehaviour
 	private DataManager _data;
 	private EventManager _event;
 	private LevelManager _level;
+	private AudioManager _audio;
 	private AdManager _ad;
 
 	private int _menuColor;
@@ -1179,6 +1180,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoControlPauseButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		_touchState = TouchState.PAUSE;
 		_ui.SetEnableControlButton(false);
 		_ui.SetActivePause(true);
@@ -1196,7 +1199,6 @@ public class LevelLogic : MonoBehaviour
 		}
 
 		_ui.AnimateControlPauseButtonPressed(()=>{});
-
 		_ui.AnimatePauseBoardEnter
 		(
 			()=>
@@ -1208,6 +1210,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoControlUndoButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		UndoSquarePos();
 
 		int move = GetSquareMoveCount();
@@ -1225,6 +1229,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoControlResetButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		ResetSquarePos();
 
 		int move = GetSquareMoveCount();
@@ -1305,8 +1311,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoPauseMenuButtonPressed()
 	{
-		_ui.SetEnablePauseButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnablePauseButton(false);
 		_ui.AnimatePauseMenuButtonPressed
 		(
 			()=>
@@ -1324,8 +1331,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoPauseHintAdButtonPressed()
 	{
-		_ui.SetEnablePauseButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnablePauseButton(false);
 		_ui.AnimatePauseHintAdButtonPressed
 		(
 			()=>
@@ -1347,8 +1355,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoPauseResumeButtonPressed()
 	{
-		_ui.SetEnablePauseButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnablePauseButton(false);
 		_ui.AnimatePauseResumeButtonPressed
 		(
 			()=>
@@ -1385,8 +1394,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoWinHintAdButtonPressed()
 	{
-		_ui.SetEnableWinButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnableWinButton(false);
 		_ui.AnimateWinHintAdButtonPressed
 		(
 			()=>
@@ -1408,8 +1418,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoWinMenuButtonPressed()
 	{
-		_ui.SetEnableWinButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnableWinButton(false);
 		_ui.AnimateWinMenuButtonPressed
 		(
 			()=>
@@ -1427,8 +1438,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoWinReplayButtonPressed()
 	{
-		_ui.SetEnableWinButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnableWinButton(false);
 		_ui.AnimateWinReplayButtonPressed
 		(
 			()=>
@@ -1468,8 +1480,9 @@ public class LevelLogic : MonoBehaviour
 		_data.SetMenuAlphabet(nextAlphabet);
 		_data.SetMenuMap(nextMap);
 
-		_ui.SetEnableWinButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnableWinButton(false);
 		_ui.AnimateWinNextButtonPressed
 		(
 			()=>
@@ -1501,8 +1514,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoAdSuccessCloseButtonPressed()
 	{
-		_ui.SetEnableAdSuccessButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnableAdSuccessButton(false);
 		_ui.AnimateAdSuccessCloseButtonPressed
 		(
 			()=>
@@ -1552,8 +1566,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoAdAbortCloseButtonPressed()
 	{
-		_ui.SetEnableAdAbortButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnableAdAbortButton(false);
 		_ui.AnimateAdAbortBoardExit
 		(
 			()=>
@@ -1596,8 +1611,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoAdFailCloseButtonPressed()
 	{
-		_ui.SetEnableAdFailButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnableAdFailButton(false);
 		_ui.AnimateAdFailBoardExit
 		(
 			()=>
@@ -1639,6 +1655,7 @@ public class LevelLogic : MonoBehaviour
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_event = GameObject.Find("EventManager").GetComponent<EventManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
 
 		FindMapGameObject();
