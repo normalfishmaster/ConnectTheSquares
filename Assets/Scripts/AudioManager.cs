@@ -24,10 +24,20 @@ public class AudioManager : MonoBehaviour
 	public void PlayButtonPressed()
 	{
 		if (_enable == true)
+		{
 			_source.PlayOneShot(_clipButtonPressed);
+		}
 	}
 
+	public AudioClip _clipHintPressed;
 
+	public void PlayHintPressed()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipHintPressed);
+		}
+	}
 
 	// Unity Lifecyle
 

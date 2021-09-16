@@ -1248,6 +1248,7 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoControlHintAdButtonPressed()
 	{
+		_audio.PlayButtonPressed();
 		_ui.AnimateControlHintAdButtonPressed(()=>{});
 		_ui.SetActiveLoad(true);
 		_ui.AnimateLoadSquareStart();
@@ -1258,6 +1259,8 @@ public class LevelLogic : MonoBehaviour
 	public void DoControlHintOnButtonPressed()
 	{
 		_touchHint = false;
+
+		_audio.PlayButtonPressed();
 
 		_ui.SetActiveControlHintOn(false);
 		_ui.SetActiveControlHintOff(true);
@@ -1271,6 +1274,8 @@ public class LevelLogic : MonoBehaviour
 	public void DoControlHintOffButtonPressed()
 	{
 		_touchHint = true;
+
+		_audio.PlayHintPressed();
 
 		_ui.SetActiveControlHintOff(false);
 		_ui.SetActiveControlHintOn(true);
