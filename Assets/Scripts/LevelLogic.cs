@@ -1114,7 +1114,7 @@ public class LevelLogic : MonoBehaviour
 	{
 		_ui.SetTopColor(_menuColor);
 		_ui.SetTopAlphabet(_menuAlphabet);
-		_ui.SetTopMap(_menuMap);
+		_ui.SetTopMap(_menuMap + 1);
 
 		_ui.SetTopMoveCurrent(0);
 		_ui.SetTopMoveTarget(_levelMap._hint.Length);
