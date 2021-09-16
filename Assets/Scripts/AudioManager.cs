@@ -53,7 +53,7 @@ public class AudioManager : MonoBehaviour
 
 	public void PlayMapExit()
 	{
-		if (_enable = true)
+		if (_enable == true)
 		{
 			_source.PlayOneShot(_clipMapExit);
 		}
@@ -86,6 +86,16 @@ public class AudioManager : MonoBehaviour
 		if (_enable == true)
 		{
 			_source.PlayOneShot(_clipMovePreEndToEnd);
+		}
+	}
+
+	public AudioClip _clipWinEnter;
+
+	public void PlayWinEnter()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipWinEnter);
 		}
 	}
 

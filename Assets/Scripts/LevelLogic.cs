@@ -983,6 +983,8 @@ public class LevelLogic : MonoBehaviour
 			AnimateMapExit(
 				()=>
 				{
+					_audio.PlayWinEnter();
+
 					_ui.SetActiveWin(true);
 					_ui.SetEnableWinButton(false);
 					_ui.SetInteractableWinNextButton(enableNext);
