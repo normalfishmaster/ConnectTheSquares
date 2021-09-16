@@ -6,9 +6,9 @@ public class AudioManager : MonoBehaviour
 {
 	private static AudioManager _instance;
 
-	private AudioSource _source;
+	private static AudioSource _source;
 
-	private bool _enable;
+	private static bool _enable;
 
 	// Set Enable
 
