@@ -39,6 +39,36 @@ public class AudioManager : MonoBehaviour
 		}
 	}
 
+	public AudioClip _clipFrontButtonEnter;
+
+	public void PlayFrontButtonEnter()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipFrontButtonEnter);
+		}
+	}
+
+	public AudioClip _clipFrontButtonExit;
+
+	public void PlayFrontButtonExit()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipFrontButtonExit);
+		}
+	}
+
+	public AudioClip _clipContinuePressed;
+
+	public void PlayContinuePressed()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipContinuePressed);
+		}
+	}
+
 	public AudioClip _clipMapEnter;
 
 	public void PlayMapEnter()
