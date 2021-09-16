@@ -356,8 +356,7 @@ public class LevelUI : MonoBehaviour
 
 	public void SetControlHintCount(int hint)
 	{
-		string text = "Hint (" + hint + ")";
-
+		string text = "Hint(" + hint + ")";
 		_controlHintOnText.GetComponent<Text>().text = text;
 		_controlHintOffText.GetComponent<Text>().text = text;
 	}
