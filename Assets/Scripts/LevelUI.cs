@@ -7,6 +7,7 @@ public class LevelUI : MonoBehaviour
 {
 	private LevelLogic _logic;
 	private LevelManager _level;
+	private AudioManager _audio;
 
 	public delegate void AnimateComplete();
 
@@ -678,6 +679,8 @@ public class LevelUI : MonoBehaviour
 
 	private void AnimateWinStarEnterSingle(int star, Animate.AnimateComplete callback)
 	{
+		_audio.PlayStarEnter(star);
+
 		SetActiveWinStar(star, true);
 
 		LeanTween.cancel(_winStar[star]);
@@ -1064,6 +1067,7 @@ public class LevelUI : MonoBehaviour
 	{
 		_logic = GameObject.Find("LevelLogic").GetComponent<LevelLogic>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
 		FindTopGameObject();
 		FindHintGameObject();

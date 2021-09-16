@@ -51,3 +51,7 @@ MonoBehaviour:
   _clipMoveStartToEnd: {fileID: 8300000, guid: a88ff3f7592ed059691b78f58a901120, type: 3}
   _clipMovePreEndToEnd: {fileID: 8300000, guid: d98312d553561f163a91d82a6b8ce8b2, type: 3}
   _clipWinEnter: {fileID: 8300000, guid: 5c2b4c80e2be07356a5d0bb1cdf2a011, type: 3}
+  _clipStarEnter:
+  - {fileID: 8300000, guid: 95363ccf17e0f62379272947ffa60eca, type: 3}
+  - {fileID: 8300000, guid: 19d0edb4d1e988101b45f66e11d67794, type: 3}
+  - {fileID: 8300000, guid: b235e72ff034347ba83451b2c1cb8f9d, type: 3}

@@ -99,6 +99,16 @@ public class AudioManager : MonoBehaviour
 		}
 	}
 
+	public AudioClip[] _clipStarEnter;
+
+	public void PlayStarEnter(int star)
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipStarEnter[star]);
+		}
+	}
+
 	// Unity Lifecyle
 
 	private void Awake()
