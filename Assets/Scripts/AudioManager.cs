@@ -109,6 +109,16 @@ public class AudioManager : MonoBehaviour
 		}
 	}
 
+	public AudioClip _clipRewardReceived;
+
+	public void PlayRewardReceived()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipRewardReceived);
+		}
+	}
+
 	// Unity Lifecyle
 
 	private void Awake()
