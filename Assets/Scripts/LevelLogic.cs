@@ -1694,6 +1694,7 @@ public class LevelLogic : MonoBehaviour
 		SetupAdAbort();
 		SetupAdFail();
 
+		_audio.PlayMapEnter();
 		AnimateMapEnter
 		(
 			()=>

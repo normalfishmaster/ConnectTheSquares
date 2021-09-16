@@ -1754,14 +1754,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6360778007548396971, guid: a29c574f4de9892b1a7abf4c23da969b, type: 3}
-      propertyPath: _clipHintPressed
-      value: 
-      objectReference: {fileID: 8300000, guid: 16e444f7421ef7c4c9aa1890fcdd8481, type: 3}
-    - target: {fileID: 6360778007548396971, guid: a29c574f4de9892b1a7abf4c23da969b, type: 3}
-      propertyPath: _clipButtonPressed
-      value: 
-      objectReference: {fileID: 8300000, guid: f7fded83852ecb08e8411c69af71a2ed, type: 3}
     - target: {fileID: 6360778007548396972, guid: a29c574f4de9892b1a7abf4c23da969b, type: 3}
       propertyPath: m_Name
       value: AudioManager
