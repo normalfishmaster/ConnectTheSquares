@@ -60,6 +60,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 19d0edb4d1e988101b45f66e11d67794, type: 3}
   - {fileID: 8300000, guid: b235e72ff034347ba83451b2c1cb8f9d, type: 3}
   _clipRewardReceived: {fileID: 8300000, guid: 1efa22540a017e6faa19632f68c8ecca, type: 3}
+  _clipAchievementReceived: {fileID: 8300000, guid: bc3294d06ba09b4f7a7f404eb0712391, type: 3}
 --- !u!82 &4120586921404964670
 AudioSource:
   m_ObjectHideFlags: 0
