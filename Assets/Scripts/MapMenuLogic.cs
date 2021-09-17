@@ -8,6 +8,7 @@ public class MapMenuLogic : MonoBehaviour
 	private MapMenuUI _ui;
 	private DataManager _data;
 	private LevelManager _level;
+	private AudioManager _audio;
 
 	private int _menuColor;
 	private int _menuAlphabet;
@@ -33,6 +34,8 @@ public class MapMenuLogic : MonoBehaviour
 
 	public void DoMapButtonPressed(int map)
 	{
+		_audio.PlayButtonPressed();
+
 		_data.SetMenuMap(map);
 
 		_ui.AnimateMapButtonPressed(map,
@@ -54,6 +57,8 @@ public class MapMenuLogic : MonoBehaviour
 
 	public void DoBottomBackButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		_ui.AnimateBottomBackButtonPressed
 		(
 			()=>
@@ -70,6 +75,7 @@ public class MapMenuLogic : MonoBehaviour
 		_ui = GameObject.Find("MapMenuUI").GetComponent<MapMenuUI>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 	}
 
 	private void Start()

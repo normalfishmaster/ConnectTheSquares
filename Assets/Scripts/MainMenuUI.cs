@@ -7,6 +7,7 @@ public class MainMenuUI : MonoBehaviour
 {
 	private MainMenuLogic _logic;
 	private LevelManager _level;
+	private AudioManager _audio;
 
 	// Canvas
 
@@ -128,10 +129,39 @@ public class MainMenuUI : MonoBehaviour
 		LeanTween.cancel(settingsRt);
 		LeanTween.cancel(storeRt);
 
-		LeanTween.moveLocalX(_frontContinue, width, FRONT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeOutQuad);
-		LeanTween.moveLocalX(_frontLevels, width, FRONT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeOutQuad).setDelay(FRONT_ANIMATE_EXIT_DELAY);
-		LeanTween.moveLocalX(_frontSettings, width, FRONT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeOutQuad).setDelay(FRONT_ANIMATE_EXIT_DELAY * 2);
-		LeanTween.moveLocalX(_frontStore, width, FRONT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeOutQuad).setDelay(FRONT_ANIMATE_EXIT_DELAY * 3).setOnComplete(
+		LeanTween.moveLocalX(_frontContinue, width, FRONT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeOutQuad).setOnStart
+		(
+			()=>
+			{
+				_audio.PlayFrontButtonExit();
+			}
+		);
+
+		LeanTween.moveLocalX(_frontLevels, width, FRONT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeOutQuad).setDelay(FRONT_ANIMATE_EXIT_DELAY).setOnStart
+		(
+			()=>
+			{
+				_audio.PlayFrontButtonExit();
+			}
+		);
+
+		LeanTween.moveLocalX(_frontSettings, width, FRONT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeOutQuad).setDelay(FRONT_ANIMATE_EXIT_DELAY * 2).setOnStart
+		(
+			()=>
+			{
+				_audio.PlayFrontButtonExit();
+			}
+		);
+
+		LeanTween.moveLocalX(_frontStore, width, FRONT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeOutQuad).setDelay(FRONT_ANIMATE_EXIT_DELAY * 3).setOnStart
+		(
+			()=>
+			{
+				_audio.PlayFrontButtonExit();
+			}
+		)
+		.setOnComplete
+		(
 			()=>
 			{
 				callback();
@@ -344,6 +374,7 @@ public class MainMenuUI : MonoBehaviour
 	{
 		_logic = GameObject.Find("MainMenuLogic").GetComponent<MainMenuLogic>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
 		FindCanvasGameObject();
 		FindFrontGameObject();

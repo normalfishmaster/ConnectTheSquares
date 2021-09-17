@@ -8,6 +8,7 @@ public class LevelMenuLogic : MonoBehaviour
 	private LevelMenuUI _ui;
 	private DataManager _data;
 	private LevelManager _level;
+	private AudioManager _audio;
 
 	private int _menuColor;
 
@@ -55,6 +56,8 @@ public class LevelMenuLogic : MonoBehaviour
 
 	public void DoLevelButtonPressed(int color, int alphabet)
 	{
+		_audio.PlayButtonPressed();
+
 		_ui.AnimateLevelButtonPressed(color, alphabet,
 			()=>
 			{
@@ -69,6 +72,8 @@ public class LevelMenuLogic : MonoBehaviour
 
 	public void DoBottomBackButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		_ui.AnimateBottomBackButtonPressed
 		(
 			()=>
@@ -85,6 +90,7 @@ public class LevelMenuLogic : MonoBehaviour
 		_ui = GameObject.Find("LevelMenuUI").GetComponent<LevelMenuUI>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 	}
 
         private void Start()

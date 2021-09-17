@@ -7,6 +7,7 @@ public class LevelUI : MonoBehaviour
 {
 	private LevelLogic _logic;
 	private LevelManager _level;
+	private AudioManager _audio;
 
 	public delegate void AnimateComplete();
 
@@ -543,6 +544,16 @@ public class LevelUI : MonoBehaviour
 		_pause.SetActive(active);
 	}
 
+	public void SetActivePauseAudioOnButton(bool active)
+	{
+		_pauseAudioOnButton.SetActive(active);
+	}
+
+	public void SetActivePauseAudioOffButton(bool active)
+	{
+		_pauseAudioOffButton.SetActive(active);
+	}
+
 	public void SetEnablePauseButton(bool enable)
 	{
 		_pauseAudioOnButton.GetComponent<Button>().enabled = enable;
@@ -585,6 +596,16 @@ public class LevelUI : MonoBehaviour
 	public void AnimatePauseResumeButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_pauseResumeButton, PAUSE_ANIMATE_BUTTON_PRESSED_SCALE, PAUSE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void OnPauseAudioOnButtonPressed()
+	{
+		_logic.DoPauseAudioOnButtonPressed();
+	}
+
+	public void OnPauseAudioOffButtonPressed()
+	{
+		_logic.DoPauseAudioOffButtonPressed();
 	}
 
 	public void OnPauseMenuButtonPressed()
@@ -678,6 +699,8 @@ public class LevelUI : MonoBehaviour
 
 	private void AnimateWinStarEnterSingle(int star, Animate.AnimateComplete callback)
 	{
+		_audio.PlayStarEnter(star);
+
 		SetActiveWinStar(star, true);
 
 		LeanTween.cancel(_winStar[star]);
@@ -1064,6 +1087,7 @@ public class LevelUI : MonoBehaviour
 	{
 		_logic = GameObject.Find("LevelLogic").GetComponent<LevelLogic>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
 		FindTopGameObject();
 		FindHintGameObject();

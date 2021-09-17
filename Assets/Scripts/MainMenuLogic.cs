@@ -8,6 +8,7 @@ public class MainMenuLogic : MonoBehaviour
 	private MainMenuUI _ui;
 	private DataManager _data;
 	private LevelManager _level;
+	private AudioManager _audio;
 	private AdManager _ad;
 
 	// UI - Front
@@ -48,6 +49,8 @@ public class MainMenuLogic : MonoBehaviour
 		_data.SetMenuAlphabet(loadAlphabet);
 		_data.SetMenuMap(loadMap);
 
+		_audio.PlayContinuePressed();
+
 		_ui.SetEnableFrontButton(false);
 		_ui.SetEnableBottomButton(false);
 
@@ -68,6 +71,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void DoFrontLevelsButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		_ui.SetEnableFrontButton(false);
 		_ui.SetEnableBottomButton(false);
 
@@ -75,19 +80,15 @@ public class MainMenuLogic : MonoBehaviour
 		(
 			()=>
 			{
-				_ui.AnimateFrontExit
-				(
-					()=>
-					{
-						SceneManager.LoadScene("LevelMenuScene");
-					}
-				);
+				SceneManager.LoadScene("LevelMenuScene");
 			}
 		);
 	}
 
 	public void DoFrontSettingsButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		_ui.AnimateFrontSettingsButtonPressed
 		(
 			()=>
@@ -98,6 +99,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void DoFrontStoreButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		_ui.AnimateFrontStoreButtonPressed
 		(
 			()=>
@@ -121,6 +124,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void DoBottomGooglePlayButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		_ui.AnimateBottomGooglePlayButtonPressed
 		(
 			()=>
@@ -131,6 +136,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void DoBottomGameCenterButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		_ui.AnimateBottomGameCenterButtonPressed
 		(
 			()=>
@@ -141,6 +148,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void DoBottomNoAdsButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		_ui.AnimateBottomNoAdsButtonPressed
 		(
 			()=>
@@ -151,6 +160,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void DoBottomLanguageButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		_ui.AnimateBottomLanguageButtonPressed
 		(
 			()=>
@@ -169,6 +180,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void DoExitButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		_ui.SetActiveExit(true);
 		_ui.SetEnableFrontButton(false);
 		_ui.SetEnableBottomButton(false);
@@ -184,6 +197,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void DoExitYesButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		_ui.SetEnableExitButton(false);
 
 		_ui.AnimateExitYesButtonPressed
@@ -203,6 +218,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void DoExitNoButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		_ui.SetEnableExitButton(false);
 
 		_ui.AnimateExitNoButtonPressed
@@ -229,6 +246,7 @@ public class MainMenuLogic : MonoBehaviour
 		_ui = GameObject.Find("MainMenuUI").GetComponent<MainMenuUI>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
 	}
 
@@ -237,6 +255,8 @@ public class MainMenuLogic : MonoBehaviour
 		SetupFront();
 		SetupBottom();
 		SetupExit();
+
+		_audio.PlayFrontButtonEnter();
 
 		_ui.SetEnableFrontButton(false);
 		_ui.AnimateFrontEnter

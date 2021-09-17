@@ -1,0 +1,178 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class AudioManager : MonoBehaviour
+{
+	private static AudioManager _instance;
+
+	private static AudioSource _source;
+
+	private static bool _enable;
+
+	// Set Enable
+
+	public void SetEnable(bool enable)
+	{
+		_enable = enable;
+	}
+
+	// Audio
+
+	public AudioClip _clipButtonPressed;
+
+	public void PlayButtonPressed()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipButtonPressed);
+		}
+	}
+
+	public AudioClip _clipHintPressed;
+
+	public void PlayHintPressed()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipHintPressed);
+		}
+	}
+
+	public AudioClip _clipFrontButtonEnter;
+
+	public void PlayFrontButtonEnter()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipFrontButtonEnter);
+		}
+	}
+
+	public AudioClip _clipFrontButtonExit;
+
+	public void PlayFrontButtonExit()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipFrontButtonExit);
+		}
+	}
+
+	public AudioClip _clipContinuePressed;
+
+	public void PlayContinuePressed()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipContinuePressed);
+		}
+	}
+
+	public AudioClip _clipMapEnter;
+
+	public void PlayMapEnter()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipMapEnter);
+		}
+	}
+
+	public AudioClip _clipMapExit;
+
+	public void PlayMapExit()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipMapExit);
+		}
+	}
+
+	public AudioClip _clipGoEnter;
+
+	public void PlayGoEnter()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipGoEnter);
+		}
+	}
+
+	public AudioClip _clipMoveStartToEnd;
+
+	public void PlayMoveStartToEnd()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipMoveStartToEnd);
+		}
+	}
+
+	public AudioClip _clipMovePreEndToEnd;
+
+	public void PlayMovePreEndToEnd()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipMovePreEndToEnd);
+		}
+	}
+
+	public AudioClip _clipWinEnter;
+
+	public void PlayWinEnter()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipWinEnter);
+		}
+	}
+
+	public AudioClip[] _clipStarEnter;
+
+	public void PlayStarEnter(int star)
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipStarEnter[star]);
+		}
+	}
+
+	public AudioClip _clipRewardReceived;
+
+	public void PlayRewardReceived()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipRewardReceived);
+		}
+	}
+
+	public AudioClip _clipAchievementReceived;
+
+	public void PlayAchievementReceived()
+	{
+		if (_enable == true)
+		{
+			_source.PlayOneShot(_clipAchievementReceived);
+		}
+	}
+
+	// Unity Lifecyle
+
+	private void Awake()
+	{
+		// Singleton implementation
+		if (_instance != null && _instance != this)
+		{
+			Destroy(this.gameObject);
+			return;
+		}
+
+		_instance = this;
+		DontDestroyOnLoad(this.gameObject);
+
+		_source = GetComponent<AudioSource>();
+	}
+}

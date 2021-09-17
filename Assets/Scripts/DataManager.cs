@@ -7,6 +7,7 @@ public class DataManager : MonoBehaviour
 {
 	private static DataManager _instance;
 	private static LevelManager _level;
+	private static AudioManager _audio;
 
 	private static bool _initOnce = false;
 
@@ -206,6 +207,7 @@ public class DataManager : MonoBehaviour
 		DontDestroyOnLoad(this.gameObject);
 
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 	}
 
 	private void Start()
@@ -313,6 +315,15 @@ public class DataManager : MonoBehaviour
 
 				SetColorStar(i, starColorEarned);
 				SetColorStarTotal(i, starColorTotal);
+			}
+
+			if (GetAudio() == 0)
+			{
+				_audio.SetEnable(false);
+			}
+			else
+			{
+				_audio.SetEnable(true);
 			}
 
 			_initOnce = true;

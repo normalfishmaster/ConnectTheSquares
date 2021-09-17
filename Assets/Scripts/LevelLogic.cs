@@ -11,6 +11,7 @@ public class LevelLogic : MonoBehaviour
 	private DataManager _data;
 	private EventManager _event;
 	private LevelManager _level;
+	private AudioManager _audio;
 	private AdManager _ad;
 
 	private int _menuColor;
@@ -885,6 +886,8 @@ public class LevelLogic : MonoBehaviour
 				AnimateHintDirectionStart(_levelMap._hint[move]);
 			}
 
+			_audio.PlayMoveStartToEnd();
+
 			_touchState = TouchState.NONE;
 		}
 	}
@@ -893,6 +896,7 @@ public class LevelLogic : MonoBehaviour
 	{
 		if (MoveSquareFromStartToPreEnd() == true)
 		{
+			_audio.PlayMovePreEndToEnd();
 			_touchState = TouchState.PRE_END_TO_END;
 		}
 	}
@@ -901,6 +905,8 @@ public class LevelLogic : MonoBehaviour
 	{
 		if (MoveSquareFromPreEndToEnd() == true)
 		{
+			_audio.PlayMapExit();
+
 			int move = GetSquareMoveCount();
 			int star = 1;
 
@@ -977,6 +983,8 @@ public class LevelLogic : MonoBehaviour
 			AnimateMapExit(
 				()=>
 				{
+					_audio.PlayWinEnter();
+
 					_ui.SetActiveWin(true);
 					_ui.SetEnableWinButton(false);
 					_ui.SetInteractableWinNextButton(enableNext);
@@ -1051,6 +1059,7 @@ public class LevelLogic : MonoBehaviour
 			(
 				()=>
 				{
+					_audio.PlayRewardReceived();
 					_ui.SetActiveAdSuccessHint(true);
 					_ui.AnimateAdSuccessHintEnter
 					(
@@ -1179,10 +1188,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoControlPauseButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		_touchState = TouchState.PAUSE;
-		_ui.SetEnableControlButton(false);
-		_ui.SetActivePause(true);
-		_ui.SetEnablePauseButton(false);
 
 		if (_touchHint == true)
 		{
@@ -1195,8 +1203,22 @@ public class LevelLogic : MonoBehaviour
 			_ui.SetActiveHint(false);
 		}
 
-		_ui.AnimateControlPauseButtonPressed(()=>{});
+		_ui.SetEnableControlButton(false);
+		_ui.SetActivePause(true);
+		_ui.SetEnablePauseButton(false);
 
+		if (_data.GetAudio() == 0)
+		{
+			_ui.SetActivePauseAudioOnButton(false);
+			_ui.SetActivePauseAudioOffButton(true);
+		}
+		else
+		{
+			_ui.SetActivePauseAudioOnButton(true);
+			_ui.SetActivePauseAudioOffButton(false);
+		}
+
+		_ui.AnimateControlPauseButtonPressed(()=>{});
 		_ui.AnimatePauseBoardEnter
 		(
 			()=>
@@ -1208,6 +1230,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoControlUndoButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		UndoSquarePos();
 
 		int move = GetSquareMoveCount();
@@ -1225,6 +1249,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoControlResetButtonPressed()
 	{
+		_audio.PlayButtonPressed();
+
 		ResetSquarePos();
 
 		int move = GetSquareMoveCount();
@@ -1242,6 +1268,7 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoControlHintAdButtonPressed()
 	{
+		_audio.PlayButtonPressed();
 		_ui.AnimateControlHintAdButtonPressed(()=>{});
 		_ui.SetActiveLoad(true);
 		_ui.AnimateLoadSquareStart();
@@ -1252,6 +1279,8 @@ public class LevelLogic : MonoBehaviour
 	public void DoControlHintOnButtonPressed()
 	{
 		_touchHint = false;
+
+		_audio.PlayButtonPressed();
 
 		_ui.SetActiveControlHintOn(false);
 		_ui.SetActiveControlHintOff(true);
@@ -1265,6 +1294,8 @@ public class LevelLogic : MonoBehaviour
 	public void DoControlHintOffButtonPressed()
 	{
 		_touchHint = true;
+
+		_audio.PlayHintPressed();
 
 		_ui.SetActiveControlHintOff(false);
 		_ui.SetActiveControlHintOn(true);
@@ -1303,10 +1334,35 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetActivePause(false);
 	}
 
+	public void DoPauseAudioOnButtonPressed()
+	{
+		_data.SetAudio(0);
+		_audio.SetEnable(false);
+
+		_ui.SetActivePauseAudioOnButton(false);
+		_ui.SetActivePauseAudioOffButton(true);
+
+		_ui.AnimatePauseAudioOffButtonPressed(()=>{});
+	}
+
+	public void DoPauseAudioOffButtonPressed()
+	{
+		_data.SetAudio(1);
+		_audio.SetEnable(true);
+
+		_audio.PlayButtonPressed();
+
+		_ui.SetActivePauseAudioOnButton(true);
+		_ui.SetActivePauseAudioOffButton(false);
+
+		_ui.AnimatePauseAudioOnButtonPressed(()=>{});
+	}
+
 	public void DoPauseMenuButtonPressed()
 	{
-		_ui.SetEnablePauseButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnablePauseButton(false);
 		_ui.AnimatePauseMenuButtonPressed
 		(
 			()=>
@@ -1324,8 +1380,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoPauseHintAdButtonPressed()
 	{
-		_ui.SetEnablePauseButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnablePauseButton(false);
 		_ui.AnimatePauseHintAdButtonPressed
 		(
 			()=>
@@ -1347,8 +1404,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoPauseResumeButtonPressed()
 	{
-		_ui.SetEnablePauseButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnablePauseButton(false);
 		_ui.AnimatePauseResumeButtonPressed
 		(
 			()=>
@@ -1385,8 +1443,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoWinHintAdButtonPressed()
 	{
-		_ui.SetEnableWinButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnableWinButton(false);
 		_ui.AnimateWinHintAdButtonPressed
 		(
 			()=>
@@ -1408,8 +1467,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoWinMenuButtonPressed()
 	{
-		_ui.SetEnableWinButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnableWinButton(false);
 		_ui.AnimateWinMenuButtonPressed
 		(
 			()=>
@@ -1427,8 +1487,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoWinReplayButtonPressed()
 	{
-		_ui.SetEnableWinButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnableWinButton(false);
 		_ui.AnimateWinReplayButtonPressed
 		(
 			()=>
@@ -1468,8 +1529,9 @@ public class LevelLogic : MonoBehaviour
 		_data.SetMenuAlphabet(nextAlphabet);
 		_data.SetMenuMap(nextMap);
 
-		_ui.SetEnableWinButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnableWinButton(false);
 		_ui.AnimateWinNextButtonPressed
 		(
 			()=>
@@ -1501,8 +1563,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoAdSuccessCloseButtonPressed()
 	{
-		_ui.SetEnableAdSuccessButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnableAdSuccessButton(false);
 		_ui.AnimateAdSuccessCloseButtonPressed
 		(
 			()=>
@@ -1552,8 +1615,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoAdAbortCloseButtonPressed()
 	{
-		_ui.SetEnableAdAbortButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnableAdAbortButton(false);
 		_ui.AnimateAdAbortBoardExit
 		(
 			()=>
@@ -1596,8 +1660,9 @@ public class LevelLogic : MonoBehaviour
 
 	public void DoAdFailCloseButtonPressed()
 	{
-		_ui.SetEnableAdFailButton(false);
+		_audio.PlayButtonPressed();
 
+		_ui.SetEnableAdFailButton(false);
 		_ui.AnimateAdFailBoardExit
 		(
 			()=>
@@ -1639,6 +1704,7 @@ public class LevelLogic : MonoBehaviour
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_event = GameObject.Find("EventManager").GetComponent<EventManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
 
 		FindMapGameObject();
@@ -1672,10 +1738,12 @@ public class LevelLogic : MonoBehaviour
 		SetupAdAbort();
 		SetupAdFail();
 
+		_audio.PlayMapEnter();
 		AnimateMapEnter
 		(
 			()=>
 			{
+				_audio.PlayGoEnter();
 				_ui.SetActiveGo(true);
 				_ui.AnimateGoEnterAndExit
 				(
