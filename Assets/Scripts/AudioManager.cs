@@ -164,8 +164,5 @@ public class AudioManager : MonoBehaviour
 		DontDestroyOnLoad(this.gameObject);
 
 		_source = GetComponent<AudioSource>();
-
-		_enable = true;
 	}
-
 }

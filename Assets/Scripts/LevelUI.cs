@@ -544,6 +544,16 @@ public class LevelUI : MonoBehaviour
 		_pause.SetActive(active);
 	}
 
+	public void SetActivePauseAudioOnButton(bool active)
+	{
+		_pauseAudioOnButton.SetActive(active);
+	}
+
+	public void SetActivePauseAudioOffButton(bool active)
+	{
+		_pauseAudioOffButton.SetActive(active);
+	}
+
 	public void SetEnablePauseButton(bool enable)
 	{
 		_pauseAudioOnButton.GetComponent<Button>().enabled = enable;
@@ -586,6 +596,16 @@ public class LevelUI : MonoBehaviour
 	public void AnimatePauseResumeButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_pauseResumeButton, PAUSE_ANIMATE_BUTTON_PRESSED_SCALE, PAUSE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void OnPauseAudioOnButtonPressed()
+	{
+		_logic.DoPauseAudioOnButtonPressed();
+	}
+
+	public void OnPauseAudioOffButtonPressed()
+	{
+		_logic.DoPauseAudioOffButtonPressed();
 	}
 
 	public void OnPauseMenuButtonPressed()

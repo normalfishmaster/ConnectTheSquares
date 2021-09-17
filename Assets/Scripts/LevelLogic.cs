@@ -1191,9 +1191,6 @@ public class LevelLogic : MonoBehaviour
 		_audio.PlayButtonPressed();
 
 		_touchState = TouchState.PAUSE;
-		_ui.SetEnableControlButton(false);
-		_ui.SetActivePause(true);
-		_ui.SetEnablePauseButton(false);
 
 		if (_touchHint == true)
 		{
@@ -1204,6 +1201,21 @@ public class LevelLogic : MonoBehaviour
 
 			AnimateHintDirectionStop();
 			_ui.SetActiveHint(false);
+		}
+
+		_ui.SetEnableControlButton(false);
+		_ui.SetActivePause(true);
+		_ui.SetEnablePauseButton(false);
+
+		if (_data.GetAudio() == 0)
+		{
+			_ui.SetActivePauseAudioOnButton(false);
+			_ui.SetActivePauseAudioOffButton(true);
+		}
+		else
+		{
+			_ui.SetActivePauseAudioOnButton(true);
+			_ui.SetActivePauseAudioOffButton(false);
 		}
 
 		_ui.AnimateControlPauseButtonPressed(()=>{});
@@ -1320,6 +1332,30 @@ public class LevelLogic : MonoBehaviour
 	private void SetupPause()
 	{
 		_ui.SetActivePause(false);
+	}
+
+	public void DoPauseAudioOnButtonPressed()
+	{
+		_data.SetAudio(0);
+		_audio.SetEnable(false);
+
+		_ui.SetActivePauseAudioOnButton(false);
+		_ui.SetActivePauseAudioOffButton(true);
+
+		_ui.AnimatePauseAudioOffButtonPressed(()=>{});
+	}
+
+	public void DoPauseAudioOffButtonPressed()
+	{
+		_data.SetAudio(1);
+		_audio.SetEnable(true);
+
+		_audio.PlayButtonPressed();
+
+		_ui.SetActivePauseAudioOnButton(true);
+		_ui.SetActivePauseAudioOffButton(false);
+
+		_ui.AnimatePauseAudioOnButtonPressed(()=>{});
 	}
 
 	public void DoPauseMenuButtonPressed()
