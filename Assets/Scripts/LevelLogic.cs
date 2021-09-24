@@ -1186,7 +1186,7 @@ public class LevelLogic : MonoBehaviour
 		}
 	}
 
-	public void DoControlPauseButtonPressed()
+	public void OnControlPauseButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -1228,7 +1228,7 @@ public class LevelLogic : MonoBehaviour
 		);
 	}
 
-	public void DoControlUndoButtonPressed()
+	public void OnControlUndoButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -1247,7 +1247,7 @@ public class LevelLogic : MonoBehaviour
 		_ui.AnimateControlUndoButtonPressed(()=>{});
 	}
 
-	public void DoControlResetButtonPressed()
+	public void OnControlResetButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -1266,7 +1266,7 @@ public class LevelLogic : MonoBehaviour
 		_ui.AnimateControlResetButtonPressed(()=>{});
 	}
 
-	public void DoControlHintAdButtonPressed()
+	public void OnControlHintAdButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 		_ui.AnimateControlHintAdButtonPressed(()=>{});
@@ -1276,7 +1276,7 @@ public class LevelLogic : MonoBehaviour
 		_touchState = TouchState.LOAD_AD;
 	}
 
-	public void DoControlHintOnButtonPressed()
+	public void OnControlHintOnButtonPressed()
 	{
 		_touchHint = false;
 
@@ -1291,7 +1291,7 @@ public class LevelLogic : MonoBehaviour
 		_ui.AnimateControlHintOffButtonPressed(()=>{});
 	}
 
-	public void DoControlHintOffButtonPressed()
+	public void OnControlHintOffButtonPressed()
 	{
 		_touchHint = true;
 
@@ -1334,7 +1334,7 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetActivePause(false);
 	}
 
-	public void DoPauseAudioOnButtonPressed()
+	public void OnPauseAudioOnButtonPressed()
 	{
 		_data.SetAudio(0);
 		_audio.SetEnable(false);
@@ -1345,7 +1345,7 @@ public class LevelLogic : MonoBehaviour
 		_ui.AnimatePauseAudioOffButtonPressed(()=>{});
 	}
 
-	public void DoPauseAudioOffButtonPressed()
+	public void OnPauseAudioOffButtonPressed()
 	{
 		_data.SetAudio(1);
 		_audio.SetEnable(true);
@@ -1358,7 +1358,7 @@ public class LevelLogic : MonoBehaviour
 		_ui.AnimatePauseAudioOnButtonPressed(()=>{});
 	}
 
-	public void DoPauseMenuButtonPressed()
+	public void OnPauseMenuButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -1378,7 +1378,7 @@ public class LevelLogic : MonoBehaviour
 		);
 	}
 
-	public void DoPauseHintAdButtonPressed()
+	public void OnPauseHintAdButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -1402,7 +1402,7 @@ public class LevelLogic : MonoBehaviour
 		);
 	}
 
-	public void DoPauseResumeButtonPressed()
+	public void OnPauseResumeButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -1441,7 +1441,7 @@ public class LevelLogic : MonoBehaviour
 		}
 	}
 
-	public void DoWinHintAdButtonPressed()
+	public void OnWinHintAdButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -1465,7 +1465,7 @@ public class LevelLogic : MonoBehaviour
 		);
 	}
 
-	public void DoWinMenuButtonPressed()
+	public void OnWinMenuButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -1485,7 +1485,7 @@ public class LevelLogic : MonoBehaviour
 		);
 	}
 
-	public void DoWinReplayButtonPressed()
+	public void OnWinReplayButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -1505,7 +1505,7 @@ public class LevelLogic : MonoBehaviour
 		);
 	}
 
-	public void DoWinNextButtonPressed()
+	public void OnWinNextButtonPressed()
 	{
 		int nextColor = _menuColor;
 		int nextAlphabet = _menuAlphabet;

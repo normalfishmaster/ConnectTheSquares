@@ -624,8 +624,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1334481634}
-        m_TargetAssemblyTypeName: TestUI, Assembly-CSharp
+      - m_Target: {fileID: 1605520235}
+        m_TargetAssemblyTypeName: TestLogic, Assembly-CSharp
         m_MethodName: OnDataStringGetButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -757,8 +757,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1334481634}
-        m_TargetAssemblyTypeName: TestUI, Assembly-CSharp
+      - m_Target: {fileID: 1605520235}
+        m_TargetAssemblyTypeName: TestLogic, Assembly-CSharp
         m_MethodName: OnAdRewardedButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -969,8 +969,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1334481634}
-        m_TargetAssemblyTypeName: TestUI, Assembly-CSharp
+      - m_Target: {fileID: 1605520235}
+        m_TargetAssemblyTypeName: TestLogic, Assembly-CSharp
         m_MethodName: OnDataAllDumpButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -1418,8 +1418,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1334481634}
-        m_TargetAssemblyTypeName: TestUI, Assembly-CSharp
+      - m_Target: {fileID: 1605520235}
+        m_TargetAssemblyTypeName: TestLogic, Assembly-CSharp
         m_MethodName: OnAdInterstitialVideoButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -1836,8 +1836,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1334481634}
-        m_TargetAssemblyTypeName: TestUI, Assembly-CSharp
+      - m_Target: {fileID: 1605520235}
+        m_TargetAssemblyTypeName: TestLogic, Assembly-CSharp
         m_MethodName: OnDataIntGetButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -2364,8 +2364,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1334481634}
-        m_TargetAssemblyTypeName: TestUI, Assembly-CSharp
+      - m_Target: {fileID: 1605520235}
+        m_TargetAssemblyTypeName: TestLogic, Assembly-CSharp
         m_MethodName: OnDataStringSetButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -2497,8 +2497,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1334481634}
-        m_TargetAssemblyTypeName: TestUI, Assembly-CSharp
+      - m_Target: {fileID: 1605520235}
+        m_TargetAssemblyTypeName: TestLogic, Assembly-CSharp
         m_MethodName: OnAdInterstitialButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -3650,8 +3650,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1334481634}
-        m_TargetAssemblyTypeName: TestUI, Assembly-CSharp
+      - m_Target: {fileID: 1605520235}
+        m_TargetAssemblyTypeName: TestLogic, Assembly-CSharp
         m_MethodName: OnDataFloatGetButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -3998,8 +3998,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1334481634}
-        m_TargetAssemblyTypeName: TestUI, Assembly-CSharp
+      - m_Target: {fileID: 1605520235}
+        m_TargetAssemblyTypeName: TestLogic, Assembly-CSharp
         m_MethodName: OnDataIntSetButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -4253,8 +4253,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1334481634}
-        m_TargetAssemblyTypeName: TestUI, Assembly-CSharp
+      - m_Target: {fileID: 1605520235}
+        m_TargetAssemblyTypeName: TestLogic, Assembly-CSharp
         m_MethodName: OnDataAllReinitButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -4687,8 +4687,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1334481634}
-        m_TargetAssemblyTypeName: TestUI, Assembly-CSharp
+      - m_Target: {fileID: 1605520235}
+        m_TargetAssemblyTypeName: TestLogic, Assembly-CSharp
         m_MethodName: OnDataAllDeleteButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -5257,8 +5257,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1334481634}
-        m_TargetAssemblyTypeName: TestUI, Assembly-CSharp
+      - m_Target: {fileID: 1605520235}
+        m_TargetAssemblyTypeName: TestLogic, Assembly-CSharp
         m_MethodName: OnDataFloatSetButtonPressed
         m_Mode: 1
         m_Arguments:

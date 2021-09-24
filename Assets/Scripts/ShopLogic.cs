@@ -107,7 +107,7 @@ public class ShopLogic : MonoBehaviour
 
 	// UI - Product
 
-	public void DoProductHintAdButtonPressed()
+	public void OnProductHintAdButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 		_ui.AnimateProductHintAdButtonPressed
@@ -124,7 +124,7 @@ public class ShopLogic : MonoBehaviour
 		);
 	}
 
-	public void DoProductNoAdsButtonPressed()
+	public void OnProductNoAdsButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 		_ui.AnimateProductNoAdsButtonPressed(()=>{});
@@ -137,9 +137,12 @@ public class ShopLogic : MonoBehaviour
 
 	// UI - Bottom
 
-	public void DoBottomBackButtonPressed()
+	public void OnBottomBackButtonPressed()
 	{
 		_audio.PlayButtonPressed();
+
+		_ui.SetEnableProductButton(false);
+		_ui.SetEnableBottomButton(false);
 
 		_ui.AnimateBottomBackButtonPressed
 		(
@@ -169,7 +172,7 @@ public class ShopLogic : MonoBehaviour
 		_adUi.SetActiveAdSuccess(false);
 	}
 
-	public void DoAdSuccessCloseButtonPressed()
+	public void OnAdSuccessCloseButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -198,7 +201,7 @@ public class ShopLogic : MonoBehaviour
 		_adUi.SetActiveAdAbort(false);
 	}
 
-	public void DoAdAbortCloseButtonPressed()
+	public void OnAdAbortCloseButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -221,7 +224,7 @@ public class ShopLogic : MonoBehaviour
 		_adUi.SetActiveAdFail(false);
 	}
 
-	public void DoAdFailCloseButtonPressed()
+	public void OnAdFailCloseButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 

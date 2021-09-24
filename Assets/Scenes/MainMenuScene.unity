@@ -861,8 +861,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1968938550}
-        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+      - m_Target: {fileID: 1165655859}
+        m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
         m_MethodName: OnFrontSettingsButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -1197,8 +1197,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1968938550}
-        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+      - m_Target: {fileID: 1165655859}
+        m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
         m_MethodName: OnBottomNoAdsButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -1641,8 +1641,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1968938550}
-        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+      - m_Target: {fileID: 1165655859}
+        m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
         m_MethodName: OnBottomLanguageButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -2736,8 +2736,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1968938550}
-        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+      - m_Target: {fileID: 1165655859}
+        m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
         m_MethodName: OnBottomGameCenterButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -2869,8 +2869,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1968938550}
-        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+      - m_Target: {fileID: 1165655859}
+        m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
         m_MethodName: OnExitYesButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -3538,8 +3538,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1968938550}
-        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+      - m_Target: {fileID: 1165655859}
+        m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
         m_MethodName: OnExitNoButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -4124,8 +4124,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1968938550}
-        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+      - m_Target: {fileID: 1165655859}
+        m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
         m_MethodName: OnBottomGooglePlayButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -4525,8 +4525,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1968938550}
-        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+      - m_Target: {fileID: 1165655859}
+        m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
         m_MethodName: OnFrontLevelsButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -5392,8 +5392,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1968938550}
-        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+      - m_Target: {fileID: 1165655859}
+        m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
         m_MethodName: OnFrontContinueButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -5733,8 +5733,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1968938550}
-        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+      - m_Target: {fileID: 1165655859}
+        m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
         m_MethodName: OnFrontStoreButtonPressed
         m_Mode: 1
         m_Arguments:

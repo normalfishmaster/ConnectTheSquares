@@ -1612,8 +1612,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2137377379}
-        m_TargetAssemblyTypeName: LevelMenuUI, Assembly-CSharp
+      - m_Target: {fileID: 31386778}
+        m_TargetAssemblyTypeName: LevelMenuLogic, Assembly-CSharp
         m_MethodName: OnBottomBackButtonPressed
         m_Mode: 1
         m_Arguments:

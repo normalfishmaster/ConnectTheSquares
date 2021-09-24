@@ -541,8 +541,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 923933098}
-        m_TargetAssemblyTypeName: LevelUI, Assembly-CSharp
+      - m_Target: {fileID: 1385110997}
+        m_TargetAssemblyTypeName: LevelLogic, Assembly-CSharp
         m_MethodName: OnPauseAudioOffButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -2029,8 +2029,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 923933098}
-        m_TargetAssemblyTypeName: LevelUI, Assembly-CSharp
+      - m_Target: {fileID: 1385110997}
+        m_TargetAssemblyTypeName: LevelLogic, Assembly-CSharp
         m_MethodName: OnControlUndoButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -3744,8 +3744,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 923933098}
-        m_TargetAssemblyTypeName: LevelUI, Assembly-CSharp
+      - m_Target: {fileID: 1385110997}
+        m_TargetAssemblyTypeName: LevelLogic, Assembly-CSharp
         m_MethodName: OnControlHintAdButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -4686,8 +4686,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 923933098}
-        m_TargetAssemblyTypeName: LevelUI, Assembly-CSharp
+      - m_Target: {fileID: 1385110997}
+        m_TargetAssemblyTypeName: LevelLogic, Assembly-CSharp
         m_MethodName: OnWinNextButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -4818,8 +4818,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 923933098}
-        m_TargetAssemblyTypeName: LevelUI, Assembly-CSharp
+      - m_Target: {fileID: 1385110997}
+        m_TargetAssemblyTypeName: LevelLogic, Assembly-CSharp
         m_MethodName: OnControlResetButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -7443,8 +7443,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 923933098}
-        m_TargetAssemblyTypeName: LevelUI, Assembly-CSharp
+      - m_Target: {fileID: 1385110997}
+        m_TargetAssemblyTypeName: LevelLogic, Assembly-CSharp
         m_MethodName: OnWinHintAdButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -10177,8 +10177,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 923933098}
-        m_TargetAssemblyTypeName: LevelUI, Assembly-CSharp
+      - m_Target: {fileID: 1385110997}
+        m_TargetAssemblyTypeName: LevelLogic, Assembly-CSharp
         m_MethodName: OnPauseResumeButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -11153,8 +11153,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 923933098}
-        m_TargetAssemblyTypeName: LevelUI, Assembly-CSharp
+      - m_Target: {fileID: 1385110997}
+        m_TargetAssemblyTypeName: LevelLogic, Assembly-CSharp
         m_MethodName: OnWinReplayButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -12729,8 +12729,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 923933098}
-        m_TargetAssemblyTypeName: LevelUI, Assembly-CSharp
+      - m_Target: {fileID: 1385110997}
+        m_TargetAssemblyTypeName: LevelLogic, Assembly-CSharp
         m_MethodName: OnControlHintOnButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -13236,8 +13236,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 923933098}
-        m_TargetAssemblyTypeName: LevelUI, Assembly-CSharp
+      - m_Target: {fileID: 1385110997}
+        m_TargetAssemblyTypeName: LevelLogic, Assembly-CSharp
         m_MethodName: OnControlPauseButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -17081,8 +17081,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 923933098}
-        m_TargetAssemblyTypeName: LevelUI, Assembly-CSharp
+      - m_Target: {fileID: 1385110997}
+        m_TargetAssemblyTypeName: LevelLogic, Assembly-CSharp
         m_MethodName: OnControlHintOffButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -17214,8 +17214,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 923933098}
-        m_TargetAssemblyTypeName: LevelUI, Assembly-CSharp
+      - m_Target: {fileID: 1385110997}
+        m_TargetAssemblyTypeName: LevelLogic, Assembly-CSharp
         m_MethodName: OnPauseMenuButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -18593,8 +18593,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 923933098}
-        m_TargetAssemblyTypeName: LevelUI, Assembly-CSharp
+      - m_Target: {fileID: 1385110997}
+        m_TargetAssemblyTypeName: LevelLogic, Assembly-CSharp
         m_MethodName: OnPauseAudioOnButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -19681,8 +19681,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 923933098}
-        m_TargetAssemblyTypeName: LevelUI, Assembly-CSharp
+      - m_Target: {fileID: 1385110997}
+        m_TargetAssemblyTypeName: LevelLogic, Assembly-CSharp
         m_MethodName: OnWinMenuButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -21651,8 +21651,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 923933098}
-        m_TargetAssemblyTypeName: LevelUI, Assembly-CSharp
+      - m_Target: {fileID: 1385110997}
+        m_TargetAssemblyTypeName: LevelLogic, Assembly-CSharp
         m_MethodName: OnPauseHintAdButtonPressed
         m_Mode: 1
         m_Arguments:

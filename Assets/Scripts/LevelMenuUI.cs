@@ -79,7 +79,7 @@ public class LevelMenuUI : MonoBehaviour
 		_levelButton[color].transform.localScale = new Vector3(1, 1, 1);
 		_levelButton[color].transform.Find("Color/Label").GetComponent<Text>().text = _level.GetColorString(color);
 		_levelButton[color].transform.Find("Moves").GetComponent<Text>().text = moves;
-		_levelButton[color].transform.Find("A").GetComponent<Button>().onClick.AddListener(delegate { OnLevelButtonPressed(color, 0); });
+		_levelButton[color].transform.Find("A").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 0); });
 	}
 
 	public void AddLevelTriple(int color, string moves, float percentA, float percentB, float percentC)
@@ -95,9 +95,9 @@ public class LevelMenuUI : MonoBehaviour
 		_levelButton[color].transform.localScale = new Vector3(1, 1, 1);
 		_levelButton[color].transform.Find("Color/Label").GetComponent<Text>().text = _level.GetColorString(color);
 		_levelButton[color].transform.Find("Moves").GetComponent<Text>().text = moves;
-		_levelButton[color].transform.Find("A").GetComponent<Button>().onClick.AddListener(delegate { OnLevelButtonPressed(color, 0); });
-		_levelButton[color].transform.Find("B").GetComponent<Button>().onClick.AddListener(delegate { OnLevelButtonPressed(color, 1); });
-		_levelButton[color].transform.Find("C").GetComponent<Button>().onClick.AddListener(delegate { OnLevelButtonPressed(color, 2); });
+		_levelButton[color].transform.Find("A").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 0); });
+		_levelButton[color].transform.Find("B").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 1); });
+		_levelButton[color].transform.Find("C").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 2); });
 	}
 
         public void AnimateLevelEnter(Animate.AnimateComplete callback)
@@ -161,11 +161,6 @@ public class LevelMenuUI : MonoBehaviour
 		Animate.AnimateButtonPressed(button, LEVEL_ANIMATE_BUTTON_PRESSED_SCALE, LEVEL_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void OnLevelButtonPressed(int color, int alphabet)
-	{
-		_logic.DoLevelButtonPressed(color, alphabet);
-	}
-
 	// Bottom
 
 	public float BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE;
@@ -178,14 +173,14 @@ public class LevelMenuUI : MonoBehaviour
 		_bottomBackButton = GameObject.Find("/Canvas/Bottom/Back/Button");
 	}
 
+	public void SetEnableBottomButton(bool enable)
+	{
+		_bottomBackButton.GetComponent<Button>().enabled = enable;
+	}
+
 	public void AnimateBottomBackButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_bottomBackButton, BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE, BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION, callback);
-	}
-
-	public void OnBottomBackButtonPressed()
-	{
-		_logic.DoBottomBackButtonPressed();
 	}
 
 	// Unity Lifecycle

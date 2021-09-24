@@ -425,7 +425,7 @@ PrefabInstance:
       objectReference: {fileID: 1126723104}
     - target: {fileID: 4273623324716814290, guid: 58c9abe412ce3e0efb7bdfb33cfd824e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: DoAdSuccessCloseButtonPressed
+      value: OnAdSuccessCloseButtonPressed
       objectReference: {fileID: 0}
     - target: {fileID: 4273623324716814290, guid: 58c9abe412ce3e0efb7bdfb33cfd824e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -590,7 +590,7 @@ PrefabInstance:
       objectReference: {fileID: 1126723104}
     - target: {fileID: 4883238683256403357, guid: a33ae50e5b023531ba3e84bb8984ac96, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: DoAdFailCloseButtonPressed
+      value: OnAdFailCloseButtonPressed
       objectReference: {fileID: 0}
     - target: {fileID: 4883238683256403357, guid: a33ae50e5b023531ba3e84bb8984ac96, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -1173,7 +1173,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1126723104}
         m_TargetAssemblyTypeName: ShopLogic, Assembly-CSharp
-        m_MethodName: DoProductNoAdsButtonPressed
+        m_MethodName: OnProductNoAdsButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1341,7 +1341,7 @@ PrefabInstance:
       objectReference: {fileID: 1126723104}
     - target: {fileID: 5963106081498953948, guid: 431a2bd703f7368bb80bad3a9ceb9dc9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: DoAdAbortCloseButtonPressed
+      value: OnAdAbortCloseButtonPressed
       objectReference: {fileID: 0}
     - target: {fileID: 5963106081498953948, guid: 431a2bd703f7368bb80bad3a9ceb9dc9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -2347,7 +2347,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1126723104}
         m_TargetAssemblyTypeName: ShopLogic, Assembly-CSharp
-        m_MethodName: DoProductHintAdButtonPressed
+        m_MethodName: OnProductHintAdButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2585,7 +2585,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1126723104}
         m_TargetAssemblyTypeName: ShopLogic, Assembly-CSharp
-        m_MethodName: DoBottomBackButtonPressed
+        m_MethodName: OnBottomBackButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

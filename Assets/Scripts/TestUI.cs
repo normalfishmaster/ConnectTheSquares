@@ -30,66 +30,34 @@ public class TestUI : MonoBehaviour
 		_dataStringValueText = GameObject.Find("/Canvas/Data/String/Value/Text").GetComponent<Text>();
 	}
 
-	public void OnDataIntGetButtonPressed()
+	public string GetDataIntKey()
 	{
-		_logic.DoDataIntGetButtonPressed(_dataIntKeyText.text);
+		return _dataIntKeyText.text;
 	}
 
-	public void OnDataIntSetButtonPressed()
+	public string GetDataIntValue()
 	{
-		_logic.DoDataIntSetButtonPressed(_dataIntKeyText.text, _dataIntValueText.text);
+		return _dataIntValueText.text;
 	}
 
-	public void OnDataFloatGetButtonPressed()
+	public string GetDataFloatKey()
 	{
-		_logic.DoDataFloatGetButtonPressed(_dataFloatKeyText.text);
+		return _dataFloatKeyText.text;
 	}
 
-	public void OnDataFloatSetButtonPressed()
+	public string GetDataFloatValue()
 	{
-		_logic.DoDataFloatSetButtonPressed(_dataFloatKeyText.text, _dataFloatValueText.text);
+		return _dataFloatValueText.text;
 	}
 
-	public void OnDataStringGetButtonPressed()
+	public string GetDataStringKey()
 	{
-		_logic.DoDataStringGetButtonPressed(_dataStringKeyText.text);
+		return _dataStringKeyText.text;
 	}
 
-	public void OnDataStringSetButtonPressed()
+	public string GetDataStringValue()
 	{
-		_logic.DoDataStringSetButtonPressed(_dataStringKeyText.text, _dataStringValueText.text);
-	}
-
-	public void OnDataAllDumpButtonPressed()
-	{
-		_logic.DoDataAllDumpButtonPressed();
-	}
-
-	public void OnDataAllDeleteButtonPressed()
-	{
-		_logic.DoDataAllDeleteButtonPressed();
-	}
-
-	public void OnDataAllReinitButtonPressed()
-	{
-		_logic.DoDataAllReinitButtonPressed();
-	}
-
-	// Ad
-
-	public void OnAdInterstitialButtonPressed()
-	{
-		_logic.DoAdInterstitialButtonPressed();
-	}
-
-	public void OnAdInterstitialVideoButtonPressed()
-	{
-		_logic.DoAdInterstitialVideoButtonPressed();
-	}
-
-	public void OnAdRewardedButtonPressed()
-	{
-		_logic.DoAdRewardedButtonPressed();
+		return _dataStringValueText.text;
 	}
 
 	// Unity Lifecycle

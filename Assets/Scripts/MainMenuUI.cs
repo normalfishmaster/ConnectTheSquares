@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class MainMenuUI : MonoBehaviour
 {
-	private MainMenuLogic _logic;
 	private LevelManager _level;
 	private AudioManager _audio;
 
@@ -189,26 +188,6 @@ public class MainMenuUI : MonoBehaviour
 		Animate.AnimateButtonPressed(_frontStoreButton, FRONT_ANIMATE_BUTTON_PRESSED_SCALE, FRONT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void OnFrontContinueButtonPressed()
-	{
-		_logic.DoFrontContinueButtonPressed();
-	}
-
-	public void OnFrontLevelsButtonPressed()
-	{
-		_logic.DoFrontLevelsButtonPressed();
-	}
-
-	public void OnFrontSettingsButtonPressed()
-	{
-		_logic.DoFrontSettingsButtonPressed();
-	}
-
-	public void OnFrontStoreButtonPressed()
-	{
-		_logic.DoFrontStoreButtonPressed();
-	}
-
 	// Bottom
 
 	public float BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE;
@@ -278,26 +257,6 @@ public class MainMenuUI : MonoBehaviour
 		Animate.AnimateButtonPressed(_bottomLanguageButton, BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE, BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void OnBottomGooglePlayButtonPressed()
-	{
-		_logic.DoBottomGooglePlayButtonPressed();
-	}
-
-	public void OnBottomGameCenterButtonPressed()
-	{
-		_logic.DoBottomGameCenterButtonPressed();
-	}
-
-	public void OnBottomNoAdsButtonPressed()
-	{
-		_logic.DoBottomNoAdsButtonPressed();
-	}
-
-	public void OnBottomLanguageButtonPressed()
-	{
-		_logic.DoBottomLanguageButtonPressed();
-	}
-
 	// Exit
 
 	public float EXIT_ANIMATE_BOARD_ENTER_DURATION;
@@ -358,21 +317,10 @@ public class MainMenuUI : MonoBehaviour
 		Animate.AnimateButtonPressed(_exitNoButton, EXIT_ANIMATE_BUTTON_PRESSED_SCALE, EXIT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void OnExitYesButtonPressed()
-	{
-		_logic.DoExitYesButtonPressed();
-	}
-
-	public void OnExitNoButtonPressed()
-	{
-		_logic.DoExitNoButtonPressed();
-	}
-
         // Unity Lifecycle
 
 	private void Awake()
 	{
-		_logic = GameObject.Find("MainMenuLogic").GetComponent<MainMenuLogic>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 

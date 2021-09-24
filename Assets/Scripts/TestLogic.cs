@@ -12,8 +12,10 @@ public class TestLogic : MonoBehaviour
 
 	// UI Events - Data
 
-	public void DoDataIntGetButtonPressed(string key)
+	public void OnDataIntGetButtonPressed()
 	{
+		string key = _ui.GetDataIntKey();
+
 		if (_data.CheckByKey(key) == false)
 		{
 			Debug.Log(key + ": Uninitialized");
@@ -23,8 +25,10 @@ public class TestLogic : MonoBehaviour
 		Debug.Log(key + ": " + _data.GetIntByKey(key));
 	}
 
-	public void DoDataIntSetButtonPressed(string key, string value)
+	public void OnDataIntSetButtonPressed()
 	{
+		string key = _ui.GetDataIntKey();
+		string valueStr = _ui.GetDataIntValue();
 		int valueInt;
 
 		if (_data.CheckByKey(key) == false)
@@ -35,19 +39,21 @@ public class TestLogic : MonoBehaviour
 
 		try
 		{
-			valueInt = Convert.ToInt32(value);
+			valueInt = Convert.ToInt32(valueStr);
 		}
 		catch
 		{
-			Debug.Log(value + ": Invalid value");
+			Debug.Log(valueStr + ": Invalid value");
 			return;
 		}
 
 		_data.SetIntByKey(key, valueInt);
 	}
 
-	public void DoDataFloatGetButtonPressed(string key)
+	public void OnDataFloatGetButtonPressed()
 	{
+		string key = _ui.GetDataFloatKey();
+
 		if (_data.CheckByKey(key) == false)
 		{
 			Debug.Log(key + ": Uninitialized");
@@ -57,8 +63,10 @@ public class TestLogic : MonoBehaviour
 		Debug.Log(key + ": " + _data.GetFloatByKey(key));
 	}
 
-	public void DoDataFloatSetButtonPressed(string key, string value)
+	public void OnDataFloatSetButtonPressed()
 	{
+		string key = _ui.GetDataFloatKey();
+		string valueStr = _ui.GetDataFloatValue();
 		float valueFloat;
 
 		if (_data.CheckByKey(key) == false)
@@ -69,19 +77,21 @@ public class TestLogic : MonoBehaviour
 
 		try
 		{
-			valueFloat = Convert.ToSingle(value);
+			valueFloat = Convert.ToSingle(valueStr);
 		}
 		catch
 		{
-			Debug.Log(value + ": Invalid value");
+			Debug.Log(valueStr + ": Invalid value");
 			return;
 		}
 
 		_data.SetFloatByKey(key, valueFloat);
 	}
 
-	public void DoDataStringGetButtonPressed(string key)
+	public void OnDataStringGetButtonPressed()
 	{
+		string key = _ui.GetDataStringKey();
+
 		if (_data.CheckByKey(key) == false)
 		{
 			Debug.Log(key + ": Uninitialized");
@@ -91,8 +101,11 @@ public class TestLogic : MonoBehaviour
 		Debug.Log(key + ": " + _data.GetStringByKey(key));
 	}
 
-	public void DoDataStringSetButtonPressed(string key, string value)
+	public void OnDataStringSetButtonPressed()
 	{
+		string key = _ui.GetDataStringKey();
+		string value = _ui.GetDataStringValue();
+
 		if (_data.CheckByKey(key) == false)
 		{
 			Debug.Log(key + ": Uninitialized");
@@ -102,7 +115,7 @@ public class TestLogic : MonoBehaviour
 		_data.SetStringByKey(key, value);
 	}
 
-	public void DoDataAllDumpButtonPressed()
+	public void OnDataAllDumpButtonPressed()
 	{
 		if (_data.CheckAudio())
 		{
@@ -132,12 +145,12 @@ public class TestLogic : MonoBehaviour
 		}
 	}
 
-	public void DoDataAllDeleteButtonPressed()
+	public void OnDataAllDeleteButtonPressed()
 	{
 		_data.DeleteAll();
 	}
 
-	public void DoDataAllReinitButtonPressed()
+	public void OnDataAllReinitButtonPressed()
 	{
 		_data.DeleteAll();
 
@@ -180,7 +193,7 @@ public class TestLogic : MonoBehaviour
 
 	// UI Events - Ad
 
-	public void DoAdInterstitialButtonPressed()
+	public void OnAdInterstitialButtonPressed()
 	{
 		if (_ad.ShowInterstitial() != 0)
 		{
@@ -188,7 +201,7 @@ public class TestLogic : MonoBehaviour
 		}
 	}
 
-	public void DoAdInterstitialVideoButtonPressed()
+	public void OnAdInterstitialVideoButtonPressed()
 	{
 		if (_ad.ShowInterstitialVideo() != 0)
 		{
@@ -196,7 +209,7 @@ public class TestLogic : MonoBehaviour
 		}
 	}
 
-	public void DoAdRewardedButtonPressed()
+	public void OnAdRewardedButtonPressed()
 	{
 		_ad.ClearRewardStatus();
 		if (_ad.ShowRewarded() != 0)

@@ -390,36 +390,6 @@ public class LevelUI : MonoBehaviour
 		Animate.AnimateButtonPressed(_controlHintOffButton, CONTROL_ANIMATE_BUTTON_PRESSED_SCALE, CONTROL_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void OnControlPauseButtonPressed()
-	{
-		_logic.DoControlPauseButtonPressed();
-	}
-
-	public void OnControlUndoButtonPressed()
-	{
-		_logic.DoControlUndoButtonPressed();
-	}
-
-	public void OnControlResetButtonPressed()
-	{
-		_logic.DoControlResetButtonPressed();
-	}
-
-	public void OnControlHintAdButtonPressed()
-	{
-		_logic.DoControlHintAdButtonPressed();
-	}
-
-	public void OnControlHintOnButtonPressed()
-	{
-		_logic.DoControlHintOnButtonPressed();
-	}
-
-	public void OnControlHintOffButtonPressed()
-	{
-		_logic.DoControlHintOffButtonPressed();
-	}
-
 	// Go
 
 	public float GO_ANIMATE_BANNER_ENTER_DELAY;
@@ -596,31 +566,6 @@ public class LevelUI : MonoBehaviour
 		Animate.AnimateButtonPressed(_pauseResumeButton, PAUSE_ANIMATE_BUTTON_PRESSED_SCALE, PAUSE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void OnPauseAudioOnButtonPressed()
-	{
-		_logic.DoPauseAudioOnButtonPressed();
-	}
-
-	public void OnPauseAudioOffButtonPressed()
-	{
-		_logic.DoPauseAudioOffButtonPressed();
-	}
-
-	public void OnPauseMenuButtonPressed()
-	{
-		_logic.DoPauseMenuButtonPressed();
-	}
-
-	public void OnPauseHintAdButtonPressed()
-	{
-		_logic.DoPauseHintAdButtonPressed();
-	}
-
-	public void OnPauseResumeButtonPressed()
-	{
-		_logic.DoPauseResumeButtonPressed();
-	}
-
 	// Win
 
 	public float WIN_ANIMATE_BOARD_ENTER_DURATION;
@@ -794,26 +739,6 @@ public class LevelUI : MonoBehaviour
 	public void AnimateWinNextButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_winNextButton, WIN_ANIMATE_BUTTON_PRESSED_SCALE, WIN_ANIMATE_BUTTON_PRESSED_DURATION, callback);
-	}
-
-	public void OnWinHintAdButtonPressed()
-	{
-		_logic.DoWinHintAdButtonPressed();
-	}
-
-	public void OnWinMenuButtonPressed()
-	{
-		_logic.DoWinMenuButtonPressed();
-	}
-
-	public void OnWinReplayButtonPressed()
-	{
-		_logic.DoWinReplayButtonPressed();
-	}
-
-	public void OnWinNextButtonPressed()
-	{
-		_logic.DoWinNextButtonPressed();
 	}
 
 	// Unity Lifecycle

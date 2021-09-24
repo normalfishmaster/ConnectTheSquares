@@ -79,7 +79,7 @@ public class MapMenuUI : MonoBehaviour
 		_mapButton[map].transform.SetParent(_mapContent.transform);
 		_mapButton[map].transform.localScale = new Vector3(1, 1, 1);
 		_mapButton[map].transform.Find("Label").GetComponent<Text>().text = _level.GetMapString(map);
-		_mapButton[map].GetComponent<Button>().onClick.AddListener(delegate { OnMapButtonPressed(map); });
+		_mapButton[map].GetComponent<Button>().onClick.AddListener(delegate { _logic.OnMapButtonPressed(map); });
 	}
 
 	public void AnimateMapEnter(Animate.AnimateComplete callback)
@@ -103,11 +103,6 @@ public class MapMenuUI : MonoBehaviour
 	public void AnimateMapButtonPressed(int map, Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_mapButton[map], MAP_ANIMATE_BUTTON_PRESSED_SCALE, MAP_ANIMATE_BUTTON_PRESSED_DURATION, callback);
-	}
-
-	public void OnMapButtonPressed(int map)
-	{
-		_logic.DoMapButtonPressed(map);
 	}
 
 	// Top
@@ -136,14 +131,14 @@ public class MapMenuUI : MonoBehaviour
 		_bottomBackButton = GameObject.Find("/Canvas/Bottom/Back/Button");
 	}
 
+	public void SetEnableBottomButton(bool enable)
+	{
+		_bottomBackButton.GetComponent<Button>().enabled = enable;
+	}
+
 	public void AnimateBottomBackButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_bottomBackButton, BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE, BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION, callback);
-	}
-
-	public void OnBottomBackButtonPressed()
-	{
-		_logic.DoBottomBackButtonPressed();
 	}
 
 	// Unity Lifecycle
