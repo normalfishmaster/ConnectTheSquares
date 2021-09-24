@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public class LevelLogic : MonoBehaviour
 {
 	private LevelUI _ui;
+	private LoadUI _loadUi;
+	private AdUI _adUi;
 	private DataManager _data;
 	private EventManager _event;
 	private LevelManager _level;
@@ -36,8 +38,6 @@ public class LevelLogic : MonoBehaviour
 	private const int MAX_MOVE_COUNT = 999;
 
 	private const float MAX_AD_LOAD_TIME = 5.0f;
-
-	public delegate void AnimateComplete();
 
 	// Map
 
@@ -142,7 +142,7 @@ public class LevelLogic : MonoBehaviour
 		LeanTween.rotateAround(_mapWallShadow[x, y], Vector3.forward, -MAP_ANIMATE_WALL_ENTER_ROTATION, MAP_ANIMATE_WALL_ENTER_TIME);
 	}
 
-	private void AnimateMapEnter(AnimateComplete callback)
+	private void AnimateMapEnter(Animate.AnimateComplete callback)
 	{
 		for (int i = 0; i < NUM_X; i++)
 		{
@@ -171,7 +171,7 @@ public class LevelLogic : MonoBehaviour
 		);
 	}
 
-	void AnimateMapExit(AnimateComplete callback)
+	void AnimateMapExit(Animate.AnimateComplete callback)
 	{
 		_mapWallOriginalPos = new Vector2[NUM_X, NUM_Y];
 		_mapWallExitAngle = new float[NUM_X, NUM_Y];
@@ -1020,21 +1020,21 @@ public class LevelLogic : MonoBehaviour
 
 		if (_ad.ShowRewarded() == 0)
 		{
-			_ui.AnimateLoadSquareStop();
-			_ui.SetActiveLoad(false);
+			_loadUi.AnimateLoadSquareStop();
+			_loadUi.SetActiveLoad(false);
 			_touchState = adState;
 		}
 		else if (Time.time - _touchLoadAdStartTime > MAX_AD_LOAD_TIME)
 		{
-			_ui.AnimateLoadSquareStop();
-			_ui.SetActiveLoad(false);
-			_ui.SetActiveAdFail(true);
-			_ui.SetEnableAdFailButton(false);
-			_ui.AnimateAdFailBoardEnter
+			_loadUi.AnimateLoadSquareStop();
+			_loadUi.SetActiveLoad(false);
+			_adUi.SetActiveAdFail(true);
+			_adUi.SetEnableAdFailButton(false);
+			_adUi.AnimateAdFailBoardEnter
 			(
 				()=>
 				{
-					_ui.SetEnableAdFailButton(true);
+					_adUi.SetEnableAdFailButton(true);
 				}
 			);
 			_touchState = postAdState;
@@ -1052,20 +1052,20 @@ public class LevelLogic : MonoBehaviour
 			_ui.SetActiveControlHintAd(false);
 			_ui.SetActiveControlHintOn(false);
 			_ui.SetActiveControlHintOff(true);
-			_ui.SetActiveAdSuccess(true);
-			_ui.SetActiveAdSuccessHint(false);
-			_ui.SetEnableAdSuccessButton(false);
-			_ui.AnimateAdSuccessBoardEnter
+			_adUi.SetActiveAdSuccess(true);
+			_adUi.SetActiveAdSuccessHint(false);
+			_adUi.SetEnableAdSuccessButton(false);
+			_adUi.AnimateAdSuccessBoardEnter
 			(
 				()=>
 				{
 					_audio.PlayRewardReceived();
-					_ui.SetActiveAdSuccessHint(true);
-					_ui.AnimateAdSuccessHintEnter
+					_adUi.SetActiveAdSuccessHint(true);
+					_adUi.AnimateAdSuccessHintEnter
 					(
 						()=>
 						{
-							_ui.SetEnableAdSuccessButton(true);
+							_adUi.SetEnableAdSuccessButton(true);
 						}
 					);
 				}
@@ -1074,13 +1074,13 @@ public class LevelLogic : MonoBehaviour
 		}
 		else if (status == AdManager.RewardStatus.FAIL)
 		{
-			_ui.SetActiveAdAbort(true);
-			_ui.SetEnableAdAbortButton(false);
-			_ui.AnimateAdAbortBoardEnter
+			_adUi.SetActiveAdAbort(true);
+			_adUi.SetEnableAdAbortButton(false);
+			_adUi.AnimateAdAbortBoardEnter
 			(
 				()=>
 				{
-					_ui.SetEnableAdAbortButton(true);
+					_adUi.SetEnableAdAbortButton(true);
 				}
 			);
 			_touchState = postAdState;
@@ -1270,8 +1270,8 @@ public class LevelLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 		_ui.AnimateControlHintAdButtonPressed(()=>{});
-		_ui.SetActiveLoad(true);
-		_ui.AnimateLoadSquareStart();
+		_loadUi.SetActiveLoad(true);
+		_loadUi.AnimateLoadSquareStart();
 		_touchLoadAdStartTime = Time.time;
 		_touchState = TouchState.LOAD_AD;
 	}
@@ -1392,8 +1392,8 @@ public class LevelLogic : MonoBehaviour
 					()=>
 					{
 						_ui.SetActivePause(false);
-						_ui.SetActiveLoad(true);
-						_ui.AnimateLoadSquareStart();
+						_loadUi.SetActiveLoad(true);
+						_loadUi.AnimateLoadSquareStart();
 						_touchLoadAdStartTime = Time.time;
 						_touchState = TouchState.PAUSE_LOAD_AD;
 					}
@@ -1455,8 +1455,8 @@ public class LevelLogic : MonoBehaviour
 					()=>
 					{
 						_ui.SetActiveWin(false);
-						_ui.SetActiveLoad(true);
-						_ui.AnimateLoadSquareStart();
+						_loadUi.SetActiveLoad(true);
+						_loadUi.AnimateLoadSquareStart();
 						_touchLoadAdStartTime = Time.time;
 						_touchState = TouchState.WIN_LOAD_AD;
 					}
@@ -1547,34 +1547,34 @@ public class LevelLogic : MonoBehaviour
 		);
 	}
 
-	// UI - Load
+	// Load
 
 	private void SetupLoad()
 	{
-		_ui.SetActiveLoad(false);
+		_loadUi.SetActiveLoad(false);
 	}
 
-	// UI - AdSuccess
+	// Ad - Success
 
 	private void SetupAdSuccess()
 	{
-		_ui.SetActiveAdSuccess(false);
+		_adUi.SetActiveAdSuccess(false);
 	}
 
-	public void DoAdSuccessCloseButtonPressed()
+	public void OnAdSuccessCloseButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.SetEnableAdSuccessButton(false);
-		_ui.AnimateAdSuccessCloseButtonPressed
+		_adUi.SetEnableAdSuccessButton(false);
+		_adUi.AnimateAdSuccessCloseButtonPressed
 		(
 			()=>
 			{
-				_ui.AnimateAdSuccessBoardExit
+				_adUi.AnimateAdSuccessBoardExit
 				(
 					()=>
 					{
-						_ui.SetActiveAdSuccess(false);
+						_adUi.SetActiveAdSuccess(false);
 
 						if (_touchState == TouchState.WIN)
 						{
@@ -1606,23 +1606,23 @@ public class LevelLogic : MonoBehaviour
 		);
 	}
 
-	// UI - AdAbort
+	// Ad - Abort
 
 	private void SetupAdAbort()
 	{
-		_ui.SetActiveAdAbort(false);
+		_adUi.SetActiveAdAbort(false);
 	}
 
-	public void DoAdAbortCloseButtonPressed()
+	public void OnAdAbortCloseButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.SetEnableAdAbortButton(false);
-		_ui.AnimateAdAbortBoardExit
+		_adUi.SetEnableAdAbortButton(false);
+		_adUi.AnimateAdAbortBoardExit
 		(
 			()=>
 			{
-				_ui.SetActiveAdAbort(false);
+				_adUi.SetActiveAdAbort(false);
 
 				if (_touchState == TouchState.WIN)
 				{
@@ -1651,23 +1651,23 @@ public class LevelLogic : MonoBehaviour
 		);
 	}
 
-	// UI - AdFail
+	// Ad - Fail
 
 	private void SetupAdFail()
 	{
-		_ui.SetActiveAdFail(false);
+		_adUi.SetActiveAdFail(false);
 	}
 
-	public void DoAdFailCloseButtonPressed()
+	public void OnAdFailCloseButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.SetEnableAdFailButton(false);
-		_ui.AnimateAdFailBoardExit
+		_adUi.SetEnableAdFailButton(false);
+		_adUi.AnimateAdFailBoardExit
 		(
 			()=>
 			{
-				_ui.SetActiveAdFail(false);
+				_adUi.SetActiveAdFail(false);
 
 				if (_touchState == TouchState.WIN)
 				{
@@ -1701,6 +1701,8 @@ public class LevelLogic : MonoBehaviour
 	private void Awake()
 	{
 		_ui = GameObject.Find("LevelUI").GetComponent<LevelUI>();
+		_loadUi = GameObject.Find("LoadUI").GetComponent<LoadUI>();
+		_adUi = GameObject.Find("AdUI").GetComponent<AdUI>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_event = GameObject.Find("EventManager").GetComponent<EventManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
