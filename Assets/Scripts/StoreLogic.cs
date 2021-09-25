@@ -124,14 +124,28 @@ public class StoreLogic : MonoBehaviour
 		);
 	}
 
-	public void OnProductNoAdsButtonPressed()
+	public void OnProductRemoveAdsButtonPressed()
 	{
 		_audio.PlayButtonPressed();
-		_ui.AnimateProductNoAdsButtonPressed(()=>{});
+		_ui.AnimateProductRemoveAdsButtonPressed(()=>{});
+	}
+
+	public void OnProductRemoveAdsTestButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+		_ui.AnimateProductRemoveAdsTestButtonPressed(()=>{});
 	}
 
 	private void SetupProduct()
 	{
+		#if TEST_IAP
+			_ui.SetActiveProductNonTestButton(false);
+			_ui.SetActiveProductTestButton(true);
+		#else
+			_ui.SetActiveProductNonTestButton(true);
+			_ui.SetActiveProductTestButton(false);
+		#endif
+
 		_ui.SetEnableProductButton(true);
 	}
 

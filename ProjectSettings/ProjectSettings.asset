@@ -648,7 +648,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    7: BUILD_ANDROID_DEBUG
+    7: BUILD_ANDROID_DEBUG;TEST_IAP
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

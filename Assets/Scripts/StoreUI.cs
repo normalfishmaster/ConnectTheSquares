@@ -15,18 +15,31 @@ public class StoreUI : MonoBehaviour
 	public float PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION;
 
 	private GameObject _productHintAd;
-	private GameObject _productNoAds;
+	private GameObject _productRemoveAds;
+	private GameObject _productRemoveAdsTest;
 
 	private void FindProductGameObject()
 	{
 		_productHintAd = GameObject.Find("/Canvas/Product/Viewport/Content/HintAd");
-		_productNoAds = GameObject.Find("/Canvas/Product/Viewport/Content/NoAds");
+		_productRemoveAds = GameObject.Find("/Canvas/Product/Viewport/Content/RemoveAds");
+		_productRemoveAdsTest = GameObject.Find("/Canvas/Product/Viewport/Content/RemoveAdsTest");
+	}
+
+	public void SetActiveProductNonTestButton(bool active)
+	{
+		_productRemoveAds.SetActive(active);
+	}
+
+	public void SetActiveProductTestButton(bool active)
+	{
+		_productRemoveAdsTest.SetActive(active);
 	}
 
 	public void SetEnableProductButton(bool enable)
 	{
 		_productHintAd.GetComponent<Button>().enabled = enable;
-		_productNoAds.GetComponent<Button>().enabled = enable;
+		_productRemoveAds.GetComponent<Button>().enabled = enable;
+		_productRemoveAdsTest.GetComponent<Button>().enabled = enable;
 	}
 
 	public void AnimateProductHintAdButtonPressed(Animate.AnimateComplete callback)
@@ -34,9 +47,14 @@ public class StoreUI : MonoBehaviour
 		Animate.AnimateButtonPressed(_productHintAd, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateProductNoAdsButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateProductRemoveAdsButtonPressed(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateButtonPressed(_productNoAds, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+		Animate.AnimateButtonPressed(_productRemoveAds, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateProductRemoveAdsTestButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_productRemoveAdsTest, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	// Bottom
