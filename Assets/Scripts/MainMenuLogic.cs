@@ -105,7 +105,7 @@ public class MainMenuLogic : MonoBehaviour
 		(
 			()=>
 			{
-				SceneManager.LoadScene("ShopScene");
+				SceneManager.LoadScene("StoreScene");
 			}
 		);
 	}

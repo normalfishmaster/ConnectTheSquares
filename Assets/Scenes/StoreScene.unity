@@ -528,7 +528,7 @@ GameObject:
   - component: {fileID: 332999259}
   - component: {fileID: 332999258}
   m_Layer: 0
-  m_Name: ShopUI
+  m_Name: StoreUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -546,10 +546,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a272b5a570445e2fbf120f24a4fde64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _logic: {fileID: 0}
+  _data: {fileID: 0}
+  _level: {fileID: 0}
   PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE: 1.1
   PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION: 0.15
+  _productHintAd: {fileID: 0}
+  _productNoAds: {fileID: 0}
   BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE: 1.15
   BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION: 0.15
+  _bottomRestoreButton: {fileID: 0}
+  _bottomBackButton: {fileID: 0}
 --- !u!4 &332999259
 Transform:
   m_ObjectHideFlags: 0
@@ -1281,7 +1288,7 @@ GameObject:
   - component: {fileID: 1126723105}
   - component: {fileID: 1126723104}
   m_Layer: 0
-  m_Name: ShopLogic
+  m_Name: StoreLogic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1299,6 +1306,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 927dc144b1d42310c9fc050aa0d374b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _ui: {fileID: 0}
+  _loadUi: {fileID: 0}
+  _adUi: {fileID: 0}
+  _data: {fileID: 0}
+  _level: {fileID: 0}
+  _audio: {fileID: 0}
+  _ad: {fileID: 0}
+  _state: 0
+  _stateLoadAdStartTime: 0
 --- !u!4 &1126723105
 Transform:
   m_ObjectHideFlags: 0
@@ -1348,9 +1364,9 @@ RectTransform:
   m_Father: {fileID: 1822569962}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 432, y: -275}
   m_SizeDelta: {x: 864, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1277018898
@@ -1987,7 +2003,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Shop
+  m_Text: Store
 --- !u!222 &1610724143
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2557,9 +2573,9 @@ RectTransform:
   m_Father: {fileID: 1822569962}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 432, y: -140}
   m_SizeDelta: {x: 864, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2067196142

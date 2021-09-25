@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShopUI : MonoBehaviour
+public class StoreUI : MonoBehaviour
 {
-	private ShopLogic _logic;
+	private StoreLogic _logic;
 	private DataManager _data;
 	private LevelManager _level;
 
@@ -73,7 +73,7 @@ public class ShopUI : MonoBehaviour
 
 	private void Awake()
 	{
-		_logic = GameObject.Find("ShopLogic").GetComponent<ShopLogic>();
+		_logic = GameObject.Find("StoreLogic").GetComponent<StoreLogic>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
