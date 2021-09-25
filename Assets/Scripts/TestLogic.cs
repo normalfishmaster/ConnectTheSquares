@@ -135,13 +135,13 @@ public class TestLogic : MonoBehaviour
 			Debug.Log(_data.GetHintKey() + ": Uninitialized");
 		}
 
-		if (_data.CheckAdFree())
+		if (_data.CheckRemoveAds())
 		{
-			Debug.Log(_data.GetAdFreeKey() + ": " + _data.GetAdFree());
+			Debug.Log(_data.GetRemoveAdsKey() + ": " + _data.GetRemoveAds());
 		}
 		else
 		{
-			Debug.Log(_data.GetAdFreeKey() + ": Uninitialized");
+			Debug.Log(_data.GetRemoveAdsKey() + ": Uninitialized");
 		}
 	}
 
@@ -156,7 +156,7 @@ public class TestLogic : MonoBehaviour
 
 		_data.InitAudio();
 		_data.InitHint();
-		_data.InitAdFree();
+		_data.InitRemoveAds();
 		_data.InitMenuColor();
 		_data.InitMenuAlphabet();
 		_data.InitMenuMap();

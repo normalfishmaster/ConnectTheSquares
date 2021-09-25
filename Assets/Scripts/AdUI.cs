@@ -180,8 +180,6 @@ public class AdUI : MonoBehaviour
 
 	private void Awake()
 	{
-		Debug.Log("Awake");
-
 		FindAdSuccessGameObject();
 		FindAdAbortGameObject();
 		FindAdFailGameObject();

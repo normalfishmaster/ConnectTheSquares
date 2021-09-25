@@ -155,6 +155,11 @@ public class ShopLogic : MonoBehaviour
 
 	private void SetupBottom()
 	{
+		if (Application.platform != RuntimePlatform.IPhonePlayer)
+		{
+			_ui.SetActiveBottomRestoreButton(false);
+		}
+
 		_ui.SetEnableBottomButton(true);
 	}
 

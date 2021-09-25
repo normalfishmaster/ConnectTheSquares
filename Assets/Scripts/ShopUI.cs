@@ -44,15 +44,23 @@ public class ShopUI : MonoBehaviour
 	public float BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE;
 	public float BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION;
 
+	private GameObject _bottomRestoreButton;
 	private GameObject _bottomBackButton;
 
 	private void FindBottomGameObject()
 	{
+		_bottomRestoreButton = GameObject.Find("/Canvas/Bottom/Restore");
 		_bottomBackButton = GameObject.Find("/Canvas/Bottom/Back/Button");
+	}
+
+	public void SetActiveBottomRestoreButton(bool active)
+	{
+		_bottomRestoreButton.SetActive(active);
 	}
 
 	public void SetEnableBottomButton(bool enable)
 	{
+		_bottomRestoreButton.GetComponent<Button>().enabled = enable;
 		_bottomBackButton.GetComponent<Button>().enabled = enable;
 	}
 

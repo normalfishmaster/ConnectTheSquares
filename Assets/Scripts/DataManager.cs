@@ -16,8 +16,8 @@ public class DataManager : MonoBehaviour
 	public string GetAudioKey()						{ return "AudioKey";										}
 	public int    GetAudioDefault()						{ return 1;											}
 
-	public string GetAdFreeKey()						{ return "AdFreeKey";										}
-	public int    GetAdFreeDefault()					{ return 0;											}
+	public string GetRemoveAdsKey()						{ return "RemoveAdsKey";										}
+	public int    GetRemoveAdsDefault()					{ return 0;											}
 
 	public string GetHintKey()						{ return "HintKey";										}
 	public int    GetHintDefault()						{ return 3;											}
@@ -74,10 +74,10 @@ public class DataManager : MonoBehaviour
 	public void  SetHint(int value)						{        PlayerPrefs.SetInt(GetHintKey(), value);						}
 	public void  InitHint()							{        PlayerPrefs.SetInt(GetHintKey(), GetHintDefault());					}
 
-	public bool  CheckAdFree()						{ return PlayerPrefs.HasKey(GetAdFreeKey());							}
-	public int   GetAdFree()						{ return PlayerPrefs.GetInt(GetAdFreeKey());							}
-	public void  SetAdFree(int value)					{        PlayerPrefs.SetInt(GetAdFreeKey(), value);						}
-	public void  InitAdFree()						{        PlayerPrefs.SetInt(GetAdFreeKey(), GetAdFreeDefault());				}
+	public bool  CheckRemoveAds()						{ return PlayerPrefs.HasKey(GetRemoveAdsKey());							}
+	public int   GetRemoveAds()						{ return PlayerPrefs.GetInt(GetRemoveAdsKey());							}
+	public void  SetRemoveAds(int value)					{        PlayerPrefs.SetInt(GetRemoveAdsKey(), value);						}
+	public void  InitRemoveAds()						{        PlayerPrefs.SetInt(GetRemoveAdsKey(), GetRemoveAdsDefault());				}
 
 	public bool  CheckMenuColor()						{ return PlayerPrefs.HasKey(GetMenuColorKey());							}
 	public int   GetMenuColor()						{ return PlayerPrefs.GetInt(GetMenuColorKey());							}
@@ -222,9 +222,9 @@ public class DataManager : MonoBehaviour
 			{
 				InitHint();
 			}
-			if (CheckAdFree() == false)
+			if (CheckRemoveAds() == false)
 			{
-				InitAdFree();
+				InitRemoveAds();
 			}
 			if (CheckMenuColor() == false)
 			{
