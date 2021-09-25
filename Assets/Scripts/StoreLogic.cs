@@ -130,22 +130,32 @@ public class StoreLogic : MonoBehaviour
 		_ui.AnimateProductRemoveAdsButtonPressed(()=>{});
 	}
 
-	public void OnProductRemoveAdsTestButtonPressed()
+	public void OnProductHints3ButtonPressed()
 	{
 		_audio.PlayButtonPressed();
-		_ui.AnimateProductRemoveAdsTestButtonPressed(()=>{});
+		_ui.AnimateProductHints3ButtonPressed(()=>{});
+	}
+
+	public void OnProductHints15p3ButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+		_ui.AnimateProductHints15p3ButtonPressed(()=>{});
+	}
+
+	public void OnProductHints30p9ButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+		_ui.AnimateProductHints30p9ButtonPressed(()=>{});
+	}
+
+	public void OnProductHints60p24ButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+		_ui.AnimateProductHints60p24ButtonPressed(()=>{});
 	}
 
 	private void SetupProduct()
 	{
-		#if TEST_IAP
-			_ui.SetActiveProductNonTestButton(false);
-			_ui.SetActiveProductTestButton(true);
-		#else
-			_ui.SetActiveProductNonTestButton(true);
-			_ui.SetActiveProductTestButton(false);
-		#endif
-
 		_ui.SetEnableProductButton(true);
 	}
 

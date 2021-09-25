@@ -12,13 +12,32 @@ public class IAPManager : MonoBehaviour
 	// Product
 
 	private string _productRemoveAds = "com.normalfish.connectthesquares.removeads";
+	private string _productHints3 = "com.normalfish.connectthesquares.hints3";
+	private string _productHints15p3 = "com.normalfish.connectthesquares.hints15p3";
+	private string _productHints30p9 = "com.normalfish.connectthesquares.hints30p9";
+	private string _productHints60p24 = "com.normalfish.connectthesquares.hints60p24";
 
 	public void OnPurchaseComplete(Product product)
 	{
 		if (product.definition.id == _productRemoveAds)
 		{
 			_data.SetRemoveAds(1);
-			Debug.Log("Purchasing remove ads success");
+		}
+		else if (product.definition.id == _productHints3)
+		{
+			_data.SetHint(_data.GetHint() + 3);
+		}
+		else if (product.definition.id == _productHints15p3)
+		{
+			_data.SetHint(_data.GetHint() + 18);
+		}
+		else if (product.definition.id == _productHints30p9)
+		{
+			_data.SetHint(_data.GetHint() + 39);
+		}
+		else if (product.definition.id == _productHints60p24)
+		{
+			_data.SetHint(_data.GetHint() + 84);
 		}
 	}
 
