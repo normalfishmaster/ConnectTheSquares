@@ -19,6 +19,8 @@ public class IAPManager : MonoBehaviour
 
 	public void OnPurchaseComplete(Product product)
 	{
+		Debug.Log("Purchasing " + product.definition.id + " succeeded ");
+
 		if (product.definition.id == _productRemoveAds)
 		{
 			_data.SetRemoveAds(1);
@@ -43,7 +45,7 @@ public class IAPManager : MonoBehaviour
 
 	public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
 	{
-		Debug.Log(product.definition.id + " failed because " + failureReason);
+		Debug.Log("Purchasing " + product.definition.id + " failed because " + failureReason);
 	}
 
 	// Unity Lifecycle
