@@ -156,7 +156,7 @@ public class StoreLogic : MonoBehaviour
 
 	private void SetupProduct()
 	{
-		_ui.SetEnableProductButton(true);
+		_ui.SetEnableProductButton(false);
 	}
 
 	// UI - Bottom
@@ -291,6 +291,15 @@ public class StoreLogic : MonoBehaviour
 		SetupAdSuccess();
 		SetupAdAbort();
 		SetupAdFail();
+
+		_ui.SetEnableProductButton(false);
+		_ui.AnimateProductEnter
+		(
+			()=>
+			{
+				_ui.SetEnableProductButton(true);
+			}
+		);
 	}
 
 	private void Update()

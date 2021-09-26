@@ -11,64 +11,88 @@ public class StoreUI : MonoBehaviour
 
 	// Product
 
+	public float PRODUCT_ANIMATE_ENTER_DURATION;
+
 	public float PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE;
 	public float PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION;
 
-	private GameObject _productHintAd;
-	private GameObject _productRemoveAds;
-	private GameObject _productHints3;
-	private GameObject _productHints15p3;
-	private GameObject _productHints30p9;
-	private GameObject _productHints60p24;
+	private GameObject _productPanel;
+
+	private GameObject _productHintAdButton;
+	private GameObject _productRemoveAdsButton;
+	private GameObject _productHints3Button;
+	private GameObject _productHints15p3Button;
+	private GameObject _productHints30p9Button;
+	private GameObject _productHints60p24Button;
 
 	private void FindProductGameObject()
 	{
-		_productHintAd = GameObject.Find("/Canvas/Product/Viewport/Content/HintAd");
-		_productRemoveAds = GameObject.Find("/Canvas/Product/Viewport/Content/RemoveAds");
-		_productHints3 = GameObject.Find("/Canvas/Product/Viewport/Content/Hints3");
-		_productHints15p3 = GameObject.Find("/Canvas/Product/Viewport/Content/Hints15p3");
-		_productHints30p9 = GameObject.Find("/Canvas/Product/Viewport/Content/Hints30p9");
-		_productHints60p24 = GameObject.Find("/Canvas/Product/Viewport/Content/Hints60p24");
+		_productPanel = GameObject.Find("/Canvas/Product");
+
+		_productHintAdButton = GameObject.Find("/Canvas/Product/Viewport/Content/HintAd/Button");
+		_productRemoveAdsButton = GameObject.Find("/Canvas/Product/Viewport/Content/RemoveAds/Button");
+		_productHints3Button = GameObject.Find("/Canvas/Product/Viewport/Content/Hints3/Button");
+		_productHints15p3Button = GameObject.Find("/Canvas/Product/Viewport/Content/Hints15p3/Button");
+		_productHints30p9Button = GameObject.Find("/Canvas/Product/Viewport/Content/Hints30p9/Button");
+		_productHints60p24Button = GameObject.Find("/Canvas/Product/Viewport/Content/Hints60p24/Button");
 	}
 
 	public void SetEnableProductButton(bool enable)
 	{
-		_productHintAd.GetComponent<Button>().enabled = enable;
-		_productRemoveAds.GetComponent<Button>().enabled = enable;
-		_productHints3.GetComponent<Button>().enabled = enable;
-		_productHints15p3.GetComponent<Button>().enabled = enable;
-		_productHints30p9.GetComponent<Button>().enabled = enable;
-		_productHints60p24.GetComponent<Button>().enabled = enable;
+		_productHintAdButton.GetComponent<Button>().enabled = enable;
+		_productRemoveAdsButton.GetComponent<Button>().enabled = enable;
+		_productHints3Button.GetComponent<Button>().enabled = enable;
+		_productHints15p3Button.GetComponent<Button>().enabled = enable;
+		_productHints30p9Button.GetComponent<Button>().enabled = enable;
+		_productHints60p24Button.GetComponent<Button>().enabled = enable;
+	}
+
+	public void AnimateProductEnter(Animate.AnimateComplete callback)
+	{
+		RectTransform rectTransform = (RectTransform)_productPanel.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+		float height = rectTransform.rect.height;
+
+		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y - height, pos.z);
+
+		LeanTween.cancel(_productPanel);
+		LeanTween.moveLocalY(_productPanel, 0.0f, PRODUCT_ANIMATE_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
 	}
 
 	public void AnimateProductHintAdButtonPressed(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateButtonPressed(_productHintAd, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+		Animate.AnimateButtonPressed(_productHintAdButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	public void AnimateProductRemoveAdsButtonPressed(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateButtonPressed(_productRemoveAds, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+		Animate.AnimateButtonPressed(_productRemoveAdsButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	public void AnimateProductHints3ButtonPressed(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateButtonPressed(_productHints3, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+		Animate.AnimateButtonPressed(_productHints3Button, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	public void AnimateProductHints15p3ButtonPressed(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateButtonPressed(_productHints15p3, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+		Animate.AnimateButtonPressed(_productHints15p3Button, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	public void AnimateProductHints30p9ButtonPressed(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateButtonPressed(_productHints30p9, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+		Animate.AnimateButtonPressed(_productHints30p9Button, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	public void AnimateProductHints60p24ButtonPressed(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateButtonPressed(_productHints60p24, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+		Animate.AnimateButtonPressed(_productHints60p24Button, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	// Bottom
