@@ -12,6 +12,12 @@ public class IAPManager : MonoBehaviour
 	// Product
 
 	private string _productRemoveAds = "com.normalfish.connectthesquares.removeads";
+	private string _productBlockMetal = "com.normalfish.connectthesquares.blocksetmetal";
+	private string _productBlockWood = "com.normalfish.connectthesquares.blocksetwood";
+	private string _productBlockGreenMarble = "com.normalfish.connectthesquares.blocksetgreenmarble";
+	private string _productBlockBlueMarble = "com.normalfish.connectthesquares.blocksetbluemarble";
+	private string _productBlockRedMarble = "com.normalfish.connectthesquares.blocksetredmarble";
+	private string _productBlockRareMarble = "com.normalfish.connectthesquares.blocksetraremarble";
 	private string _productHints3 = "com.normalfish.connectthesquares.hints3";
 	private string _productHints15p3 = "com.normalfish.connectthesquares.hints15p3";
 	private string _productHints30p9 = "com.normalfish.connectthesquares.hints30p9";
@@ -24,6 +30,30 @@ public class IAPManager : MonoBehaviour
 		if (product.definition.id == _productRemoveAds)
 		{
 			_data.SetRemoveAds(1);
+		}
+		else if (product.definition.id == _productBlockMetal)
+		{
+			_data.SetBlockMetalUnlocked(1);
+		}
+		else if (product.definition.id == _productBlockWood)
+		{
+			_data.SetBlockWoodUnlocked(1);
+		}
+		else if (product.definition.id == _productBlockGreenMarble)
+		{
+			_data.SetBlockGreenMarbleUnlocked(1);
+		}
+		else if (product.definition.id == _productBlockBlueMarble)
+		{
+			_data.SetBlockBlueMarbleUnlocked(1);
+		}
+		else if (product.definition.id == _productBlockRedMarble)
+		{
+			_data.SetBlockRedMarbleUnlocked(1);
+		}
+		else if (product.definition.id == _productBlockRareMarble)
+		{
+			_data.SetBlockRareMarbleUnlocked(1);
 		}
 		else if (product.definition.id == _productHints3)
 		{

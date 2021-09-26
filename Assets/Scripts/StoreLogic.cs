@@ -130,6 +130,42 @@ public class StoreLogic : MonoBehaviour
 		_ui.AnimateProductRemoveAdsButtonPressed(()=>{});
 	}
 
+	public void OnProductBlockMetalButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+		_ui.AnimateProductBlockMetalButtonPressed(()=>{});
+	}
+
+	public void OnProductBlockWoodButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+		_ui.AnimateProductBlockWoodButtonPressed(()=>{});
+	}
+
+	public void OnProductBlockGreenMarbleButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+		_ui.AnimateProductBlockGreenMarbleButtonPressed(()=>{});
+	}
+
+	public void OnProductBlockBlueMarbleButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+		_ui.AnimateProductBlockBlueMarbleButtonPressed(()=>{});
+	}
+
+	public void OnProductBlockRedMarbleButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+		_ui.AnimateProductBlockRedMarbleButtonPressed(()=>{});
+	}
+
+	public void OnProductBlockRareMarbleButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+		_ui.AnimateProductBlockRareMarbleButtonPressed(()=>{});
+	}
+
 	public void OnProductHints3ButtonPressed()
 	{
 		_audio.PlayButtonPressed();
