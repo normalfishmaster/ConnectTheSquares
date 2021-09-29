@@ -42,13 +42,13 @@ public class StoreLogic : MonoBehaviour
 
 		if (_ad.ShowRewarded() == 0)
 		{
-			_loadUi.AnimateLoadSquareStop();
+			_loadUi.AnimateLoadBlockStop();
 			_loadUi.SetActiveLoad(false);
 			_state = State.AD;
 		}
 		else if (Time.time - _stateLoadAdStartTime > MAX_AD_LOAD_TIME)
 		{
-			_loadUi.AnimateLoadSquareStop();
+			_loadUi.AnimateLoadBlockStop();
 			_loadUi.SetActiveLoad(false);
 			_adUi.SetActiveAdFail(true);
 			_adUi.SetEnableAdFailButton(false);
@@ -117,7 +117,7 @@ public class StoreLogic : MonoBehaviour
 				_ui.SetEnableProductButton(false);
 				_ui.SetEnableBottomButton(false);
 				_loadUi.SetActiveLoad(true);
-				_loadUi.AnimateLoadSquareStart();
+				_loadUi.AnimateLoadBlockStart();
 				_stateLoadAdStartTime = Time.time;
 				_state = State.LOAD_AD;
 			}

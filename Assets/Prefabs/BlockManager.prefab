@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5265601921499841558
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5940681002313937820}
+  - component: {fileID: 5944282597285664682}
+  m_Layer: 0
+  m_Name: BlockManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5940681002313937820
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5265601921499841558}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5944282597285664682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5265601921499841558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca547a1a53e0e2d5d9026daa4d3a9f7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _blockPlastic:
+  - {fileID: 21300000, guid: 1d72845e6d66af7498926e55e37a777e, type: 3}
+  - {fileID: 21300000, guid: a511ff18f1ad8bdbca93ba395a4ce274, type: 3}
+  - {fileID: 21300000, guid: bd8722e3225313541b20d9f8bc4f7aeb, type: 3}
+  - {fileID: 21300000, guid: ea265a34ad07df7dd81a333b2cea729e, type: 3}
+  _blockMetal:
+  - {fileID: 21300000, guid: 03904281484e0b570b2d8260c09096d9, type: 3}
+  - {fileID: 21300000, guid: 81efc35affaba5756bb53a717e11752c, type: 3}
+  - {fileID: 21300000, guid: b8bf9d08d2426d20aa7b3af00d741057, type: 3}
+  - {fileID: 21300000, guid: 85feb4a30735f098c99b10b9b225144e, type: 3}
+  _blockWood:
+  - {fileID: 21300000, guid: 92ed30f5d5ab44b60a26093b208fbe6b, type: 3}
+  - {fileID: 21300000, guid: 433e4fa3f13a07fe1aabd1c0bb51df8d, type: 3}
+  - {fileID: 21300000, guid: 3d0ad85462b9f8f2480e2aec6e462cef, type: 3}
+  - {fileID: 21300000, guid: 5d8c166d49f24658cbf5d1c5d85e511b, type: 3}
+  _blockGreenMarble:
+  - {fileID: 21300000, guid: ffa695c2d99f057f28305e2bf116a35c, type: 3}
+  - {fileID: 21300000, guid: 5d5e3d2230c6f32559e8e58c81c3a7ed, type: 3}
+  - {fileID: 21300000, guid: f479a336f50bccac5b5aad6fa8ddf49f, type: 3}
+  - {fileID: 21300000, guid: 30da87e4bd2a991e0944d42ce1279654, type: 3}
+  _blockBlueMarble:
+  - {fileID: 21300000, guid: 730be4f3384314c2fbda426c3029ebfb, type: 3}
+  - {fileID: 21300000, guid: bc24b35f3c59bf0d6b79553355530387, type: 3}
+  - {fileID: 21300000, guid: 28d02375a2fdb6b569b1c14cd940f7d3, type: 3}
+  - {fileID: 21300000, guid: da046eaf452417ff784379bd4c8990e1, type: 3}
+  _blockRedMarble:
+  - {fileID: 21300000, guid: 8f3c11ad589feaccc9a5de8217a0d46e, type: 3}
+  - {fileID: 21300000, guid: 34b1712b55ebec90a8c35bb4fc9a525c, type: 3}
+  - {fileID: 21300000, guid: b2f72efc49c42a3b68167115af1d499b, type: 3}
+  - {fileID: 21300000, guid: 4caf355661cd434c78c87ce242393c13, type: 3}
+  _blockRareMarble:
+  - {fileID: 21300000, guid: c3235d6e093a66366a940e21be4b3c0e, type: 3}
+  - {fileID: 21300000, guid: d1e38cfa75274e9f4bbbb59e8de22c41, type: 3}
+  - {fileID: 21300000, guid: b82c41af45168b02caaf8041b12a9b11, type: 3}
+  - {fileID: 21300000, guid: d3a35ed441044bea4b21a3df23edf412, type: 3}

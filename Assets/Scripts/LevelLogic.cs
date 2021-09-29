@@ -15,6 +15,7 @@ public class LevelLogic : MonoBehaviour
 	private LevelManager _level;
 	private AudioManager _audio;
 	private AdManager _ad;
+	private BlockManager _block;
 
 	private int _menuColor;
 	private int _menuAlphabet;
@@ -27,7 +28,7 @@ public class LevelLogic : MonoBehaviour
 	private const int NUM_X = Level.NUM_COL;
 	private const int NUM_Y = Level.NUM_ROW;
 
-	private const int NUM_SQUARE = Level.NUM_SQUARE;
+	private const int NUM_BLOCK = Level.NUM_BLOCK;
 
 	private Vector2 DIRECTION_NONE  = Vector2.zero;
 	private Vector2 DIRECTION_UP    = new Vector2( 0.0f,  1.0f);
@@ -43,7 +44,7 @@ public class LevelLogic : MonoBehaviour
 
 	public float MAP_ANIMATE_WALL_ENTER_ROTATION;
 	public float MAP_ANIMATE_WALL_ENTER_TIME;
-	public float MAP_ANIMATE_SQUARE_ENTER_TIME;
+	public float MAP_ANIMATE_BLOCK_ENTER_TIME;
 
 	public float MAP_ANIMATE_WALL_EXIT_ROTATION;
 	public float MAP_ANIMATE_WALL_EXIT_INITIAL_SPEED;
@@ -52,8 +53,8 @@ public class LevelLogic : MonoBehaviour
 
 	private GameObject[,] _mapWall;
 	private GameObject[,] _mapWallShadow;
-	private GameObject[] _mapSquare;
-	private GameObject[] _mapSquareShadow;
+	private GameObject[] _mapBlock;
+	private GameObject[] _mapBlockShadow;
 
 	private float _mapXOffset;
 	private float _mapYOffset;
@@ -77,15 +78,15 @@ public class LevelLogic : MonoBehaviour
 			}
 		}
 
-		// Square
+		// Block
 
-		_mapSquare = new GameObject[Level.NUM_SQUARE];
-		_mapSquareShadow = new GameObject[Level.NUM_SQUARE];
+		_mapBlock = new GameObject[Level.NUM_BLOCK];
+		_mapBlockShadow = new GameObject[Level.NUM_BLOCK];
 
-		for (int i = 0; i < NUM_SQUARE; i++)
+		for (int i = 0; i < NUM_BLOCK; i++)
 		{
-			_mapSquare[i] = GameObject.Find("/Map/Square/S" + i);
-			_mapSquareShadow[i] = GameObject.Find("/Map/SquareShadow/S" + i);
+			_mapBlock[i] = GameObject.Find("/Map/Block/B" + i);
+			_mapBlockShadow[i] = GameObject.Find("/Map/BlockShadow/B" + i);
 		}
 	}
 
@@ -93,13 +94,23 @@ public class LevelLogic : MonoBehaviour
 	{
 		_mapXOffset = -3.5f;
 		_mapYOffset = -3.5f;
+
+		SetMapBlockSprite(_block.GetBlockSetNumber());
 	}
 
-	private void SetMapSquarePos(int square, float x, float y)
+	private void SetMapBlockSprite(int setNumber)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			_mapBlock[i].GetComponent<SpriteRenderer>().sprite = _block.GetBlockSprite(setNumber, i);
+		}
+	}
+
+	private void SetMapBlockPos(int block, float x, float y)
 	{
 		Vector2 pos = new Vector2(_mapXOffset + x, _mapYOffset + y);
-		_mapSquare[square].transform.position = pos;
-		_mapSquareShadow[square].transform.position = pos;
+		_mapBlock[block].transform.position = pos;
+		_mapBlockShadow[block].transform.position = pos;
 	}
 
 	private void DisableMapWall(int x, int y)
@@ -108,17 +119,17 @@ public class LevelLogic : MonoBehaviour
 		_mapWallShadow[x, y].SetActive(false);
 	}
 
-	private void AnimateSquareEnter(int square)
+	private void AnimateBlockEnter(int block)
 	{
-		LeanTween.cancel(_mapSquare[square]);
+		LeanTween.cancel(_mapBlock[block]);
 
 		// Animate scale
 
-		_mapSquare[square].transform.localScale = new Vector3(0, 0, 0);
-		_mapSquareShadow[square].transform.localScale = new Vector3(0, 0, 0);
+		_mapBlock[block].transform.localScale = new Vector3(0, 0, 0);
+		_mapBlockShadow[block].transform.localScale = new Vector3(0, 0, 0);
 
-		LeanTween.scale(_mapSquare[square], Vector3.one, MAP_ANIMATE_SQUARE_ENTER_TIME).setEase(LeanTweenType.easeOutSine);
-		LeanTween.scale(_mapSquareShadow[square], Vector3.one, MAP_ANIMATE_SQUARE_ENTER_TIME).setEase(LeanTweenType.easeOutSine);
+		LeanTween.scale(_mapBlock[block], Vector3.one, MAP_ANIMATE_BLOCK_ENTER_TIME).setEase(LeanTweenType.easeOutSine);
+		LeanTween.scale(_mapBlockShadow[block], Vector3.one, MAP_ANIMATE_BLOCK_ENTER_TIME).setEase(LeanTweenType.easeOutSine);
 	}
 
 	private void AnimateWallEnter(int x, int y)
@@ -150,10 +161,10 @@ public class LevelLogic : MonoBehaviour
 			{
 				sbyte tile = _levelMap._layout[Level.NUM_ROW - j - 1, i];
 
-				if (Level.IsSquare(tile))
+				if (Level.IsBlock(tile))
 				{
-					int n = Level.GetSquareNumber(tile);
-					AnimateSquareEnter(n);
+					int n = Level.GetBlockNumber(tile);
+					AnimateBlockEnter(n);
                                 }
 				else if (Level.IsWall(tile))
 				{
@@ -247,7 +258,7 @@ public class LevelLogic : MonoBehaviour
 	private const float DECELERATION_RATE_PRE_END_TO_END = 2.00f;
 
 	private sbyte[,] _physicsMapLayout;
-	private Vector2[] _physicsSquarePos;
+	private Vector2[] _physicsBlockPos;
 	private Stack[] _physicsPosStack;
 
 	private Vector2 _physicsDirection;
@@ -270,10 +281,10 @@ public class LevelLogic : MonoBehaviour
 		// 2. Invert col
 
 		_physicsMapLayout = new sbyte[Level.NUM_COL, Level.NUM_ROW];
-		_physicsSquarePos = new Vector2[Level.NUM_SQUARE];
-		_physicsPosStack = new Stack[Level.NUM_SQUARE];
+		_physicsBlockPos = new Vector2[Level.NUM_BLOCK];
+		_physicsPosStack = new Stack[Level.NUM_BLOCK];
 
-		for (int i = 0; i < NUM_SQUARE; i++)
+		for (int i = 0; i < NUM_BLOCK; i++)
 		{
 			_physicsPosStack[i] = new Stack();
 		}
@@ -284,42 +295,42 @@ public class LevelLogic : MonoBehaviour
 			{
 				sbyte tile = _physicsMapLayout[i, j] = _levelMap._layout[Level.NUM_ROW - j - 1, i];
 
-				if (Level.IsSquare(tile))
+				if (Level.IsBlock(tile))
 				{
-					int n = Level.GetSquareNumber(tile);
-					_physicsSquarePos[n] = new Vector2(i, j);
+					int n = Level.GetBlockNumber(tile);
+					_physicsBlockPos[n] = new Vector2(i, j);
 					_physicsPosStack[n].Push(new Vector2(i, j));
-                                        SetMapSquarePos(n, i, j);
+                                        SetMapBlockPos(n, i, j);
                                 }
 
-				if (Level.IsSquare(tile) || Level.IsEmpty(tile))
+				if (Level.IsBlock(tile) || Level.IsEmpty(tile))
 				{
 					DisableMapWall(i, j);
 				}
 			}
 		}
 
-		_physicsStartPos = new Vector2[NUM_SQUARE];
-		_physicsEndPos = new Vector2[NUM_SQUARE];
-		_physicsStartToEndDist = new Vector2[NUM_SQUARE];
+		_physicsStartPos = new Vector2[NUM_BLOCK];
+		_physicsEndPos = new Vector2[NUM_BLOCK];
+		_physicsStartToEndDist = new Vector2[NUM_BLOCK];
 
-		_physicsPreEndPos = new Vector2[NUM_SQUARE];
-		_physicsStartToPreEndDist = new Vector2[NUM_SQUARE];
-		_physicsPreEndToEndDist = new Vector2[NUM_SQUARE];
+		_physicsPreEndPos = new Vector2[NUM_BLOCK];
+		_physicsStartToPreEndDist = new Vector2[NUM_BLOCK];
+		_physicsPreEndToEndDist = new Vector2[NUM_BLOCK];
 	}
 
 	private void PushMoveToStack(Vector2[] pos)
 	{
-		for (int i = 0; i < NUM_SQUARE; i++)
+		for (int i = 0; i < NUM_BLOCK; i++)
 		{
-			_physicsMapLayout[(int)_physicsSquarePos[i].x, (int)_physicsSquarePos[i].y] = Level.EMPTY;
+			_physicsMapLayout[(int)_physicsBlockPos[i].x, (int)_physicsBlockPos[i].y] = Level.EMPTY;
 		}
 
-		for (int i = 0; i < NUM_SQUARE; i++)
+		for (int i = 0; i < NUM_BLOCK; i++)
 		{
-			_physicsMapLayout[(int)pos[i].x, (int)pos[i].y] = Level.GetSquare((sbyte)i);
-			_physicsSquarePos[i].x = pos[i].x;
-			_physicsSquarePos[i].y = pos[i].y;
+			_physicsMapLayout[(int)pos[i].x, (int)pos[i].y] = Level.GetBlock((sbyte)i);
+			_physicsBlockPos[i].x = pos[i].x;
+			_physicsBlockPos[i].y = pos[i].y;
 			_physicsPosStack[i].Push(pos[i]);
 		}
 	}
@@ -331,19 +342,19 @@ public class LevelLogic : MonoBehaviour
 			return;
 		}
 
-		for (int i = 0; i < NUM_SQUARE; i++)
+		for (int i = 0; i < NUM_BLOCK; i++)
 		{
-			_physicsMapLayout[(int)_physicsSquarePos[i].x, (int)_physicsSquarePos[i].y] = Level.EMPTY;
+			_physicsMapLayout[(int)_physicsBlockPos[i].x, (int)_physicsBlockPos[i].y] = Level.EMPTY;
 		}
 
-		for (int i = 0; i < NUM_SQUARE; i++)
+		for (int i = 0; i < NUM_BLOCK; i++)
 		{
 			_physicsPosStack[i].Pop();
 			Vector2 pos = (Vector2)_physicsPosStack[i].Peek();
 
-			_physicsMapLayout[(int)pos.x, (int)pos.y] = Level.GetSquare((sbyte)i);
-			_physicsSquarePos[i].x = pos.x;
-			_physicsSquarePos[i].y = pos.y;
+			_physicsMapLayout[(int)pos.x, (int)pos.y] = Level.GetBlock((sbyte)i);
+			_physicsBlockPos[i].x = pos.x;
+			_physicsBlockPos[i].y = pos.y;
 		}
 	}
 
@@ -351,35 +362,35 @@ public class LevelLogic : MonoBehaviour
 	{
 		while (_physicsPosStack[0].Count > 1)
 		{
-			for (int j = 0; j < NUM_SQUARE; j++)
+			for (int j = 0; j < NUM_BLOCK; j++)
 			{
 				_physicsPosStack[j].Pop();
 			}
 		}
 
-		for (int i = 0; i < NUM_SQUARE; i++)
+		for (int i = 0; i < NUM_BLOCK; i++)
 		{
-			_physicsMapLayout[(int)_physicsSquarePos[i].x, (int)_physicsSquarePos[i].y] = Level.EMPTY;
+			_physicsMapLayout[(int)_physicsBlockPos[i].x, (int)_physicsBlockPos[i].y] = Level.EMPTY;
 		}
 
-		for (int i = 0; i < NUM_SQUARE; i++)
+		for (int i = 0; i < NUM_BLOCK; i++)
 		{
 			Vector2 pos = (Vector2)_physicsPosStack[i].Peek();
 
-			_physicsMapLayout[(int)pos.x, (int)pos.y] = Level.GetSquare((sbyte)i);
-			_physicsSquarePos[i].x = pos.x;
-			_physicsSquarePos[i].y = pos.y;
+			_physicsMapLayout[(int)pos.x, (int)pos.y] = Level.GetBlock((sbyte)i);
+			_physicsBlockPos[i].x = pos.x;
+			_physicsBlockPos[i].y = pos.y;
 		}
 	}
 
-	private int GetSquareMoveCount()
+	private int GetBlockMoveCount()
 	{
 		return _physicsPosStack[0].Count - 1;
 	}
 
 	private bool CheckHintDirection(Vector2 direction)
 	{
-		int move = GetSquareMoveCount();
+		int move = GetBlockMoveCount();
 		int hint = _levelMap._hint[move];
 
 		if (hint == Level.UP && direction == DIRECTION_UP)
@@ -402,17 +413,17 @@ public class LevelLogic : MonoBehaviour
 		return false;
 	}
 
-	private Vector2 GetSquareStartPos(int square)
+	private Vector2 GetBlockStartPos(int block)
 	{
-		return _physicsSquarePos[square];
+		return _physicsBlockPos[block];
 	}
 
-	private Vector2 GetSquareEndPos(int square, Vector2 direction)
+	private Vector2 GetBlockEndPos(int block, Vector2 direction)
 	{
-		int x = (int)_physicsSquarePos[square].x;
-		int y = (int)_physicsSquarePos[square].y;
+		int x = (int)_physicsBlockPos[block].x;
+		int y = (int)_physicsBlockPos[block].y;
 
-		int numSquare = 0;
+		int numBlock = 0;
 
 		if (direction == DIRECTION_UP || direction == DIRECTION_DOWN)
 		{
@@ -423,9 +434,9 @@ public class LevelLogic : MonoBehaviour
 			{
 				sbyte tile = _physicsMapLayout[x, i];
 
-				if (Level.IsSquare(tile))
+				if (Level.IsBlock(tile))
 				{
-					numSquare++;
+					numBlock++;
 				}
 				else if (Level.IsWall(tile))
 				{
@@ -433,7 +444,7 @@ public class LevelLogic : MonoBehaviour
 				}
 			}
 
-			return new Vector2(x, i + (-1 * add) + (-1 * add * numSquare));
+			return new Vector2(x, i + (-1 * add) + (-1 * add * numBlock));
 		}
 		else if (direction == DIRECTION_LEFT || direction == DIRECTION_RIGHT)
 		{
@@ -444,9 +455,9 @@ public class LevelLogic : MonoBehaviour
 			{
 				sbyte tile = _physicsMapLayout[i, y];
 
-				if (Level.IsSquare(tile))
+				if (Level.IsBlock(tile))
 				{
-					numSquare++;
+					numBlock++;
 				}
 				else if (Level.IsWall(tile))
 				{
@@ -454,15 +465,15 @@ public class LevelLogic : MonoBehaviour
 				}
 			}
 
-			return new Vector2(i + (-1 * add) + (-1 * add * numSquare), y);
+			return new Vector2(i + (-1 * add) + (-1 * add * numBlock), y);
 		}
 
 		return Vector2.zero;
 	}
 
-	bool IsSquareEndPosWinning()
+	bool IsBlockEndPosWinning()
 	{
-		for (int i = 0; i < NUM_SQUARE; i++)
+		for (int i = 0; i < NUM_BLOCK; i++)
 		{
 			int x = (int)_physicsEndPos[i].x;
 			int y = (int)_physicsEndPos[i].y;
@@ -474,7 +485,7 @@ public class LevelLogic : MonoBehaviour
 
 			int hitTally = 0;
 
-			for (int j = 0; j < NUM_SQUARE; j++)
+			for (int j = 0; j < NUM_BLOCK; j++)
 			{
 				if (i == j)
 				{
@@ -508,24 +519,24 @@ public class LevelLogic : MonoBehaviour
 		return true;
 	}
 
-	private bool StartSquareMovement(Vector2 direction)
+	private bool StartBlockMovement(Vector2 direction)
 	{
-		Vector2[] startPos = new Vector2[NUM_SQUARE];
-		Vector2[] endPos = new Vector2[NUM_SQUARE];
-		Vector2[] startToEndDist = new Vector2[NUM_SQUARE];
+		Vector2[] startPos = new Vector2[NUM_BLOCK];
+		Vector2[] endPos = new Vector2[NUM_BLOCK];
+		Vector2[] startToEndDist = new Vector2[NUM_BLOCK];
 		int longestDist = 0;
 
-		Vector2[] preEndPos = new Vector2[NUM_SQUARE];
-		Vector2[] startToPreEndDist = new Vector2[NUM_SQUARE];
-		Vector2[] preEndToEndDist = new Vector2[NUM_SQUARE];
+		Vector2[] preEndPos = new Vector2[NUM_BLOCK];
+		Vector2[] startToPreEndDist = new Vector2[NUM_BLOCK];
+		Vector2[] preEndToEndDist = new Vector2[NUM_BLOCK];
 		float preEndMultiplier = 0.0f;
 
 		bool legal = false;
 
-		for (int i = 0; i < NUM_SQUARE; i++)
+		for (int i = 0; i < NUM_BLOCK; i++)
 		{
-			startPos[i] = GetSquareStartPos(i);
-			endPos[i] = GetSquareEndPos(i, direction);
+			startPos[i] = GetBlockStartPos(i);
+			endPos[i] = GetBlockEndPos(i, direction);
 
 			startToEndDist[i] = (int)Vector2.Distance(startPos[i], endPos[i]) * direction;
 
@@ -552,7 +563,7 @@ public class LevelLogic : MonoBehaviour
 
 		preEndMultiplier = startToPreEndDist[longestDist].magnitude / startToEndDist[longestDist].magnitude;
 
-		for (int i = 0; i < NUM_SQUARE; i++)
+		for (int i = 0; i < NUM_BLOCK; i++)
 		{
 			if (i == longestDist)
 			{
@@ -581,7 +592,7 @@ public class LevelLogic : MonoBehaviour
 		return true;
 	}
 
-	private bool MoveSquareToPos(float startTime, Vector2 direction,
+	private bool MoveBlockToPos(float startTime, Vector2 direction,
 			Vector2[] startPos, Vector2[] endPos,
 			Vector2[] startToEndDist, int longestDist,
 			float decelerationRate)
@@ -591,14 +602,14 @@ public class LevelLogic : MonoBehaviour
 
 		if (deltaTime >= travelTime)
 		{
-			for (int i = 0; i < NUM_SQUARE; i++)
+			for (int i = 0; i < NUM_BLOCK; i++)
 			{
-				SetMapSquarePos(i, endPos[i].x, endPos[i].y);
+				SetMapBlockPos(i, endPos[i].x, endPos[i].y);
 			}
 			return true;
 		}
 
-		for (int i = 0; i < NUM_SQUARE; i++)
+		for (int i = 0; i < NUM_BLOCK; i++)
 		{
 			float totalDistance = startToEndDist[i].magnitude;
 
@@ -612,15 +623,15 @@ public class LevelLogic : MonoBehaviour
 			float distance = (startSpeed * deltaTime) + ((0.5f * deceleration) * (deltaTime * deltaTime));
 			Vector2 movePos = startPos[i] + distance * direction;
 
-			SetMapSquarePos(i, movePos.x, movePos.y);
+			SetMapBlockPos(i, movePos.x, movePos.y);
 		}
 
 		return false;
         }
 
-	private bool MoveSquareFromStartToEnd()
+	private bool MoveBlockFromStartToEnd()
 	{
-		bool ret = MoveSquareToPos(_physicsStartTime, _physicsDirection,
+		bool ret = MoveBlockToPos(_physicsStartTime, _physicsDirection,
 				_physicsStartPos, _physicsEndPos,
 				_physicsStartToEndDist, _physicsLongestDist,
 				DECELERATION_RATE_START_TO_END);
@@ -633,9 +644,9 @@ public class LevelLogic : MonoBehaviour
 		return ret;
 	}
 
-	private bool MoveSquareFromStartToPreEnd()
+	private bool MoveBlockFromStartToPreEnd()
 	{
-		bool ret = MoveSquareToPos(_physicsStartTime, _physicsDirection,
+		bool ret = MoveBlockToPos(_physicsStartTime, _physicsDirection,
 				_physicsStartPos, _physicsPreEndPos,
 				_physicsStartToPreEndDist, _physicsLongestDist,
 				DECELERATION_RATE_START_TO_PRE_END);
@@ -648,9 +659,9 @@ public class LevelLogic : MonoBehaviour
 		return ret;
 	}
 
-	private bool MoveSquareFromPreEndToEnd()
+	private bool MoveBlockFromPreEndToEnd()
 	{
-		bool ret = MoveSquareToPos(_physicsStartTime, _physicsDirection,
+		bool ret = MoveBlockToPos(_physicsStartTime, _physicsDirection,
 				_physicsPreEndPos, _physicsEndPos,
 				_physicsPreEndToEndDist, _physicsLongestDist,
 				DECELERATION_RATE_PRE_END_TO_END);
@@ -663,23 +674,23 @@ public class LevelLogic : MonoBehaviour
 		return ret;
 	}
 
-	private void UndoSquarePos()
+	private void UndoBlockPos()
 	{
 		PopMoveFromStack();
 
-		for (int i = 0; i < NUM_SQUARE; i++)
+		for (int i = 0; i < NUM_BLOCK; i++)
 		{
-			SetMapSquarePos(i, _physicsSquarePos[i].x, _physicsSquarePos[i].y);
+			SetMapBlockPos(i, _physicsBlockPos[i].x, _physicsBlockPos[i].y);
 		}
 	}
 
-	private void ResetSquarePos()
+	private void ResetBlockPos()
 	{
 		ResetMoveInStack();
 
-		for (int i = 0; i < NUM_SQUARE; i++)
+		for (int i = 0; i < NUM_BLOCK; i++)
 		{
-			SetMapSquarePos(i, _physicsSquarePos[i].x, _physicsSquarePos[i].y);
+			SetMapBlockPos(i, _physicsBlockPos[i].x, _physicsBlockPos[i].y);
 		}
 	}
 
@@ -702,8 +713,6 @@ public class LevelLogic : MonoBehaviour
 		WIN,
 		LOAD_AD,
 		AD,
-		PAUSE_LOAD_AD,
-		PAUSE_AD,
 		WIN_LOAD_AD,
 		WIN_AD,
 	};
@@ -823,7 +832,7 @@ public class LevelLogic : MonoBehaviour
 				return;
 			}
 
-			if (GetSquareMoveCount() >= MAX_MOVE_COUNT)
+			if (GetBlockMoveCount() >= MAX_MOVE_COUNT)
 			{
 				_ui.SetInteractableControlButton(true);
 				_touchState = TouchState.NONE;
@@ -837,14 +846,14 @@ public class LevelLogic : MonoBehaviour
 				return;
 			}
 
-			if (StartSquareMovement(direction) == false)
+			if (StartBlockMovement(direction) == false)
 			{
 				_ui.SetInteractableControlButton(true);
 				_touchState = TouchState.NONE;
 				return;
 			}
 
-			if (IsSquareEndPosWinning() == true)
+			if (IsBlockEndPosWinning() == true)
 			{
 				_ui.SetInteractableControlButton(false);
 				_touchState = TouchState.START_TO_PRE_END;
@@ -872,9 +881,9 @@ public class LevelLogic : MonoBehaviour
 
 	private void DoTouchStateStartToEnd()
 	{
-		if (MoveSquareFromStartToEnd() == true)
+		if (MoveBlockFromStartToEnd() == true)
 		{
-			int move = GetSquareMoveCount();
+			int move = GetBlockMoveCount();
 
 			_ui.SetTopMoveCurrent(move);
 			_ui.SetInteractableControlButton(true);
@@ -894,7 +903,7 @@ public class LevelLogic : MonoBehaviour
 
 	private void DoTouchStateStartToPreEnd()
 	{
-		if (MoveSquareFromStartToPreEnd() == true)
+		if (MoveBlockFromStartToPreEnd() == true)
 		{
 			_audio.PlayMovePreEndToEnd();
 			_touchState = TouchState.PRE_END_TO_END;
@@ -903,11 +912,11 @@ public class LevelLogic : MonoBehaviour
 
 	private void DoTouchStatePreEndToEnd()
 	{
-		if (MoveSquareFromPreEndToEnd() == true)
+		if (MoveBlockFromPreEndToEnd() == true)
 		{
 			_audio.PlayMapExit();
 
-			int move = GetSquareMoveCount();
+			int move = GetBlockMoveCount();
 			int star = 1;
 
 			if (move == _levelMap._hint.Length)
@@ -942,7 +951,7 @@ public class LevelLogic : MonoBehaviour
 				AnimateHintDirectionStop();
 			}
 
-			int moveCount = GetSquareMoveCount();
+			int moveCount = GetBlockMoveCount();
 			_ui.SetTopMoveCurrent(moveCount);
 			if (moveCount > _data.GetLevelMove(_menuColor, _menuAlphabet, _menuMap))
 			{
@@ -1020,13 +1029,13 @@ public class LevelLogic : MonoBehaviour
 
 		if (_ad.ShowRewarded() == 0)
 		{
-			_loadUi.AnimateLoadSquareStop();
+			_loadUi.AnimateLoadBlockStop();
 			_loadUi.SetActiveLoad(false);
 			_touchState = adState;
 		}
 		else if (Time.time - _touchLoadAdStartTime > MAX_AD_LOAD_TIME)
 		{
-			_loadUi.AnimateLoadSquareStop();
+			_loadUi.AnimateLoadBlockStop();
 			_loadUi.SetActiveLoad(false);
 			_adUi.SetActiveAdFail(true);
 			_adUi.SetEnableAdFailButton(false);
@@ -1095,16 +1104,6 @@ public class LevelLogic : MonoBehaviour
 	private void DoTouchStateAd()
 	{
 		CommonAd(TouchState.NONE);
-	}
-
-	private void DoTouchStatePauseLoadAd()
-	{
-		CommonLoadAd(TouchState.PAUSE_AD, TouchState.PAUSE);
-	}
-
-	private void DoTouchStatePauseAd()
-	{
-		CommonAd(TouchState.PAUSE);
 	}
 
 	private void DoTouchStateWinLoadAd()
@@ -1206,6 +1205,9 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetEnableControlButton(false);
 		_ui.SetActivePause(true);
 		_ui.SetEnablePauseButton(false);
+		_ui.SetPauseBlockSprite(_data.GetBlockSet());
+		_pauseBlockSetNumber = _data.GetBlockSet();
+		_ui.SetActivePauseBlockLock(false);
 
 		if (_data.GetAudio() == 0)
 		{
@@ -1232,9 +1234,9 @@ public class LevelLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-		UndoSquarePos();
+		UndoBlockPos();
 
-		int move = GetSquareMoveCount();
+		int move = GetBlockMoveCount();
 		_ui.SetTopMoveCurrent(move);
 
 		if (_touchHint == true)
@@ -1251,9 +1253,9 @@ public class LevelLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-		ResetSquarePos();
+		ResetBlockPos();
 
-		int move = GetSquareMoveCount();
+		int move = GetBlockMoveCount();
 		_ui.SetTopMoveCurrent(move);
 
 		if (_touchHint == true)
@@ -1271,7 +1273,7 @@ public class LevelLogic : MonoBehaviour
 		_audio.PlayButtonPressed();
 		_ui.AnimateControlHintAdButtonPressed(()=>{});
 		_loadUi.SetActiveLoad(true);
-		_loadUi.AnimateLoadSquareStart();
+		_loadUi.AnimateLoadBlockStart();
 		_touchLoadAdStartTime = Time.time;
 		_touchState = TouchState.LOAD_AD;
 	}
@@ -1307,8 +1309,8 @@ public class LevelLogic : MonoBehaviour
 			_hintUsed = true;
 		}
 
-		ResetSquarePos();
-		int move = GetSquareMoveCount();
+		ResetBlockPos();
+		int move = GetBlockMoveCount();
 
 		_ui.SetTopMoveCurrent(move);
 
@@ -1329,9 +1331,29 @@ public class LevelLogic : MonoBehaviour
 
 	// UI - Pause
 
+	private int _pauseBlockSetNumber;
+
 	private void SetupPause()
 	{
 		_ui.SetActivePause(false);
+	}
+
+	public void OnPauseBlockButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+		_pauseBlockSetNumber = _block.IncrementSetNumber(_pauseBlockSetNumber);
+		_ui.SetPauseBlockSprite(_pauseBlockSetNumber);
+		if (_block.IsBlockSetUnlocked(_pauseBlockSetNumber) == 1)
+		{
+			_ui.SetActivePauseBlockLock(false);
+		}
+		else
+		{
+			_ui.SetActivePauseBlockLock(true);
+		}
+
+		_ui.AnimatePauseBlockButtonPressed(()=>{});
 	}
 
 	public void OnPauseAudioOnButtonPressed()
@@ -1378,33 +1400,15 @@ public class LevelLogic : MonoBehaviour
 		);
 	}
 
-	public void OnPauseHintAdButtonPressed()
-	{
-		_audio.PlayButtonPressed();
-
-		_ui.SetEnablePauseButton(false);
-		_ui.AnimatePauseHintAdButtonPressed
-		(
-			()=>
-			{
-				_ui.AnimatePauseBoardExit
-				(
-					()=>
-					{
-						_ui.SetActivePause(false);
-						_loadUi.SetActiveLoad(true);
-						_loadUi.AnimateLoadSquareStart();
-						_touchLoadAdStartTime = Time.time;
-						_touchState = TouchState.PAUSE_LOAD_AD;
-					}
-				);
-			}
-		);
-	}
-
 	public void OnPauseResumeButtonPressed()
 	{
 		_audio.PlayButtonPressed();
+
+		if (_block.IsBlockSetUnlocked(_pauseBlockSetNumber) == 1)
+		{
+			_data.SetBlockSet(_pauseBlockSetNumber);
+			SetMapBlockSprite(_pauseBlockSetNumber);
+		}
 
 		_ui.SetEnablePauseButton(false);
 		_ui.AnimatePauseResumeButtonPressed
@@ -1456,7 +1460,7 @@ public class LevelLogic : MonoBehaviour
 					{
 						_ui.SetActiveWin(false);
 						_loadUi.SetActiveLoad(true);
-						_loadUi.AnimateLoadSquareStart();
+						_loadUi.AnimateLoadBlockStart();
 						_touchLoadAdStartTime = Time.time;
 						_touchState = TouchState.WIN_LOAD_AD;
 					}
@@ -1708,6 +1712,7 @@ public class LevelLogic : MonoBehaviour
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
+		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 
 		FindMapGameObject();
 	}
@@ -1801,14 +1806,6 @@ public class LevelLogic : MonoBehaviour
 		else if (_touchState == TouchState.AD)
 		{
 			DoTouchStateAd();
-		}
-		else if (_touchState == TouchState.PAUSE_LOAD_AD)
-		{
-			DoTouchStatePauseLoadAd();
-		}
-		else if (_touchState == TouchState.PAUSE_AD)
-		{
-			DoTouchStatePauseAd();
 		}
 		else if (_touchState == TouchState.WIN_LOAD_AD)
 		{

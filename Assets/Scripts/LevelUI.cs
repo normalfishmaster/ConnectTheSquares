@@ -8,6 +8,7 @@ public class LevelUI : MonoBehaviour
 	private LevelLogic _logic;
 	private LevelManager _level;
 	private AudioManager _audio;
+	private BlockManager _block;
 
 	// Top
 
@@ -489,22 +490,34 @@ public class LevelUI : MonoBehaviour
 	private GameObject _pause;
 	private GameObject _pauseBoard;
 
+	private GameObject _pauseBlockButton;
 	private GameObject _pauseAudioOnButton;
 	private GameObject _pauseAudioOffButton;
 	private GameObject _pauseMenuButton;
-	private GameObject _pauseHintAdButton;
 	private GameObject _pauseResumeButton;
+
+	private GameObject[] _pauseBlock;
+	private GameObject _pauseBlockLock;
 
 	public void FindPauseGameObject()
 	{
 		_pause = GameObject.Find("/Canvas/Pause");
 		_pauseBoard = GameObject.Find("/Canvas/Pause/Board");
 
+		_pauseBlockButton = GameObject.Find("/Canvas/Pause/Board/Block/Button");
 		_pauseAudioOnButton = GameObject.Find("/Canvas/Pause/Board/AudioOn/Button");
 		_pauseAudioOffButton = GameObject.Find("/Canvas/Pause/Board/AudioOff/Button");
 		_pauseMenuButton = GameObject.Find("/Canvas/Pause/Board/Menu/Button");
-		_pauseHintAdButton = GameObject.Find("/Canvas/Pause/Board/HintAd/Button");
 		_pauseResumeButton = GameObject.Find("/Canvas/Pause/Board/Resume/Button");
+
+		_pauseBlock = new GameObject[4];
+
+		for (int i = 0; i < 4; i++)
+		{
+			_pauseBlock[i] = GameObject.Find("/Canvas/Pause/Board/Block/Button/Block" + i);
+		}
+
+		_pauseBlockLock = GameObject.Find("/Canvas/Pause/Board/Block/Button/Lock");
 	}
 
 	public void SetActivePause(bool active)
@@ -524,11 +537,24 @@ public class LevelUI : MonoBehaviour
 
 	public void SetEnablePauseButton(bool enable)
 	{
+		_pauseBlockButton.GetComponent<Button>().enabled = enable;
 		_pauseAudioOnButton.GetComponent<Button>().enabled = enable;
 		_pauseAudioOffButton.GetComponent<Button>().enabled = enable;
 		_pauseMenuButton.GetComponent<Button>().enabled = enable;
-		_pauseHintAdButton.GetComponent<Button>().enabled = enable;
 		_pauseResumeButton.GetComponent<Button>().enabled = enable;
+	}
+
+	public void SetActivePauseBlockLock(bool active)
+	{
+		_pauseBlockLock.SetActive(active);
+	}
+
+	public void SetPauseBlockSprite(int setNumber)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			_pauseBlock[i].GetComponent<Image>().sprite = _block.GetBlockSprite(setNumber, i);
+		}
 	}
 
 	public void AnimatePauseBoardEnter(Animate.AnimateComplete callback)
@@ -539,6 +565,11 @@ public class LevelUI : MonoBehaviour
 	public void AnimatePauseBoardExit(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateBoardExit(_pause, _pauseBoard, PAUSE_ANIMATE_BOARD_EXIT_DURATION, callback);
+	}
+
+	public void AnimatePauseBlockButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_pauseBlockButton, PAUSE_ANIMATE_BUTTON_PRESSED_SCALE, PAUSE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	public void AnimatePauseAudioOnButtonPressed(Animate.AnimateComplete callback)
@@ -554,11 +585,6 @@ public class LevelUI : MonoBehaviour
 	public void AnimatePauseMenuButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_pauseMenuButton, PAUSE_ANIMATE_BUTTON_PRESSED_SCALE, PAUSE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
-	}
-
-	public void AnimatePauseHintAdButtonPressed(Animate.AnimateComplete callback)
-	{
-		Animate.AnimateButtonPressed(_pauseHintAdButton, PAUSE_ANIMATE_BUTTON_PRESSED_SCALE, PAUSE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	public void AnimatePauseResumeButtonPressed(Animate.AnimateComplete callback)
@@ -748,6 +774,7 @@ public class LevelUI : MonoBehaviour
 		_logic = GameObject.Find("LevelLogic").GetComponent<LevelLogic>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 
 		FindTopGameObject();
 		FindHintGameObject();

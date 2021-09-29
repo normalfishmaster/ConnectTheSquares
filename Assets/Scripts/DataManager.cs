@@ -61,6 +61,9 @@ public class DataManager : MonoBehaviour
 	public string GetColorStarTotalKey(int color)				{ return "LevelColorStarTotalKey" + "_" + color;						}
 	public int    GetColorStarTotalDefault()				{ return 0;											}
 
+	public string GetBlockSetKey()						{ return "BlockSetKey";										}
+	public int    GetBlockSetDefault()					{ return 0;											}
+
 	public string GetBlockMetalUnlockedKey()				{ return "BlockMetalUnlockedKey";								}
 	public int    GetBlockMetalUnlockedDefault()				{ return 0;											}
 
@@ -160,6 +163,11 @@ public class DataManager : MonoBehaviour
 	public int   GetColorStarTotal(int color)				{ return PlayerPrefs.GetInt(GetColorStarTotalKey(color));					}
 	public void  SetColorStarTotal(int color, int value)			{        PlayerPrefs.SetInt(GetColorStarTotalKey(color), value);				}
 	public void  InitColorStarTotal(int color)				{        PlayerPrefs.SetInt(GetColorStarTotalKey(color), GetAlphabetStarTotalDefault());	}
+
+	public bool  CheckBlockSet()						{ return PlayerPrefs.HasKey(GetBlockSetKey());							}
+	public int   GetBlockSet()						{ return PlayerPrefs.GetInt(GetBlockSetKey());							}
+	public void  SetBlockSet(int value)					{        PlayerPrefs.SetInt(GetBlockSetKey(), value);						}
+	public void  InitBlockSet()						{        PlayerPrefs.SetInt(GetBlockSetKey(), GetBlockSetDefault());				}
 
 	public bool  CheckBlockMetalUnlocked()					{ return PlayerPrefs.HasKey(GetBlockMetalUnlockedKey());					}
 	public int   GetBlockMetalUnlocked()					{ return PlayerPrefs.GetInt(GetBlockMetalUnlockedKey());					}

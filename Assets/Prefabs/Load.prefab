@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6863999323548781426}
   - component: {fileID: 6863999323548781437}
   m_Layer: 5
-  m_Name: Square0
+  m_Name: Block0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a511ff18f1ad8bdbca93ba395a4ce274, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1d72845e6d66af7498926e55e37a777e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 6863999323696791495}
   - component: {fileID: 6863999323696791494}
   m_Layer: 5
-  m_Name: Square2
+  m_Name: Block2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -332,7 +332,7 @@ GameObject:
   - component: {fileID: 6863999325425946512}
   - component: {fileID: 6863999325425946515}
   m_Layer: 5
-  m_Name: Square3
+  m_Name: Block3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -385,7 +385,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1d72845e6d66af7498926e55e37a777e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ea265a34ad07df7dd81a333b2cea729e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -407,7 +407,7 @@ GameObject:
   - component: {fileID: 6863999325493212632}
   - component: {fileID: 6863999325493212635}
   m_Layer: 5
-  m_Name: Square1
+  m_Name: Block1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -460,7 +460,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ea265a34ad07df7dd81a333b2cea729e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a511ff18f1ad8bdbca93ba395a4ce274, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -8,6 +8,7 @@ public class IAPManager : MonoBehaviour
 	private static IAPManager _instance;
 
 	private DataManager _data;
+	private BlockManager _block;
 
 	// Product
 
@@ -33,27 +34,27 @@ public class IAPManager : MonoBehaviour
 		}
 		else if (product.definition.id == _productBlockMetal)
 		{
-			_data.SetBlockMetalUnlocked(1);
+			_block.SetBlockSetUnlocked(1, 1);
 		}
 		else if (product.definition.id == _productBlockWood)
 		{
-			_data.SetBlockWoodUnlocked(1);
+			_block.SetBlockSetUnlocked(2, 1);
 		}
 		else if (product.definition.id == _productBlockGreenMarble)
 		{
-			_data.SetBlockGreenMarbleUnlocked(1);
+			_block.SetBlockSetUnlocked(3, 1);
 		}
 		else if (product.definition.id == _productBlockBlueMarble)
 		{
-			_data.SetBlockBlueMarbleUnlocked(1);
+			_block.SetBlockSetUnlocked(4, 1);
 		}
 		else if (product.definition.id == _productBlockRedMarble)
 		{
-			_data.SetBlockRedMarbleUnlocked(1);
+			_block.SetBlockSetUnlocked(5, 1);
 		}
 		else if (product.definition.id == _productBlockRareMarble)
 		{
-			_data.SetBlockRareMarbleUnlocked(1);
+			_block.SetBlockSetUnlocked(6, 1);
 		}
 		else if (product.definition.id == _productHints3)
 		{
@@ -93,5 +94,6 @@ public class IAPManager : MonoBehaviour
 		DontDestroyOnLoad(this.gameObject);
 
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 	}
 }

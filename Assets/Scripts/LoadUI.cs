@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class LoadUI : MonoBehaviour
 {
-	public float LOAD_ANIMATE_SQUARE_DURATION;
-	public float LOAD_ANIMATE_SQUARE_DELAY;
+	public float LOAD_ANIMATE_BLOCK_DURATION;
+	public float LOAD_ANIMATE_BLOCK_DELAY;
 
 	private GameObject _load;
-	private GameObject[] _loadSquare;
+	private GameObject[] _loadBlock;
 
 	private void FindLoadGameObject()
 	{
 		_load = GameObject.Find("/Canvas/Load");
 
-		_loadSquare = new GameObject[4];
+		_loadBlock = new GameObject[4];
 
 		for (int i = 0; i < 4; i++)
 		{
-			_loadSquare[i] = GameObject.Find("/Canvas/Load/Board/Square" + i);
+			_loadBlock[i] = GameObject.Find("/Canvas/Load/Board/Block" + i);
 		}
 	}
 
@@ -27,18 +27,18 @@ public class LoadUI : MonoBehaviour
 		_load.SetActive(active);
 	}
 
-	private void AnimateLoadSquareStopSingle(int square)
+	private void AnimateLoadBlockStopSingle(int block)
 	{
-		LeanTween.cancel(_loadSquare[square]);
+		LeanTween.cancel(_loadBlock[block]);
 	}
 
-	private void AnimateLoadSquareStartSingle(int square, Animate.AnimateComplete callback)
+	private void AnimateLoadBlockStartSingle(int block, Animate.AnimateComplete callback)
 	{
-		AnimateLoadSquareStopSingle(square);
+		AnimateLoadBlockStopSingle(block);
 
-		_loadSquare[square].transform.localScale = Vector3.one;
+		_loadBlock[block].transform.localScale = Vector3.one;
 
-		LeanTween.scale(_loadSquare[square], Vector3.one * 1.5f, LOAD_ANIMATE_SQUARE_DURATION).setDelay(LOAD_ANIMATE_SQUARE_DELAY).setEasePunch().setOnComplete
+		LeanTween.scale(_loadBlock[block], Vector3.one * 1.5f, LOAD_ANIMATE_BLOCK_DURATION).setDelay(LOAD_ANIMATE_BLOCK_DELAY).setEasePunch().setOnComplete
 		(
 			()=>
 			{
@@ -47,29 +47,29 @@ public class LoadUI : MonoBehaviour
 		);
 	}
 
-	public void AnimateLoadSquareStop()
+	public void AnimateLoadBlockStop()
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			AnimateLoadSquareStopSingle(i);
+			AnimateLoadBlockStopSingle(i);
 		}
 	}
 
-	public void AnimateLoadSquareStart()
+	public void AnimateLoadBlockStart()
 	{
-		AnimateLoadSquareStartSingle(0,
+		AnimateLoadBlockStartSingle(0,
 			()=>
 			{
-				AnimateLoadSquareStartSingle(1,
+				AnimateLoadBlockStartSingle(1,
 					()=>
 					{
-						AnimateLoadSquareStartSingle(2,
+						AnimateLoadBlockStartSingle(2,
 							()=>
 							{
-								AnimateLoadSquareStartSingle(3,
+								AnimateLoadBlockStartSingle(3,
 									()=>
 									{
-										AnimateLoadSquareStart();
+										AnimateLoadBlockStart();
 									}
 								);
 							}
