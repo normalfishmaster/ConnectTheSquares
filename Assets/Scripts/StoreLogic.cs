@@ -70,6 +70,9 @@ public class StoreLogic : MonoBehaviour
 		if (status == AdManager.RewardStatus.SUCCESS)
 		{
 			_data.SetHint(_data.GetHint() + 1);
+
+			_ui.SetTopHintCount(_data.GetHint());
+
 			_adUi.SetActiveAdSuccess(true);
 			_adUi.SetActiveAdSuccessHint(false);
 			_adUi.SetEnableAdSuccessButton(false);
@@ -103,6 +106,13 @@ public class StoreLogic : MonoBehaviour
 			);
 			_state = State.NONE;
 		}
+	}
+
+	// UI - Top
+
+	private void SetupTop()
+	{
+		_ui.SetTopHintCount(_data.GetHint());
 	}
 
 	// UI - Product
@@ -321,6 +331,7 @@ public class StoreLogic : MonoBehaviour
 	private void Start()
 	{
 		SetupState();
+		SetupTop();
 		SetupProduct();
 		SetupBottom();
 		SetupLoad();

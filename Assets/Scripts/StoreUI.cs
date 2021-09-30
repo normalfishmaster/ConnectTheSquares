@@ -9,6 +9,20 @@ public class StoreUI : MonoBehaviour
 	private DataManager _data;
 	private LevelManager _level;
 
+	// Top
+
+	private GameObject _topHintCount;
+
+	private void FindTopGameObject()
+	{
+		_topHintCount = GameObject.Find("/Canvas/Top/Hint/Count");
+	}
+
+	public void SetTopHintCount(int count)
+	{
+		_topHintCount.GetComponent<Text>().text = count.ToString();
+	}
+
 	// Product
 
 	public float PRODUCT_ANIMATE_ENTER_DURATION;
@@ -189,6 +203,7 @@ public class StoreUI : MonoBehaviour
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
+		FindTopGameObject();
 		FindProductGameObject();
 		FindBottomGameObject();
 	}
