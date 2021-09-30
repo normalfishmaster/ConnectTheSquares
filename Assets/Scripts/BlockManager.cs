@@ -11,12 +11,13 @@ public class BlockManager : MonoBehaviour
 	public Sprite[] _blockPlastic;
 	public Sprite[] _blockMetal;
 	public Sprite[] _blockWood;
+	public Sprite[] _blockIllusion;
 	public Sprite[] _blockGreenMarble;
 	public Sprite[] _blockBlueMarble;
 	public Sprite[] _blockRedMarble;
 	public Sprite[] _blockRareMarble;
 
-	private static int NUM_BLOCK_SET = 7;
+	private static int NUM_BLOCK_SET = 8;
 
 	public int GetBlockSetNumber()
 	{
@@ -58,6 +59,10 @@ public class BlockManager : MonoBehaviour
 		{
 			return _data.GetBlockRareMarbleUnlocked();
 		}
+		else if (setNumber == 7)
+		{
+			return _data.GetBlockIllusionUnlocked();
+		}
 
 		return 0;
 	}
@@ -88,6 +93,10 @@ public class BlockManager : MonoBehaviour
 		{
 			_data.SetBlockRareMarbleUnlocked(unlock);
 		}
+		else if (setNumber == 7)
+		{
+			_data.SetBlockIllusionUnlocked(unlock);
+		}
 	}
 
 	public Sprite GetBlockSprite(int setNumber, int blockIndex)
@@ -115,6 +124,10 @@ public class BlockManager : MonoBehaviour
 		else if (setNumber == 6)
 		{
 			return _blockRareMarble[blockIndex];
+		}
+		else if (setNumber == 7)
+		{
+			return _blockIllusion[blockIndex];
 		}
 
 		return _blockPlastic[blockIndex];

@@ -154,16 +154,16 @@ public class StoreLogic : MonoBehaviour
 		_ui.AnimateProductBlockBlueMarbleButtonPressed(()=>{});
 	}
 
-	public void OnProductBlockRedMarbleButtonPressed()
-	{
-		_audio.PlayButtonPressed();
-		_ui.AnimateProductBlockRedMarbleButtonPressed(()=>{});
-	}
-
 	public void OnProductBlockRareMarbleButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 		_ui.AnimateProductBlockRareMarbleButtonPressed(()=>{});
+	}
+
+	public void OnProductBlockIllusionButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+		_ui.AnimateProductBlockIllusionButtonPressed(()=>{});
 	}
 
 	public void OnProductHints3ButtonPressed()

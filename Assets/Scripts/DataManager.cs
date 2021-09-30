@@ -82,6 +82,9 @@ public class DataManager : MonoBehaviour
 	public string GetBlockRareMarbleUnlockedKey()				{ return "BlockRareMarbleUnlockedKey";								}
 	public int    GetBlockRareMarbleUnlockedDefault()			{ return 0;											}
 
+	public string GetBlockIllusionUnlockedKey()				{ return "BlockIllusionUnlockedKey";								}
+	public int    GetBlockIllusionUnlockedDefault()				{ return 0;											}
+
 	// Operations by Data Type
 
 	public bool  CheckAudio()						{ return PlayerPrefs.HasKey(GetAudioKey());							}
@@ -198,6 +201,11 @@ public class DataManager : MonoBehaviour
 	public int   GetBlockRareMarbleUnlocked()				{ return PlayerPrefs.GetInt(GetBlockRareMarbleUnlockedKey());					}
 	public void  SetBlockRareMarbleUnlocked(int value)			{        PlayerPrefs.SetInt(GetBlockRareMarbleUnlockedKey(), value);				}
 	public void  InitBlockRareMarbleUnlocked()				{        PlayerPrefs.SetInt(GetBlockRareMarbleUnlockedKey(), GetBlockRareMarbleUnlockedDefault()); }
+
+	public bool  CheckBlockIllusionUnlocked()				{ return PlayerPrefs.HasKey(GetBlockIllusionUnlockedKey());					}
+	public int   GetBlockIllusionUnlocked()					{ return PlayerPrefs.GetInt(GetBlockIllusionUnlockedKey());					}
+	public void  SetBlockIllusionUnlocked(int value)			{        PlayerPrefs.SetInt(GetBlockIllusionUnlockedKey(), value);				}
+	public void  InitBlockIllusionUnlocked()				{        PlayerPrefs.SetInt(GetBlockIllusionUnlockedKey(), GetBlockIllusionUnlockedDefault());	}
 
 	// Check by Key
 
@@ -364,6 +372,10 @@ public class DataManager : MonoBehaviour
 			if (CheckBlockRareMarbleUnlocked() == false)
 			{
 				InitBlockRareMarbleUnlocked();
+			}
+			if (CheckBlockIllusionUnlocked() == false)
+			{
+				InitBlockIllusionUnlocked();
 			}
 
 			// Calculate Color and Alphabet Star as well as Totals

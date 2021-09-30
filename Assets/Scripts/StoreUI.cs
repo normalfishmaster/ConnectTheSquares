@@ -22,6 +22,7 @@ public class StoreUI : MonoBehaviour
 	private GameObject _productRemoveAdsButton;
 	private GameObject _productBlockMetalButton;
 	private GameObject _productBlockWoodButton;
+	private GameObject _productBlockIllusionButton;
 	private GameObject _productBlockGreenMarbleButton;
 	private GameObject _productBlockBlueMarbleButton;
 	private GameObject _productBlockRedMarbleButton;
@@ -39,6 +40,7 @@ public class StoreUI : MonoBehaviour
 		_productRemoveAdsButton = GameObject.Find("/Canvas/Product/Viewport/Content/RemoveAds/Button");
 		_productBlockMetalButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockMetal/Button");
 		_productBlockWoodButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockWood/Button");
+		_productBlockIllusionButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockIllusion/Button");
 		_productBlockGreenMarbleButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockGreenMarble/Button");
 		_productBlockBlueMarbleButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockBlueMarble/Button");
 		_productBlockRedMarbleButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockRedMarble/Button");
@@ -55,6 +57,7 @@ public class StoreUI : MonoBehaviour
 		_productRemoveAdsButton.GetComponent<Button>().enabled = enable;
 		_productBlockMetalButton.GetComponent<Button>().enabled = enable;
 		_productBlockWoodButton.GetComponent<Button>().enabled = enable;
+		_productBlockIllusionButton.GetComponent<Button>().enabled = enable;
 		_productBlockGreenMarbleButton.GetComponent<Button>().enabled = enable;
 		_productBlockBlueMarbleButton.GetComponent<Button>().enabled = enable;
 		_productBlockRedMarbleButton.GetComponent<Button>().enabled = enable;
@@ -121,6 +124,11 @@ public class StoreUI : MonoBehaviour
 	public void AnimateProductBlockRareMarbleButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_productBlockRareMarbleButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateProductBlockIllusionButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_productBlockIllusionButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	public void AnimateProductHints3ButtonPressed(Animate.AnimateComplete callback)

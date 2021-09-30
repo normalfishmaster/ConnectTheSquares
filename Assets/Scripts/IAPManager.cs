@@ -19,6 +19,7 @@ public class IAPManager : MonoBehaviour
 	private string _productBlockBlueMarble = "com.normalfish.connectthesquares.blocksetbluemarble";
 	private string _productBlockRedMarble = "com.normalfish.connectthesquares.blocksetredmarble";
 	private string _productBlockRareMarble = "com.normalfish.connectthesquares.blocksetraremarble";
+	private string _productBlockIllusion = "com.normalfish.connectthesquares.blockillusion";
 	private string _productHints3 = "com.normalfish.connectthesquares.hints3";
 	private string _productHints15p3 = "com.normalfish.connectthesquares.hints15p3";
 	private string _productHints30p9 = "com.normalfish.connectthesquares.hints30p9";
@@ -55,6 +56,10 @@ public class IAPManager : MonoBehaviour
 		else if (product.definition.id == _productBlockRareMarble)
 		{
 			_block.SetBlockSetUnlocked(6, 1);
+		}
+		else if (product.definition.id == _productBlockIllusion)
+		{
+			_block.SetBlockSetUnlocked(7, 1);
 		}
 		else if (product.definition.id == _productHints3)
 		{

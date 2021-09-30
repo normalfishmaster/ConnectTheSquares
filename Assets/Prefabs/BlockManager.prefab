@@ -44,10 +44,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _blockPlastic:
-  - {fileID: 21300000, guid: 1d72845e6d66af7498926e55e37a777e, type: 3}
-  - {fileID: 21300000, guid: a511ff18f1ad8bdbca93ba395a4ce274, type: 3}
-  - {fileID: 21300000, guid: bd8722e3225313541b20d9f8bc4f7aeb, type: 3}
-  - {fileID: 21300000, guid: ea265a34ad07df7dd81a333b2cea729e, type: 3}
+  - {fileID: 21300000, guid: 8f3c11ad589feaccc9a5de8217a0d46e, type: 3}
+  - {fileID: 21300000, guid: 34b1712b55ebec90a8c35bb4fc9a525c, type: 3}
+  - {fileID: 21300000, guid: b2f72efc49c42a3b68167115af1d499b, type: 3}
+  - {fileID: 21300000, guid: 4caf355661cd434c78c87ce242393c13, type: 3}
   _blockMetal:
   - {fileID: 21300000, guid: 03904281484e0b570b2d8260c09096d9, type: 3}
   - {fileID: 21300000, guid: 81efc35affaba5756bb53a717e11752c, type: 3}
@@ -56,8 +56,13 @@ MonoBehaviour:
   _blockWood:
   - {fileID: 21300000, guid: 92ed30f5d5ab44b60a26093b208fbe6b, type: 3}
   - {fileID: 21300000, guid: 433e4fa3f13a07fe1aabd1c0bb51df8d, type: 3}
+  - {fileID: 21300000, guid: ed311b7317ef9bd0e84507bbe9d2ff2b, type: 3}
   - {fileID: 21300000, guid: 3d0ad85462b9f8f2480e2aec6e462cef, type: 3}
-  - {fileID: 21300000, guid: 5d8c166d49f24658cbf5d1c5d85e511b, type: 3}
+  _blockIllusion:
+  - {fileID: 21300000, guid: b2fd5bbe5ba1afd5db4561a19090430c, type: 3}
+  - {fileID: 21300000, guid: 3aadd3583075f9801995480a9407890c, type: 3}
+  - {fileID: 21300000, guid: b324b1ba41f3ec95da9a00bdcf09918d, type: 3}
+  - {fileID: 21300000, guid: e5b1269a9f7ac718ab93def5b8cd76b4, type: 3}
   _blockGreenMarble:
   - {fileID: 21300000, guid: ffa695c2d99f057f28305e2bf116a35c, type: 3}
   - {fileID: 21300000, guid: 5d5e3d2230c6f32559e8e58c81c3a7ed, type: 3}
@@ -68,11 +73,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: bc24b35f3c59bf0d6b79553355530387, type: 3}
   - {fileID: 21300000, guid: 28d02375a2fdb6b569b1c14cd940f7d3, type: 3}
   - {fileID: 21300000, guid: da046eaf452417ff784379bd4c8990e1, type: 3}
-  _blockRedMarble:
-  - {fileID: 21300000, guid: 8f3c11ad589feaccc9a5de8217a0d46e, type: 3}
-  - {fileID: 21300000, guid: 34b1712b55ebec90a8c35bb4fc9a525c, type: 3}
-  - {fileID: 21300000, guid: b2f72efc49c42a3b68167115af1d499b, type: 3}
-  - {fileID: 21300000, guid: 4caf355661cd434c78c87ce242393c13, type: 3}
   _blockRareMarble:
   - {fileID: 21300000, guid: c3235d6e093a66366a940e21be4b3c0e, type: 3}
   - {fileID: 21300000, guid: d1e38cfa75274e9f4bbbb59e8de22c41, type: 3}
