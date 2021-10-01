@@ -147,11 +147,11 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
-	public void OnBottomNoAdsButtonPressed()
+	public void OnBottomRateButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.AnimateBottomNoAdsButtonPressed
+		_ui.AnimateBottomRateButtonPressed
 		(
 			()=>
 			{

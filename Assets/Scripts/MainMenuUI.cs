@@ -198,8 +198,8 @@ public class MainMenuUI : MonoBehaviour
 	private GameObject _bottomGameCenter;
 	private GameObject _bottomGameCenterButton;
 
-	private GameObject _bottomNoAds;
-	private GameObject _bottomNoAdsButton;
+	private GameObject _bottomRate;
+	private GameObject _bottomRateButton;
 
 	private GameObject _bottomLanguage;
 	private GameObject _bottomLanguageButton;
@@ -212,8 +212,8 @@ public class MainMenuUI : MonoBehaviour
 		_bottomGameCenter = GameObject.Find("/Canvas/Bottom/GameCenter");
 		_bottomGameCenterButton = GameObject.Find("/Canvas/Bottom/GameCenter/Button");
 
-		_bottomNoAds = GameObject.Find("/Canvas/Bottom/NoAds");
-		_bottomNoAdsButton = GameObject.Find("/Canvas/Bottom/NoAds/Button");
+		_bottomRate = GameObject.Find("/Canvas/Bottom/Rate");
+		_bottomRateButton = GameObject.Find("/Canvas/Bottom/Rate/Button");
 
 		_bottomLanguage = GameObject.Find("/Canvas/Bottom/Language");
 		_bottomLanguageButton = GameObject.Find("/Canvas/Bottom/Language/Button");
@@ -233,7 +233,7 @@ public class MainMenuUI : MonoBehaviour
 	{
 		_bottomGooglePlayButton.GetComponent<Button>().enabled = enable;
 		_bottomGameCenterButton.GetComponent<Button>().enabled = enable;
-		_bottomNoAdsButton.GetComponent<Button>().enabled = enable;
+		_bottomRateButton.GetComponent<Button>().enabled = enable;
 		_bottomLanguageButton.GetComponent<Button>().enabled = enable;
 	}
 
@@ -247,9 +247,9 @@ public class MainMenuUI : MonoBehaviour
 		Animate.AnimateButtonPressed(_bottomGameCenterButton, BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE, BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateBottomNoAdsButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateBottomRateButtonPressed(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateButtonPressed(_bottomNoAdsButton, BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE, BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+		Animate.AnimateButtonPressed(_bottomRateButton, BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE, BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	public void AnimateBottomLanguageButtonPressed(Animate.AnimateComplete callback)
