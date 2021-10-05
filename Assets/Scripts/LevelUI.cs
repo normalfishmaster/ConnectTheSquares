@@ -487,9 +487,12 @@ public class LevelUI : MonoBehaviour
 	public float PAUSE_ANIMATE_BUTTON_PRESSED_SCALE;
 	public float PAUSE_ANIMATE_BUTTON_PRESSED_DURATION;
 
+	public float PAUSE_ANIMATE_PAUSE_PREVIEW_BOUNCE_DURATION;
+
 	private GameObject _pause;
 	private GameObject _pauseBoard;
 
+	private GameObject _pausePreviewButton;
 	private GameObject _pauseBlockButton;
 	private GameObject _pauseAudioOnButton;
 	private GameObject _pauseAudioOffButton;
@@ -504,6 +507,7 @@ public class LevelUI : MonoBehaviour
 		_pause = GameObject.Find("/Canvas/Pause");
 		_pauseBoard = GameObject.Find("/Canvas/Pause/Board");
 
+		_pausePreviewButton = GameObject.Find("/Canvas/Pause/Board/Preview/Button");
 		_pauseBlockButton = GameObject.Find("/Canvas/Pause/Board/Block/Button");
 		_pauseAudioOnButton = GameObject.Find("/Canvas/Pause/Board/AudioOn/Button");
 		_pauseAudioOffButton = GameObject.Find("/Canvas/Pause/Board/AudioOff/Button");
@@ -535,8 +539,14 @@ public class LevelUI : MonoBehaviour
 		_pauseAudioOffButton.SetActive(active);
 	}
 
+	public void SetActivePausePreviewButton(bool active)
+	{
+		_pausePreviewButton.SetActive(active);
+	}
+
 	public void SetEnablePauseButton(bool enable)
 	{
+		_pausePreviewButton.GetComponent<Button>().enabled = enable;
 		_pauseBlockButton.GetComponent<Button>().enabled = enable;
 		_pauseAudioOnButton.GetComponent<Button>().enabled = enable;
 		_pauseAudioOffButton.GetComponent<Button>().enabled = enable;
@@ -567,6 +577,11 @@ public class LevelUI : MonoBehaviour
 		Animate.AnimateBoardExit(_pause, _pauseBoard, PAUSE_ANIMATE_BOARD_EXIT_DURATION, callback);
 	}
 
+	public void AnimatePausePreviewButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_pausePreviewButton, PAUSE_ANIMATE_BUTTON_PRESSED_SCALE, PAUSE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
 	public void AnimatePauseBlockButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_pauseBlockButton, PAUSE_ANIMATE_BUTTON_PRESSED_SCALE, PAUSE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
@@ -590,6 +605,65 @@ public class LevelUI : MonoBehaviour
 	public void AnimatePauseResumeButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_pauseResumeButton, PAUSE_ANIMATE_BUTTON_PRESSED_SCALE, PAUSE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimatePausePreviewButtonBounce()
+	{
+		RectTransform rectTransform = (RectTransform)_pausePreviewButton.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+
+		rectTransform.anchoredPosition = new Vector3(pos.x, 25, pos.z);
+
+		LeanTween.cancel(_pausePreviewButton);
+		LeanTween.moveLocalY(_pausePreviewButton, 0, PAUSE_ANIMATE_PAUSE_PREVIEW_BOUNCE_DURATION).setEasePunch().setOnComplete
+		(
+			()=>
+			{
+				AnimatePausePreviewButtonBounce();
+			}
+		);
+	}
+
+	// ExitPreview
+
+	public float EXIT_PREVIEW_ANIMATE_BUTTON_PRESSED_SCALE;
+	public float EXIT_PREVIEW_ANIMATE_BUTTON_PRESSED_DURATION;
+
+	public float EXIT_PREVIEW_ANIMATE_PUNCH_DURATION;
+
+	private GameObject _exitPreviewButton;
+
+	private void FindExitPreviewGameObject()
+	{
+		_exitPreviewButton = GameObject.Find("/Canvas/ExitPreview");
+	}
+
+	public void SetActiveExitPreviewButton(bool active)
+	{
+		_exitPreviewButton.SetActive(active);
+	}
+
+	public void SetEnableExitPreviewButton(bool enable)
+	{
+		_exitPreviewButton.GetComponent<Button>().enabled = enable;
+	}
+
+	public void AnimateActiveExitButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_exitPreviewButton, EXIT_PREVIEW_ANIMATE_BUTTON_PRESSED_SCALE, EXIT_PREVIEW_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateActiveExitButtonPunch()
+	{
+		LeanTween.cancel(_exitPreviewButton);
+
+		LeanTween.scale(_exitPreviewButton, Vector3.one * 1.1f, EXIT_PREVIEW_ANIMATE_PUNCH_DURATION).setEasePunch().setOnComplete
+		(
+			()=>
+			{
+				AnimateActiveExitButtonPunch();
+			}
+		);
 	}
 
 	// Win
@@ -781,6 +855,7 @@ public class LevelUI : MonoBehaviour
 		FindControlGameObject();
 		FindGoGameObject();
 		FindPauseGameObject();
+		FindExitPreviewGameObject();
 		FindWinGameObject();
 	}
 }
