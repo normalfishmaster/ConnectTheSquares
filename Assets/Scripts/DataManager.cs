@@ -349,6 +349,10 @@ public class DataManager : MonoBehaviour
 				}
 			}
 
+			if (CheckBlockSet() == false)
+			{
+				InitBlockSet();
+			}
 			if (CheckBlockMetalUnlocked() == false)
 			{
 				InitBlockMetalUnlocked();
