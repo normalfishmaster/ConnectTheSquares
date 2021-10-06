@@ -73,6 +73,8 @@ public class StoreLogic : MonoBehaviour
 
 			_ui.SetTopHintCount(_data.GetHint());
 
+			_audio.PlayRewardReceived();
+
 			_adUi.SetActiveAdSuccess(true);
 			_adUi.SetActiveAdSuccessHint(false);
 			_adUi.SetEnableAdSuccessButton(false);
@@ -80,7 +82,6 @@ public class StoreLogic : MonoBehaviour
 			(
 				()=>
 				{
-					_audio.PlayRewardReceived();
 					_adUi.SetActiveAdSuccessHint(true);
 					_adUi.AnimateAdSuccessHintEnter
 					(

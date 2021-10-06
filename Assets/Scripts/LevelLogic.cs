@@ -1064,11 +1064,13 @@ public class LevelLogic : MonoBehaviour
 			_adUi.SetActiveAdSuccess(true);
 			_adUi.SetActiveAdSuccessHint(false);
 			_adUi.SetEnableAdSuccessButton(false);
+
+			_audio.PlayRewardReceived();
+
 			_adUi.AnimateAdSuccessBoardEnter
 			(
 				()=>
 				{
-					_audio.PlayRewardReceived();
 					_adUi.SetActiveAdSuccessHint(true);
 					_adUi.AnimateAdSuccessHintEnter
 					(

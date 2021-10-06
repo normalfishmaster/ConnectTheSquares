@@ -10,15 +10,19 @@ public class AdUI : MonoBehaviour
 	public float AD_SUCCESS_ANIMATE_BOARD_ENTER_DURATION;
 	public float AD_SUCCESS_ANIMATE_BOARD_EXIT_DURATION;
 
+	public float AD_SUCCESS_ANIMATE_SUNBURST_RORATE_TIME;
+
 	public float AD_SUCCESS_ANIMATE_HINT_ENTER_DURATION;
 
 	public float AD_SUCCESS_ANIMATE_BUTTON_PRESSED_SCALE;
 	public float AD_SUCCESS_ANIMATE_BUTTON_PRESSED_DURATION;
 
+
 	private GameObject _adSuccess;
 	private GameObject _adSuccessBoard;
 	private GameObject _adSuccessHint;
-	private GameObject _adSuccessFlare;
+	private GameObject _adSuccessSunburst0;
+	private GameObject _adSuccessSunburst1;
 
 	private GameObject _adSuccessCloseButton;
 
@@ -27,7 +31,8 @@ public class AdUI : MonoBehaviour
 		_adSuccess = GameObject.Find("/Canvas/AdSuccess");
 		_adSuccessBoard = GameObject.Find("/Canvas/AdSuccess/Board");
 		_adSuccessHint = GameObject.Find("/Canvas/AdSuccess/Board/Hint");
-		_adSuccessFlare = GameObject.Find("/Canvas/AdSuccess/Board/Flare");
+		_adSuccessSunburst0 = GameObject.Find("/Canvas/AdSuccess/Board/Sunburst0");
+		_adSuccessSunburst1 = GameObject.Find("/Canvas/AdSuccess/Board/Sunburst1");
 
 		_adSuccessCloseButton = GameObject.Find("/Canvas/AdSuccess/Board/Close/Button");
 	}
@@ -40,7 +45,8 @@ public class AdUI : MonoBehaviour
 	public void SetActiveAdSuccessHint(bool active)
 	{
 		_adSuccessHint.SetActive(active);
-		_adSuccessFlare.SetActive(active);
+		_adSuccessSunburst0.SetActive(active);
+		_adSuccessSunburst1.SetActive(active);
 	}
 
 	public void SetEnableAdSuccessButton(bool enable)
@@ -58,25 +64,59 @@ public class AdUI : MonoBehaviour
 		Animate.AnimateBoardExit(_adSuccess, _adSuccessBoard, AD_SUCCESS_ANIMATE_BOARD_EXIT_DURATION, callback);
 	}
 
+	private void AnimateAdSuccessSunburst0Rotate()
+	{
+		LeanTween.rotateAround(_adSuccessSunburst0, Vector3.forward, -360.0f, AD_SUCCESS_ANIMATE_SUNBURST_RORATE_TIME).setOnComplete
+		(
+			()=>
+			{
+				AnimateAdSuccessSunburst0Rotate();
+			}
+		);
+	}
+
 	public void AnimateAdSuccessHintEnter(Animate.AnimateComplete callback)
 	{
-		// Animate Flare
+		// Animate Sunburst0
 
-		_adSuccessFlare.transform.localScale = Vector3.zero;
+		LeanTween.cancel(_adSuccessSunburst0);
 
-		LeanTween.scale(_adSuccessFlare, Vector3.one, AD_SUCCESS_ANIMATE_HINT_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad);
+		_adSuccessSunburst0.transform.localScale = Vector3.zero;
+		LeanTween.scale(_adSuccessSunburst0, Vector3.one, AD_SUCCESS_ANIMATE_HINT_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad);
+
+		AnimateAdSuccessSunburst0Rotate();
+
+		// Animate Sunburst1
+
+		LeanTween.cancel(_adSuccessSunburst1);
+
+		_adSuccessSunburst1.transform.localScale = Vector3.zero;
+
+		LeanTween.scale(_adSuccessSunburst1, Vector3.one, AD_SUCCESS_ANIMATE_HINT_ENTER_DURATION).setEase(LeanTweenType.easeInOutElastic);
 
 		// Animate hint
 
-		_adSuccessHint.transform.localScale = Vector3.one * 3.0f;
+		LeanTween.cancel(_adSuccessHint);
 
-		LeanTween.scale(_adSuccessHint, Vector3.one, AD_SUCCESS_ANIMATE_HINT_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		_adSuccessHint.transform.localScale = Vector3.zero;
+
+		LeanTween.scale(_adSuccessHint, Vector3.one, AD_SUCCESS_ANIMATE_HINT_ENTER_DURATION).setEase(LeanTweenType.easeInOutElastic).setOnComplete
 		(
 			()=>
 			{
 				callback();
 			}
 		);
+
+
+/*		LeanTween.scale(_adSuccessHint, Vector3.one, AD_SUCCESS_ANIMATE_HINT_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
+*/
 	}
 
 	public void AnimateAdSuccessCloseButtonPressed(Animate.AnimateComplete callback)
