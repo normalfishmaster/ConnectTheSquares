@@ -118,6 +118,53 @@ public class StoreLogic : MonoBehaviour
 
 	// UI - Product
 
+	private void SetupProduct()
+	{
+		_ui.SetEnableProductButton(false);
+
+		_data.SetRemoveAds(0);
+		_data.SetBlockMetalUnlocked(0);
+		_data.SetBlockWoodUnlocked(0);
+		_data.SetBlockGreenMarbleUnlocked(0);
+		_data.SetBlockBlueMarbleUnlocked(0);
+		_data.SetBlockRedMarbleUnlocked(0);
+		_data.SetBlockRareMarbleUnlocked(0);
+		_data.SetBlockIllusionUnlocked(0);
+
+		if (_data.GetRemoveAds() == 1)
+		{
+			_ui.SetInteractableProductRemoveAds(false);
+		}
+		if (_data.GetBlockMetalUnlocked() == 1)
+		{
+			_ui.SetInteractableProductBlockMetal(false);
+		}
+		if (_data.GetBlockWoodUnlocked() == 1)
+		{
+			_ui.SetInteractableProductBlockWood(false);
+		}
+		if (_data.GetBlockGreenMarbleUnlocked() == 1)
+		{
+			_ui.SetInteractableProductBlockGreenMarble(false);
+		}
+		if (_data.GetBlockBlueMarbleUnlocked() == 1)
+		{
+			_ui.SetInteractableProductBlockBlueMarble(false);
+		}
+		if (_data.GetBlockRedMarbleUnlocked() == 1)
+		{
+			_ui.SetInteractableProductBlockRedMarble(false);
+		}
+		if (_data.GetBlockRareMarbleUnlocked() == 1)
+		{
+			_ui.SetInteractableProductBlockRareMarble(false);
+		}
+		if (_data.GetBlockIllusionUnlocked() == 1)
+		{
+			_ui.SetInteractableProductBlockIllusion(false);
+		}
+	}
+
 	public void OnProductHintAdButtonPressed()
 	{
 		_audio.PlayButtonPressed();
@@ -199,11 +246,6 @@ public class StoreLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 		_ui.AnimateProductHints60p24ButtonPressed(()=>{});
-	}
-
-	private void SetupProduct()
-	{
-		_ui.SetEnableProductButton(false);
 	}
 
 	// UI - Bottom

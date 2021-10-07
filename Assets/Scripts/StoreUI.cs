@@ -34,17 +34,17 @@ public class StoreUI : MonoBehaviour
 
 	private GameObject _productHintAdButton;
 	private GameObject _productRemoveAdsButton;
-	private GameObject _productBlockMetalButton;
-	private GameObject _productBlockWoodButton;
-	private GameObject _productBlockIllusionButton;
-	private GameObject _productBlockGreenMarbleButton;
-	private GameObject _productBlockBlueMarbleButton;
-	private GameObject _productBlockRedMarbleButton;
-	private GameObject _productBlockRareMarbleButton;
 	private GameObject _productHints3Button;
 	private GameObject _productHints15p3Button;
 	private GameObject _productHints30p9Button;
 	private GameObject _productHints60p24Button;
+	private GameObject _productBlockMetalButton;
+	private GameObject _productBlockWoodButton;
+	private GameObject _productBlockGreenMarbleButton;
+	private GameObject _productBlockBlueMarbleButton;
+	private GameObject _productBlockRedMarbleButton;
+	private GameObject _productBlockRareMarbleButton;
+	private GameObject _productBlockIllusionButton;
 
 	private void FindProductGameObject()
 	{
@@ -52,34 +52,74 @@ public class StoreUI : MonoBehaviour
 
 		_productHintAdButton = GameObject.Find("/Canvas/Product/Viewport/Content/HintAd/Button");
 		_productRemoveAdsButton = GameObject.Find("/Canvas/Product/Viewport/Content/RemoveAds/Button");
-		_productBlockMetalButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockMetal/Button");
-		_productBlockWoodButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockWood/Button");
-		_productBlockIllusionButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockIllusion/Button");
-		_productBlockGreenMarbleButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockGreenMarble/Button");
-		_productBlockBlueMarbleButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockBlueMarble/Button");
-		_productBlockRedMarbleButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockRedMarble/Button");
-		_productBlockRareMarbleButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockRareMarble/Button");
 		_productHints3Button = GameObject.Find("/Canvas/Product/Viewport/Content/Hints3/Button");
 		_productHints15p3Button = GameObject.Find("/Canvas/Product/Viewport/Content/Hints15p3/Button");
 		_productHints30p9Button = GameObject.Find("/Canvas/Product/Viewport/Content/Hints30p9/Button");
 		_productHints60p24Button = GameObject.Find("/Canvas/Product/Viewport/Content/Hints60p24/Button");
+		_productBlockMetalButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockMetal/Button");
+		_productBlockWoodButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockWood/Button");
+		_productBlockGreenMarbleButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockGreenMarble/Button");
+		_productBlockBlueMarbleButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockBlueMarble/Button");
+		_productBlockRedMarbleButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockRedMarble/Button");
+		_productBlockRareMarbleButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockRareMarble/Button");
+		_productBlockIllusionButton = GameObject.Find("/Canvas/Product/Viewport/Content/BlockIllusion/Button");
 	}
 
 	public void SetEnableProductButton(bool enable)
 	{
 		_productHintAdButton.GetComponent<Button>().enabled = enable;
 		_productRemoveAdsButton.GetComponent<Button>().enabled = enable;
-		_productBlockMetalButton.GetComponent<Button>().enabled = enable;
-		_productBlockWoodButton.GetComponent<Button>().enabled = enable;
-		_productBlockIllusionButton.GetComponent<Button>().enabled = enable;
-		_productBlockGreenMarbleButton.GetComponent<Button>().enabled = enable;
-		_productBlockBlueMarbleButton.GetComponent<Button>().enabled = enable;
-		_productBlockRedMarbleButton.GetComponent<Button>().enabled = enable;
-		_productBlockRareMarbleButton.GetComponent<Button>().enabled = enable;
 		_productHints3Button.GetComponent<Button>().enabled = enable;
 		_productHints15p3Button.GetComponent<Button>().enabled = enable;
 		_productHints30p9Button.GetComponent<Button>().enabled = enable;
 		_productHints60p24Button.GetComponent<Button>().enabled = enable;
+		_productBlockMetalButton.GetComponent<Button>().enabled = enable;
+		_productBlockWoodButton.GetComponent<Button>().enabled = enable;
+		_productBlockGreenMarbleButton.GetComponent<Button>().enabled = enable;
+		_productBlockBlueMarbleButton.GetComponent<Button>().enabled = enable;
+		_productBlockRedMarbleButton.GetComponent<Button>().enabled = enable;
+		_productBlockRareMarbleButton.GetComponent<Button>().enabled = enable;
+		_productBlockIllusionButton.GetComponent<Button>().enabled = enable;
+	}
+
+	public void SetInteractableProductRemoveAds(bool interactable)
+	{
+		_productRemoveAdsButton.GetComponent<Button>().interactable = interactable;
+	}
+
+	public void SetInteractableProductBlockMetal(bool interactable)
+	{
+		_productBlockMetalButton.GetComponent<Button>().interactable = interactable;
+	}
+
+	public void SetInteractableProductBlockWood(bool interactable)
+	{
+		_productBlockWoodButton.GetComponent<Button>().interactable = interactable;
+	}
+
+	public void SetInteractableProductBlockGreenMarble(bool interactable)
+	{
+		_productBlockGreenMarbleButton.GetComponent<Button>().interactable = interactable;
+	}
+
+	public void SetInteractableProductBlockBlueMarble(bool interactable)
+	{
+		_productBlockBlueMarbleButton.GetComponent<Button>().interactable = interactable;
+	}
+
+	public void SetInteractableProductBlockRedMarble(bool interactable)
+	{
+		_productBlockRedMarbleButton.GetComponent<Button>().interactable = interactable;
+	}
+
+	public void SetInteractableProductBlockRareMarble(bool interactable)
+	{
+		_productBlockRareMarbleButton.GetComponent<Button>().interactable = interactable;
+	}
+
+	public void SetInteractableProductBlockIllusion(bool interactable)
+	{
+		_productBlockIllusionButton.GetComponent<Button>().interactable = interactable;
 	}
 
 	public void AnimateProductEnter(Animate.AnimateComplete callback)
