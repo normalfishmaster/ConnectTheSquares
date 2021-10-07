@@ -49,6 +49,20 @@ MonoBehaviour:
   AD_SUCCESS_ANIMATE_HINT_ENTER_DURATION: 0.5
   AD_SUCCESS_ANIMATE_BUTTON_PRESSED_SCALE: 1.15
   AD_SUCCESS_ANIMATE_BUTTON_PRESSED_DURATION: 0.15
+  _adSuccessItemSprite:
+  - {fileID: 21300000, guid: 1af0650d9f363a028b7d073009ca7d21, type: 3}
+  - {fileID: 21300000, guid: 44ffcc1c955d6d377a792c7764e34413, type: 3}
+  - {fileID: 21300000, guid: 1dc41d9a607b85703b4a4a6a6cafdb36, type: 3}
+  - {fileID: 21300000, guid: d267ad6c429ee69d09ecf2fd77e2facb, type: 3}
+  - {fileID: 21300000, guid: 0034ce9eefcdc4972ab6e15fad8c5ad4, type: 3}
+  - {fileID: 21300000, guid: 4a58920402aeb028ea54b010384eced8, type: 3}
+  - {fileID: 21300000, guid: 54b34bc19833376038185cf5fbc6d3e7, type: 3}
+  - {fileID: 21300000, guid: e41cb8971503bee998fcec617f5b1c2f, type: 3}
+  - {fileID: 21300000, guid: d4e6f6dc3119e1fd797f316260d95fcc, type: 3}
+  - {fileID: 21300000, guid: 9061e68967538c35ea9ff3601bae9552, type: 3}
+  - {fileID: 21300000, guid: 8af3a249bfe7b5eeaa6e3efe3326c35a, type: 3}
+  - {fileID: 21300000, guid: e2e1ee3c1a29e9c58a9c42f27e009eab, type: 3}
+  - {fileID: 21300000, guid: e9a4c25267d86d42d816fbb6463fb667, type: 3}
   AD_ABORT_ANIMATE_BOARD_ENTER_DURATION: 0.5
   AD_ABORT_ANIMATE_BOARD_EXIT_DURATION: 0.5
   AD_ABORT_ANIMATE_BUTTON_PRESSED_SCALE: 1.15

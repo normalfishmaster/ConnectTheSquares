@@ -1062,7 +1062,10 @@ public class LevelLogic : MonoBehaviour
 			_ui.SetActiveControlHintOn(false);
 			_ui.SetActiveControlHintOff(true);
 			_adUi.SetActiveAdSuccess(true);
-			_adUi.SetActiveAdSuccessHint(false);
+			_adUi.SetAdSuccessItem("hint");
+			_adUi.SetActiveAdSuccessCount(false);
+			_adUi.SetAdSuccessCountValue("+1");
+			_adUi.SetActiveAdSuccessItem(false);
 			_adUi.SetEnableAdSuccessButton(false);
 
 			_audio.PlayRewardReceived();
@@ -1071,8 +1074,9 @@ public class LevelLogic : MonoBehaviour
 			(
 				()=>
 				{
-					_adUi.SetActiveAdSuccessHint(true);
-					_adUi.AnimateAdSuccessHintEnter
+					_adUi.SetActiveAdSuccessItem(true);
+					_adUi.SetActiveAdSuccessCount(true);
+					_adUi.AnimateAdSuccessItemEnter
 					(
 						()=>
 						{

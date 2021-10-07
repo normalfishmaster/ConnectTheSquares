@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class AdUI : MonoBehaviour
 {
@@ -17,12 +18,14 @@ public class AdUI : MonoBehaviour
 	public float AD_SUCCESS_ANIMATE_BUTTON_PRESSED_SCALE;
 	public float AD_SUCCESS_ANIMATE_BUTTON_PRESSED_DURATION;
 
+	public Sprite[] _adSuccessItemSprite;
 
 	private GameObject _adSuccess;
 	private GameObject _adSuccessBoard;
-	private GameObject _adSuccessHint;
+	private GameObject _adSuccessItem;
 	private GameObject _adSuccessSunburst0;
 	private GameObject _adSuccessSunburst1;
+	private GameObject _adSuccessCount;
 
 	private GameObject _adSuccessCloseButton;
 
@@ -30,11 +33,78 @@ public class AdUI : MonoBehaviour
 	{
 		_adSuccess = GameObject.Find("/Canvas/AdSuccess");
 		_adSuccessBoard = GameObject.Find("/Canvas/AdSuccess/Board");
-		_adSuccessHint = GameObject.Find("/Canvas/AdSuccess/Board/Hint");
+		_adSuccessItem = GameObject.Find("/Canvas/AdSuccess/Board/Item");
 		_adSuccessSunburst0 = GameObject.Find("/Canvas/AdSuccess/Board/Sunburst0");
 		_adSuccessSunburst1 = GameObject.Find("/Canvas/AdSuccess/Board/Sunburst1");
+		_adSuccessCount = GameObject.Find("/Canvas/AdSuccess/Board/Count");
 
 		_adSuccessCloseButton = GameObject.Find("/Canvas/AdSuccess/Board/Close/Button");
+	}
+
+        public void SetAdSuccessItem(string item)
+        {
+		if (item == "hint")
+		{
+			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[0];
+		}
+		else if (item == IAPManager._productRemoveAds)
+		{
+			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[1];
+		}
+		else if (item == IAPManager._productHints3)
+		{
+			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[2];
+		}
+		else if (item == IAPManager._productHints15p3)
+		{
+			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[3];
+		}
+		else if (item == IAPManager._productHints30p9)
+		{
+			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[4];
+		}
+		else if (item == IAPManager._productHints60p24)
+		{
+			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[5];
+		}
+		else if (item == IAPManager._productBlockMetal)
+		{
+			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[6];
+		}
+		else if (item == IAPManager._productBlockWood)
+		{
+			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[7];
+		}
+		else if (item == IAPManager._productBlockGreenMarble)
+		{
+			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[8];
+		}
+		else if (item == IAPManager._productBlockBlueMarble)
+		{
+			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[9];
+		}
+		else if (item == IAPManager._productBlockRedMarble)
+		{
+			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[10];
+		}
+		else if (item == IAPManager._productBlockRareMarble)
+		{
+			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[11];
+		}
+		else if (item == IAPManager._productBlockIllusion)
+		{
+			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[12];
+		}
+	}
+
+	public void SetActiveAdSuccessCount(bool active)
+	{
+		_adSuccessCount.SetActive(active);
+	}
+
+	public void SetAdSuccessCountValue(string value)
+	{
+		_adSuccessCount.GetComponent<TextMeshProUGUI>().SetText(value);
 	}
 
 	public void SetActiveAdSuccess(bool active)
@@ -42,9 +112,9 @@ public class AdUI : MonoBehaviour
 		_adSuccess.SetActive(active);
 	}
 
-	public void SetActiveAdSuccessHint(bool active)
+	public void SetActiveAdSuccessItem(bool active)
 	{
-		_adSuccessHint.SetActive(active);
+		_adSuccessItem.SetActive(active);
 		_adSuccessSunburst0.SetActive(active);
 		_adSuccessSunburst1.SetActive(active);
 	}
@@ -75,7 +145,7 @@ public class AdUI : MonoBehaviour
 		);
 	}
 
-	public void AnimateAdSuccessHintEnter(Animate.AnimateComplete callback)
+	public void AnimateAdSuccessItemEnter(Animate.AnimateComplete callback)
 	{
 		// Animate Sunburst0
 
@@ -94,13 +164,13 @@ public class AdUI : MonoBehaviour
 
 		LeanTween.scale(_adSuccessSunburst1, Vector3.one, AD_SUCCESS_ANIMATE_HINT_ENTER_DURATION).setEase(LeanTweenType.easeInOutElastic);
 
-		// Animate hint
+		// Animate count
 
-		LeanTween.cancel(_adSuccessHint);
+		LeanTween.cancel(_adSuccessCount);
 
-		_adSuccessHint.transform.localScale = Vector3.zero;
+		_adSuccessCount.transform.localScale = Vector3.zero;
 
-		LeanTween.scale(_adSuccessHint, Vector3.one, AD_SUCCESS_ANIMATE_HINT_ENTER_DURATION).setEase(LeanTweenType.easeInOutElastic).setOnComplete
+		LeanTween.scale(_adSuccessCount, Vector3.one, AD_SUCCESS_ANIMATE_HINT_ENTER_DURATION).setEase(LeanTweenType.easeInOutElastic).setOnComplete
 		(
 			()=>
 			{
@@ -108,15 +178,19 @@ public class AdUI : MonoBehaviour
 			}
 		);
 
+		// Animate item
 
-/*		LeanTween.scale(_adSuccessHint, Vector3.one, AD_SUCCESS_ANIMATE_HINT_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad).setOnComplete
+		LeanTween.cancel(_adSuccessItem);
+
+		_adSuccessItem.transform.localScale = Vector3.zero;
+
+		LeanTween.scale(_adSuccessItem, Vector3.one, AD_SUCCESS_ANIMATE_HINT_ENTER_DURATION).setEase(LeanTweenType.easeInOutElastic).setOnComplete
 		(
 			()=>
 			{
 				callback();
 			}
 		);
-*/
 	}
 
 	public void AnimateAdSuccessCloseButtonPressed(Animate.AnimateComplete callback)

@@ -12,18 +12,18 @@ public class IAPManager : MonoBehaviour
 
 	// Product
 
-	private string _productRemoveAds = "com.normalfish.connectthesquares.removeads";
-	private string _productBlockMetal = "com.normalfish.connectthesquares.blocksetmetal";
-	private string _productBlockWood = "com.normalfish.connectthesquares.blocksetwood";
-	private string _productBlockGreenMarble = "com.normalfish.connectthesquares.blocksetgreenmarble";
-	private string _productBlockBlueMarble = "com.normalfish.connectthesquares.blocksetbluemarble";
-	private string _productBlockRedMarble = "com.normalfish.connectthesquares.blocksetredmarble";
-	private string _productBlockRareMarble = "com.normalfish.connectthesquares.blocksetraremarble";
-	private string _productBlockIllusion = "com.normalfish.connectthesquares.blockillusion";
-	private string _productHints3 = "com.normalfish.connectthesquares.hints3";
-	private string _productHints15p3 = "com.normalfish.connectthesquares.hints15p3";
-	private string _productHints30p9 = "com.normalfish.connectthesquares.hints30p9";
-	private string _productHints60p24 = "com.normalfish.connectthesquares.hints60p24";
+	public static string _productRemoveAds = "com.normalfish.connectthesquares.removeads";
+	public static string _productHints3 = "com.normalfish.connectthesquares.hints3";
+	public static string _productHints15p3 = "com.normalfish.connectthesquares.hints15p3";
+	public static string _productHints30p9 = "com.normalfish.connectthesquares.hints30p9";
+	public static string _productHints60p24 = "com.normalfish.connectthesquares.hints60p24";
+	public static string _productBlockMetal = "com.normalfish.connectthesquares.blocksetmetal";
+	public static string _productBlockWood = "com.normalfish.connectthesquares.blocksetwood";
+	public static string _productBlockGreenMarble = "com.normalfish.connectthesquares.blocksetgreenmarble";
+	public static string _productBlockBlueMarble = "com.normalfish.connectthesquares.blocksetbluemarble";
+	public static string _productBlockRedMarble = "com.normalfish.connectthesquares.blocksetredmarble";
+	public static string _productBlockRareMarble = "com.normalfish.connectthesquares.blocksetraremarble";
+	public static string _productBlockIllusion = "com.normalfish.connectthesquares.blockillusion";
 
 	public void OnPurchaseComplete(Product product)
 	{
@@ -32,6 +32,22 @@ public class IAPManager : MonoBehaviour
 		if (product.definition.id == _productRemoveAds)
 		{
 			_data.SetRemoveAds(1);
+		}
+		else if (product.definition.id == _productHints3)
+		{
+			_data.SetHint(_data.GetHint() + 3);
+		}
+		else if (product.definition.id == _productHints15p3)
+		{
+			_data.SetHint(_data.GetHint() + 18);
+		}
+		else if (product.definition.id == _productHints30p9)
+		{
+			_data.SetHint(_data.GetHint() + 39);
+		}
+		else if (product.definition.id == _productHints60p24)
+		{
+			_data.SetHint(_data.GetHint() + 84);
 		}
 		else if (product.definition.id == _productBlockMetal)
 		{
@@ -61,27 +77,23 @@ public class IAPManager : MonoBehaviour
 		{
 			_block.SetBlockSetUnlocked(7, 1);
 		}
-		else if (product.definition.id == _productHints3)
+
+		StoreLogic store = GameObject.Find("StoreLogic").GetComponent<StoreLogic>();
+		if (store != null)
 		{
-			_data.SetHint(_data.GetHint() + 3);
-		}
-		else if (product.definition.id == _productHints15p3)
-		{
-			_data.SetHint(_data.GetHint() + 18);
-		}
-		else if (product.definition.id == _productHints30p9)
-		{
-			_data.SetHint(_data.GetHint() + 39);
-		}
-		else if (product.definition.id == _productHints60p24)
-		{
-			_data.SetHint(_data.GetHint() + 84);
+			store.OnPurchaseSuccess(product.definition.id);
 		}
 	}
 
 	public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
 	{
 		Debug.Log("Purchasing " + product.definition.id + " failed because " + failureReason);
+
+		StoreLogic store = GameObject.Find("StoreLogic").GetComponent<StoreLogic>();
+		if (store != null)
+		{
+			store.OnPurchaseFail();
+		}
 	}
 
 	// Unity Lifecycle

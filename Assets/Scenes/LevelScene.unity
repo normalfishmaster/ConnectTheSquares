@@ -13156,6 +13156,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: AdSuccess
       objectReference: {fileID: 0}
+    - target: {fileID: 4273623324716814290, guid: 58c9abe412ce3e0efb7bdfb33cfd824e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1385110997}
+    - target: {fileID: 4273623324716814290, guid: 58c9abe412ce3e0efb7bdfb33cfd824e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnAdSuccessCloseButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 4273623324716814290, guid: 58c9abe412ce3e0efb7bdfb33cfd824e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LevelLogic, Assembly-CSharp
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58c9abe412ce3e0efb7bdfb33cfd824e, type: 3}
 --- !u!224 &1233581910 stripped
