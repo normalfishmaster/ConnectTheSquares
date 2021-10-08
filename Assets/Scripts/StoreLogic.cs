@@ -126,20 +126,19 @@ public class StoreLogic : MonoBehaviour
 
 	private void SetupProduct()
 	{
-		_ui.SetEnableProductButton(false);
+		int lastColor = _level.GetNumColor() - 1;
+		int lastAlphabet = _level.GetNumAlphabet(lastColor) - 1;
+		int lastMap = _level.GetNumMap(lastColor, lastAlphabet) - 1;
 
-		_data.SetRemoveAds(0);
-		_data.SetBlockMetalUnlocked(0);
-		_data.SetBlockWoodUnlocked(0);
-		_data.SetBlockGreenMarbleUnlocked(0);
-		_data.SetBlockBlueMarbleUnlocked(0);
-		_data.SetBlockRedMarbleUnlocked(0);
-		_data.SetBlockRareMarbleUnlocked(0);
-		_data.SetBlockIllusionUnlocked(0);
+		_ui.SetEnableProductButton(false);
 
 		if (_data.GetRemoveAds() == 1)
 		{
 			_ui.SetInteractableProductRemoveAds(false);
+		}
+		if (_data.GetUnlockAllLevels() == 1 || _data.GetLevelLock(lastColor, lastAlphabet, lastMap) == 0)
+		{
+			_ui.SetInteractableProductUnlockAllLevels(false);
 		}
 		if (_data.GetBlockMetalUnlocked() == 1)
 		{
@@ -188,102 +187,83 @@ public class StoreLogic : MonoBehaviour
 		);
 	}
 
-	public void OnProductRemoveAdsButtonPressed()
+	private void OnProductButtonPressedCommon()
 	{
 		_audio.PlayButtonPressed();
-		_purchasePending = 1;
 		_ui.SetEnableProductButton(false);
 		_ui.SetEnableBottomButton(false);
+		_purchasePending = 1;
+	}
+
+	public void OnProductRemoveAdsButtonPressed()
+	{
+		OnProductButtonPressedCommon();
 		_ui.AnimateProductRemoveAdsButtonPressed(()=>{});
+	}
+
+	public void OnProductUnlockAllLevelsButtonPressed()
+	{
+		OnProductButtonPressedCommon();
+		_ui.AnimateProductUnlockAllLevelsButtonPressed(()=>{});
 	}
 
 	public void OnProductHints3ButtonPressed()
 	{
-		_audio.PlayButtonPressed();
-		_purchasePending = 1;
-		_ui.SetEnableProductButton(false);
-		_ui.SetEnableBottomButton(false);
+		OnProductButtonPressedCommon();
 		_ui.AnimateProductHints3ButtonPressed(()=>{});
 	}
 
 	public void OnProductHints15p3ButtonPressed()
 	{
-		_audio.PlayButtonPressed();
-		_purchasePending = 1;
-		_ui.SetEnableProductButton(false);
-		_ui.SetEnableBottomButton(false);
+		OnProductButtonPressedCommon();
 		_ui.AnimateProductHints15p3ButtonPressed(()=>{});
 	}
 
 	public void OnProductHints30p9ButtonPressed()
 	{
-		_audio.PlayButtonPressed();
-		_purchasePending = 1;
-		_ui.SetEnableProductButton(false);
-		_ui.SetEnableBottomButton(false);
+		OnProductButtonPressedCommon();
 		_ui.AnimateProductHints30p9ButtonPressed(()=>{});
 	}
 
 	public void OnProductHints60p24ButtonPressed()
 	{
-		_audio.PlayButtonPressed();
-		_purchasePending = 1;
-		_ui.SetEnableProductButton(false);
-		_ui.SetEnableBottomButton(false);
+		OnProductButtonPressedCommon();
 		_ui.AnimateProductHints60p24ButtonPressed(()=>{});
 	}
 
 	public void OnProductBlockMetalButtonPressed()
 	{
-		_audio.PlayButtonPressed();
-		_purchasePending = 1;
-		_ui.SetEnableProductButton(false);
-		_ui.SetEnableBottomButton(false);
+		OnProductButtonPressedCommon();
 		_ui.AnimateProductBlockMetalButtonPressed(()=>{});
 	}
 
 	public void OnProductBlockWoodButtonPressed()
 	{
-		_audio.PlayButtonPressed();
-		_purchasePending = 1;
-		_ui.SetEnableProductButton(false);
-		_ui.SetEnableBottomButton(false);
+		OnProductButtonPressedCommon();
 		_ui.AnimateProductBlockWoodButtonPressed(()=>{});
 	}
 
 	public void OnProductBlockGreenMarbleButtonPressed()
 	{
-		_audio.PlayButtonPressed();
-		_purchasePending = 1;
-		_ui.SetEnableProductButton(false);
-		_ui.SetEnableBottomButton(false);
+		OnProductButtonPressedCommon();
 		_ui.AnimateProductBlockGreenMarbleButtonPressed(()=>{});
 	}
 
 	public void OnProductBlockBlueMarbleButtonPressed()
 	{
-		_audio.PlayButtonPressed();
-		_purchasePending = 1;
-		_ui.SetEnableProductButton(false);
-		_ui.SetEnableBottomButton(false);
+		OnProductButtonPressedCommon();
 		_ui.AnimateProductBlockBlueMarbleButtonPressed(()=>{});
 	}
 
 	public void OnProductBlockRareMarbleButtonPressed()
 	{
-		_audio.PlayButtonPressed();
-		_purchasePending = 1;
-		_ui.SetEnableProductButton(false);
-		_ui.SetEnableBottomButton(false);
+		OnProductButtonPressedCommon();
 		_ui.AnimateProductBlockRareMarbleButtonPressed(()=>{});
 	}
 
 	public void OnProductBlockIllusionButtonPressed()
 	{
-		_audio.PlayButtonPressed();
-		_purchasePending = 1;
-		_ui.SetEnableProductButton(false);
-		_ui.SetEnableBottomButton(false);
+		OnProductButtonPressedCommon();
 		_ui.AnimateProductBlockIllusionButtonPressed(()=>{});
 	}
 

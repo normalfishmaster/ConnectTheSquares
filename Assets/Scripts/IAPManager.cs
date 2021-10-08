@@ -8,11 +8,13 @@ public class IAPManager : MonoBehaviour
 	private static IAPManager _instance;
 
 	private DataManager _data;
+	private LevelManager _level;
 	private BlockManager _block;
 
 	// Product
 
 	public static string _productRemoveAds = "com.normalfish.connectthesquares.removeads";
+	public static string _productUnlockAllLevels = "com.normalfish.connectthesquares.unlockalllevels";
 	public static string _productHints3 = "com.normalfish.connectthesquares.hints3";
 	public static string _productHints15p3 = "com.normalfish.connectthesquares.hints15p3";
 	public static string _productHints30p9 = "com.normalfish.connectthesquares.hints30p9";
@@ -32,6 +34,27 @@ public class IAPManager : MonoBehaviour
 		if (product.definition.id == _productRemoveAds)
 		{
 			_data.SetRemoveAds(1);
+		}
+		else if (product.definition.id == _productUnlockAllLevels)
+		{
+			_data.SetUnlockAllLevels(1);
+
+			int numColor = _level.GetNumColor();
+
+			for (int i = 0; i < numColor; i++)
+			{
+				int numAlphabet = _level.GetNumAlphabet(i);
+
+				for (int j = 0; j < numAlphabet; j++)
+				{
+					int numMap = _level.GetNumMap(i, j);
+
+					for (int k = 0; k < numMap; k++)
+					{
+						_data.SetLevelLock(i, j, k, 0);
+					}
+				}
+			}
 		}
 		else if (product.definition.id == _productHints3)
 		{
@@ -111,6 +134,7 @@ public class IAPManager : MonoBehaviour
 		DontDestroyOnLoad(this.gameObject);
 
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 	}
 }

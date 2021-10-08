@@ -52,6 +52,7 @@ MonoBehaviour:
   _adSuccessItemSprite:
   - {fileID: 21300000, guid: 1af0650d9f363a028b7d073009ca7d21, type: 3}
   - {fileID: 21300000, guid: 44ffcc1c955d6d377a792c7764e34413, type: 3}
+  - {fileID: 21300000, guid: f7a064bc55087ff0a9aa8576c321d7b7, type: 3}
   - {fileID: 21300000, guid: 1dc41d9a607b85703b4a4a6a6cafdb36, type: 3}
   - {fileID: 21300000, guid: d267ad6c429ee69d09ecf2fd77e2facb, type: 3}
   - {fileID: 21300000, guid: 0034ce9eefcdc4972ab6e15fad8c5ad4, type: 3}

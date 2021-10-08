@@ -51,49 +51,53 @@ public class AdUI : MonoBehaviour
 		{
 			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[1];
 		}
-		else if (item == IAPManager._productHints3)
+		else if (item == IAPManager._productUnlockAllLevels)
 		{
 			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[2];
 		}
-		else if (item == IAPManager._productHints15p3)
+		else if (item == IAPManager._productHints3)
 		{
 			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[3];
 		}
-		else if (item == IAPManager._productHints30p9)
+		else if (item == IAPManager._productHints15p3)
 		{
 			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[4];
 		}
-		else if (item == IAPManager._productHints60p24)
+		else if (item == IAPManager._productHints30p9)
 		{
 			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[5];
 		}
-		else if (item == IAPManager._productBlockMetal)
+		else if (item == IAPManager._productHints60p24)
 		{
 			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[6];
 		}
-		else if (item == IAPManager._productBlockWood)
+		else if (item == IAPManager._productBlockMetal)
 		{
 			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[7];
 		}
-		else if (item == IAPManager._productBlockGreenMarble)
+		else if (item == IAPManager._productBlockWood)
 		{
 			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[8];
 		}
-		else if (item == IAPManager._productBlockBlueMarble)
+		else if (item == IAPManager._productBlockGreenMarble)
 		{
 			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[9];
 		}
-		else if (item == IAPManager._productBlockRedMarble)
+		else if (item == IAPManager._productBlockBlueMarble)
 		{
 			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[10];
 		}
-		else if (item == IAPManager._productBlockRareMarble)
+		else if (item == IAPManager._productBlockRedMarble)
 		{
 			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[11];
 		}
-		else if (item == IAPManager._productBlockIllusion)
+		else if (item == IAPManager._productBlockRareMarble)
 		{
 			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[12];
+		}
+		else if (item == IAPManager._productBlockIllusion)
+		{
+			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[13];
 		}
 	}
 

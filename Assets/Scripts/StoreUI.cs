@@ -34,6 +34,7 @@ public class StoreUI : MonoBehaviour
 
 	private GameObject _productHintAdButton;
 	private GameObject _productRemoveAdsButton;
+	private GameObject _productUnlockAllLevelsButton;
 	private GameObject _productHints3Button;
 	private GameObject _productHints15p3Button;
 	private GameObject _productHints30p9Button;
@@ -52,6 +53,7 @@ public class StoreUI : MonoBehaviour
 
 		_productHintAdButton = GameObject.Find("/Canvas/Product/Viewport/Content/HintAd/Button");
 		_productRemoveAdsButton = GameObject.Find("/Canvas/Product/Viewport/Content/RemoveAds/Button");
+		_productUnlockAllLevelsButton = GameObject.Find("/Canvas/Product/Viewport/Content/UnlockAllLevels/Button");
 		_productHints3Button = GameObject.Find("/Canvas/Product/Viewport/Content/Hints3/Button");
 		_productHints15p3Button = GameObject.Find("/Canvas/Product/Viewport/Content/Hints15p3/Button");
 		_productHints30p9Button = GameObject.Find("/Canvas/Product/Viewport/Content/Hints30p9/Button");
@@ -69,6 +71,7 @@ public class StoreUI : MonoBehaviour
 	{
 		_productHintAdButton.GetComponent<Button>().enabled = enable;
 		_productRemoveAdsButton.GetComponent<Button>().enabled = enable;
+		_productUnlockAllLevelsButton.GetComponent<Button>().enabled = enable;
 		_productHints3Button.GetComponent<Button>().enabled = enable;
 		_productHints15p3Button.GetComponent<Button>().enabled = enable;
 		_productHints30p9Button.GetComponent<Button>().enabled = enable;
@@ -85,6 +88,11 @@ public class StoreUI : MonoBehaviour
 	public void SetInteractableProductRemoveAds(bool interactable)
 	{
 		_productRemoveAdsButton.GetComponent<Button>().interactable = interactable;
+	}
+
+	public void SetInteractableProductUnlockAllLevels(bool interactable)
+	{
+		_productUnlockAllLevelsButton.GetComponent<Button>().interactable = interactable;
 	}
 
 	public void SetInteractableProductBlockMetal(bool interactable)
@@ -148,6 +156,11 @@ public class StoreUI : MonoBehaviour
 	public void AnimateProductRemoveAdsButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_productRemoveAdsButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateProductUnlockAllLevelsButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_productUnlockAllLevelsButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	public void AnimateProductBlockMetalButtonPressed(Animate.AnimateComplete callback)

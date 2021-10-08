@@ -16,8 +16,11 @@ public class DataManager : MonoBehaviour
 	public string GetAudioKey()						{ return "AudioKey";										}
 	public int    GetAudioDefault()						{ return 1;											}
 
-	public string GetRemoveAdsKey()						{ return "RemoveAdsKey";										}
+	public string GetRemoveAdsKey()						{ return "RemoveAdsKey";									}
 	public int    GetRemoveAdsDefault()					{ return 0;											}
+
+	public string GetUnlockAllLevelsKey()					{ return "UnlockAllLevels";									}
+	public int    GetUnlockAllLevelsDefault()				{ return 0;											}
 
 	public string GetHintKey()						{ return "HintKey";										}
 	public int    GetHintDefault()						{ return 3;											}
@@ -101,6 +104,11 @@ public class DataManager : MonoBehaviour
 	public int   GetRemoveAds()						{ return PlayerPrefs.GetInt(GetRemoveAdsKey());							}
 	public void  SetRemoveAds(int value)					{        PlayerPrefs.SetInt(GetRemoveAdsKey(), value);						}
 	public void  InitRemoveAds()						{        PlayerPrefs.SetInt(GetRemoveAdsKey(), GetRemoveAdsDefault());				}
+
+	public bool  CheckUnlockAllLevels()					{ return PlayerPrefs.HasKey(GetUnlockAllLevelsKey());						}
+	public int   GetUnlockAllLevels()					{ return PlayerPrefs.GetInt(GetUnlockAllLevelsKey());						}
+	public void  SetUnlockAllLevels(int value)				{        PlayerPrefs.SetInt(GetUnlockAllLevelsKey(), value);					}
+	public void  InitUnlockAllLevels()					{        PlayerPrefs.SetInt(GetUnlockAllLevelsKey(), GetUnlockAllLevelsDefault());		}
 
 	public bool  CheckMenuColor()						{ return PlayerPrefs.HasKey(GetMenuColorKey());							}
 	public int   GetMenuColor()						{ return PlayerPrefs.GetInt(GetMenuColorKey());							}
@@ -288,6 +296,10 @@ public class DataManager : MonoBehaviour
 			if (CheckRemoveAds() == false)
 			{
 				InitRemoveAds();
+			}
+			if (CheckUnlockAllLevels() == false)
+			{
+				InitUnlockAllLevels();
 			}
 			if (CheckMenuColor() == false)
 			{
