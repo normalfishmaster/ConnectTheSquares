@@ -334,18 +334,22 @@ public class StoreLogic : MonoBehaviour
 
 		if (product == IAPManager._productHints3)
 		{
+			_ui.SetTopHintCount(_data.GetHint());
 			_adUi.SetAdSuccessCountValue("+3");
 		}
 		else if (product == IAPManager._productHints15p3)
 		{
+			_ui.SetTopHintCount(_data.GetHint());
 			_adUi.SetAdSuccessCountValue("+18");
 		}
 		else if (product == IAPManager._productHints30p9)
 		{
+			_ui.SetTopHintCount(_data.GetHint());
 			_adUi.SetAdSuccessCountValue("+39");
 		}
 		else if (product == IAPManager._productHints60p24)
 		{
+			_ui.SetTopHintCount(_data.GetHint());
 			_adUi.SetAdSuccessCountValue("+84");
 		}
 		else

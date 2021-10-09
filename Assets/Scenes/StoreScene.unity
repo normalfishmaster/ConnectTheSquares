@@ -444,7 +444,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productId: com.normalfish.connectthesquares.blocksetraremarble
   buttonType: 0
-  consumePurchase: 0
+  consumePurchase: 1
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
@@ -1744,7 +1744,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productId: com.normalfish.connectthesquares.hints3
   buttonType: 0
-  consumePurchase: 0
+  consumePurchase: 1
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
@@ -2890,7 +2890,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productId: com.normalfish.connectthesquares.hints30p9
   buttonType: 0
-  consumePurchase: 0
+  consumePurchase: 1
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
@@ -3842,7 +3842,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productId: com.normalfish.connectthesquares.hints60p24
   buttonType: 0
-  consumePurchase: 0
+  consumePurchase: 1
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
@@ -4613,7 +4613,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productId: com.normalfish.connectthesquares.blocksetredmarble
   buttonType: 0
-  consumePurchase: 0
+  consumePurchase: 1
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
@@ -4798,7 +4798,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productId: com.normalfish.connectthesquares.blocksetwood
   buttonType: 0
-  consumePurchase: 0
+  consumePurchase: 1
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
@@ -5554,7 +5554,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productId: com.normalfish.connectthesquares.blocksetgreenmarble
   buttonType: 0
-  consumePurchase: 0
+  consumePurchase: 1
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
@@ -5795,7 +5795,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productId: com.normalfish.connectthesquares.blocksetmetal
   buttonType: 0
-  consumePurchase: 0
+  consumePurchase: 1
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
@@ -6820,7 +6820,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productId: com.normalfish.connectthesquares.removeallads
   buttonType: 0
-  consumePurchase: 0
+  consumePurchase: 1
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
@@ -8157,7 +8157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productId: com.normalfish.connectthesquares.blocksetbluemarble
   buttonType: 0
-  consumePurchase: 0
+  consumePurchase: 1
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
@@ -8625,7 +8625,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productId: com.normalfish.connectthesquares.unlockalllevels
   buttonType: 0
-  consumePurchase: 0
+  consumePurchase: 1
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
@@ -10733,7 +10733,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productId: com.normalfish.connectthesquares.blocksetillusion
   buttonType: 0
-  consumePurchase: 0
+  consumePurchase: 1
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
@@ -11168,7 +11168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productId: com.normalfish.connectthesquares.hints15p3
   buttonType: 0
-  consumePurchase: 0
+  consumePurchase: 1
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
