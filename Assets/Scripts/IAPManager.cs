@@ -13,7 +13,7 @@ public class IAPManager : MonoBehaviour
 
 	// Product
 
-	public static string _productRemoveAds = "com.normalfish.connectthesquares.removeads";
+	public static string _productRemoveAds = "com.normalfish.connectthesquares.removeallads";
 	public static string _productUnlockAllLevels = "com.normalfish.connectthesquares.unlockalllevels";
 	public static string _productHints3 = "com.normalfish.connectthesquares.hints3";
 	public static string _productHints15p3 = "com.normalfish.connectthesquares.hints15p3";
@@ -100,10 +100,14 @@ public class IAPManager : MonoBehaviour
 		{
 			_block.SetBlockSetUnlocked(7, 1);
 		}
-
-		StoreLogic store = GameObject.Find("StoreLogic").GetComponent<StoreLogic>();
-		if (store != null)
+		else
 		{
+			return;
+		}
+
+		if (GameObject.Find("StoreLogic") != null)
+		{
+			StoreLogic store = GameObject.Find("StoreLogic").GetComponent<StoreLogic>();
 			store.OnPurchaseSuccess(product.definition.id);
 		}
 	}

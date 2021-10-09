@@ -173,6 +173,8 @@ public class StoreLogic : MonoBehaviour
 	public void OnProductHintAdButtonPressed()
 	{
 		_audio.PlayButtonPressed();
+		_ui.SetEnableProductButton(false);
+		_ui.SetEnableBottomButton(false);
 		_ui.AnimateProductHintAdButtonPressed
 		(
 			()=>
@@ -190,8 +192,6 @@ public class StoreLogic : MonoBehaviour
 	private void OnProductButtonPressedCommon()
 	{
 		_audio.PlayButtonPressed();
-		_ui.SetEnableProductButton(false);
-		_ui.SetEnableBottomButton(false);
 		_purchasePending = 1;
 	}
 
@@ -255,6 +255,12 @@ public class StoreLogic : MonoBehaviour
 		_ui.AnimateProductBlockBlueMarbleButtonPressed(()=>{});
 	}
 
+	public void OnProductBlockRedMarbleButtonPressed()
+	{
+		OnProductButtonPressedCommon();
+		_ui.AnimateProductBlockRedMarbleButtonPressed(()=>{});
+	}
+
 	public void OnProductBlockRareMarbleButtonPressed()
 	{
 		OnProductButtonPressedCommon();
@@ -288,6 +294,43 @@ public class StoreLogic : MonoBehaviour
 		_adUi.SetEnableAdSuccessButton(false);
 		_adUi.SetAdSuccessItem(product);
 		_adUi.SetActiveAdSuccessCount(false);
+
+		if (product == IAPManager._productRemoveAds)
+		{
+			_ui.SetInteractableProductRemoveAds(false);
+		}
+		else if (product == IAPManager._productUnlockAllLevels)
+		{
+			_ui.SetInteractableProductUnlockAllLevels(false);
+		}
+		else if (product == IAPManager._productBlockMetal)
+		{
+			_ui.SetInteractableProductBlockMetal(false);
+		}
+		else if (product == IAPManager._productBlockWood)
+		{
+			_ui.SetInteractableProductBlockWood(false);
+		}
+		else if (product == IAPManager._productBlockGreenMarble)
+		{
+			_ui.SetInteractableProductBlockGreenMarble(false);
+		}
+		else if (product == IAPManager._productBlockBlueMarble)
+		{
+			_ui.SetInteractableProductBlockBlueMarble(false);
+		}
+		else if (product == IAPManager._productBlockRedMarble)
+		{
+			_ui.SetInteractableProductBlockRedMarble(false);
+		}
+		else if (product == IAPManager._productBlockRareMarble)
+		{
+			_ui.SetInteractableProductBlockRareMarble(false);
+		}
+		else if (product == IAPManager._productBlockIllusion)
+		{
+			_ui.SetInteractableProductBlockIllusion(false);
+		}
 
 		if (product == IAPManager._productHints3)
 		{
@@ -329,12 +372,9 @@ public class StoreLogic : MonoBehaviour
 
 	public void OnPurchaseFail()
 	{
-		if (_purchasePending == 0)
-		{
-			return;
-		}
-
 		_purchasePending = 0;
+
+/*
 
 		_ui.SetEnableProductButton(false);
 		_ui.SetEnableBottomButton(false);
@@ -348,6 +388,7 @@ public class StoreLogic : MonoBehaviour
 				_adUi.SetEnableAdFailButton(true);
 			}
 		);
+*/
 	}
 
 	// UI - Bottom

@@ -85,49 +85,70 @@ public class StoreUI : MonoBehaviour
 		_productBlockIllusionButton.GetComponent<Button>().enabled = enable;
 	}
 
+	private void SetInteractableProductColor(GameObject gameObject, bool interactable)
+	{
+		if (interactable == false)
+		{
+			gameObject.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f, 1.0f);
+		}
+		else
+		{
+			gameObject.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+		}
+	}
+
 	public void SetInteractableProductRemoveAds(bool interactable)
 	{
 		_productRemoveAdsButton.GetComponent<Button>().interactable = interactable;
+		SetInteractableProductColor(_productRemoveAdsButton, interactable);
 	}
 
 	public void SetInteractableProductUnlockAllLevels(bool interactable)
 	{
 		_productUnlockAllLevelsButton.GetComponent<Button>().interactable = interactable;
+		SetInteractableProductColor(_productUnlockAllLevelsButton, interactable);
 	}
 
 	public void SetInteractableProductBlockMetal(bool interactable)
 	{
 		_productBlockMetalButton.GetComponent<Button>().interactable = interactable;
+		SetInteractableProductColor(_productBlockMetalButton, interactable);
 	}
 
 	public void SetInteractableProductBlockWood(bool interactable)
 	{
 		_productBlockWoodButton.GetComponent<Button>().interactable = interactable;
+		SetInteractableProductColor(_productBlockWoodButton, interactable);
 	}
 
 	public void SetInteractableProductBlockGreenMarble(bool interactable)
 	{
 		_productBlockGreenMarbleButton.GetComponent<Button>().interactable = interactable;
+		SetInteractableProductColor(_productBlockGreenMarbleButton, interactable);
 	}
 
 	public void SetInteractableProductBlockBlueMarble(bool interactable)
 	{
 		_productBlockBlueMarbleButton.GetComponent<Button>().interactable = interactable;
+		SetInteractableProductColor(_productBlockBlueMarbleButton, interactable);
 	}
 
 	public void SetInteractableProductBlockRedMarble(bool interactable)
 	{
 		_productBlockRedMarbleButton.GetComponent<Button>().interactable = interactable;
+		SetInteractableProductColor(_productBlockRedMarbleButton, interactable);
 	}
 
 	public void SetInteractableProductBlockRareMarble(bool interactable)
 	{
 		_productBlockRareMarbleButton.GetComponent<Button>().interactable = interactable;
+		SetInteractableProductColor(_productBlockRareMarbleButton, interactable);
 	}
 
 	public void SetInteractableProductBlockIllusion(bool interactable)
 	{
 		_productBlockIllusionButton.GetComponent<Button>().interactable = interactable;
+		SetInteractableProductColor(_productBlockIllusionButton, interactable);
 	}
 
 	public void AnimateProductEnter(Animate.AnimateComplete callback)
