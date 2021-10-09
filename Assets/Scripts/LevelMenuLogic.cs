@@ -54,9 +54,12 @@ public class LevelMenuLogic : MonoBehaviour
 		}
 	}
 
-	public void DoLevelButtonPressed(int color, int alphabet)
+	public void OnLevelButtonPressed(int color, int alphabet)
 	{
 		_audio.PlayButtonPressed();
+
+		_ui.SetEnableLevelButton(false);
+		_ui.SetEnableBottomButton(false);
 
 		_ui.AnimateLevelButtonPressed(color, alphabet,
 			()=>
@@ -70,9 +73,12 @@ public class LevelMenuLogic : MonoBehaviour
 
 	// UI - Bottom
 
-	public void DoBottomBackButtonPressed()
+	public void OnBottomBackButtonPressed()
 	{
 		_audio.PlayButtonPressed();
+
+		_ui.SetEnableLevelButton(false);
+		_ui.SetEnableBottomButton(false);
 
 		_ui.AnimateBottomBackButtonPressed
 		(

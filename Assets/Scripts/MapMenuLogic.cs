@@ -32,11 +32,14 @@ public class MapMenuLogic : MonoBehaviour
 		}
 	}
 
-	public void DoMapButtonPressed(int map)
+	public void OnMapButtonPressed(int map)
 	{
 		_audio.PlayButtonPressed();
 
 		_data.SetMenuMap(map);
+
+		_ui.SetEnableMapButton(false);
+		_ui.SetEnableBottomButton(false);
 
 		_ui.AnimateMapButtonPressed(map,
 			()=>
@@ -55,9 +58,12 @@ public class MapMenuLogic : MonoBehaviour
 
 	// UI - Bottom
 
-	public void DoBottomBackButtonPressed()
+	public void OnBottomBackButtonPressed()
 	{
 		_audio.PlayButtonPressed();
+
+		_ui.SetEnableMapButton(false);
+		_ui.SetEnableBottomButton(false);
 
 		_ui.AnimateBottomBackButtonPressed
 		(

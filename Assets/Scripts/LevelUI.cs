@@ -8,8 +8,7 @@ public class LevelUI : MonoBehaviour
 	private LevelLogic _logic;
 	private LevelManager _level;
 	private AudioManager _audio;
-
-	public delegate void AnimateComplete();
+	private BlockManager _block;
 
 	// Top
 
@@ -392,36 +391,6 @@ public class LevelUI : MonoBehaviour
 		Animate.AnimateButtonPressed(_controlHintOffButton, CONTROL_ANIMATE_BUTTON_PRESSED_SCALE, CONTROL_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void OnControlPauseButtonPressed()
-	{
-		_logic.DoControlPauseButtonPressed();
-	}
-
-	public void OnControlUndoButtonPressed()
-	{
-		_logic.DoControlUndoButtonPressed();
-	}
-
-	public void OnControlResetButtonPressed()
-	{
-		_logic.DoControlResetButtonPressed();
-	}
-
-	public void OnControlHintAdButtonPressed()
-	{
-		_logic.DoControlHintAdButtonPressed();
-	}
-
-	public void OnControlHintOnButtonPressed()
-	{
-		_logic.DoControlHintOnButtonPressed();
-	}
-
-	public void OnControlHintOffButtonPressed()
-	{
-		_logic.DoControlHintOffButtonPressed();
-	}
-
 	// Go
 
 	public float GO_ANIMATE_BANNER_ENTER_DELAY;
@@ -449,7 +418,7 @@ public class LevelUI : MonoBehaviour
 		_go.SetActive(enable);
 	}
 
-	public void AnimateGoEnterAndExit(AnimateComplete callback)
+	public void AnimateGoEnterAndExit(Animate.AnimateComplete callback)
 	{
 		RectTransform rectTransform;
 		Vector3 pos;
@@ -518,25 +487,41 @@ public class LevelUI : MonoBehaviour
 	public float PAUSE_ANIMATE_BUTTON_PRESSED_SCALE;
 	public float PAUSE_ANIMATE_BUTTON_PRESSED_DURATION;
 
+	public float PAUSE_ANIMATE_PAUSE_PREVIEW_BOUNCE_DURATION;
+
 	private GameObject _pause;
 	private GameObject _pauseBoard;
 
+	private GameObject _pausePreviewButton;
+	private GameObject _pauseBlockButton;
 	private GameObject _pauseAudioOnButton;
 	private GameObject _pauseAudioOffButton;
 	private GameObject _pauseMenuButton;
-	private GameObject _pauseHintAdButton;
 	private GameObject _pauseResumeButton;
+
+	private GameObject[] _pauseBlock;
+	private GameObject _pauseBlockLock;
 
 	public void FindPauseGameObject()
 	{
 		_pause = GameObject.Find("/Canvas/Pause");
 		_pauseBoard = GameObject.Find("/Canvas/Pause/Board");
 
+		_pausePreviewButton = GameObject.Find("/Canvas/Pause/Board/Preview/Button");
+		_pauseBlockButton = GameObject.Find("/Canvas/Pause/Board/Block/Button");
 		_pauseAudioOnButton = GameObject.Find("/Canvas/Pause/Board/AudioOn/Button");
 		_pauseAudioOffButton = GameObject.Find("/Canvas/Pause/Board/AudioOff/Button");
 		_pauseMenuButton = GameObject.Find("/Canvas/Pause/Board/Menu/Button");
-		_pauseHintAdButton = GameObject.Find("/Canvas/Pause/Board/HintAd/Button");
 		_pauseResumeButton = GameObject.Find("/Canvas/Pause/Board/Resume/Button");
+
+		_pauseBlock = new GameObject[4];
+
+		for (int i = 0; i < 4; i++)
+		{
+			_pauseBlock[i] = GameObject.Find("/Canvas/Pause/Board/Block/Button/Block" + i);
+		}
+
+		_pauseBlockLock = GameObject.Find("/Canvas/Pause/Board/Block/Button/Lock");
 	}
 
 	public void SetActivePause(bool active)
@@ -554,13 +539,32 @@ public class LevelUI : MonoBehaviour
 		_pauseAudioOffButton.SetActive(active);
 	}
 
+	public void SetActivePausePreviewButton(bool active)
+	{
+		_pausePreviewButton.SetActive(active);
+	}
+
 	public void SetEnablePauseButton(bool enable)
 	{
+		_pausePreviewButton.GetComponent<Button>().enabled = enable;
+		_pauseBlockButton.GetComponent<Button>().enabled = enable;
 		_pauseAudioOnButton.GetComponent<Button>().enabled = enable;
 		_pauseAudioOffButton.GetComponent<Button>().enabled = enable;
 		_pauseMenuButton.GetComponent<Button>().enabled = enable;
-		_pauseHintAdButton.GetComponent<Button>().enabled = enable;
 		_pauseResumeButton.GetComponent<Button>().enabled = enable;
+	}
+
+	public void SetActivePauseBlockLock(bool active)
+	{
+		_pauseBlockLock.SetActive(active);
+	}
+
+	public void SetPauseBlockSprite(int setNumber)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			_pauseBlock[i].GetComponent<Image>().sprite = _block.GetBlockSprite(setNumber, i);
+		}
 	}
 
 	public void AnimatePauseBoardEnter(Animate.AnimateComplete callback)
@@ -571,6 +575,16 @@ public class LevelUI : MonoBehaviour
 	public void AnimatePauseBoardExit(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateBoardExit(_pause, _pauseBoard, PAUSE_ANIMATE_BOARD_EXIT_DURATION, callback);
+	}
+
+	public void AnimatePausePreviewButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_pausePreviewButton, PAUSE_ANIMATE_BUTTON_PRESSED_SCALE, PAUSE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimatePauseBlockButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_pauseBlockButton, PAUSE_ANIMATE_BUTTON_PRESSED_SCALE, PAUSE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	public void AnimatePauseAudioOnButtonPressed(Animate.AnimateComplete callback)
@@ -588,39 +602,68 @@ public class LevelUI : MonoBehaviour
 		Animate.AnimateButtonPressed(_pauseMenuButton, PAUSE_ANIMATE_BUTTON_PRESSED_SCALE, PAUSE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimatePauseHintAdButtonPressed(Animate.AnimateComplete callback)
-	{
-		Animate.AnimateButtonPressed(_pauseHintAdButton, PAUSE_ANIMATE_BUTTON_PRESSED_SCALE, PAUSE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
-	}
-
 	public void AnimatePauseResumeButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_pauseResumeButton, PAUSE_ANIMATE_BUTTON_PRESSED_SCALE, PAUSE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void OnPauseAudioOnButtonPressed()
+	public void AnimatePausePreviewButtonBounce()
 	{
-		_logic.DoPauseAudioOnButtonPressed();
+		RectTransform rectTransform = (RectTransform)_pausePreviewButton.transform;
+		Vector3 pos = rectTransform.anchoredPosition;
+
+		rectTransform.anchoredPosition = new Vector3(pos.x, 25, pos.z);
+
+		LeanTween.cancel(_pausePreviewButton);
+		LeanTween.moveLocalY(_pausePreviewButton, 0, PAUSE_ANIMATE_PAUSE_PREVIEW_BOUNCE_DURATION).setEasePunch().setOnComplete
+		(
+			()=>
+			{
+				AnimatePausePreviewButtonBounce();
+			}
+		);
 	}
 
-	public void OnPauseAudioOffButtonPressed()
+	// ExitPreview
+
+	public float EXIT_PREVIEW_ANIMATE_BUTTON_PRESSED_SCALE;
+	public float EXIT_PREVIEW_ANIMATE_BUTTON_PRESSED_DURATION;
+
+	public float EXIT_PREVIEW_ANIMATE_PUNCH_DURATION;
+
+	private GameObject _exitPreviewButton;
+
+	private void FindExitPreviewGameObject()
 	{
-		_logic.DoPauseAudioOffButtonPressed();
+		_exitPreviewButton = GameObject.Find("/Canvas/ExitPreview");
 	}
 
-	public void OnPauseMenuButtonPressed()
+	public void SetActiveExitPreviewButton(bool active)
 	{
-		_logic.DoPauseMenuButtonPressed();
+		_exitPreviewButton.SetActive(active);
 	}
 
-	public void OnPauseHintAdButtonPressed()
+	public void SetEnableExitPreviewButton(bool enable)
 	{
-		_logic.DoPauseHintAdButtonPressed();
+		_exitPreviewButton.GetComponent<Button>().enabled = enable;
 	}
 
-	public void OnPauseResumeButtonPressed()
+	public void AnimateActiveExitButtonPressed(Animate.AnimateComplete callback)
 	{
-		_logic.DoPauseResumeButtonPressed();
+		Animate.AnimateButtonPressed(_exitPreviewButton, EXIT_PREVIEW_ANIMATE_BUTTON_PRESSED_SCALE, EXIT_PREVIEW_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateActiveExitButtonPunch()
+	{
+		LeanTween.cancel(_exitPreviewButton);
+
+		LeanTween.scale(_exitPreviewButton, Vector3.one * 1.1f, EXIT_PREVIEW_ANIMATE_PUNCH_DURATION).setEasePunch().setOnComplete
+		(
+			()=>
+			{
+				AnimateActiveExitButtonPunch();
+			}
+		);
 	}
 
 	// Win
@@ -798,289 +841,6 @@ public class LevelUI : MonoBehaviour
 		Animate.AnimateButtonPressed(_winNextButton, WIN_ANIMATE_BUTTON_PRESSED_SCALE, WIN_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void OnWinHintAdButtonPressed()
-	{
-		_logic.DoWinHintAdButtonPressed();
-	}
-
-	public void OnWinMenuButtonPressed()
-	{
-		_logic.DoWinMenuButtonPressed();
-	}
-
-	public void OnWinReplayButtonPressed()
-	{
-		_logic.DoWinReplayButtonPressed();
-	}
-
-	public void OnWinNextButtonPressed()
-	{
-		_logic.DoWinNextButtonPressed();
-	}
-
-	// Load
-
-	public float LOAD_ANIMATE_SQUARE_DURATION;
-	public float LOAD_ANIMATE_SQUARE_DELAY;
-
-	private GameObject _load;
-	private GameObject[] _loadSquare;
-
-	private void FindLoadGameObject()
-	{
-		_load = GameObject.Find("/Canvas/Load");
-
-		_loadSquare = new GameObject[4];
-
-		for (int i = 0; i < 4; i++)
-		{
-			_loadSquare[i] = GameObject.Find("/Canvas/Load/Board/Square" + i);
-		}
-	}
-
-	public void SetActiveLoad(bool active)
-	{
-		_load.SetActive(active);
-	}
-
-	private void AnimateLoadSquareStopSingle(int square)
-	{
-		LeanTween.cancel(_loadSquare[square]);
-	}
-
-	private void AnimateLoadSquareStartSingle(int square, AnimateComplete callback)
-	{
-		AnimateLoadSquareStopSingle(square);
-
-		_loadSquare[square].transform.localScale = Vector3.one;
-
-		LeanTween.scale(_loadSquare[square], Vector3.one * 1.5f, LOAD_ANIMATE_SQUARE_DURATION).setDelay(LOAD_ANIMATE_SQUARE_DELAY).setEasePunch().setOnComplete(
-			()=>
-			{
-				callback();
-			}
-		);
-	}
-
-	public void AnimateLoadSquareStop()
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			AnimateLoadSquareStopSingle(i);
-		}
-	}
-
-	public void AnimateLoadSquareStart()
-	{
-		AnimateLoadSquareStartSingle(0,
-			()=>
-			{
-				AnimateLoadSquareStartSingle(1,
-					()=>
-					{
-						AnimateLoadSquareStartSingle(2,
-							()=>
-							{
-								AnimateLoadSquareStartSingle(3,
-									()=>
-									{
-										AnimateLoadSquareStart();
-									}
-								);
-							}
-						);
-					}
-				);
-			}
-		);
-	}
-
-	// Ad - Success
-
-	public float AD_SUCCESS_ANIMATE_BOARD_ENTER_DURATION;
-	public float AD_SUCCESS_ANIMATE_BOARD_EXIT_DURATION;
-
-	public float AD_SUCCESS_ANIMATE_HINT_ENTER_DURATION;
-
-	public float AD_SUCCESS_ANIMATE_BUTTON_PRESSED_SCALE;
-	public float AD_SUCCESS_ANIMATE_BUTTON_PRESSED_DURATION;
-
-	private GameObject _adSuccess;
-	private GameObject _adSuccessBoard;
-	private GameObject _adSuccessHint;
-	private GameObject _adSuccessFlare;
-
-	private GameObject _adSuccessCloseButton;
-
-	private void FindAdSuccessGameObject()
-	{
-		_adSuccess = GameObject.Find("/Canvas/AdSuccess");
-		_adSuccessBoard = GameObject.Find("/Canvas/AdSuccess/Board");
-		_adSuccessHint = GameObject.Find("/Canvas/AdSuccess/Board/Hint");
-		_adSuccessFlare = GameObject.Find("/Canvas/AdSuccess/Board/Flare");
-
-		_adSuccessCloseButton = GameObject.Find("/Canvas/AdSuccess/Board/Close/Button");
-	}
-
-	public void SetActiveAdSuccess(bool active)
-	{
-		_adSuccess.SetActive(active);
-	}
-
-	public void SetActiveAdSuccessHint(bool active)
-	{
-		_adSuccessHint.SetActive(active);
-		_adSuccessFlare.SetActive(active);
-	}
-
-	public void SetEnableAdSuccessButton(bool enable)
-	{
-		_adSuccessCloseButton.GetComponent<Button>().enabled = enable;
-	}
-
-	public void AnimateAdSuccessBoardEnter(Animate.AnimateComplete callback)
-	{
-		Animate.AnimateBoardEnter(_adSuccess, _adSuccessBoard, AD_SUCCESS_ANIMATE_BOARD_ENTER_DURATION, callback);
-	}
-
-	public void AnimateAdSuccessBoardExit(Animate.AnimateComplete callback)
-	{
-		Animate.AnimateBoardExit(_adSuccess, _adSuccessBoard, AD_SUCCESS_ANIMATE_BOARD_EXIT_DURATION, callback);
-	}
-
-	public void AnimateAdSuccessHintEnter(Animate.AnimateComplete callback)
-	{
-		// Animate Flare
-
-		_adSuccessFlare.transform.localScale = Vector3.zero;
-
-		LeanTween.scale(_adSuccessFlare, Vector3.one, AD_SUCCESS_ANIMATE_HINT_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad);
-
-		// Animate hint
-
-		_adSuccessHint.transform.localScale = Vector3.one * 3.0f;
-
-		LeanTween.scale(_adSuccessHint, Vector3.one, AD_SUCCESS_ANIMATE_HINT_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad).setOnComplete
-		(
-			()=>
-			{
-				callback();
-			}
-		);
-	}
-
-	public void AnimateAdSuccessCloseButtonPressed(Animate.AnimateComplete callback)
-	{
-		Animate.AnimateButtonPressed(_adSuccessCloseButton, AD_SUCCESS_ANIMATE_BUTTON_PRESSED_SCALE, AD_SUCCESS_ANIMATE_BUTTON_PRESSED_DURATION, callback);
-	}
-
-	public void OnAdSuccessCloseButtonPressed()
-	{
-		_logic.DoAdSuccessCloseButtonPressed();
-	}
-
-	// Ad - Abort
-
-	public float AD_ABORT_ANIMATE_BOARD_ENTER_DURATION;
-	public float AD_ABORT_ANIMATE_BOARD_EXIT_DURATION;
-
-	public float AD_ABORT_ANIMATE_BUTTON_PRESSED_SCALE;
-	public float AD_ABORT_ANIMATE_BUTTON_PRESSED_DURATION;
-
-	private GameObject _adAbort;
-	private GameObject _adAbortBoard;
-
-	private GameObject _adAbortCloseButton;
-
-	private void FindAdAbortGameObject()
-	{
-		_adAbort = GameObject.Find("/Canvas/AdAbort");
-		_adAbortBoard = GameObject.Find("/Canvas/AdAbort/Board");
-
-		_adAbortCloseButton = GameObject.Find("/Canvas/AdAbort/Board/Close/Button");
-	}
-
-	public void SetActiveAdAbort(bool active)
-	{
-		_adAbort.SetActive(active);
-	}
-
-	public void SetEnableAdAbortButton(bool enable)
-	{
-		_adAbortCloseButton.GetComponent<Button>().enabled = enable;
-	}
-
-	public void AnimateAdAbortBoardEnter(Animate.AnimateComplete callback)
-	{
-		Animate.AnimateBoardEnter(_adAbort, _adAbortBoard, AD_ABORT_ANIMATE_BOARD_ENTER_DURATION, callback);
-	}
-
-	public void AnimateAdAbortBoardExit(Animate.AnimateComplete callback)
-	{
-		Animate.AnimateBoardExit(_adAbort, _adAbortBoard, AD_ABORT_ANIMATE_BOARD_EXIT_DURATION, callback);
-	}
-
-	public void AnimateAdAbortCloseButtonPressed(Animate.AnimateComplete callback)
-	{
-		Animate.AnimateButtonPressed(_adAbortCloseButton, AD_ABORT_ANIMATE_BUTTON_PRESSED_SCALE, AD_ABORT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
-	}
-
-	public void OnAdAbortCloseButtonPressed()
-	{
-		_logic.DoAdAbortCloseButtonPressed();
-	}
-
-	// Ad - Fail
-
-	public float AD_FAIL_ANIMATE_BOARD_ENTER_DURATION;
-	public float AD_FAIL_ANIMATE_BOARD_EXIT_DURATION;
-
-	public float AD_FAIL_ANIMATE_BUTTON_PRESSED_SCALE;
-	public float AD_FAIL_ANIMATE_BUTTON_PRESSED_DURATION;
-
-	private GameObject _adFail;
-	private GameObject _adFailBoard;
-
-	private GameObject _adFailCloseButton;
-
-	private void FindAdFailGameObject()
-	{
-		_adFail = GameObject.Find("/Canvas/AdFail");
-		_adFailBoard = GameObject.Find("/Canvas/AdFail/Board");
-
-		_adFailCloseButton = GameObject.Find("/Canvas/AdFail/Board/Close/Button");
-	}
-
-	public void SetActiveAdFail(bool active)
-	{
-		_adFail.SetActive(active);
-	}
-
-	public void SetEnableAdFailButton(bool enable)
-	{
-		_adFailCloseButton.GetComponent<Button>().enabled = enable;
-	}
-
-	public void AnimateAdFailBoardEnter(Animate.AnimateComplete callback)
-	{
-		Animate.AnimateBoardEnter(_adFail, _adFailBoard, AD_FAIL_ANIMATE_BOARD_ENTER_DURATION, callback);
-	}
-
-	public void AnimateAdFailBoardExit(Animate.AnimateComplete callback)
-	{
-		Animate.AnimateBoardExit(_adFail, _adFailBoard, AD_FAIL_ANIMATE_BOARD_EXIT_DURATION, callback);
-	}
-
-	public void AnimateAdFailCloseButtonPressed(Animate.AnimateComplete callback)
-	{
-		Animate.AnimateButtonPressed(_adFailCloseButton, AD_FAIL_ANIMATE_BUTTON_PRESSED_SCALE, AD_FAIL_ANIMATE_BUTTON_PRESSED_DURATION, callback);
-	}
-
-	public void OnAdFailCloseButtonPressed()
-	{
-		_logic.DoAdFailCloseButtonPressed();
-	}
-
 	// Unity Lifecycle
 
 	private void Awake()
@@ -1088,16 +848,14 @@ public class LevelUI : MonoBehaviour
 		_logic = GameObject.Find("LevelLogic").GetComponent<LevelLogic>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 
 		FindTopGameObject();
 		FindHintGameObject();
 		FindControlGameObject();
 		FindGoGameObject();
 		FindPauseGameObject();
+		FindExitPreviewGameObject();
 		FindWinGameObject();
-		FindLoadGameObject();
-		FindAdSuccessGameObject();
-		FindAdAbortGameObject();
-		FindAdFailGameObject();
 	}
 }

@@ -32,7 +32,7 @@ public class MainMenuLogic : MonoBehaviour
 		_ui.SetFrontContinueLevel(loadColor, loadAlphabet, loadMap);
 	}
 
-	public void DoFrontContinueButtonPressed()
+	public void OnFrontContinueButtonPressed()
 	{
 		int loadColor = 0;
 		int loadAlphabet = 0;
@@ -69,7 +69,7 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
-	public void DoFrontLevelsButtonPressed()
+	public void OnFrontLevelsButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -85,7 +85,7 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
-	public void DoFrontSettingsButtonPressed()
+	public void OnFrontSettingsButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -97,7 +97,7 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
-	public void DoFrontStoreButtonPressed()
+	public void OnFrontStoreButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -105,6 +105,7 @@ public class MainMenuLogic : MonoBehaviour
 		(
 			()=>
 			{
+				SceneManager.LoadScene("StoreScene");
 			}
 		);
 	}
@@ -122,7 +123,7 @@ public class MainMenuLogic : MonoBehaviour
 		_ui.SetEnableBottomButton(true);
 	}
 
-	public void DoBottomGooglePlayButtonPressed()
+	public void OnBottomGooglePlayButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -134,7 +135,7 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
-	public void DoBottomGameCenterButtonPressed()
+	public void OnBottomGameCenterButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -146,11 +147,11 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
-	public void DoBottomNoAdsButtonPressed()
+	public void OnBottomRateButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.AnimateBottomNoAdsButtonPressed
+		_ui.AnimateBottomRateButtonPressed
 		(
 			()=>
 			{
@@ -158,7 +159,7 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
-	public void DoBottomLanguageButtonPressed()
+	public void OnBottomLanguageButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -178,7 +179,7 @@ public class MainMenuLogic : MonoBehaviour
 		_ui.SetActiveExit(false);
 	}
 
-	public void DoExitButtonPressed()
+	public void OnExitButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -195,7 +196,7 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
-	public void DoExitYesButtonPressed()
+	public void OnExitYesButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -216,7 +217,7 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
-	public void DoExitNoButtonPressed()
+	public void OnExitNoButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -272,7 +273,7 @@ public class MainMenuLogic : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			DoExitButtonPressed();
+			OnExitButtonPressed();
 		}
 	}
 }

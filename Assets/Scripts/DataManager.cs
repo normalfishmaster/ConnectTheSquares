@@ -16,8 +16,11 @@ public class DataManager : MonoBehaviour
 	public string GetAudioKey()						{ return "AudioKey";										}
 	public int    GetAudioDefault()						{ return 1;											}
 
-	public string GetAdFreeKey()						{ return "AdFreeKey";										}
-	public int    GetAdFreeDefault()					{ return 0;											}
+	public string GetRemoveAdsKey()						{ return "RemoveAdsKey";									}
+	public int    GetRemoveAdsDefault()					{ return 0;											}
+
+	public string GetUnlockAllLevelsKey()					{ return "UnlockAllLevels";									}
+	public int    GetUnlockAllLevelsDefault()				{ return 0;											}
 
 	public string GetHintKey()						{ return "HintKey";										}
 	public int    GetHintDefault()						{ return 3;											}
@@ -61,6 +64,29 @@ public class DataManager : MonoBehaviour
 	public string GetColorStarTotalKey(int color)				{ return "LevelColorStarTotalKey" + "_" + color;						}
 	public int    GetColorStarTotalDefault()				{ return 0;											}
 
+	public string GetBlockSetKey()						{ return "BlockSetKey";										}
+	public int    GetBlockSetDefault()					{ return 0;											}
+
+	public string GetBlockMetalUnlockedKey()				{ return "BlockMetalUnlockedKey";								}
+	public int    GetBlockMetalUnlockedDefault()				{ return 0;											}
+
+	public string GetBlockWoodUnlockedKey()					{ return "BlockWoodUnlockedKey";								}
+	public int    GetBlockWoodUnlockedDefault()				{ return 0;											}
+
+	public string GetBlockGreenMarbleUnlockedKey()				{ return "BlockGreenMarbleUnlockedKey";								}
+	public int    GetBlockGreenMarbleUnlockedDefault()			{ return 0;											}
+
+	public string GetBlockBlueMarbleUnlockedKey()				{ return "BlockBlueMarbleUnlockedKey";								}
+	public int    GetBlockBlueMarbleUnlockedDefault()			{ return 0;											}
+
+	public string GetBlockRedMarbleUnlockedKey()				{ return "BlockRedMarbleUnlockedKey";								}
+	public int    GetBlockRedMarbleUnlockedDefault()			{ return 0;											}
+
+	public string GetBlockRareMarbleUnlockedKey()				{ return "BlockRareMarbleUnlockedKey";								}
+	public int    GetBlockRareMarbleUnlockedDefault()			{ return 0;											}
+
+	public string GetBlockIllusionUnlockedKey()				{ return "BlockIllusionUnlockedKey";								}
+	public int    GetBlockIllusionUnlockedDefault()				{ return 0;											}
 
 	// Operations by Data Type
 
@@ -74,10 +100,15 @@ public class DataManager : MonoBehaviour
 	public void  SetHint(int value)						{        PlayerPrefs.SetInt(GetHintKey(), value);						}
 	public void  InitHint()							{        PlayerPrefs.SetInt(GetHintKey(), GetHintDefault());					}
 
-	public bool  CheckAdFree()						{ return PlayerPrefs.HasKey(GetAdFreeKey());							}
-	public int   GetAdFree()						{ return PlayerPrefs.GetInt(GetAdFreeKey());							}
-	public void  SetAdFree(int value)					{        PlayerPrefs.SetInt(GetAdFreeKey(), value);						}
-	public void  InitAdFree()						{        PlayerPrefs.SetInt(GetAdFreeKey(), GetAdFreeDefault());				}
+	public bool  CheckRemoveAds()						{ return PlayerPrefs.HasKey(GetRemoveAdsKey());							}
+	public int   GetRemoveAds()						{ return PlayerPrefs.GetInt(GetRemoveAdsKey());							}
+	public void  SetRemoveAds(int value)					{        PlayerPrefs.SetInt(GetRemoveAdsKey(), value);						}
+	public void  InitRemoveAds()						{        PlayerPrefs.SetInt(GetRemoveAdsKey(), GetRemoveAdsDefault());				}
+
+	public bool  CheckUnlockAllLevels()					{ return PlayerPrefs.HasKey(GetUnlockAllLevelsKey());						}
+	public int   GetUnlockAllLevels()					{ return PlayerPrefs.GetInt(GetUnlockAllLevelsKey());						}
+	public void  SetUnlockAllLevels(int value)				{        PlayerPrefs.SetInt(GetUnlockAllLevelsKey(), value);					}
+	public void  InitUnlockAllLevels()					{        PlayerPrefs.SetInt(GetUnlockAllLevelsKey(), GetUnlockAllLevelsDefault());		}
 
 	public bool  CheckMenuColor()						{ return PlayerPrefs.HasKey(GetMenuColorKey());							}
 	public int   GetMenuColor()						{ return PlayerPrefs.GetInt(GetMenuColorKey());							}
@@ -143,6 +174,46 @@ public class DataManager : MonoBehaviour
 	public int   GetColorStarTotal(int color)				{ return PlayerPrefs.GetInt(GetColorStarTotalKey(color));					}
 	public void  SetColorStarTotal(int color, int value)			{        PlayerPrefs.SetInt(GetColorStarTotalKey(color), value);				}
 	public void  InitColorStarTotal(int color)				{        PlayerPrefs.SetInt(GetColorStarTotalKey(color), GetAlphabetStarTotalDefault());	}
+
+	public bool  CheckBlockSet()						{ return PlayerPrefs.HasKey(GetBlockSetKey());							}
+	public int   GetBlockSet()						{ return PlayerPrefs.GetInt(GetBlockSetKey());							}
+	public void  SetBlockSet(int value)					{        PlayerPrefs.SetInt(GetBlockSetKey(), value);						}
+	public void  InitBlockSet()						{        PlayerPrefs.SetInt(GetBlockSetKey(), GetBlockSetDefault());				}
+
+	public bool  CheckBlockMetalUnlocked()					{ return PlayerPrefs.HasKey(GetBlockMetalUnlockedKey());					}
+	public int   GetBlockMetalUnlocked()					{ return PlayerPrefs.GetInt(GetBlockMetalUnlockedKey());					}
+	public void  SetBlockMetalUnlocked(int value)				{        PlayerPrefs.SetInt(GetBlockMetalUnlockedKey(), value);					}
+	public void  InitBlockMetalUnlocked()					{        PlayerPrefs.SetInt(GetBlockMetalUnlockedKey(), GetBlockMetalUnlockedDefault());	}
+
+	public bool  CheckBlockWoodUnlocked()					{ return PlayerPrefs.HasKey(GetBlockWoodUnlockedKey());						}
+	public int   GetBlockWoodUnlocked()					{ return PlayerPrefs.GetInt(GetBlockWoodUnlockedKey());						}
+	public void  SetBlockWoodUnlocked(int value)				{        PlayerPrefs.SetInt(GetBlockWoodUnlockedKey(), value);					}
+	public void  InitBlockWoodUnlocked()					{        PlayerPrefs.SetInt(GetBlockWoodUnlockedKey(), GetBlockMetalUnlockedDefault());		}
+
+	public bool  CheckBlockGreenMarbleUnlocked()				{ return PlayerPrefs.HasKey(GetBlockGreenMarbleUnlockedKey());					}
+	public int   GetBlockGreenMarbleUnlocked()				{ return PlayerPrefs.GetInt(GetBlockGreenMarbleUnlockedKey());					}
+	public void  SetBlockGreenMarbleUnlocked(int value)			{        PlayerPrefs.SetInt(GetBlockGreenMarbleUnlockedKey(), value);				}
+	public void  InitBlockGreenMarbleUnlocked()				{        PlayerPrefs.SetInt(GetBlockGreenMarbleUnlockedKey(), GetBlockGreenMarbleUnlockedDefault()); }
+
+	public bool  CheckBlockBlueMarbleUnlocked()				{ return PlayerPrefs.HasKey(GetBlockBlueMarbleUnlockedKey());					}
+	public int   GetBlockBlueMarbleUnlocked()				{ return PlayerPrefs.GetInt(GetBlockBlueMarbleUnlockedKey());					}
+	public void  SetBlockBlueMarbleUnlocked(int value)			{        PlayerPrefs.SetInt(GetBlockBlueMarbleUnlockedKey(), value);				}
+	public void  InitBlockBlueMarbleUnlocked()				{        PlayerPrefs.SetInt(GetBlockBlueMarbleUnlockedKey(), GetBlockBlueMarbleUnlockedDefault()); }
+
+	public bool  CheckBlockRedMarbleUnlocked()				{ return PlayerPrefs.HasKey(GetBlockRedMarbleUnlockedKey());					}
+	public int   GetBlockRedMarbleUnlocked()				{ return PlayerPrefs.GetInt(GetBlockRedMarbleUnlockedKey());					}
+	public void  SetBlockRedMarbleUnlocked(int value)			{        PlayerPrefs.SetInt(GetBlockRedMarbleUnlockedKey(), value);				}
+	public void  InitBlockRedMarbleUnlocked()				{        PlayerPrefs.SetInt(GetBlockRedMarbleUnlockedKey(), GetBlockRedMarbleUnlockedDefault()); }
+
+	public bool  CheckBlockRareMarbleUnlocked()				{ return PlayerPrefs.HasKey(GetBlockRareMarbleUnlockedKey());					}
+	public int   GetBlockRareMarbleUnlocked()				{ return PlayerPrefs.GetInt(GetBlockRareMarbleUnlockedKey());					}
+	public void  SetBlockRareMarbleUnlocked(int value)			{        PlayerPrefs.SetInt(GetBlockRareMarbleUnlockedKey(), value);				}
+	public void  InitBlockRareMarbleUnlocked()				{        PlayerPrefs.SetInt(GetBlockRareMarbleUnlockedKey(), GetBlockRareMarbleUnlockedDefault()); }
+
+	public bool  CheckBlockIllusionUnlocked()				{ return PlayerPrefs.HasKey(GetBlockIllusionUnlockedKey());					}
+	public int   GetBlockIllusionUnlocked()					{ return PlayerPrefs.GetInt(GetBlockIllusionUnlockedKey());					}
+	public void  SetBlockIllusionUnlocked(int value)			{        PlayerPrefs.SetInt(GetBlockIllusionUnlockedKey(), value);				}
+	public void  InitBlockIllusionUnlocked()				{        PlayerPrefs.SetInt(GetBlockIllusionUnlockedKey(), GetBlockIllusionUnlockedDefault());	}
 
 	// Check by Key
 
@@ -222,9 +293,13 @@ public class DataManager : MonoBehaviour
 			{
 				InitHint();
 			}
-			if (CheckAdFree() == false)
+			if (CheckRemoveAds() == false)
 			{
-				InitAdFree();
+				InitRemoveAds();
+			}
+			if (CheckUnlockAllLevels() == false)
+			{
+				InitUnlockAllLevels();
 			}
 			if (CheckMenuColor() == false)
 			{
@@ -284,6 +359,39 @@ public class DataManager : MonoBehaviour
 						}
 					}
 				}
+			}
+
+			if (CheckBlockSet() == false)
+			{
+				InitBlockSet();
+			}
+			if (CheckBlockMetalUnlocked() == false)
+			{
+				InitBlockMetalUnlocked();
+			}
+			if (CheckBlockWoodUnlocked() == false)
+			{
+				InitBlockWoodUnlocked();
+			}
+			if (CheckBlockGreenMarbleUnlocked() == false)
+			{
+				InitBlockGreenMarbleUnlocked();
+			}
+			if (CheckBlockBlueMarbleUnlocked() == false)
+			{
+				InitBlockBlueMarbleUnlocked();
+			}
+			if (CheckBlockRedMarbleUnlocked() == false)
+			{
+				InitBlockRedMarbleUnlocked();
+			}
+			if (CheckBlockRareMarbleUnlocked() == false)
+			{
+				InitBlockRareMarbleUnlocked();
+			}
+			if (CheckBlockIllusionUnlocked() == false)
+			{
+				InitBlockIllusionUnlocked();
 			}
 
 			// Calculate Color and Alphabet Star as well as Totals
