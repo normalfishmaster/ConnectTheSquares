@@ -939,16 +939,16 @@ public class LevelLogic : MonoBehaviour
 
 				int currentColorStar = _data.GetColorStar(_menuColor);
 				_data.SetColorStar(_menuColor, currentColorStar + (star - currentStar));
-
-				int totalStars = 0;
-
-				for (int i = 0; i < _level.GetNumColor(); i++)
-				{
-					totalStars = _data.GetColorStar(i);
-				}
-
-				_cloudOnce.SubmitLeaderboardHighScore(totalStars);
 			}
+
+			int totalStars = 0;
+
+			for (int i = 0; i < _level.GetNumColor(); i++)
+			{
+				totalStars += _data.GetColorStar(i);
+			}
+
+			_cloudOnce.SubmitLeaderboardHighScore(totalStars);
 
 			if (_touchHint)
 			{

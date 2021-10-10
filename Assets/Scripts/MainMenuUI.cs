@@ -257,6 +257,149 @@ public class MainMenuUI : MonoBehaviour
 		Animate.AnimateButtonPressed(_bottomLanguageButton, BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE, BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
+	// GooglePlay
+
+	public float GOOGLE_PLAY_ANIMATE_BOARD_ENTER_DURATION;
+	public float GOOGLE_PLAY_ANIMATE_BOARD_EXIT_DURATION;
+
+	public float GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE;
+	public float GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION;
+
+	private GameObject _googlePlay;
+	private GameObject _googlePlayBoard;
+
+	private GameObject _googlePlaySignIn;
+	private GameObject _googlePlaySignOut;
+	private GameObject _googlePlayLoad;
+	private GameObject _googlePlaySave;
+	private GameObject _googlePlayAchievements;
+	private GameObject _googlePlayLeaderboard;
+	private GameObject _googlePlayClose;
+
+	private GameObject _googlePlaySignInButton;
+	private GameObject _googlePlaySignOutButton;
+	private GameObject _googlePlayLoadButton;
+	private GameObject _googlePlaySaveButton;
+	private GameObject _googlePlayAchievementsButton;
+	private GameObject _googlePlayLeaderboardButton;
+	private GameObject _googlePlayCloseButton;
+
+	private void FindGooglePlayGameObject()
+	{
+		_googlePlay = GameObject.Find("/Canvas/GooglePlay");
+		_googlePlayBoard = GameObject.Find("/Canvas/GooglePlay/Board");
+
+		_googlePlaySignIn = GameObject.Find("/Canvas/GooglePlay/Board/SignIn");
+		_googlePlaySignOut = GameObject.Find("/Canvas/GooglePlay/Board/SignOut");
+		_googlePlayLoad = GameObject.Find("/Canvas/GooglePlay/Board/Load");
+		_googlePlaySave = GameObject.Find("/Canvas/GooglePlay/Board/Save");
+		_googlePlayAchievements = GameObject.Find("/Canvas/GooglePlay/Board/Achievements");
+		_googlePlayLeaderboard = GameObject.Find("/Canvas/GooglePlay/Board/Leaderboard");
+		_googlePlayClose = GameObject.Find("/Canvas/GooglePlay/Board/Close");
+
+		_googlePlaySignInButton = GameObject.Find("/Canvas/GooglePlay/Board/SignIn/Button");
+		_googlePlaySignOutButton = GameObject.Find("/Canvas/GooglePlay/Board/SignOut/Button");
+		_googlePlayLoadButton = GameObject.Find("/Canvas/GooglePlay/Board/Load/Button");
+		_googlePlaySaveButton = GameObject.Find("/Canvas/GooglePlay/Board/Save/Button");
+		_googlePlayAchievementsButton = GameObject.Find("/Canvas/GooglePlay/Board/Achievements/Button");
+		_googlePlayLeaderboardButton = GameObject.Find("/Canvas/GooglePlay/Board/Leaderboard/Button");
+		_googlePlayCloseButton = GameObject.Find("/Canvas/GooglePlay/Board/Close/Button");
+	}
+
+	public void SetActiveGooglePlay(bool active)
+	{
+		_googlePlay.SetActive(active);
+	}
+
+	public void SetActiveGooglePlaySignInButton(bool active)
+	{
+		_googlePlaySignIn.SetActive(active);
+	}
+
+	public void SetActiveGooglePlaySignOutButton(bool active)
+	{
+		_googlePlaySignOut.SetActive(active);
+	}
+
+	public void SetEnableGooglePlayButton(bool enable)
+	{
+		_googlePlaySignInButton.GetComponent<Button>().enabled = enable;
+		_googlePlaySignOutButton.GetComponent<Button>().enabled = enable;
+		_googlePlayLoadButton.GetComponent<Button>().enabled = enable;
+		_googlePlaySaveButton.GetComponent<Button>().enabled = enable;
+		_googlePlayAchievementsButton.GetComponent<Button>().enabled = enable;
+		_googlePlayLeaderboardButton.GetComponent<Button>().enabled = enable;
+		_googlePlayCloseButton.GetComponent<Button>().enabled = enable;
+	}
+
+	public void SetInteractableGooglePlayFunctionalButtons(bool interactable)
+	{
+		_googlePlayLoadButton.GetComponent<Button>().interactable = interactable;
+		_googlePlaySaveButton.GetComponent<Button>().interactable = interactable;
+		_googlePlayAchievementsButton.GetComponent<Button>().interactable = interactable;
+		_googlePlayLeaderboardButton.GetComponent<Button>().interactable = interactable;
+
+		if (interactable == false)
+		{
+			_googlePlayLoadButton.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f, 1.0f);
+			_googlePlaySaveButton.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f, 1.0f);
+			_googlePlayAchievementsButton.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f, 1.0f);
+			_googlePlayLeaderboardButton.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f, 1.0f);
+		}
+		else
+		{
+			_googlePlayLoadButton.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+			_googlePlaySaveButton.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+			_googlePlayAchievementsButton.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+			_googlePlayLeaderboardButton.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+		}
+	}
+
+	public void AnimateGooglePlayBoardEnter(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateBoardEnter(_googlePlay, _googlePlayBoard, GOOGLE_PLAY_ANIMATE_BOARD_ENTER_DURATION, callback);
+	}
+
+	public void AnimateGooglePlayBoardExit(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateBoardExit(_googlePlay, _googlePlayBoard, GOOGLE_PLAY_ANIMATE_BOARD_EXIT_DURATION, callback);
+	}
+
+	public void AnimateGooglePlaySignInButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_googlePlaySignInButton, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateGooglePlaySignOutButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_googlePlaySignOutButton, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateGooglePlayLoadButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_googlePlayLoadButton, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateGooglePlaySaveButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_googlePlaySaveButton, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateGooglePlayAchivementsButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_googlePlayAchievementsButton, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateGooglePlayLeaderboardButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_googlePlayLeaderboardButton, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateGooglePlayCloseButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_googlePlayCloseButton, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
 	// Exit
 
 	public float EXIT_ANIMATE_BOARD_ENTER_DURATION;
@@ -327,6 +470,7 @@ public class MainMenuUI : MonoBehaviour
 		FindCanvasGameObject();
 		FindFrontGameObject();
 		FindBottomGameObject();
+		FindGooglePlayGameObject();
 		FindExitGameObject();
         }
 }

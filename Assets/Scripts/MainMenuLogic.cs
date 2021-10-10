@@ -6,10 +6,13 @@ using UnityEngine.SceneManagement;
 public class MainMenuLogic : MonoBehaviour
 {
 	private MainMenuUI _ui;
+	private AdManager _ad;
+	private AudioManager _audio;
+	private CloudOnceManager _cloudOnce;
 	private DataManager _data;
 	private LevelManager _level;
-	private AudioManager _audio;
-	private AdManager _ad;
+
+	private bool _canExit;
 
 	// UI - Front
 
@@ -51,6 +54,8 @@ public class MainMenuLogic : MonoBehaviour
 
 		_audio.PlayContinuePressed();
 
+		_canExit = false;
+
 		_ui.SetEnableFrontButton(false);
 		_ui.SetEnableBottomButton(false);
 
@@ -72,6 +77,8 @@ public class MainMenuLogic : MonoBehaviour
 	public void OnFrontLevelsButtonPressed()
 	{
 		_audio.PlayButtonPressed();
+
+		_canExit = false;
 
 		_ui.SetEnableFrontButton(false);
 		_ui.SetEnableBottomButton(false);
@@ -101,6 +108,8 @@ public class MainMenuLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
+		_canExit = false;
+
 		_ui.AnimateFrontStoreButtonPressed
 		(
 			()=>
@@ -120,17 +129,45 @@ public class MainMenuLogic : MonoBehaviour
 			_ui.SetActiveBottomGooglePlay(false);
 		#endif
 
-		_ui.SetEnableBottomButton(true);
+		_ui.SetEnableBottomButton(false);
 	}
 
 	public void OnBottomGooglePlayButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
+		_canExit = false;
+
+		_ui.SetEnableFrontButton(false);
+		_ui.SetEnableBottomButton(false);
+
 		_ui.AnimateBottomGooglePlayButtonPressed
 		(
 			()=>
 			{
+				_ui.SetActiveGooglePlay(true);
+				_ui.SetEnableGooglePlayButton(false);
+
+				if (_cloudOnce.IsSignedIn())
+				{
+					_ui.SetActiveGooglePlaySignInButton(false);
+					_ui.SetActiveGooglePlaySignOutButton(true);
+					_ui.SetInteractableGooglePlayFunctionalButtons(true);
+				}
+				else
+				{
+					_ui.SetActiveGooglePlaySignInButton(true);
+					_ui.SetActiveGooglePlaySignOutButton(false);
+					_ui.SetInteractableGooglePlayFunctionalButtons(false);				}
+
+
+				_ui.AnimateGooglePlayBoardEnter
+				(
+					()=>
+					{
+						_ui.SetEnableGooglePlayButton(true);
+					}
+				);
 			}
 		);
 	}
@@ -171,6 +208,170 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
+	// CloudOnce
+
+	private void OnCloudOnceSignInComplete()
+	{
+		if (Application.platform != RuntimePlatform.IPhonePlayer)
+		{
+			OnGooglePlaySignInComplete();
+		}
+	}
+
+	private void OnCloudOnceSignOutComplete()
+	{
+		if (Application.platform != RuntimePlatform.IPhonePlayer)
+		{
+			OnGooglePlaySignOutComplete();
+		}
+	}
+
+	// UI - GooglePlay
+
+	private void SetupGooglePlay()
+	{
+		_ui.SetEnableGooglePlayButton(false);
+		_ui.SetActiveGooglePlay(false);
+		_ui.SetInteractableGooglePlayFunctionalButtons(false);
+
+		_cloudOnce.SubscribeSignInComplete(OnCloudOnceSignInComplete);
+		_cloudOnce.SubscribeSignOutComplete(OnCloudOnceSignOutComplete);
+	}
+
+	private void OnGooglePlaySignInComplete()
+	{
+		_ui.SetActiveGooglePlaySignInButton(false);
+		_ui.SetActiveGooglePlaySignOutButton(true);
+		_ui.SetInteractableGooglePlayFunctionalButtons(true);
+	}
+
+	private void OnGooglePlaySignOutComplete()
+	{
+		_ui.SetActiveGooglePlaySignInButton(true);
+		_ui.SetActiveGooglePlaySignOutButton(false);
+		_ui.SetInteractableGooglePlayFunctionalButtons(false);
+	}
+
+	public void OnGooglePlaySignInButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+//		_ui.SetEnableGooglePlayButton(false);
+
+		_ui.AnimateGooglePlaySignInButtonPressed
+		(
+			()=>
+			{
+				_cloudOnce.SignIn();
+			}
+		);
+	}
+
+	public void OnGooglePlaySignOutButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+//		_ui.SetEnableGooglePlayButton(false);
+
+		_ui.AnimateGooglePlaySignOutButtonPressed
+		(
+			()=>
+			{
+				_cloudOnce.SignOut();
+			}
+		);
+	}
+
+	public void OnGooglePlayLoadButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+//		_ui.SetEnableGooglePlayButton(false);
+
+		_ui.AnimateGooglePlayLoadButtonPressed
+		(
+			()=>
+			{
+			}
+		);
+	}
+
+	public void OnGooglePlaySaveButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+//		_ui.SetEnableGooglePlayButton(false);
+
+		_ui.AnimateGooglePlaySaveButtonPressed
+		(
+			()=>
+			{
+			}
+		);
+	}
+
+	public void OnGooglePlayAchievementsButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+//		_ui.SetEnableGooglePlayButton(false);
+
+		_ui.AnimateGooglePlayAchivementsButtonPressed
+		(
+			()=>
+			{
+			}
+		);
+	}
+
+	public void OnGooglePlayLeaderboardButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+		_ui.AnimateGooglePlayLeaderboardButtonPressed
+		(
+			()=>
+			{
+				int totalStars = 0;
+
+				for (int i = 0; i < _level.GetNumColor(); i++)
+				{
+					totalStars += _data.GetColorStar(i);
+				}
+
+				_cloudOnce.SubmitLeaderboardHighScore(totalStars);
+
+				_cloudOnce.ShowLeaderboard();
+			}
+		);
+	}
+
+	public void OnGooglePlayCloseButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+		_ui.SetEnableGooglePlayButton(false);
+
+		_ui.AnimateGooglePlayCloseButtonPressed
+		(
+			()=>
+			{
+				_ui.AnimateGooglePlayBoardExit
+				(
+					()=>
+					{
+						_canExit = true;
+
+						_ui.SetActiveGooglePlay(false);
+
+						_ui.SetEnableFrontButton(true);
+						_ui.SetEnableBottomButton(true);
+					}
+				);
+			}
+		);
+	}
+
 	// UI - Exit
 
 	private void SetupExit()
@@ -181,6 +382,13 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void OnExitButtonPressed()
 	{
+		if (_canExit == false)
+		{
+			return;
+		}
+
+		_canExit = false;
+
 		_audio.PlayButtonPressed();
 
 		_ui.SetActiveExit(true);
@@ -231,6 +439,8 @@ public class MainMenuLogic : MonoBehaviour
 				(
 					()=>
 					{
+						_canExit = true;
+
 						_ui.SetActiveExit(false);
 						_ui.SetEnableFrontButton(true);
 						_ui.SetEnableBottomButton(true);
@@ -245,26 +455,38 @@ public class MainMenuLogic : MonoBehaviour
 	private void Awake()
 	{
 		_ui = GameObject.Find("MainMenuUI").GetComponent<MainMenuUI>();
+		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
+		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
+
+		_canExit = false;
 	}
 
 	private void Start()
 	{
 		SetupFront();
 		SetupBottom();
+		if (Application.platform != RuntimePlatform.IPhonePlayer)
+		{
+			SetupGooglePlay();
+		}
 		SetupExit();
 
 		_audio.PlayFrontButtonEnter();
 
+		_canExit = false;
+
 		_ui.SetEnableFrontButton(false);
+		_ui.SetEnableBottomButton(false);
 		_ui.AnimateFrontEnter
 		(
 			()=>
 			{
+				_canExit = true;
 				_ui.SetEnableFrontButton(true);
+				_ui.SetEnableBottomButton(true);
 			}
 		);
 	}

@@ -67,6 +67,8 @@ public class StartupLogic : MonoBehaviour
 	{
 		if (_dataInitComplete && _cloudOnceInitComplete)
 		{
+			_data.UnsubscribeInitComplete(OnDataInitComplete);
+			_cloudOnce.UnsubscribeInitComplete(OnCloudOnceInitComplete);
 			SceneManager.LoadScene("MainMenuScene");
 		}
 	}
