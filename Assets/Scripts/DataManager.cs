@@ -263,11 +263,36 @@ public class DataManager : MonoBehaviour
 		PlayerPrefs.DeleteAll();
 	}
 
+	// Delegates
+	// This is used exclusively by the StartupScene
+
+	public delegate void InitComplete();
+	private static event InitComplete _initComplete;
+
+	public void SubscribeInitComplete(InitComplete callback)
+	{
+		_initComplete += callback;
+	}
+
+	public void UnsubscribeInitComplete(InitComplete callback)
+	{
+		_initComplete -= callback;
+	}
+
+	private void TriggerInitComplete()
+	{
+		if (_initComplete != null)
+		{
+			_initComplete();
+		}
+	}
+
 	// Unity Lifecyle
 
 	private void Awake()
 	{
 		// Singleton implementation
+
 	        if (_instance != null && _instance != this)
 		{
 			Destroy(this.gameObject);
@@ -435,7 +460,7 @@ public class DataManager : MonoBehaviour
 			}
 
 			_initOnce = true;
-			EventManager.TriggerDataInitCompleteEvent();
+			TriggerInitComplete();
 		}
 	}
 }

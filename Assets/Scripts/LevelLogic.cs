@@ -10,12 +10,12 @@ public class LevelLogic : MonoBehaviour
 	private LevelUI _ui;
 	private LoadUI _loadUi;
 	private AdUI _adUi;
-	private DataManager _data;
-	private EventManager _event;
-	private LevelManager _level;
-	private AudioManager _audio;
 	private AdManager _ad;
+	private AudioManager _audio;
 	private BlockManager _block;
+	private CloudOnceManager _cloudOnce;
+	private DataManager _data;
+	private LevelManager _level;
 
 	private int _menuColor;
 	private int _menuAlphabet;
@@ -939,6 +939,15 @@ public class LevelLogic : MonoBehaviour
 
 				int currentColorStar = _data.GetColorStar(_menuColor);
 				_data.SetColorStar(_menuColor, currentColorStar + (star - currentStar));
+
+				int totalStars = 0;
+
+				for (int i = 0; i < _level.GetNumColor(); i++)
+				{
+					totalStars = _data.GetColorStar(i);
+				}
+
+				_cloudOnce.SubmitLeaderboardHighScore(totalStars);
 			}
 
 			if (_touchHint)
@@ -1781,12 +1790,13 @@ public class LevelLogic : MonoBehaviour
 		_ui = GameObject.Find("LevelUI").GetComponent<LevelUI>();
 		_loadUi = GameObject.Find("LoadUI").GetComponent<LoadUI>();
 		_adUi = GameObject.Find("AdUI").GetComponent<AdUI>();
-		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
-		_event = GameObject.Find("EventManager").GetComponent<EventManager>();
-		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+
 		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
+		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
+		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
+		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
 		FindMapGameObject();
 	}
