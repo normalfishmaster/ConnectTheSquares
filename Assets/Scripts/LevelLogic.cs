@@ -941,6 +941,19 @@ public class LevelLogic : MonoBehaviour
 				_data.SetColorStar(_menuColor, currentColorStar + (star - currentStar));
 			}
 
+			int numSolved = 0;
+
+			for (int i = 0; i < _level.GetNumMap(_menuColor, _menuAlphabet); i++)
+			{
+				if (_data.GetLevelStar(_menuColor, _menuAlphabet, i) >= 1)
+				{
+					numSolved += 1;
+				}
+			}
+
+			_cloudOnce.IncrementClearAchivement(_menuColor, _menuAlphabet, numSolved, 60);
+			_cloudOnce.IncrementFullClearAchivement(_menuColor, _menuAlphabet, _data.GetAlphabetStar(_menuColor, _menuAlphabet), 60 * 3);
+
 			int totalStars = 0;
 
 			for (int i = 0; i < _level.GetNumColor(); i++)
@@ -948,6 +961,7 @@ public class LevelLogic : MonoBehaviour
 				totalStars += _data.GetColorStar(i);
 			}
 
+			_cloudOnce.IncrementThePerfectionistAchivement(totalStars, 13 * 60 * 3);
 			_cloudOnce.SubmitLeaderboardHighScore(totalStars);
 
 			if (_touchHint)
@@ -994,6 +1008,10 @@ public class LevelLogic : MonoBehaviour
 				enableNext = true;
 				_data.SetLevelLock(nextColor, nextAlphabet, nextMap, 0);
 			}
+
+			_data.SetLastColor(nextColor);
+			_data.SetLastAlphabet(nextAlphabet);
+			_data.SetLastMap(nextMap);
 
 			_ui.SetEnableControlButton(false);
 			_touchState = TouchState.WIN;

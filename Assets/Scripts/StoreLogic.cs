@@ -8,10 +8,11 @@ public class StoreLogic : MonoBehaviour
         private StoreUI _ui;
 	private LoadUI _loadUi;
 	private AdUI _adUi;
+	private AdManager _ad;
+        private AudioManager _audio;
+	private CloudOnceManager _cloudOnce;
         private DataManager _data;
         private LevelManager _level;
-        private AudioManager _audio;
-	private AdManager _ad;
 
 	private int _purchasePending;
 
@@ -512,10 +513,11 @@ public class StoreLogic : MonoBehaviour
 		_ui = GameObject.Find("StoreUI").GetComponent<StoreUI>();
 		_loadUi = GameObject.Find("LoadUI").GetComponent<LoadUI>();
 		_adUi = GameObject.Find("AdUI").GetComponent<AdUI>();
+		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
+		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
 
 		_purchasePending = 0;
 	}

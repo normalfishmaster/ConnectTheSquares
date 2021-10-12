@@ -256,13 +256,18 @@ public class MainMenuLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-//		_ui.SetEnableGooglePlayButton(false);
-
 		_ui.AnimateGooglePlaySignInButtonPressed
 		(
 			()=>
 			{
-				_cloudOnce.SignIn();
+				if (_cloudOnce.IsSignedIn())
+				{
+					OnGooglePlaySignInComplete();
+				}
+				else
+				{
+					_cloudOnce.SignIn();
+				}
 			}
 		);
 	}
@@ -271,13 +276,18 @@ public class MainMenuLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-//		_ui.SetEnableGooglePlayButton(false);
-
 		_ui.AnimateGooglePlaySignOutButtonPressed
 		(
 			()=>
 			{
-				_cloudOnce.SignOut();
+				if (_cloudOnce.IsSignedIn() == false)
+				{
+					OnGooglePlaySignOutComplete();
+				}
+				else
+				{
+					_cloudOnce.SignOut();
+				}
 			}
 		);
 	}
@@ -285,8 +295,6 @@ public class MainMenuLogic : MonoBehaviour
 	public void OnGooglePlayLoadButtonPressed()
 	{
 		_audio.PlayButtonPressed();
-
-//		_ui.SetEnableGooglePlayButton(false);
 
 		_ui.AnimateGooglePlayLoadButtonPressed
 		(
@@ -300,8 +308,6 @@ public class MainMenuLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-//		_ui.SetEnableGooglePlayButton(false);
-
 		_ui.AnimateGooglePlaySaveButtonPressed
 		(
 			()=>
@@ -314,12 +320,18 @@ public class MainMenuLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-//		_ui.SetEnableGooglePlayButton(false);
-
 		_ui.AnimateGooglePlayAchivementsButtonPressed
 		(
 			()=>
 			{
+				if (_cloudOnce.IsSignedIn())
+				{
+					_cloudOnce.ShowAchievements();
+				}
+				else
+				{
+					OnGooglePlaySignOutComplete();
+				}
 			}
 		);
 	}
@@ -332,16 +344,23 @@ public class MainMenuLogic : MonoBehaviour
 		(
 			()=>
 			{
-				int totalStars = 0;
-
-				for (int i = 0; i < _level.GetNumColor(); i++)
+				if (_cloudOnce.IsSignedIn())
 				{
-					totalStars += _data.GetColorStar(i);
+					int totalStars = 0;
+
+					for (int i = 0; i < _level.GetNumColor(); i++)
+					{
+						totalStars += _data.GetColorStar(i);
+					}
+
+					_cloudOnce.SubmitLeaderboardHighScore(totalStars);
+
+					_cloudOnce.ShowLeaderboard();
 				}
-
-				_cloudOnce.SubmitLeaderboardHighScore(totalStars);
-
-				_cloudOnce.ShowLeaderboard();
+				else
+				{
+					OnGooglePlaySignOutComplete();
+				}
 			}
 		);
 	}

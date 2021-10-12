@@ -14,8 +14,440 @@ namespace CloudOnce
     /// </summary>
     public static class Achievements
     {
+        private static readonly UnifiedAchievement s_tutorialAClear = new UnifiedAchievement("TutorialAClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQAg"
+#else
+            "TutorialAClear"
+#endif
+            );
+
+        public static UnifiedAchievement TutorialAClear
+        {
+            get { return s_tutorialAClear; }
+        }
+
+        private static readonly UnifiedAchievement s_tutorialAFullClear = new UnifiedAchievement("TutorialAFullClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQAw"
+#else
+            "TutorialAFullClear"
+#endif
+            );
+
+        public static UnifiedAchievement TutorialAFullClear
+        {
+            get { return s_tutorialAFullClear; }
+        }
+
+        private static readonly UnifiedAchievement s_easyAClear = new UnifiedAchievement("EasyAClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQBA"
+#else
+            "EasyAClear"
+#endif
+            );
+
+        public static UnifiedAchievement EasyAClear
+        {
+            get { return s_easyAClear; }
+        }
+
+        private static readonly UnifiedAchievement s_easyAFullClear = new UnifiedAchievement("EasyAFullClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQBQ"
+#else
+            "EasyAFullClear"
+#endif
+            );
+
+        public static UnifiedAchievement EasyAFullClear
+        {
+            get { return s_easyAFullClear; }
+        }
+
+        private static readonly UnifiedAchievement s_easyBClear = new UnifiedAchievement("EasyBClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQBg"
+#else
+            "EasyBClear"
+#endif
+            );
+
+        public static UnifiedAchievement EasyBClear
+        {
+            get { return s_easyBClear; }
+        }
+
+        private static readonly UnifiedAchievement s_easyBFullClear = new UnifiedAchievement("EasyBFullClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQBw"
+#else
+            "EasyBFullClear"
+#endif
+            );
+
+        public static UnifiedAchievement EasyBFullClear
+        {
+            get { return s_easyBFullClear; }
+        }
+
+        private static readonly UnifiedAchievement s_easyCClear = new UnifiedAchievement("EasyCClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQCA"
+#else
+            "EasyCClear"
+#endif
+            );
+
+        public static UnifiedAchievement EasyCClear
+        {
+            get { return s_easyCClear; }
+        }
+
+        private static readonly UnifiedAchievement s_easyCFullClear = new UnifiedAchievement("EasyCFullClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQCQ"
+#else
+            "EasyCFullClear"
+#endif
+            );
+
+        public static UnifiedAchievement EasyCFullClear
+        {
+            get { return s_easyCFullClear; }
+        }
+
+        private static readonly UnifiedAchievement s_mediumAClear = new UnifiedAchievement("MediumAClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQCg"
+#else
+            "MediumAClear"
+#endif
+            );
+
+        public static UnifiedAchievement MediumAClear
+        {
+            get { return s_mediumAClear; }
+        }
+
+        private static readonly UnifiedAchievement s_mediumAFullClear = new UnifiedAchievement("MediumAFullClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQCw"
+#else
+            "MediumAFullClear"
+#endif
+            );
+
+        public static UnifiedAchievement MediumAFullClear
+        {
+            get { return s_mediumAFullClear; }
+        }
+
+        private static readonly UnifiedAchievement s_mediumBClear = new UnifiedAchievement("MediumBClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQDA"
+#else
+            "MediumBClear"
+#endif
+            );
+
+        public static UnifiedAchievement MediumBClear
+        {
+            get { return s_mediumBClear; }
+        }
+
+        private static readonly UnifiedAchievement s_mediumBFullClear = new UnifiedAchievement("MediumBFullClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQDQ"
+#else
+            "MediumBFullClear"
+#endif
+            );
+
+        public static UnifiedAchievement MediumBFullClear
+        {
+            get { return s_mediumBFullClear; }
+        }
+
+        private static readonly UnifiedAchievement s_mediumCClear = new UnifiedAchievement("MediumCClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQDg"
+#else
+            "MediumCClear"
+#endif
+            );
+
+        public static UnifiedAchievement MediumCClear
+        {
+            get { return s_mediumCClear; }
+        }
+
+        private static readonly UnifiedAchievement s_mediumCFullClear = new UnifiedAchievement("MediumCFullClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQDw"
+#else
+            "MediumCFullClear"
+#endif
+            );
+
+        public static UnifiedAchievement MediumCFullClear
+        {
+            get { return s_mediumCFullClear; }
+        }
+
+        private static readonly UnifiedAchievement s_hardAClear = new UnifiedAchievement("HardAClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQEA"
+#else
+            "HardAClear"
+#endif
+            );
+
+        public static UnifiedAchievement HardAClear
+        {
+            get { return s_hardAClear; }
+        }
+
+        private static readonly UnifiedAchievement s_hardAFullClear = new UnifiedAchievement("HardAFullClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQEQ"
+#else
+            "HardAFullClear"
+#endif
+            );
+
+        public static UnifiedAchievement HardAFullClear
+        {
+            get { return s_hardAFullClear; }
+        }
+
+        private static readonly UnifiedAchievement s_hardBClear = new UnifiedAchievement("HardBClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQEg"
+#else
+            "HardBClear"
+#endif
+            );
+
+        public static UnifiedAchievement HardBClear
+        {
+            get { return s_hardBClear; }
+        }
+
+        private static readonly UnifiedAchievement s_hardBFullClear = new UnifiedAchievement("HardBFullClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQEw"
+#else
+            "HardBFullClear"
+#endif
+            );
+
+        public static UnifiedAchievement HardBFullClear
+        {
+            get { return s_hardBFullClear; }
+        }
+
+        private static readonly UnifiedAchievement s_hardCClear = new UnifiedAchievement("HardCClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQFA"
+#else
+            "HardCClear"
+#endif
+            );
+
+        public static UnifiedAchievement HardCClear
+        {
+            get { return s_hardCClear; }
+        }
+
+        private static readonly UnifiedAchievement s_hardCFullClear = new UnifiedAchievement("HardCFullClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQFQ"
+#else
+            "HardCFullClear"
+#endif
+            );
+
+        public static UnifiedAchievement HardCFullClear
+        {
+            get { return s_hardCFullClear; }
+        }
+
+        private static readonly UnifiedAchievement s_expertAClear = new UnifiedAchievement("ExpertAClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQFg"
+#else
+            "ExpertAClear"
+#endif
+            );
+
+        public static UnifiedAchievement ExpertAClear
+        {
+            get { return s_expertAClear; }
+        }
+
+        private static readonly UnifiedAchievement s_expertAFullClear = new UnifiedAchievement("ExpertAFullClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQFw"
+#else
+            "ExpertAFullClear"
+#endif
+            );
+
+        public static UnifiedAchievement ExpertAFullClear
+        {
+            get { return s_expertAFullClear; }
+        }
+
+        private static readonly UnifiedAchievement s_expertBClear = new UnifiedAchievement("ExpertBClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQGA"
+#else
+            "ExpertBClear"
+#endif
+            );
+
+        public static UnifiedAchievement ExpertBClear
+        {
+            get { return s_expertBClear; }
+        }
+
+        private static readonly UnifiedAchievement s_expertBFullClear = new UnifiedAchievement("ExpertBFullClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQGQ"
+#else
+            "ExpertBFullClear"
+#endif
+            );
+
+        public static UnifiedAchievement ExpertBFullClear
+        {
+            get { return s_expertBFullClear; }
+        }
+
+        private static readonly UnifiedAchievement s_expertCClear = new UnifiedAchievement("ExpertCClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQGg"
+#else
+            "ExpertCClear"
+#endif
+            );
+
+        public static UnifiedAchievement ExpertCClear
+        {
+            get { return s_expertCClear; }
+        }
+
+        private static readonly UnifiedAchievement s_expertCFullClear = new UnifiedAchievement("ExpertCFullClear",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQGw"
+#else
+            "ExpertCFullClear"
+#endif
+            );
+
+        public static UnifiedAchievement ExpertCFullClear
+        {
+            get { return s_expertCFullClear; }
+        }
+
+        private static readonly UnifiedAchievement s_thePerfectionist = new UnifiedAchievement("ThePerfectionist",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            ""
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkIqeu6h8oLEAIQHA"
+#else
+            "ThePerfectionist"
+#endif
+            );
+
+        public static UnifiedAchievement ThePerfectionist
+        {
+            get { return s_thePerfectionist; }
+        }
+
         public static readonly UnifiedAchievement[] All =
         {
+            s_tutorialAClear,
+            s_tutorialAFullClear,
+            s_easyAClear,
+            s_easyAFullClear,
+            s_easyBClear,
+            s_easyBFullClear,
+            s_easyCClear,
+            s_easyCFullClear,
+            s_mediumAClear,
+            s_mediumAFullClear,
+            s_mediumBClear,
+            s_mediumBFullClear,
+            s_mediumCClear,
+            s_mediumCFullClear,
+            s_hardAClear,
+            s_hardAFullClear,
+            s_hardBClear,
+            s_hardBFullClear,
+            s_hardCClear,
+            s_hardCFullClear,
+            s_expertAClear,
+            s_expertAFullClear,
+            s_expertBClear,
+            s_expertBFullClear,
+            s_expertCClear,
+            s_expertCFullClear,
+            s_thePerfectionist,
         };
 
         public static string GetPlatformID(string internalId)
@@ -27,7 +459,33 @@ namespace CloudOnce
 
         private static readonly Dictionary<string, UnifiedAchievement> s_achievementDictionary = new Dictionary<string, UnifiedAchievement>
         {
-
+            { "TutorialAClear", s_tutorialAClear },
+            { "TutorialAFullClear", s_tutorialAFullClear },
+            { "EasyAClear", s_easyAClear },
+            { "EasyAFullClear", s_easyAFullClear },
+            { "EasyBClear", s_easyBClear },
+            { "EasyBFullClear", s_easyBFullClear },
+            { "EasyCClear", s_easyCClear },
+            { "EasyCFullClear", s_easyCFullClear },
+            { "MediumAClear", s_mediumAClear },
+            { "MediumAFullClear", s_mediumAFullClear },
+            { "MediumBClear", s_mediumBClear },
+            { "MediumBFullClear", s_mediumBFullClear },
+            { "MediumCClear", s_mediumCClear },
+            { "MediumCFullClear", s_mediumCFullClear },
+            { "HardAClear", s_hardAClear },
+            { "HardAFullClear", s_hardAFullClear },
+            { "HardBClear", s_hardBClear },
+            { "HardBFullClear", s_hardBFullClear },
+            { "HardCClear", s_hardCClear },
+            { "HardCFullClear", s_hardCFullClear },
+            { "ExpertAClear", s_expertAClear },
+            { "ExpertAFullClear", s_expertAFullClear },
+            { "ExpertBClear", s_expertBClear },
+            { "ExpertBFullClear", s_expertBFullClear },
+            { "ExpertCClear", s_expertCClear },
+            { "ExpertCFullClear", s_expertCFullClear },
+            { "ThePerfectionist", s_thePerfectionist }
         };
     }
 }

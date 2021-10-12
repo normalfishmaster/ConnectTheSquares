@@ -79,6 +79,139 @@ public class CloudOnceManager : MonoBehaviour
 		Cloud.SignOut();
 	}
 
+	// Achievements
+
+	public void IncrementClearAchivement(int color, int alphabet, int current, int goal)
+	{
+		float fcurrent = (float)(current);
+		float fgoal = (float)(goal);
+
+		if (color == 0 && alphabet == 0)
+		{
+			Achievements.TutorialAClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 1 && alphabet == 0)
+		{
+			Achievements.EasyAClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 1 && alphabet == 1)
+		{
+			Achievements.EasyBClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 1 && alphabet == 2)
+		{
+			Achievements.EasyCClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 2 && alphabet == 0)
+		{
+			Achievements.MediumAClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 2 && alphabet == 1)
+		{
+			Achievements.MediumBClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 2 && alphabet == 2)
+		{
+			Achievements.MediumCClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 3 && alphabet == 0)
+		{
+			Achievements.HardAClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 3 && alphabet == 1)
+		{
+			Achievements.HardBClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 3 && alphabet == 2)
+		{
+			Achievements.HardCClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 4 && alphabet == 0)
+		{
+			Achievements.ExpertAClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 4 && alphabet == 1)
+		{
+			Achievements.ExpertBClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 4 && alphabet == 2)
+		{
+			Achievements.ExpertCClear.Increment(fcurrent, fgoal);
+		}
+	}
+
+	public void IncrementFullClearAchivement(int color, int alphabet, int current, int goal)
+	{
+		float fcurrent = (float)(current);
+		float fgoal = (float)(goal);
+
+		if (color == 0 && alphabet == 0)
+		{
+			Achievements.TutorialAFullClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 1 && alphabet == 0)
+		{
+			Achievements.EasyAFullClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 1 && alphabet == 1)
+		{
+			Achievements.EasyBFullClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 1 && alphabet == 2)
+		{
+			Achievements.EasyCFullClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 2 && alphabet == 0)
+		{
+			Achievements.MediumAFullClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 2 && alphabet == 1)
+		{
+			Achievements.MediumBFullClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 2 && alphabet == 2)
+		{
+			Achievements.MediumCFullClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 3 && alphabet == 0)
+		{
+			Achievements.HardAFullClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 3 && alphabet == 1)
+		{
+			Achievements.HardBFullClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 3 && alphabet == 2)
+		{
+			Achievements.HardCFullClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 4 && alphabet == 0)
+		{
+			Achievements.ExpertAFullClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 4 && alphabet == 1)
+		{
+			Achievements.ExpertBFullClear.Increment(fcurrent, fgoal);
+		}
+		else if (color == 4 && alphabet == 2)
+		{
+			Achievements.ExpertCFullClear.Increment(fcurrent, fgoal);
+		}
+	}
+
+	public void IncrementThePerfectionistAchivement(int current, int goal)
+	{
+		Achievements.ThePerfectionist.Increment(current, goal);
+	}
+
+	public void ShowAchievements()
+	{
+		if (IsSignedIn())
+		{
+			Cloud.Achievements.ShowOverlay();
+		}
+	}
+
 	// Leaderboard
 
 	public void SubmitLeaderboardHighScore(int stars)
