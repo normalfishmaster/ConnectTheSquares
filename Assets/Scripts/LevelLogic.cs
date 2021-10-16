@@ -916,6 +916,10 @@ public class LevelLogic : MonoBehaviour
 		{
 			_audio.PlayMapExit();
 
+			bool cloudUpdate = false;
+
+			// Update stars
+
 			int move = GetBlockMoveCount();
 			int star = 1;
 
@@ -939,48 +943,11 @@ public class LevelLogic : MonoBehaviour
 
 				int currentColorStar = _data.GetColorStar(_menuColor);
 				_data.SetColorStar(_menuColor, currentColorStar + (star - currentStar));
+
+				cloudUpdate = true;
 			}
 
-			int numSolved = 0;
-
-			for (int i = 0; i < _level.GetNumMap(_menuColor, _menuAlphabet); i++)
-			{
-				if (_data.GetLevelStar(_menuColor, _menuAlphabet, i) >= 1)
-				{
-					numSolved += 1;
-				}
-			}
-
-			_cloudOnce.IncrementClearAchivement(_menuColor, _menuAlphabet, numSolved, 60);
-			_cloudOnce.IncrementFullClearAchivement(_menuColor, _menuAlphabet, _data.GetAlphabetStar(_menuColor, _menuAlphabet), 60 * 3);
-
-			int totalStars = 0;
-
-			for (int i = 0; i < _level.GetNumColor(); i++)
-			{
-				totalStars += _data.GetColorStar(i);
-			}
-
-			_cloudOnce.IncrementThePerfectionistAchivement(totalStars, 13 * 60 * 3);
-			_cloudOnce.SubmitLeaderboardHighScore(totalStars);
-
-			if (_touchHint)
-			{
-				_touchHint = false;
-				_ui.SetActiveControlHintOn(false);
-				_ui.SetActiveControlHintOff(true);
-
-				_ui.SetActiveHint(false);
-				AnimateHintDirectionStop();
-			}
-
-			int moveCount = GetBlockMoveCount();
-			_ui.SetTopMoveCurrent(moveCount);
-			if (moveCount > _data.GetLevelMove(_menuColor, _menuAlphabet, _menuMap))
-			{
-				_data.SetLevelMove(_menuColor, _menuAlphabet, _menuMap, moveCount);
-				_ui.SetTopMoveBest(moveCount);
-			}
+			// Unlock next level
 
 			int nextColor = _menuColor;
 			int nextAlphabet = _menuAlphabet;
@@ -1006,12 +973,66 @@ public class LevelLogic : MonoBehaviour
 			else
 			{
 				enableNext = true;
+				cloudUpdate = true;
 				_data.SetLevelLock(nextColor, nextAlphabet, nextMap, 0);
 			}
 
 			_data.SetLastColor(nextColor);
 			_data.SetLastAlphabet(nextAlphabet);
 			_data.SetLastMap(nextMap);
+
+			// Update achievements
+
+			int numSolved = 0;
+
+			for (int i = 0; i < _level.GetNumMap(_menuColor, _menuAlphabet); i++)
+			{
+				if (_data.GetLevelStar(_menuColor, _menuAlphabet, i) >= 1)
+				{
+					numSolved += 1;
+				}
+			}
+
+			_cloudOnce.IncrementClearAchivement(_menuColor, _menuAlphabet, numSolved, 60);
+			_cloudOnce.IncrementFullClearAchivement(_menuColor, _menuAlphabet, _data.GetAlphabetStar(_menuColor, _menuAlphabet), 60 * 3);
+
+			int totalStars = 0;
+
+			for (int i = 0; i < _level.GetNumColor(); i++)
+			{
+				totalStars += _data.GetColorStar(i);
+			}
+
+			_cloudOnce.IncrementThePerfectionistAchivement(totalStars, 13 * 60 * 3);
+			_cloudOnce.SubmitLeaderboardHighScore(totalStars);
+
+			// Save data to cloud
+
+			if (cloudUpdate)
+			{
+				_cloudOnce.SaveDataToCloud();
+				_cloudOnce.Save();
+			}
+
+			// Update UI
+
+			if (_touchHint)
+			{
+				_touchHint = false;
+				_ui.SetActiveControlHintOn(false);
+				_ui.SetActiveControlHintOff(true);
+
+				_ui.SetActiveHint(false);
+				AnimateHintDirectionStop();
+			}
+
+			int moveCount = GetBlockMoveCount();
+			_ui.SetTopMoveCurrent(moveCount);
+			if (moveCount > _data.GetLevelMove(_menuColor, _menuAlphabet, _menuMap))
+			{
+				_data.SetLevelMove(_menuColor, _menuAlphabet, _menuMap, moveCount);
+				_ui.SetTopMoveBest(moveCount);
+			}
 
 			_ui.SetEnableControlButton(false);
 			_touchState = TouchState.WIN;

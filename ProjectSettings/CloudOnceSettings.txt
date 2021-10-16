@@ -138,108 +138,17 @@
 	],
 	"LeaderboardIDs":[
 		{
-			"InternalID":"highScore",
+			"InternalID":"HighScore",
 			"AppleID":"",
 			"GoogleID":"CgkIqeu6h8oLEAIQAA"
 		}
 	],
 	"CloudVariables":[
 		{
-			"Key":"brownA",
-			"Type":"5",
-			"DefaultValue":"L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,",
-			"PersistenceType":"1",
-			"AllowNegative":false
-		},
-		{
-			"Key":"blueA",
-			"Type":"5",
-			"DefaultValue":"L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,",
-			"PersistenceType":"1",
-			"AllowNegative":false
-		},
-		{
-			"Key":"blueB",
-			"Type":"5",
-			"DefaultValue":"L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,",
-			"PersistenceType":"1",
-			"AllowNegative":false
-		},
-		{
-			"Key":"blueC",
-			"Type":"5",
-			"DefaultValue":"L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,",
-			"PersistenceType":"1",
-			"AllowNegative":false
-		},
-		{
-			"Key":"greenA",
-			"Type":"5",
-			"DefaultValue":"L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,",
-			"PersistenceType":"1",
-			"AllowNegative":false
-		},
-		{
-			"Key":"greenB",
-			"Type":"5",
-			"DefaultValue":"L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,",
-			"PersistenceType":"1",
-			"AllowNegative":false
-		},
-		{
-			"Key":"greenC",
-			"Type":"5",
-			"DefaultValue":"L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,",
-			"PersistenceType":"1",
-			"AllowNegative":false
-		},
-		{
-			"Key":"yellowA",
-			"Type":"5",
-			"DefaultValue":"L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,",
-			"PersistenceType":"1",
-			"AllowNegative":false
-		},
-		{
-			"Key":"yellowB",
-			"Type":"5",
-			"DefaultValue":"L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,",
-			"PersistenceType":"1",
-			"AllowNegative":false
-		},
-		{
-			"Key":"yellowC",
-			"Type":"5",
-			"DefaultValue":"L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,",
-			"PersistenceType":"1",
-			"AllowNegative":false
-		},
-		{
-			"Key":"redA",
-			"Type":"5",
-			"DefaultValue":"L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,",
-			"PersistenceType":"1",
-			"AllowNegative":false
-		},
-		{
-			"Key":"redB",
-			"Type":"5",
-			"DefaultValue":"L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,",
-			"PersistenceType":"1",
-			"AllowNegative":false
-		},
-		{
-			"Key":"redC",
-			"Type":"5",
-			"DefaultValue":"L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,L,",
-			"PersistenceType":"1",
-			"AllowNegative":false
-		},
-		{
-			"Key":"hint",
+			"Key":"Hint",
 			"Type":"1",
 			"DefaultValue":"3",
-			"PersistenceType":"1",
+			"PersistenceType":"0",
 			"AllowNegative":false
 		}
 	],

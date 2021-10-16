@@ -14,17 +14,17 @@ namespace CloudOnce
     /// </summary>
     public static class Leaderboards
     {
-        private static readonly UnifiedLeaderboard s_highScore = new UnifiedLeaderboard("highScore",
+        private static readonly UnifiedLeaderboard s_highScore = new UnifiedLeaderboard("HighScore",
 #if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
             ""
 #elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
             "CgkIqeu6h8oLEAIQAA"
 #else
-            "highScore"
+            "HighScore"
 #endif
             );
 
-        public static UnifiedLeaderboard highScore
+        public static UnifiedLeaderboard HighScore
         {
             get { return s_highScore; }
         }
@@ -38,7 +38,7 @@ namespace CloudOnce
 
         private static readonly Dictionary<string, UnifiedLeaderboard> s_leaderboardDictionary = new Dictionary<string, UnifiedLeaderboard>
         {
-            { "highScore", s_highScore }
+            { "HighScore", s_highScore }
         };
     }
 }

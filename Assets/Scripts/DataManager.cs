@@ -9,8 +9,6 @@ public class DataManager : MonoBehaviour
 	private static LevelManager _level;
 	private static AudioManager _audio;
 
-	private static bool _initOnce = false;
-
 	// Keys and Default Values
 
 	public string GetAudioKey()						{ return "AudioKey";										}
@@ -308,159 +306,155 @@ public class DataManager : MonoBehaviour
 
 	private void Start()
 	{
-		if (_initOnce == false)
+		if (CheckAudio() == false)
 		{
-			if (CheckAudio() == false)
-			{
-				InitAudio();
-			}
-			if (CheckHint() == false)
-			{
-				InitHint();
-			}
-			if (CheckRemoveAds() == false)
-			{
-				InitRemoveAds();
-			}
-			if (CheckUnlockAllLevels() == false)
-			{
-				InitUnlockAllLevels();
-			}
-			if (CheckMenuColor() == false)
-			{
-				InitMenuColor();
-			}
-			if (CheckMenuAlphabet() == false)
-			{
-				InitMenuAlphabet();
-			}
-			if (CheckMenuMap() == false)
-			{
-				InitMenuMap();
-			}
-			if (CheckLastColor() == false)
-			{
-				InitLastColor();
-			}
-			if (CheckLastAlphabet() == false)
-			{
-				InitLastAlphabet();
-			}
-			if (CheckLastMap() == false)
-			{
-				InitLastMap();
-			}
-
-			int numColor = _level.GetNumColor();
-
-			for (int i = 0; i < numColor; i++)
-			{
-				int numAlphabet = _level.GetNumAlphabet(i);
-
-				for (int j = 0; j < numAlphabet; j++)
-				{
-					int numMap = _level.GetNumMap(i, j);
-
-					for (int k = 0; k < numMap; k++)
-					{
-						if (CheckLevelLock(i, j, k) == false)
-						{
-							InitLevelLock(i, j, k);
-
-							if (i == 0 && j == 0 && k == 0)
-							{
-								SetLevelLock(0, 0, 0, 0);
-							}
-						}
-
-						if (CheckLevelStar(i, j, k) == false)
-						{
-							InitLevelStar(i, j, k);
-						}
-
-						if (CheckLevelMove(i, j, k) == false)
-						{
-							InitLevelMove(i, j, k);
-						}
-					}
-				}
-			}
-
-			if (CheckBlockSet() == false)
-			{
-				InitBlockSet();
-			}
-			if (CheckBlockMetalUnlocked() == false)
-			{
-				InitBlockMetalUnlocked();
-			}
-			if (CheckBlockWoodUnlocked() == false)
-			{
-				InitBlockWoodUnlocked();
-			}
-			if (CheckBlockGreenMarbleUnlocked() == false)
-			{
-				InitBlockGreenMarbleUnlocked();
-			}
-			if (CheckBlockBlueMarbleUnlocked() == false)
-			{
-				InitBlockBlueMarbleUnlocked();
-			}
-			if (CheckBlockRedMarbleUnlocked() == false)
-			{
-				InitBlockRedMarbleUnlocked();
-			}
-			if (CheckBlockRareMarbleUnlocked() == false)
-			{
-				InitBlockRareMarbleUnlocked();
-			}
-			if (CheckBlockIllusionUnlocked() == false)
-			{
-				InitBlockIllusionUnlocked();
-			}
-
-			// Calculate Color and Alphabet Star as well as Totals
-
-			for (int i = 0; i < numColor; i++)
-			{
-				int numAlphabet = _level.GetNumAlphabet(i);
-				int starColorEarned = 0;
-				int starColorTotal = 0;
-
-				for (int j = 0; j < numAlphabet; j++)
-				{
-					int numMap = _level.GetNumMap(i, j);
-					int starAlphabetEarned = 0;
-					int starAlphabetTotal = 0;
-
-					for (int k = 0; k < numMap; k++)
-					{
-						starAlphabetEarned += GetLevelStar(i, j, k);
-						starAlphabetTotal += 3;
-					}
-
-					SetAlphabetStar(i, j, starAlphabetEarned);
-					SetAlphabetStarTotal(i, j, starAlphabetTotal);
-
-					starColorEarned += starAlphabetEarned;
-					starColorTotal += starAlphabetTotal;
-				}
-
-				SetColorStar(i, starColorEarned);
-				SetColorStarTotal(i, starColorTotal);
-			}
-
-			if (GetAudio() == 0)
-			{
-				_audio.SetEnable(false);
-			}
-			else
-			{
-				_audio.SetEnable(true);
-			}
-
-			_initOnce = true;
-			TriggerInitComplete();
+			InitAudio();
 		}
+		if (CheckHint() == false)
+		{
+			InitHint();
+		}
+		if (CheckRemoveAds() == false)
+		{
+			InitRemoveAds();
+		}
+		if (CheckUnlockAllLevels() == false)
+		{
+			InitUnlockAllLevels();
+		}
+		if (CheckMenuColor() == false)
+		{
+			InitMenuColor();
+		}
+		if (CheckMenuAlphabet() == false)
+		{
+			InitMenuAlphabet();
+		}
+		if (CheckMenuMap() == false)
+		{
+			InitMenuMap();
+		}
+		if (CheckLastColor() == false)
+		{
+			InitLastColor();
+		}
+		if (CheckLastAlphabet() == false)
+		{
+			InitLastAlphabet();
+		}
+		if (CheckLastMap() == false)
+		{
+			InitLastMap();
+		}
+
+		int numColor = _level.GetNumColor();
+
+		for (int i = 0; i < numColor; i++)
+		{
+			int numAlphabet = _level.GetNumAlphabet(i);
+
+			for (int j = 0; j < numAlphabet; j++)
+			{
+				int numMap = _level.GetNumMap(i, j);
+
+				for (int k = 0; k < numMap; k++)
+				{
+					if (CheckLevelLock(i, j, k) == false)
+					{
+						InitLevelLock(i, j, k);
+
+						if (i == 0 && j == 0 && k == 0)
+						{
+							SetLevelLock(0, 0, 0, 0);
+						}
+					}
+
+					if (CheckLevelStar(i, j, k) == false)
+					{
+						InitLevelStar(i, j, k);
+					}
+
+					if (CheckLevelMove(i, j, k) == false)
+					{
+						InitLevelMove(i, j, k);
+					}
+				}
+			}
+		}
+
+		if (CheckBlockSet() == false)
+		{
+			InitBlockSet();
+		}
+		if (CheckBlockMetalUnlocked() == false)
+		{
+			InitBlockMetalUnlocked();
+		}
+		if (CheckBlockWoodUnlocked() == false)
+		{
+			InitBlockWoodUnlocked();
+		}
+		if (CheckBlockGreenMarbleUnlocked() == false)
+		{
+			InitBlockGreenMarbleUnlocked();
+		}
+		if (CheckBlockBlueMarbleUnlocked() == false)
+		{
+			InitBlockBlueMarbleUnlocked();
+		}
+		if (CheckBlockRedMarbleUnlocked() == false)
+		{
+			InitBlockRedMarbleUnlocked();
+		}
+		if (CheckBlockRareMarbleUnlocked() == false)
+		{
+			InitBlockRareMarbleUnlocked();
+		}
+		if (CheckBlockIllusionUnlocked() == false)
+		{
+			InitBlockIllusionUnlocked();
+		}
+
+		// Calculate Color and Alphabet Star as well as Totals
+
+		for (int i = 0; i < numColor; i++)
+		{
+			int numAlphabet = _level.GetNumAlphabet(i);
+			int starColorEarned = 0;
+			int starColorTotal = 0;
+
+			for (int j = 0; j < numAlphabet; j++)
+			{
+				int numMap = _level.GetNumMap(i, j);
+				int starAlphabetEarned = 0;
+				int starAlphabetTotal = 0;
+
+				for (int k = 0; k < numMap; k++)
+				{
+					starAlphabetEarned += GetLevelStar(i, j, k);
+					starAlphabetTotal += 3;
+				}
+
+				SetAlphabetStar(i, j, starAlphabetEarned);
+				SetAlphabetStarTotal(i, j, starAlphabetTotal);
+
+				starColorEarned += starAlphabetEarned;
+				starColorTotal += starAlphabetTotal;
+			}
+
+			SetColorStar(i, starColorEarned);
+			SetColorStarTotal(i, starColorTotal);
+		}
+
+		if (GetAudio() == 0)
+		{
+			_audio.SetEnable(false);
+		}
+		else
+		{
+			_audio.SetEnable(true);
+		}
+
+		TriggerInitComplete();
 	}
 }

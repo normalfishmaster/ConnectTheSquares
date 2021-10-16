@@ -257,147 +257,178 @@ public class MainMenuUI : MonoBehaviour
 		Animate.AnimateButtonPressed(_bottomLanguageButton, BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE, BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	// GooglePlay
+	// CloudOnce
 
-	public float GOOGLE_PLAY_ANIMATE_BOARD_ENTER_DURATION;
-	public float GOOGLE_PLAY_ANIMATE_BOARD_EXIT_DURATION;
+	public float CLOUD_ONCE_ANIMATE_BOARD_ENTER_DURATION;
+	public float CLOUD_ONCE_ANIMATE_BOARD_EXIT_DURATION;
 
-	public float GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE;
-	public float GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION;
+	public float CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_SCALE;
+	public float CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_DURATION;
 
-	private GameObject _googlePlay;
-	private GameObject _googlePlayBoard;
+	private GameObject _cloudOnce;
+	private GameObject _cloudOnceBoard;
 
-	private GameObject _googlePlaySignIn;
-	private GameObject _googlePlaySignOut;
-	private GameObject _googlePlayLoad;
-	private GameObject _googlePlaySave;
-	private GameObject _googlePlayAchievements;
-	private GameObject _googlePlayLeaderboard;
-	private GameObject _googlePlayClose;
+	private GameObject _cloudOnceSignIn;
+	private GameObject _cloudOnceSignOut;
+	private GameObject _cloudOnceLoad;
+	private GameObject _cloudOnceSave;
+	private GameObject _cloudOnceAchievements;
+	private GameObject _cloudOnceLeaderboard;
+	private GameObject _cloudOnceClose;
 
-	private GameObject _googlePlaySignInButton;
-	private GameObject _googlePlaySignOutButton;
-	private GameObject _googlePlayLoadButton;
-	private GameObject _googlePlaySaveButton;
-	private GameObject _googlePlayAchievementsButton;
-	private GameObject _googlePlayLeaderboardButton;
-	private GameObject _googlePlayCloseButton;
+	private GameObject _cloudOnceSignInButton;
+	private GameObject _cloudOnceSignOutButton;
+	private GameObject _cloudOnceLoadButton;
+	private GameObject _cloudOnceSaveButton;
+	private GameObject _cloudOnceAchievementsButton;
+	private GameObject _cloudOnceLeaderboardButton;
+	private GameObject _cloudOnceCloseButton;
 
-	private void FindGooglePlayGameObject()
+	private void FindCloudOnceGameObject()
 	{
-		_googlePlay = GameObject.Find("/Canvas/GooglePlay");
-		_googlePlayBoard = GameObject.Find("/Canvas/GooglePlay/Board");
+		_cloudOnce = GameObject.Find("/Canvas/CloudOnce");
+		_cloudOnceBoard = GameObject.Find("/Canvas/CloudOnce/Board");
 
-		_googlePlaySignIn = GameObject.Find("/Canvas/GooglePlay/Board/SignIn");
-		_googlePlaySignOut = GameObject.Find("/Canvas/GooglePlay/Board/SignOut");
-		_googlePlayLoad = GameObject.Find("/Canvas/GooglePlay/Board/Load");
-		_googlePlaySave = GameObject.Find("/Canvas/GooglePlay/Board/Save");
-		_googlePlayAchievements = GameObject.Find("/Canvas/GooglePlay/Board/Achievements");
-		_googlePlayLeaderboard = GameObject.Find("/Canvas/GooglePlay/Board/Leaderboard");
-		_googlePlayClose = GameObject.Find("/Canvas/GooglePlay/Board/Close");
+		_cloudOnceSignIn = GameObject.Find("/Canvas/CloudOnce/Board/SignIn");
+		_cloudOnceSignOut = GameObject.Find("/Canvas/CloudOnce/Board/SignOut");
+		_cloudOnceLoad = GameObject.Find("/Canvas/CloudOnce/Board/Load");
+		_cloudOnceSave = GameObject.Find("/Canvas/CloudOnce/Board/Save");
+		_cloudOnceAchievements = GameObject.Find("/Canvas/CloudOnce/Board/Achievements");
+		_cloudOnceLeaderboard = GameObject.Find("/Canvas/CloudOnce/Board/Leaderboard");
+		_cloudOnceClose = GameObject.Find("/Canvas/CloudOnce/Board/Close");
 
-		_googlePlaySignInButton = GameObject.Find("/Canvas/GooglePlay/Board/SignIn/Button");
-		_googlePlaySignOutButton = GameObject.Find("/Canvas/GooglePlay/Board/SignOut/Button");
-		_googlePlayLoadButton = GameObject.Find("/Canvas/GooglePlay/Board/Load/Button");
-		_googlePlaySaveButton = GameObject.Find("/Canvas/GooglePlay/Board/Save/Button");
-		_googlePlayAchievementsButton = GameObject.Find("/Canvas/GooglePlay/Board/Achievements/Button");
-		_googlePlayLeaderboardButton = GameObject.Find("/Canvas/GooglePlay/Board/Leaderboard/Button");
-		_googlePlayCloseButton = GameObject.Find("/Canvas/GooglePlay/Board/Close/Button");
+		_cloudOnceSignInButton = GameObject.Find("/Canvas/CloudOnce/Board/SignIn/Button");
+		_cloudOnceSignOutButton = GameObject.Find("/Canvas/CloudOnce/Board/SignOut/Button");
+		_cloudOnceLoadButton = GameObject.Find("/Canvas/CloudOnce/Board/Load/Button");
+		_cloudOnceSaveButton = GameObject.Find("/Canvas/CloudOnce/Board/Save/Button");
+		_cloudOnceAchievementsButton = GameObject.Find("/Canvas/CloudOnce/Board/Achievements/Button");
+		_cloudOnceLeaderboardButton = GameObject.Find("/Canvas/CloudOnce/Board/Leaderboard/Button");
+		_cloudOnceCloseButton = GameObject.Find("/Canvas/CloudOnce/Board/Close/Button");
 	}
 
-	public void SetActiveGooglePlay(bool active)
+	public void SetActiveCloudOnce(bool active)
 	{
-		_googlePlay.SetActive(active);
+		_cloudOnce.SetActive(active);
 	}
 
-	public void SetActiveGooglePlaySignInButton(bool active)
+	public void SetActiveCloudOnceSignInButton(bool active)
 	{
-		_googlePlaySignIn.SetActive(active);
+		_cloudOnceSignIn.SetActive(active);
 	}
 
-	public void SetActiveGooglePlaySignOutButton(bool active)
+	public void SetActiveCloudOnceSignOutButton(bool active)
 	{
-		_googlePlaySignOut.SetActive(active);
+		_cloudOnceSignOut.SetActive(active);
 	}
 
-	public void SetEnableGooglePlayButton(bool enable)
+	public void SetEnableCloudOnceButton(bool enable)
 	{
-		_googlePlaySignInButton.GetComponent<Button>().enabled = enable;
-		_googlePlaySignOutButton.GetComponent<Button>().enabled = enable;
-		_googlePlayLoadButton.GetComponent<Button>().enabled = enable;
-		_googlePlaySaveButton.GetComponent<Button>().enabled = enable;
-		_googlePlayAchievementsButton.GetComponent<Button>().enabled = enable;
-		_googlePlayLeaderboardButton.GetComponent<Button>().enabled = enable;
-		_googlePlayCloseButton.GetComponent<Button>().enabled = enable;
+		_cloudOnceSignInButton.GetComponent<Button>().enabled = enable;
+		_cloudOnceSignOutButton.GetComponent<Button>().enabled = enable;
+		_cloudOnceLoadButton.GetComponent<Button>().enabled = enable;
+		_cloudOnceSaveButton.GetComponent<Button>().enabled = enable;
+		_cloudOnceAchievementsButton.GetComponent<Button>().enabled = enable;
+		_cloudOnceLeaderboardButton.GetComponent<Button>().enabled = enable;
+		_cloudOnceCloseButton.GetComponent<Button>().enabled = enable;
 	}
 
-	public void SetInteractableGooglePlayFunctionalButtons(bool interactable)
+	public void SetInteractableCloudOnceSignInButton(bool interactable)
 	{
-		_googlePlayLoadButton.GetComponent<Button>().interactable = interactable;
-		_googlePlaySaveButton.GetComponent<Button>().interactable = interactable;
-		_googlePlayAchievementsButton.GetComponent<Button>().interactable = interactable;
-		_googlePlayLeaderboardButton.GetComponent<Button>().interactable = interactable;
+		_cloudOnceSignInButton.GetComponent<Button>().interactable = interactable;
+		_cloudOnceSignOutButton.GetComponent<Button>().interactable = interactable;
 
 		if (interactable == false)
 		{
-			_googlePlayLoadButton.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f, 1.0f);
-			_googlePlaySaveButton.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f, 1.0f);
-			_googlePlayAchievementsButton.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f, 1.0f);
-			_googlePlayLeaderboardButton.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f, 1.0f);
+			_cloudOnceSignInButton.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f, 1.0f);
+			_cloudOnceSignOutButton.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f, 1.0f);
 		}
 		else
 		{
-			_googlePlayLoadButton.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-			_googlePlaySaveButton.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-			_googlePlayAchievementsButton.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-			_googlePlayLeaderboardButton.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+			_cloudOnceSignInButton.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+			_cloudOnceSignOutButton.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 		}
 	}
 
-	public void AnimateGooglePlayBoardEnter(Animate.AnimateComplete callback)
+	public void SetInteractableCloudOnceFunctionalButton(bool interactable)
 	{
-		Animate.AnimateBoardEnter(_googlePlay, _googlePlayBoard, GOOGLE_PLAY_ANIMATE_BOARD_ENTER_DURATION, callback);
+		_cloudOnceLoadButton.GetComponent<Button>().interactable = interactable;
+		_cloudOnceSaveButton.GetComponent<Button>().interactable = interactable;
+		_cloudOnceAchievementsButton.GetComponent<Button>().interactable = interactable;
+		_cloudOnceLeaderboardButton.GetComponent<Button>().interactable = interactable;
+
+		if (interactable == false)
+		{
+			_cloudOnceLoadButton.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f, 1.0f);
+			_cloudOnceSaveButton.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f, 1.0f);
+			_cloudOnceAchievementsButton.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f, 1.0f);
+			_cloudOnceLeaderboardButton.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f, 1.0f);
+		}
+		else
+		{
+			_cloudOnceLoadButton.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+			_cloudOnceSaveButton.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+			_cloudOnceAchievementsButton.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+			_cloudOnceLeaderboardButton.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+		}
 	}
 
-	public void AnimateGooglePlayBoardExit(Animate.AnimateComplete callback)
+	public void SetInteractableCloudOnceCloseButton(bool interactable)
 	{
-		Animate.AnimateBoardExit(_googlePlay, _googlePlayBoard, GOOGLE_PLAY_ANIMATE_BOARD_EXIT_DURATION, callback);
+		_cloudOnceCloseButton.GetComponent<Button>().interactable = interactable;
+
+		if (interactable == false)
+		{
+			_cloudOnceCloseButton.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f, 1.0f);
+		}
+		else
+		{
+			_cloudOnceCloseButton.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+		}
 	}
 
-	public void AnimateGooglePlaySignInButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateCloudOnceBoardEnter(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateButtonPressed(_googlePlaySignInButton, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+		Animate.AnimateBoardEnter(_cloudOnce, _cloudOnceBoard, CLOUD_ONCE_ANIMATE_BOARD_ENTER_DURATION, callback);
 	}
 
-	public void AnimateGooglePlaySignOutButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateCloudOnceBoardExit(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateButtonPressed(_googlePlaySignOutButton, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+		Animate.AnimateBoardExit(_cloudOnce, _cloudOnceBoard, CLOUD_ONCE_ANIMATE_BOARD_EXIT_DURATION, callback);
 	}
 
-	public void AnimateGooglePlayLoadButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateCloudOnceSignInButtonPressed(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateButtonPressed(_googlePlayLoadButton, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+		Animate.AnimateButtonPressed(_cloudOnceSignInButton, CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_SCALE, CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateGooglePlaySaveButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateCloudOnceSignOutButtonPressed(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateButtonPressed(_googlePlaySaveButton, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+		Animate.AnimateButtonPressed(_cloudOnceSignOutButton, CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_SCALE, CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateGooglePlayAchivementsButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateCloudOnceLoadButtonPressed(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateButtonPressed(_googlePlayAchievementsButton, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+		Animate.AnimateButtonPressed(_cloudOnceLoadButton, CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_SCALE, CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateGooglePlayLeaderboardButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateCloudOnceSaveButtonPressed(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateButtonPressed(_googlePlayLeaderboardButton, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+		Animate.AnimateButtonPressed(_cloudOnceSaveButton, CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_SCALE, CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateGooglePlayCloseButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateCloudOnceAchivementsButtonPressed(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateButtonPressed(_googlePlayCloseButton, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE, GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+		Animate.AnimateButtonPressed(_cloudOnceAchievementsButton, CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_SCALE, CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateCloudOnceLeaderboardButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_cloudOnceLeaderboardButton, CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_SCALE, CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateCloudOnceCloseButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_cloudOnceCloseButton, CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_SCALE, CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	// Exit
@@ -470,7 +501,7 @@ public class MainMenuUI : MonoBehaviour
 		FindCanvasGameObject();
 		FindFrontGameObject();
 		FindBottomGameObject();
-		FindGooglePlayGameObject();
+		FindCloudOnceGameObject();
 		FindExitGameObject();
         }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MainMenuLogic : MonoBehaviour
@@ -145,27 +146,29 @@ public class MainMenuLogic : MonoBehaviour
 		(
 			()=>
 			{
-				_ui.SetActiveGooglePlay(true);
-				_ui.SetEnableGooglePlayButton(false);
+				_ui.SetActiveCloudOnce(true);
+				_ui.SetEnableCloudOnceButton(false);
 
 				if (_cloudOnce.IsSignedIn())
 				{
-					_ui.SetActiveGooglePlaySignInButton(false);
-					_ui.SetActiveGooglePlaySignOutButton(true);
-					_ui.SetInteractableGooglePlayFunctionalButtons(true);
+					_ui.SetActiveCloudOnceSignInButton(false);
+					_ui.SetActiveCloudOnceSignOutButton(true);
+					_ui.SetInteractableCloudOnceSignInButton(true);
+					_ui.SetInteractableCloudOnceFunctionalButton(true);
 				}
 				else
 				{
-					_ui.SetActiveGooglePlaySignInButton(true);
-					_ui.SetActiveGooglePlaySignOutButton(false);
-					_ui.SetInteractableGooglePlayFunctionalButtons(false);				}
+					_ui.SetActiveCloudOnceSignInButton(true);
+					_ui.SetActiveCloudOnceSignOutButton(false);
+					_ui.SetInteractableCloudOnceSignInButton(true);
+					_ui.SetInteractableCloudOnceFunctionalButton(false);
+				}
 
-
-				_ui.AnimateGooglePlayBoardEnter
+				_ui.AnimateCloudOnceBoardEnter
 				(
 					()=>
 					{
-						_ui.SetEnableGooglePlayButton(true);
+						_ui.SetEnableCloudOnceButton(true);
 					}
 				);
 			}
@@ -208,95 +211,100 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
-	// CloudOnce
+	// UI - CloudOnce
 
-	private void OnCloudOnceSignInComplete()
+	private void SetupCloudOnce()
 	{
-		if (Application.platform != RuntimePlatform.IPhonePlayer)
+		_ui.SetEnableCloudOnceButton(false);
+		_ui.SetActiveCloudOnce(false);
+		_ui.SetInteractableCloudOnceFunctionalButton(false);
+	}
+
+	private void OnCloudOnceSignedIn()
+	{
+		_ui.SetActiveCloudOnceSignInButton(false);
+		_ui.SetActiveCloudOnceSignOutButton(true);
+		_ui.SetInteractableCloudOnceSignInButton(true);
+		_ui.SetInteractableCloudOnceFunctionalButton(true);
+		_ui.SetInteractableCloudOnceCloseButton(true);
+	}
+
+	private void OnCloudOnceSignedOut()
+	{
+		_ui.SetActiveCloudOnceSignInButton(true);
+		_ui.SetActiveCloudOnceSignOutButton(false);
+		_ui.SetInteractableCloudOnceSignInButton(true);
+		_ui.SetInteractableCloudOnceFunctionalButton(false);
+		_ui.SetInteractableCloudOnceCloseButton(true);
+	}
+
+	private void OnCloudOnceSignedInChanged(bool isSignedIn)
+	{
+		_cloudOnce.UnsubscribeSignedInChanged(OnCloudOnceSignedInChanged);
+		_cloudOnce.UnsubscribeSignInFailed(OnCloudOnceSignInFailed);
+
+		if (isSignedIn)
 		{
-			OnGooglePlaySignInComplete();
+			OnCloudOnceSignedIn();
+		}
+		else
+		{
+			OnCloudOnceSignedOut();
 		}
 	}
 
-	private void OnCloudOnceSignOutComplete()
+	private void OnCloudOnceSignInFailed()
 	{
-		if (Application.platform != RuntimePlatform.IPhonePlayer)
+		_cloudOnce.UnsubscribeSignedInChanged(OnCloudOnceSignedInChanged);
+		_cloudOnce.UnsubscribeSignInFailed(OnCloudOnceSignInFailed);
+
+		OnCloudOnceSignedOut();
+	}
+
+	private void OnCloudSaveComplete(bool success)
+	{
+		_cloudOnce.UnsubscribeCloudSaveComplete(OnCloudSaveComplete);
+
+		_ui.SetInteractableCloudOnceSignInButton(true);
+		_ui.SetInteractableCloudOnceFunctionalButton(true);
+		_ui.SetInteractableCloudOnceCloseButton(true);
+	}
+
+	private void OnCloudLoadComplete(bool success)
+	{
+		_cloudOnce.UnsubscribeCloudLoadComplete(OnCloudLoadComplete);
+
+		if (success)
 		{
-			OnGooglePlaySignOutComplete();
+			_cloudOnce.LoadCloudToData();
 		}
+
+		_ui.SetInteractableCloudOnceSignInButton(true);
+		_ui.SetInteractableCloudOnceFunctionalButton(true);
+		_ui.SetInteractableCloudOnceCloseButton(true);
 	}
 
-	// UI - GooglePlay
-
-	private void SetupGooglePlay()
-	{
-		_ui.SetEnableGooglePlayButton(false);
-		_ui.SetActiveGooglePlay(false);
-		_ui.SetInteractableGooglePlayFunctionalButtons(false);
-
-		_cloudOnce.SubscribeSignInComplete(OnCloudOnceSignInComplete);
-		_cloudOnce.SubscribeSignOutComplete(OnCloudOnceSignOutComplete);
-	}
-
-	private void OnGooglePlaySignInComplete()
-	{
-		_ui.SetActiveGooglePlaySignInButton(false);
-		_ui.SetActiveGooglePlaySignOutButton(true);
-		_ui.SetInteractableGooglePlayFunctionalButtons(true);
-	}
-
-	private void OnGooglePlaySignOutComplete()
-	{
-		_ui.SetActiveGooglePlaySignInButton(true);
-		_ui.SetActiveGooglePlaySignOutButton(false);
-		_ui.SetInteractableGooglePlayFunctionalButtons(false);
-	}
-
-	public void OnGooglePlaySignInButtonPressed()
+	public void OnCloudOnceSignInButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.AnimateGooglePlaySignInButtonPressed
-		(
-			()=>
-			{
-				if (_cloudOnce.IsSignedIn())
-				{
-					OnGooglePlaySignInComplete();
-				}
-				else
-				{
-					_cloudOnce.SignIn();
-				}
-			}
-		);
-	}
+		if (_cloudOnce.IsSignedIn())
+		{
+			OnCloudOnceSignedIn();
+		}
+		else
+		{
+			_ui.SetInteractableCloudOnceSignInButton(false);
+			_ui.SetInteractableCloudOnceFunctionalButton(false);
+			_ui.SetInteractableCloudOnceCloseButton(false);
 
-	public void OnGooglePlaySignOutButtonPressed()
-	{
-		_audio.PlayButtonPressed();
+			_cloudOnce.SubscribeSignedInChanged(OnCloudOnceSignedInChanged);
+			_cloudOnce.SubscribeSignInFailed(OnCloudOnceSignInFailed);
 
-		_ui.AnimateGooglePlaySignOutButtonPressed
-		(
-			()=>
-			{
-				if (_cloudOnce.IsSignedIn() == false)
-				{
-					OnGooglePlaySignOutComplete();
-				}
-				else
-				{
-					_cloudOnce.SignOut();
-				}
-			}
-		);
-	}
+			_cloudOnce.SignIn();
+		}
 
-	public void OnGooglePlayLoadButtonPressed()
-	{
-		_audio.PlayButtonPressed();
-
-		_ui.AnimateGooglePlayLoadButtonPressed
+		_ui.AnimateCloudOnceSignInButtonPressed
 		(
 			()=>
 			{
@@ -304,11 +312,26 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
-	public void OnGooglePlaySaveButtonPressed()
+	public void OnCloudOnceSignOutButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.AnimateGooglePlaySaveButtonPressed
+		if (_cloudOnce.IsSignedIn())
+		{
+			_ui.SetInteractableCloudOnceSignInButton(false);
+			_ui.SetInteractableCloudOnceFunctionalButton(false);
+			_ui.SetInteractableCloudOnceCloseButton(false);
+
+			_cloudOnce.SubscribeSignedInChanged(OnCloudOnceSignedInChanged);
+
+			_cloudOnce.SignOut();
+		}
+		else
+		{
+			OnCloudOnceSignedOut();
+		}
+
+		_ui.AnimateCloudOnceSignOutButtonPressed
 		(
 			()=>
 			{
@@ -316,11 +339,64 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
-	public void OnGooglePlayAchievementsButtonPressed()
+	public void OnCloudOnceSaveButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.AnimateGooglePlayAchivementsButtonPressed
+		if (_cloudOnce.IsSignedIn())
+		{
+			_ui.SetInteractableCloudOnceSignInButton(false);
+			_ui.SetInteractableCloudOnceFunctionalButton(false);
+			_ui.SetInteractableCloudOnceCloseButton(false);
+
+			_cloudOnce.SubscribeCloudSaveComplete(OnCloudSaveComplete);
+			_cloudOnce.SaveDataToCloud();
+			_cloudOnce.Save();
+		}
+		else
+		{
+			OnCloudOnceSignedOut();
+		}
+
+		_ui.AnimateCloudOnceSaveButtonPressed
+		(
+			()=>
+			{
+			}
+		);
+	}
+
+	public void OnCloudOnceLoadButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+		if (_cloudOnce.IsSignedIn())
+		{
+			_ui.SetInteractableCloudOnceSignInButton(false);
+			_ui.SetInteractableCloudOnceFunctionalButton(false);
+			_ui.SetInteractableCloudOnceCloseButton(false);
+
+			_cloudOnce.SubscribeCloudLoadComplete(OnCloudLoadComplete);
+			_cloudOnce.Load();
+		}
+		else
+		{
+			OnCloudOnceSignedOut();
+		}
+
+		_ui.AnimateCloudOnceLoadButtonPressed
+		(
+			()=>
+			{
+			}
+		);
+	}
+
+	public void OnCloudOnceAchievementsButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+		_ui.AnimateCloudOnceAchivementsButtonPressed
 		(
 			()=>
 			{
@@ -330,17 +406,17 @@ public class MainMenuLogic : MonoBehaviour
 				}
 				else
 				{
-					OnGooglePlaySignOutComplete();
+					OnCloudOnceSignedOut();
 				}
 			}
 		);
 	}
 
-	public void OnGooglePlayLeaderboardButtonPressed()
+	public void OnCloudOnceLeaderboardButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.AnimateGooglePlayLeaderboardButtonPressed
+		_ui.AnimateCloudOnceLeaderboardButtonPressed
 		(
 			()=>
 			{
@@ -354,34 +430,33 @@ public class MainMenuLogic : MonoBehaviour
 					}
 
 					_cloudOnce.SubmitLeaderboardHighScore(totalStars);
-
 					_cloudOnce.ShowLeaderboard();
 				}
 				else
 				{
-					OnGooglePlaySignOutComplete();
+					OnCloudOnceSignedOut();
 				}
 			}
 		);
 	}
 
-	public void OnGooglePlayCloseButtonPressed()
+	public void OnCloudOnceCloseButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.SetEnableGooglePlayButton(false);
+		_ui.SetEnableCloudOnceButton(false);
 
-		_ui.AnimateGooglePlayCloseButtonPressed
+		_ui.AnimateCloudOnceCloseButtonPressed
 		(
 			()=>
 			{
-				_ui.AnimateGooglePlayBoardExit
+				_ui.AnimateCloudOnceBoardExit
 				(
 					()=>
 					{
 						_canExit = true;
 
-						_ui.SetActiveGooglePlay(false);
+						_ui.SetActiveCloudOnce(false);
 
 						_ui.SetEnableFrontButton(true);
 						_ui.SetEnableBottomButton(true);
@@ -487,10 +562,7 @@ public class MainMenuLogic : MonoBehaviour
 	{
 		SetupFront();
 		SetupBottom();
-		if (Application.platform != RuntimePlatform.IPhonePlayer)
-		{
-			SetupGooglePlay();
-		}
+		SetupCloudOnce();
 		SetupExit();
 
 		_audio.PlayFrontButtonEnter();

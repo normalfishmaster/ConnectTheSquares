@@ -2,67 +2,58 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CloudOnce;
+using CloudOnce.CloudPrefs;
 
 public class CloudOnceManager : MonoBehaviour
 {
 	private static CloudOnceManager _instance;
 
+	private DataManager _data;
+	private LevelManager _level;
+
 	// Sign In / Out
-	// This is used exculsively by MainMenuScene
 
-	public delegate void SignInComplete();
-	private static event SignInComplete _signInComplete;
+	public delegate void SignedInChanged(bool isSignedIn);
+	private static event SignedInChanged _signedInChanged;
 
-	public void SubscribeSignInComplete(SignInComplete callback)
+	public void SubscribeSignedInChanged(SignedInChanged callback)
 	{
-		_signInComplete += callback;
+		_signedInChanged += callback;
 	}
 
-	public void UnsubscribeSignInComplete(SignInComplete callback)
+	public void UnsubscribeSignedInChanged(SignedInChanged callback)
 	{
-		_signInComplete -= callback;
+		_signedInChanged -= callback;
 	}
-
-        private void TriggerSignInComplete()
-        {
-                if (_signInComplete != null)
-                {
-                        _signInComplete();
-                }
-        }
-
-	public delegate void SignOutComplete();
-	private static event SignOutComplete _signOutComplete;
-
-	public void SubscribeSignOutComplete(SignOutComplete callback)
-	{
-		_signOutComplete += callback;
-	}
-
-	public void UnsubscribeSignOutComplete(SignOutComplete callback)
-	{
-		_signOutComplete -= callback;
-	}
-
-        private void TriggerSignOutComplete()
-        {
-                if (_signOutComplete != null)
-                {
-                        _signOutComplete();
-                }
-        }
 
 	private void OnSignedInChanged(bool isSignedIn)
 	{
-		if (IsSignedIn())
-		{
-			TriggerSignInComplete();
-		}
-		else
-		{
-			TriggerSignOutComplete();
-		}
+                if (_signedInChanged != null)
+                {
+                        _signedInChanged(isSignedIn);
+                }
 	}
+
+	public delegate void SignInFailed();
+	private static event SignInFailed _signInFailed;
+
+	public void SubscribeSignInFailed(SignInFailed callback)
+	{
+		_signInFailed += callback;
+	}
+
+	public void UnsubscribeSignInFailed(SignInFailed callback)
+	{
+		_signInFailed -= callback;
+	}
+
+        private void OnSignInFailed()
+        {
+                if (_signInFailed != null)
+                {
+                        _signInFailed();
+                }
+        }
 
 	public bool IsSignedIn()
 	{
@@ -216,7 +207,7 @@ public class CloudOnceManager : MonoBehaviour
 
 	public void SubmitLeaderboardHighScore(int stars)
 	{
-		Leaderboards.highScore.SubmitScore(stars);
+		Leaderboards.HighScore.SubmitScore(stars);
 	}
 
 	public void ShowLeaderboard()
@@ -224,6 +215,180 @@ public class CloudOnceManager : MonoBehaviour
 		if (IsSignedIn())
 		{
 			Cloud.Leaderboards.ShowOverlay();
+		}
+	}
+
+	// Cloud
+
+	public delegate void CloudSaveComplete(bool success);
+	private static event CloudSaveComplete _cloudSaveComplete;
+
+	public void SubscribeCloudSaveComplete(CloudSaveComplete callback)
+	{
+		_cloudSaveComplete += callback;
+	}
+
+	public void UnsubscribeCloudSaveComplete(CloudSaveComplete callback)
+	{
+		_cloudSaveComplete -= callback;
+	}
+
+	private void OnCloudSaveComplete(bool success)
+	{
+                if (_cloudSaveComplete != null)
+                {
+                        _cloudSaveComplete(success);
+                }
+	}
+
+	public delegate void CloudLoadComplete(bool success);
+	private static event CloudLoadComplete _cloudLoadComplete;
+
+	public void SubscribeCloudLoadComplete(CloudLoadComplete callback)
+	{
+		_cloudLoadComplete += callback;
+	}
+
+	public void UnsubscribeCloudLoadComplete(CloudLoadComplete callback)
+	{
+		_cloudLoadComplete -= callback;
+	}
+
+	private void OnCloudLoadComplete(bool success)
+	{
+                if (_cloudLoadComplete != null)
+                {
+                        _cloudLoadComplete(success);
+                }
+	}
+
+	public void LoadCloudToData()
+	{
+		int numColor = _level.GetNumColor();
+
+		for (int i = 0; i < numColor; i++)
+		{
+			int numAlphabet = _level.GetNumAlphabet(i);
+			int starColorEarned = 0;
+
+			for (int j = 0; j < numAlphabet; j++)
+			{
+				int numMap = _level.GetNumMap(i, j);
+				int starAlphabetEarned = 0;
+
+				for (int k = 0; k < numMap; k++)
+				{
+					string varName = i.ToString() + "." + j.ToString() + "." + k.ToString();
+					CloudInt variable = new CloudInt(varName, PersistenceType.Highest, -1);
+					int value = variable.Value;
+
+					if (value > -1)
+					{
+						_data.SetLevelLock(i, j, k, 0);
+
+						int star = _data.GetLevelStar(i, j, k);
+
+						if (value > star)
+						{
+							_data.SetLevelStar(i, j, k, value);
+						}
+					}
+
+					starAlphabetEarned += _data.GetLevelStar(i, j, k);
+				}
+
+				_data.SetAlphabetStar(i, j, starAlphabetEarned);
+			}
+
+			_data.SetColorStar(i, starColorEarned);
+		}
+	}
+
+	public void SaveDataToCloud()
+	{
+		int numColor = _level.GetNumColor();
+
+		for (int i = 0; i < numColor; i++)
+		{
+			int numAlphabet = _level.GetNumAlphabet(i);
+
+			for (int j = 0; j < numAlphabet; j++)
+			{
+				int numMap = _level.GetNumMap(i, j);
+
+				for (int k = 0; k < numMap; k++)
+				{
+					if (_data.GetLevelLock(i, j, k) == 1)
+					{
+						continue;
+					}
+
+					string varName = i.ToString() + "." + j.ToString() + "." + k.ToString();
+					CloudInt variable = new CloudInt(varName, PersistenceType.Highest, -1);
+
+					int star = _data.GetLevelStar(i, j, k);
+
+					if (star > variable.Value)
+					{
+						variable.Value = star;
+					}
+				}
+			}
+		}
+	}
+
+	public void IncrementHint(int value)
+	{
+		CloudVariables.Hint += value;
+		Cloud.Storage.Save();
+	}
+
+	public void DecrementHint(int value)
+	{
+		CloudVariables.Hint -= value;
+		Cloud.Storage.Save();
+	}
+
+	public int GetHint()
+	{
+		return CloudVariables.Hint;
+	}
+
+	public void DeleteAll()
+	{
+		Cloud.Storage.DeleteAll();;
+	}
+
+	public void Save()
+	{
+		Cloud.Storage.Save();
+	}
+
+	public void Load()
+	{
+		Cloud.Storage.Load();
+	}
+
+	private void SetupCloud()
+	{
+		// An initialization is required for the first load to work correctly.
+
+		int numColor = _level.GetNumColor();
+
+		for (int i = 0; i < numColor; i++)
+		{
+			int numAlphabet = _level.GetNumAlphabet(i);
+
+			for (int j = 0; j < numAlphabet; j++)
+			{
+				int numMap = _level.GetNumMap(i, j);
+
+				for (int k = 0; k < numMap; k++)
+				{
+					string varName = i.ToString() + "." + j.ToString() + "." + k.ToString();
+					CloudInt variable = new CloudInt(varName, PersistenceType.Highest, -1);
+				}
+			}
 		}
 	}
 
@@ -274,10 +439,24 @@ public class CloudOnceManager : MonoBehaviour
 		_instance = this;
 		DontDestroyOnLoad(this.gameObject);
 
+		// Initialization
+
+		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+
 		// Initialize CloudOnce
 
 	        Cloud.OnInitializeComplete += OnInitializeComplete;
 		Cloud.OnSignedInChanged += OnSignedInChanged;
+		Cloud.OnSignInFailed += OnSignInFailed;
+		Cloud.OnCloudSaveComplete += OnCloudSaveComplete;
+		Cloud.OnCloudLoadComplete += OnCloudLoadComplete;
+
         	Cloud.Initialize();
+	}
+
+	private void Start()
+	{
+		SetupCloud();
 	}
 }

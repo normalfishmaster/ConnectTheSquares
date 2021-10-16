@@ -566,7 +566,7 @@ namespace CloudOnce
         /// </summary>
         public static class LeaderboardIDs
         {
-            public static string highScore
+            public static string HighScore
             {
                 get
                 {
@@ -579,7 +579,7 @@ namespace CloudOnce
 #elif (UNITY_IOS || UNITY_TVOS) && !UNITY_EDITOR
                     return "";
 #elif UNITY_EDITOR
-                    return "highScore";
+                    return "HighScore";
 #else
                     return string.Empty;
 #endif

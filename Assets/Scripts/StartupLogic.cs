@@ -16,7 +16,7 @@ public class StartupLogic : MonoBehaviour
 
 	private void OnDataInitComplete()
 	{
-		EventManager.UnsubscribeDataInitCompleteEvent(OnDataInitComplete);
+		_data.UnsubscribeInitComplete(OnDataInitComplete);
 
 		if (_data.GetUnlockAllLevels() == 1)
 		{
@@ -43,6 +43,33 @@ public class StartupLogic : MonoBehaviour
 
 	private void OnCloudOnceInitComplete()
 	{
+		_cloudOnce.UnsubscribeInitComplete(OnCloudOnceInitComplete);
+
+		if (_cloudOnce.IsSignedIn())
+		{
+			_cloudOnce.SubscribeCloudLoadComplete(OnCloudLoadComplete);
+			_cloudOnce.Load();
+		}
+		else
+		{
+			_cloudOnceInitComplete = true;
+		}
+	}
+
+	// Cloud Load
+
+	private void OnCloudLoadComplete(bool success)
+	{
+                _cloudOnce.UnsubscribeCloudLoadComplete(OnCloudLoadComplete);
+
+		if (success)
+		{
+			_cloudOnce.LoadCloudToData();
+		}
+
+		_cloudOnce.SaveDataToCloud();
+		_cloudOnce.Save();
+
 		_cloudOnceInitComplete = true;
 	}
 
@@ -67,8 +94,6 @@ public class StartupLogic : MonoBehaviour
 	{
 		if (_dataInitComplete && _cloudOnceInitComplete)
 		{
-			_data.UnsubscribeInitComplete(OnDataInitComplete);
-			_cloudOnce.UnsubscribeInitComplete(OnCloudOnceInitComplete);
 			SceneManager.LoadScene("MainMenuScene");
 		}
 	}

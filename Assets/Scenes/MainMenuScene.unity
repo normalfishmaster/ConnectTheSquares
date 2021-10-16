@@ -596,7 +596,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1165655859}
         m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
-        m_MethodName: OnGooglePlayAchievementsButtonPressed
+        m_MethodName: OnCloudOnceAchievementsButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -729,7 +729,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1165655859}
         m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
-        m_MethodName: OnGooglePlayLeaderboardButtonPressed
+        m_MethodName: OnCloudOnceLeaderboardButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1419,7 +1419,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1165655859}
         m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
-        m_MethodName: OnGooglePlayLoadButtonPressed
+        m_MethodName: OnCloudOnceLoadButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1552,7 +1552,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1165655859}
         m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
-        m_MethodName: OnGooglePlaySignOutButtonPressed
+        m_MethodName: OnCloudOnceSignOutButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2152,79 +2152,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 415984207}
   m_CullTransparentMesh: 1
---- !u!1001 &421965613
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1598796072047533920, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
-      propertyPath: m_RootOrder
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 1598796072047533920, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1598796072047533920, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1598796072047533920, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1598796072047533920, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1598796072047533920, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1598796072047533920, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1598796072047533920, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1598796072047533920, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1598796072047533920, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1598796072047533920, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1598796072047533926, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
-      propertyPath: m_Name
-      value: IAPListener
-      objectReference: {fileID: 0}
-    - target: {fileID: 1598796072047533927, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
-      propertyPath: onPurchaseFailed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1419341996}
-    - target: {fileID: 1598796072047533927, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
-      propertyPath: onPurchaseComplete.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1419341996}
-    - target: {fileID: 1598796072047533927, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
-      propertyPath: onPurchaseFailed.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnPurchaseFailed
-      objectReference: {fileID: 0}
-    - target: {fileID: 1598796072047533927, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
-      propertyPath: onPurchaseComplete.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnPurchaseComplete
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 8a8a0fdafd64228ad8e13bbb1acbc023, type: 3}
 --- !u!1 &454767322
 GameObject:
   m_ObjectHideFlags: 0
@@ -2547,7 +2474,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1165655859}
         m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
-        m_MethodName: OnGooglePlaySignInButtonPressed
+        m_MethodName: OnCloudOnceSignInButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3703,7 +3630,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5781070564507033946, guid: d98bd97e823237625bd818f72b59134d, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5781070564507033946, guid: d98bd97e823237625bd818f72b59134d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5366,7 +5293,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1165655859}
         m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
-        m_MethodName: OnGooglePlaySaveButtonPressed
+        m_MethodName: OnCloudOnceSaveButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5727,7 +5654,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1165655859}
         m_TargetAssemblyTypeName: MainMenuLogic, Assembly-CSharp
-        m_MethodName: OnGooglePlayCloseButtonPressed
+        m_MethodName: OnCloudOnceCloseButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6190,17 +6117,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4b22a65c555614379faacd10d0465fa, type: 3}
---- !u!114 &1419341996 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2891656346126260522, guid: f4b22a65c555614379faacd10d0465fa, type: 3}
-  m_PrefabInstance: {fileID: 1419341995}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4774233aa10049946af290a4c7653a8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1420967600
 GameObject:
   m_ObjectHideFlags: 0
@@ -7582,10 +7498,10 @@ MonoBehaviour:
   FRONT_ANIMATE_BUTTON_PRESSED_DURATION: 0.15
   BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE: 1.05
   BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION: 0.1
-  GOOGLE_PLAY_ANIMATE_BOARD_ENTER_DURATION: 0.5
-  GOOGLE_PLAY_ANIMATE_BOARD_EXIT_DURATION: 0.25
-  GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_SCALE: 1.15
-  GOOGLE_PLAY_ANIMATE_BUTTON_PRESSED_DURATION: 0.15
+  CLOUD_ONCE_ANIMATE_BOARD_ENTER_DURATION: 0
+  CLOUD_ONCE_ANIMATE_BOARD_EXIT_DURATION: 0
+  CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_SCALE: 0
+  CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_DURATION: 0
   EXIT_ANIMATE_BOARD_ENTER_DURATION: 0.5
   EXIT_ANIMATE_BOARD_EXIT_DURATION: 0.25
   EXIT_ANIMATE_BUTTON_PRESSED_SCALE: 1.15
@@ -7616,7 +7532,7 @@ GameObject:
   - component: {fileID: 1972672312}
   - component: {fileID: 1972672311}
   m_Layer: 0
-  m_Name: GooglePlay
+  m_Name: CloudOnce
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
