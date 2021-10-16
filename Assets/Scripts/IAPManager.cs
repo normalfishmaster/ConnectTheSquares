@@ -7,9 +7,10 @@ public class IAPManager : MonoBehaviour
 {
 	private static IAPManager _instance;
 
+	private BlockManager _block;
+	private CloudOnceManager _cloudOnce;
 	private DataManager _data;
 	private LevelManager _level;
-	private BlockManager _block;
 
 	// Product
 
@@ -58,19 +59,19 @@ public class IAPManager : MonoBehaviour
 		}
 		else if (product.definition.id == _productHints3)
 		{
-			_data.SetHint(_data.GetHint() + 3);
+			_cloudOnce.IncrementHint(3);
 		}
 		else if (product.definition.id == _productHints15p3)
 		{
-			_data.SetHint(_data.GetHint() + 18);
+			_cloudOnce.IncrementHint(18);
 		}
 		else if (product.definition.id == _productHints30p9)
 		{
-			_data.SetHint(_data.GetHint() + 39);
+			_cloudOnce.IncrementHint(39);
 		}
 		else if (product.definition.id == _productHints60p24)
 		{
-			_data.SetHint(_data.GetHint() + 84);
+			_cloudOnce.IncrementHint(84);
 		}
 		else if (product.definition.id == _productBlockMetal)
 		{
@@ -137,8 +138,9 @@ public class IAPManager : MonoBehaviour
 		_instance = this;
 		DontDestroyOnLoad(this.gameObject);
 
+		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
+		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 	}
 }

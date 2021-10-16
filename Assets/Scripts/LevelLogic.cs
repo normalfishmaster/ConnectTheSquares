@@ -1104,8 +1104,8 @@ public class LevelLogic : MonoBehaviour
 
 		if (status == AdManager.RewardStatus.SUCCESS)
 		{
-			_data.SetHint(_data.GetHint() + 1);
-			_ui.SetControlHintCount(_data.GetHint());
+			_cloudOnce.IncrementHint(1);
+			_ui.SetControlHintCount(_cloudOnce.GetHint());
 			_ui.SetActiveControlHintAd(false);
 			_ui.SetActiveControlHintOn(false);
 			_ui.SetActiveControlHintOff(true);
@@ -1223,9 +1223,9 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetEnableControlButton(false);
 		_ui.SetInteractableControlButton(false);
 
-		_ui.SetControlHintCount(_data.GetHint());
+		_ui.SetControlHintCount(_cloudOnce.GetHint());
 
-		if (_data.GetHint() > 0)
+		if (_cloudOnce.GetHint() > 0)
 		{
 			_ui.SetActiveControlHintAd(false);
 			_ui.SetActiveControlHintOn(false);
@@ -1359,8 +1359,8 @@ public class LevelLogic : MonoBehaviour
 
 		if (_hintUsed == false)
 		{
-			_data.SetHint(_data.GetHint() - 1);
-			_ui.SetControlHintCount(_data.GetHint());
+			_cloudOnce.DecrementHint(1);
+			_ui.SetControlHintCount(_cloudOnce.GetHint());
 			_hintUsed = true;
 		}
 

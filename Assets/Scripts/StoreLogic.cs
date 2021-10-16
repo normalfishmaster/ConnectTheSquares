@@ -72,9 +72,9 @@ public class StoreLogic : MonoBehaviour
 
 		if (status == AdManager.RewardStatus.SUCCESS)
 		{
-			_data.SetHint(_data.GetHint() + 1);
+			_cloudOnce.IncrementHint(1);
 
-			_ui.SetTopHintCount(_data.GetHint());
+			_ui.SetTopHintCount(_cloudOnce.GetHint());
 
 			_audio.PlayRewardReceived();
 
@@ -120,7 +120,7 @@ public class StoreLogic : MonoBehaviour
 
 	private void SetupTop()
 	{
-		_ui.SetTopHintCount(_data.GetHint());
+		_ui.SetTopHintCount(_cloudOnce.GetHint());
 	}
 
 	// UI - Product
@@ -335,22 +335,22 @@ public class StoreLogic : MonoBehaviour
 
 		if (product == IAPManager._productHints3)
 		{
-			_ui.SetTopHintCount(_data.GetHint());
+			_ui.SetTopHintCount(_cloudOnce.GetHint());
 			_adUi.SetAdSuccessCountValue("+3");
 		}
 		else if (product == IAPManager._productHints15p3)
 		{
-			_ui.SetTopHintCount(_data.GetHint());
+			_ui.SetTopHintCount(_cloudOnce.GetHint());
 			_adUi.SetAdSuccessCountValue("+18");
 		}
 		else if (product == IAPManager._productHints30p9)
 		{
-			_ui.SetTopHintCount(_data.GetHint());
+			_ui.SetTopHintCount(_cloudOnce.GetHint());
 			_adUi.SetAdSuccessCountValue("+39");
 		}
 		else if (product == IAPManager._productHints60p24)
 		{
-			_ui.SetTopHintCount(_data.GetHint());
+			_ui.SetTopHintCount(_cloudOnce.GetHint());
 			_adUi.SetAdSuccessCountValue("+84");
 		}
 		else

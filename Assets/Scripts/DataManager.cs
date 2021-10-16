@@ -20,9 +20,6 @@ public class DataManager : MonoBehaviour
 	public string GetUnlockAllLevelsKey()					{ return "UnlockAllLevels";									}
 	public int    GetUnlockAllLevelsDefault()				{ return 0;											}
 
-	public string GetHintKey()						{ return "HintKey";										}
-	public int    GetHintDefault()						{ return 3;											}
-
 	public string GetMenuColorKey()						{ return "MenuColorKey";									}
 	public int    GetMenuColorDefault()					{ return -1;											}
 
@@ -92,11 +89,6 @@ public class DataManager : MonoBehaviour
 	public int   GetAudio()							{ return PlayerPrefs.GetInt(GetAudioKey());							}
 	public void  SetAudio(int value)					{        PlayerPrefs.SetInt(GetAudioKey(), value);						}
 	public void  InitAudio()						{        PlayerPrefs.SetInt(GetAudioKey(), GetAudioDefault());					}
-
-	public bool  CheckHint()						{ return PlayerPrefs.HasKey(GetHintKey());							}
-	public int   GetHint()							{ return PlayerPrefs.GetInt(GetHintKey());							}
-	public void  SetHint(int value)						{        PlayerPrefs.SetInt(GetHintKey(), value);						}
-	public void  InitHint()							{        PlayerPrefs.SetInt(GetHintKey(), GetHintDefault());					}
 
 	public bool  CheckRemoveAds()						{ return PlayerPrefs.HasKey(GetRemoveAdsKey());							}
 	public int   GetRemoveAds()						{ return PlayerPrefs.GetInt(GetRemoveAdsKey());							}
@@ -309,10 +301,6 @@ public class DataManager : MonoBehaviour
 		if (CheckAudio() == false)
 		{
 			InitAudio();
-		}
-		if (CheckHint() == false)
-		{
-			InitHint();
 		}
 		if (CheckRemoveAds() == false)
 		{
