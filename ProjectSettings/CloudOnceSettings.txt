@@ -150,6 +150,27 @@
 			"DefaultValue":"3",
 			"PersistenceType":"0",
 			"AllowNegative":false
+		},
+		{
+			"Key":"LastColor",
+			"Type":"0",
+			"DefaultValue":"0",
+			"PersistenceType":"0",
+			"AllowNegative":false
+		},
+		{
+			"Key":"LastAlphabet",
+			"Type":"0",
+			"DefaultValue":"0",
+			"PersistenceType":"0",
+			"AllowNegative":false
+		},
+		{
+			"Key":"LastMap",
+			"Type":"0",
+			"DefaultValue":"0",
+			"PersistenceType":"0",
+			"AllowNegative":false
 		}
 	],
 	"AppleSupported":false,

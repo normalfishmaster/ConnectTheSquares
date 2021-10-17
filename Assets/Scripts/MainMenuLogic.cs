@@ -24,12 +24,12 @@ public class MainMenuLogic : MonoBehaviour
 		int loadAlphabet = 0;
 		int loadMap = 0;
 
-		if (_data.GetLastColor() != _data.GetLastColorDefault())
+		if (_data.GetLevelStar(0, 0, 0) != 0)
 		{
 			label = "Continue";
-			loadColor = _data.GetLastColor();
-			loadAlphabet = _data.GetLastAlphabet();
-			loadMap = _data.GetLastMap();
+			loadColor = _cloudOnce.GetLastColor();
+			loadAlphabet = _cloudOnce.GetLastAlphabet();
+			loadMap = _cloudOnce.GetLastMap();
 		}
 
 		_ui.SetFrontContinueButtonLabel(label);
@@ -42,11 +42,11 @@ public class MainMenuLogic : MonoBehaviour
 		int loadAlphabet = 0;
 		int loadMap = 0;
 
-		if (_data.GetLastColor() != _data.GetLastColorDefault())
+		if (_data.GetLevelStar(0, 0, 0) != 0)
 		{
-			loadColor = _data.GetLastColor();
-			loadAlphabet = _data.GetLastAlphabet();
-			loadMap = _data.GetLastMap();
+			loadColor = _cloudOnce.GetLastColor();
+			loadAlphabet = _cloudOnce.GetLastAlphabet();
+			loadMap = _cloudOnce.GetLastMap();
 		}
 
 		_data.SetMenuColor(loadColor);

@@ -349,6 +349,36 @@ public class CloudOnceManager : MonoBehaviour
 		Cloud.Storage.Save();
 	}
 
+	public void SetLastColor(int value)
+	{
+		CloudVariables.LastColor = value;
+	}
+
+	public int GetLastColor()
+	{
+		return CloudVariables.LastColor;
+	}
+
+	public void SetLastAlphabet(int value)
+	{
+		CloudVariables.LastAlphabet = value;
+	}
+
+	public int GetLastAlphabet()
+	{
+		return CloudVariables.LastAlphabet;
+	}
+
+	public void SetLastMap(int value)
+	{
+		CloudVariables.LastMap = value;
+	}
+
+	public int GetLastMap()
+	{
+		return CloudVariables.LastMap;
+	}
+
 	public int GetHint()
 	{
 		return CloudVariables.Hint;

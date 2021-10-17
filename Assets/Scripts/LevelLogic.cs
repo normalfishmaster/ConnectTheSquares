@@ -916,8 +916,6 @@ public class LevelLogic : MonoBehaviour
 		{
 			_audio.PlayMapExit();
 
-			bool cloudUpdate = false;
-
 			// Update stars
 
 			int move = GetBlockMoveCount();
@@ -943,8 +941,6 @@ public class LevelLogic : MonoBehaviour
 
 				int currentColorStar = _data.GetColorStar(_menuColor);
 				_data.SetColorStar(_menuColor, currentColorStar + (star - currentStar));
-
-				cloudUpdate = true;
 			}
 
 			// Unlock next level
@@ -973,13 +969,12 @@ public class LevelLogic : MonoBehaviour
 			else
 			{
 				enableNext = true;
-				cloudUpdate = true;
 				_data.SetLevelLock(nextColor, nextAlphabet, nextMap, 0);
 			}
 
-			_data.SetLastColor(nextColor);
-			_data.SetLastAlphabet(nextAlphabet);
-			_data.SetLastMap(nextMap);
+			_cloudOnce.SetLastColor(nextColor);
+			_cloudOnce.SetLastAlphabet(nextAlphabet);
+			_cloudOnce.SetLastMap(nextMap);
 
 			// Update achievements
 
@@ -1008,11 +1003,8 @@ public class LevelLogic : MonoBehaviour
 
 			// Save data to cloud
 
-			if (cloudUpdate)
-			{
-				_cloudOnce.SaveDataToCloud();
-				_cloudOnce.Save();
-			}
+			_cloudOnce.SaveDataToCloud();
+			_cloudOnce.Save();
 
 			// Update UI
 
@@ -1850,9 +1842,10 @@ public class LevelLogic : MonoBehaviour
 
 		_hintUsed = false;
 
-		_data.SetLastColor(_menuColor);
-		_data.SetLastAlphabet(_menuAlphabet);
-		_data.SetLastMap(_menuMap);
+		_cloudOnce.SetLastColor(_menuColor);
+		_cloudOnce.SetLastAlphabet(_menuAlphabet);
+		_cloudOnce.SetLastMap(_menuMap);
+		_cloudOnce.Save();
 
 		SetupMap();	// SetupMap() must preceed SetupPhysics()
 		SetupPhysics();

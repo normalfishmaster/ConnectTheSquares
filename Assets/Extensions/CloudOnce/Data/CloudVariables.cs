@@ -20,5 +20,29 @@ namespace CloudOnce
             get { return s_hint.Value; }
             set { s_hint.Value = value; }
         }
+
+        private static readonly CloudInt s_lastColor = new CloudInt("LastColor", PersistenceType.Latest, 0);
+
+        public static int LastColor
+        {
+            get { return s_lastColor.Value; }
+            set { s_lastColor.Value = value; }
+        }
+
+        private static readonly CloudInt s_lastAlphabet = new CloudInt("LastAlphabet", PersistenceType.Latest, 0);
+
+        public static int LastAlphabet
+        {
+            get { return s_lastAlphabet.Value; }
+            set { s_lastAlphabet.Value = value; }
+        }
+
+        private static readonly CloudInt s_lastMap = new CloudInt("LastMap", PersistenceType.Latest, 0);
+
+        public static int LastMap
+        {
+            get { return s_lastMap.Value; }
+            set { s_lastMap.Value = value; }
+        }
     }
 }
