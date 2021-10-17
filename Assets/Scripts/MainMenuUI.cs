@@ -268,6 +268,9 @@ public class MainMenuUI : MonoBehaviour
 	private GameObject _cloudOnce;
 	private GameObject _cloudOnceBoard;
 
+	private GameObject _cloudOnceGooglePlayLabel;
+	private GameObject _cloudOnceGameCenterLabel;
+
 	private GameObject _cloudOnceSignIn;
 	private GameObject _cloudOnceSignOut;
 	private GameObject _cloudOnceLoad;
@@ -284,10 +287,26 @@ public class MainMenuUI : MonoBehaviour
 	private GameObject _cloudOnceLeaderboardButton;
 	private GameObject _cloudOnceCloseButton;
 
+	private GameObject _cloudOnceMessageSigningIn;
+	private GameObject _cloudOnceMessageSigningOut;
+	private GameObject _cloudOnceMessageSignedIn;
+	private GameObject _cloudOnceMessageSignedOut;
+	private GameObject _cloudOnceMessageSignInFailed;
+	private GameObject _cloudOnceMessageSignOutFailed;
+	private GameObject _cloudOnceMessageSavingData;
+	private GameObject _cloudOnceMessageLoadingData;
+	private GameObject _cloudOnceMessageDataSaved;
+	private GameObject _cloudOnceMessageDataLoaded;
+	private GameObject _cloudOnceMessageSaveDataFailed;
+	private GameObject _cloudOnceMessageLoadDataFailed;
+
 	private void FindCloudOnceGameObject()
 	{
 		_cloudOnce = GameObject.Find("/Canvas/CloudOnce");
 		_cloudOnceBoard = GameObject.Find("/Canvas/CloudOnce/Board");
+
+		_cloudOnceGooglePlayLabel = GameObject.Find("/Canvas/CloudOnce/Board/GooglePlayLabel");
+		_cloudOnceGameCenterLabel = GameObject.Find("/Canvas/CloudOnce/Board/GameCenterLabel");
 
 		_cloudOnceSignIn = GameObject.Find("/Canvas/CloudOnce/Board/SignIn");
 		_cloudOnceSignOut = GameObject.Find("/Canvas/CloudOnce/Board/SignOut");
@@ -304,11 +323,34 @@ public class MainMenuUI : MonoBehaviour
 		_cloudOnceAchievementsButton = GameObject.Find("/Canvas/CloudOnce/Board/Achievements/Button");
 		_cloudOnceLeaderboardButton = GameObject.Find("/Canvas/CloudOnce/Board/Leaderboard/Button");
 		_cloudOnceCloseButton = GameObject.Find("/Canvas/CloudOnce/Board/Close/Button");
+
+		_cloudOnceMessageSigningIn = GameObject.Find("/Canvas/CloudOnce/Board/MessageSigningIn");
+		_cloudOnceMessageSigningOut = GameObject.Find("/Canvas/CloudOnce/Board/MessageSigningOut");
+		_cloudOnceMessageSignedIn = GameObject.Find("/Canvas/CloudOnce/Board/MessageSignedIn");
+		_cloudOnceMessageSignedOut = GameObject.Find("/Canvas/CloudOnce/Board/MessageSignedOut");
+		_cloudOnceMessageSignInFailed = GameObject.Find("/Canvas/CloudOnce/Board/MessageSignInFailed");
+		_cloudOnceMessageSignOutFailed = GameObject.Find("/Canvas/CloudOnce/Board/MessageSignOutFailed");
+		_cloudOnceMessageSavingData = GameObject.Find("/Canvas/CloudOnce/Board/MessageSavingData");
+		_cloudOnceMessageLoadingData = GameObject.Find("/Canvas/CloudOnce/Board/MessageLoadingData");
+		_cloudOnceMessageDataSaved = GameObject.Find("/Canvas/CloudOnce/Board/MessageDataSaved");
+		_cloudOnceMessageDataLoaded = GameObject.Find("/Canvas/CloudOnce/Board/MessageDataLoaded");
+		_cloudOnceMessageSaveDataFailed = GameObject.Find("/Canvas/CloudOnce/Board/MessageSaveDataFailed");
+		_cloudOnceMessageLoadDataFailed = GameObject.Find("/Canvas/CloudOnce/Board/MessageLoadDataFailed");
 	}
 
 	public void SetActiveCloudOnce(bool active)
 	{
 		_cloudOnce.SetActive(active);
+	}
+
+	public void SetActiveCloudOnceGooglePlayLabel(bool active)
+	{
+		_cloudOnceGooglePlayLabel.SetActive(active);
+	}
+
+	public void SetActiveCloudOnceGameCenterLabel(bool active)
+	{
+		_cloudOnceGameCenterLabel.SetActive(active);
 	}
 
 	public void SetActiveCloudOnceSignInButton(bool active)
@@ -383,6 +425,71 @@ public class MainMenuUI : MonoBehaviour
 		else
 		{
 			_cloudOnceCloseButton.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+		}
+	}
+
+	public void SetActiveCloudOnceMessage(int index)
+	{
+		_cloudOnceMessageSigningIn.SetActive(false);
+		_cloudOnceMessageSigningOut.SetActive(false);
+		_cloudOnceMessageSignedIn.SetActive(false);
+		_cloudOnceMessageSignedOut.SetActive(false);
+		_cloudOnceMessageSignInFailed.SetActive(false);
+		_cloudOnceMessageSignOutFailed.SetActive(false);
+		_cloudOnceMessageSavingData.SetActive(false);
+		_cloudOnceMessageLoadingData.SetActive(false);
+		_cloudOnceMessageDataSaved.SetActive(false);
+		_cloudOnceMessageDataLoaded.SetActive(false);
+		_cloudOnceMessageSaveDataFailed.SetActive(false);
+		_cloudOnceMessageLoadDataFailed.SetActive(false);
+
+		if (index == 0)
+		{
+			_cloudOnceMessageSigningIn.SetActive(true);
+		}
+		else if (index == 1)
+		{
+			_cloudOnceMessageSigningOut.SetActive(true);
+		}
+		else if (index == 2)
+		{
+			_cloudOnceMessageSignedIn.SetActive(true);
+		}
+		else if (index == 3)
+		{
+			_cloudOnceMessageSignedOut.SetActive(true);
+		}
+		else if (index == 4)
+		{
+			_cloudOnceMessageSignInFailed.SetActive(true);
+		}
+		else if (index == 5)
+		{
+			_cloudOnceMessageSignOutFailed.SetActive(true);
+		}
+		else if (index == 6)
+		{
+			_cloudOnceMessageSavingData.SetActive(true);
+		}
+		else if (index == 7)
+		{
+			_cloudOnceMessageLoadingData.SetActive(true);
+		}
+		else if (index == 8)
+		{
+			_cloudOnceMessageDataSaved.SetActive(true);
+		}
+		else if (index == 9)
+		{
+			_cloudOnceMessageDataLoaded.SetActive(true);
+		}
+		else if (index == 10)
+		{
+			_cloudOnceMessageSaveDataFailed.SetActive(true);
+		}
+		else if (index == 11)
+		{
+			_cloudOnceMessageLoadDataFailed.SetActive(true);
 		}
 	}
 
