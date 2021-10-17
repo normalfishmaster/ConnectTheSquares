@@ -193,10 +193,24 @@ public class MainMenuLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
+		_canExit = false;
+
+		_ui.SetEnableFrontButton(false);
+		_ui.SetEnableBottomButton(false);
+
 		_ui.AnimateBottomRateButtonPressed
 		(
 			()=>
 			{
+				if (Application.platform == RuntimePlatform.IPhonePlayer)
+				{
+				}
+				else
+				{
+					Application.OpenURL("market://details?id=com.normalfish.connectthesquares");
+				}
+				_ui.SetEnableFrontButton(true);
+				_ui.SetEnableBottomButton(true);
 			}
 		);
 	}
