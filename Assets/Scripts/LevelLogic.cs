@@ -711,10 +711,11 @@ public class LevelLogic : MonoBehaviour
 		PRE_END_TO_END,
 		PAUSE,
 		WIN,
-		LOAD_AD,
+		LOAD_HINT_AD,
+		HINT_AD,
+		WIN_LOAD_HINT_AD,
+		WIN_HINT_AD,
 		AD,
-		WIN_LOAD_AD,
-		WIN_AD,
 	};
 
 	private TouchState _touchState;
@@ -1063,7 +1064,7 @@ public class LevelLogic : MonoBehaviour
 	{
 	}
 
-	private void CommonLoadAd(TouchState adState, TouchState postAdState)
+	private void CommonLoadHintAd(TouchState adState, TouchState postAdState)
 	{
 		_ad.ClearRewardStatus();
 
@@ -1090,7 +1091,7 @@ public class LevelLogic : MonoBehaviour
 		}
 	}
 
-	private void CommonAd(TouchState postAdState)
+	private void CommonHintAd(TouchState postAdState)
 	{
 		AdManager.RewardStatus status = _ad.GetRewardStatus();
 
@@ -1142,24 +1143,33 @@ public class LevelLogic : MonoBehaviour
 		}
 	}
 
-	private void DoTouchStateLoadAd()
+	private void DoTouchStateLoadHintAd()
 	{
-		CommonLoadAd(TouchState.AD, TouchState.NONE);
+		CommonLoadHintAd(TouchState.HINT_AD, TouchState.NONE);
+	}
+
+	private void DoTouchStateHintAd()
+	{
+		CommonHintAd(TouchState.NONE);
+	}
+
+	private void DoTouchStateWinLoadHintAd()
+	{
+		CommonLoadHintAd(TouchState.WIN_HINT_AD, TouchState.WIN);
+	}
+
+	private void DoTouchStateWinHintAd()
+	{
+		CommonHintAd(TouchState.WIN);
 	}
 
 	private void DoTouchStateAd()
 	{
-		CommonAd(TouchState.NONE);
-	}
-
-	private void DoTouchStateWinLoadAd()
-	{
-		CommonLoadAd(TouchState.WIN_AD, TouchState.WIN);
-	}
-
-	private void DoTouchStateWinAd()
-	{
-		CommonAd(TouchState.WIN);
+		if (_ad.GetInterstitialVideoStatus() == AdManager.InterstitialVideoStatus.CLOSE)
+		{
+			_ad.ClearInterstitialVideoStatus();
+			SceneManager.LoadScene("LevelScene");
+		}
 	}
 
 	// UI - Top
@@ -1322,7 +1332,7 @@ public class LevelLogic : MonoBehaviour
 		_loadUi.SetActiveLoad(true);
 		_loadUi.AnimateLoadBlockStart();
 		_touchLoadAdStartTime = Time.time;
-		_touchState = TouchState.LOAD_AD;
+		_touchState = TouchState.LOAD_HINT_AD;
 	}
 
 	public void OnControlHintOnButtonPressed()
@@ -1576,7 +1586,7 @@ public class LevelLogic : MonoBehaviour
 						_loadUi.SetActiveLoad(true);
 						_loadUi.AnimateLoadBlockStart();
 						_touchLoadAdStartTime = Time.time;
-						_touchState = TouchState.WIN_LOAD_AD;
+						_touchState = TouchState.WIN_LOAD_HINT_AD;
 					}
 				);
 			}
@@ -1658,7 +1668,20 @@ public class LevelLogic : MonoBehaviour
 				(
 					()=>
 					{
-						SceneManager.LoadScene("LevelScene");
+						_ad.ClearInterstitialVideoStatus();
+
+						if (_ad.ShowInterstitialVideo() == 0)
+						{
+//							_ui.SetActiveBlinder(true);
+
+							_loadUi.SetActiveLoad(true);
+							_loadUi.AnimateLoadBlockStart();
+							_touchState = TouchState.AD;
+						}
+						else
+						{
+							SceneManager.LoadScene("LevelScene");
+						}
 					}
 				);
 			}
@@ -1814,6 +1837,13 @@ public class LevelLogic : MonoBehaviour
 		);
 	}
 
+	// Blinder
+
+	private void SetupBlinder()
+	{
+		_ui.SetActiveBlinder(false);
+	}
+
 	// Unity Lifecyle
 
 	private void Awake()
@@ -1857,6 +1887,7 @@ public class LevelLogic : MonoBehaviour
 		SetupPause();
 		SetupExitPreview();
 		SetupWin();
+		SetupBlinder();
 		SetupLoad();
 		SetupAdSuccess();
 		SetupAdAbort();
@@ -1916,21 +1947,25 @@ public class LevelLogic : MonoBehaviour
 		{
 			DoTouchStateWin();
 		}
-		else if (_touchState == TouchState.LOAD_AD)
+		else if (_touchState == TouchState.LOAD_HINT_AD)
 		{
-			DoTouchStateLoadAd();
+			DoTouchStateLoadHintAd();
+		}
+		else if (_touchState == TouchState.HINT_AD)
+		{
+			DoTouchStateHintAd();
+		}
+		else if (_touchState == TouchState.WIN_LOAD_HINT_AD)
+		{
+			DoTouchStateWinLoadHintAd();
+		}
+		else if (_touchState == TouchState.WIN_HINT_AD)
+		{
+			DoTouchStateWinHintAd();
 		}
 		else if (_touchState == TouchState.AD)
 		{
 			DoTouchStateAd();
-		}
-		else if (_touchState == TouchState.WIN_LOAD_AD)
-		{
-			DoTouchStateWinLoadAd();
-		}
-		else if (_touchState == TouchState.WIN_AD)
-		{
-			DoTouchStateWinAd();
 		}
 	}
 }

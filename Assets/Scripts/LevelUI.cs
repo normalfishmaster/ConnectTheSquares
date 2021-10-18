@@ -841,6 +841,20 @@ public class LevelUI : MonoBehaviour
 		Animate.AnimateButtonPressed(_winNextButton, WIN_ANIMATE_BUTTON_PRESSED_SCALE, WIN_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
+	// Blinder
+
+	private GameObject _blinder;
+
+	private void FindBlinderGameObject()
+	{
+		_blinder = GameObject.Find("/Canvas/Blinder");
+	}
+
+	public void SetActiveBlinder(bool active)
+	{
+		_blinder.SetActive(active);
+	}
+
 	// Unity Lifecycle
 
 	private void Awake()
@@ -857,5 +871,6 @@ public class LevelUI : MonoBehaviour
 		FindPauseGameObject();
 		FindExitPreviewGameObject();
 		FindWinGameObject();
+		FindBlinderGameObject();
 	}
 }

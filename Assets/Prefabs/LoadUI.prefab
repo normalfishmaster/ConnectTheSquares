@@ -43,5 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f57670fa516efe4a0bf926c5224bd219, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LOAD_ANIMATE_SQUARE_DURATION: 0.4
-  LOAD_ANIMATE_SQUARE_DELAY: 0.15
+  LOAD_ANIMATE_BLOCK_DURATION: 0.2
+  LOAD_ANIMATE_BLOCK_DELAY: 0.4
