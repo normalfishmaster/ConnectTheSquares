@@ -931,7 +931,7 @@ public class LevelLogic : MonoBehaviour
 
 			_playEndTime = Time.realtimeSinceStartup;
 
-			_data.SetPlayTime(_data.GetPlayTime() + (_playStartTime - _playEndTime));
+			_data.SetPlayTime(_data.GetPlayTime() + (_playEndTime - _playStartTime));
 
 			// Update stars
 

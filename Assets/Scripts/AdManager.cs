@@ -276,6 +276,8 @@ public class AdManager : MonoBehaviour
 		// Enable Child Directed Treatment for Ads
 		RequestConfiguration requestConfiguration = new RequestConfiguration.Builder()
 			.SetTagForChildDirectedTreatment(TagForChildDirectedTreatment.True)
+			.SetTagForUnderAgeOfConsent(TagForUnderAgeOfConsent.True)
+			.SetMaxAdContentRating(MaxAdContentRating.G)
 			.build();
 
 		MobileAds.SetRequestConfiguration(requestConfiguration);
