@@ -13,16 +13,15 @@ public class AdManager : MonoBehaviour
 	private static InterstitialAd _interstitialVideo = null;
 	private static RewardedAd _rewarded = null;
 
-	public enum RewardStatus
+	// Interstitial Ad
+
+	public enum InterstitialStatus
 	{
 		NONE,
-		FAIL,
-		SUCCESS,
+		CLOSE,
 	}
 
-	private static RewardStatus _rewardStatus;
-
-	// Interstitial Ad
+	private static InterstitialStatus _interstitialStatus;
 
 	private void RequestInterstitial()
 	{
@@ -55,6 +54,7 @@ public class AdManager : MonoBehaviour
 
 	private void OnInterstitialAdClosed(object sender, EventArgs args)
 	{
+		_interstitialStatus = InterstitialStatus.CLOSE;
 		RequestInterstitial();
 	}
 
@@ -71,7 +71,25 @@ public class AdManager : MonoBehaviour
 		}
 	}
 
+	public InterstitialStatus GetInterstitialStatus()
+	{
+		return _interstitialStatus;
+	}
+
+	public void ClearInterstitialStatus()
+	{
+		_interstitialStatus = InterstitialStatus.NONE;
+	}
+
 	// Interstitial Video Ad
+
+	public enum InterstitialVideoStatus
+	{
+		NONE,
+		CLOSE,
+	}
+
+	private static InterstitialVideoStatus _interstitialVideoStatus;
 
 	private void RequestInterstitialVideo()
 	{
@@ -104,6 +122,7 @@ public class AdManager : MonoBehaviour
 
 	private void OnInterstitialVideoAdClosed(object sender, EventArgs args)
 	{
+		_interstitialVideoStatus = InterstitialVideoStatus.CLOSE;
 		RequestInterstitialVideo();
 	}
 
@@ -120,7 +139,26 @@ public class AdManager : MonoBehaviour
 		}
 	}
 
+	public InterstitialVideoStatus GetInterstitialVideoStatus()
+	{
+		return _interstitialVideoStatus;
+	}
+
+	public void ClearInterstitialVideoStatus()
+	{
+		_interstitialVideoStatus = InterstitialVideoStatus.NONE;
+	}
+
 	// Rewarded Ad
+
+	public enum RewardStatus
+	{
+		NONE,
+		FAIL,
+		SUCCESS,
+	}
+
+	private static RewardStatus _rewardStatus;
 
 	private void RequestRewarded()
 	{
@@ -229,6 +267,7 @@ public class AdManager : MonoBehaviour
 		_instance = this;
 		DontDestroyOnLoad(this.gameObject);
 
+		_interstitialStatus = InterstitialStatus.NONE;
 		_rewardStatus = RewardStatus.NONE;
 	}
 
