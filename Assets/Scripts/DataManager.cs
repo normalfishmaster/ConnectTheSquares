@@ -50,6 +50,12 @@ public class DataManager : MonoBehaviour
 	public string GetColorStarTotalKey(int color)				{ return "LevelColorStarTotalKey" + "_" + color;						}
 	public int    GetColorStarTotalDefault()				{ return 0;											}
 
+	public string GetPlayTimeKey()						{ return "PlayTimeKey";										}
+	public float  GetPlayTimeDefault()					{ return 0f;											}
+
+	public string GetSkippedAdsKey()					{ return "GetSkippedAdsKey";									}
+	public int    GetSkippedAdsDefault()					{ return 0;											}
+
 	public string GetBlockSetKey()						{ return "BlockSetKey";										}
 	public int    GetBlockSetDefault()					{ return 0;											}
 
@@ -140,6 +146,16 @@ public class DataManager : MonoBehaviour
 	public int   GetColorStarTotal(int color)				{ return PlayerPrefs.GetInt(GetColorStarTotalKey(color));					}
 	public void  SetColorStarTotal(int color, int value)			{        PlayerPrefs.SetInt(GetColorStarTotalKey(color), value);				}
 	public void  InitColorStarTotal(int color)				{        PlayerPrefs.SetInt(GetColorStarTotalKey(color), GetAlphabetStarTotalDefault());	}
+
+	public bool  CheckPlayTime()						{ return PlayerPrefs.HasKey(GetPlayTimeKey());							}
+	public float GetPlayTime()						{ return PlayerPrefs.GetFloat(GetPlayTimeKey());						}
+	public void  SetPlayTime(float value)					{        PlayerPrefs.SetFloat(GetPlayTimeKey(), value);						}
+	public void  InitPlayTime()						{        PlayerPrefs.SetFloat(GetPlayTimeKey(), GetPlayTimeDefault());				}
+
+	public bool  CheckSkippedAds()						{ return PlayerPrefs.HasKey(GetSkippedAdsKey());						}
+	public int   GetSkippedAds()						{ return PlayerPrefs.GetInt(GetSkippedAdsKey());						}
+	public void  SetSkippedAds(int value)					{        PlayerPrefs.SetInt(GetSkippedAdsKey(), value);						}
+	public void  InitSkippedAds()						{        PlayerPrefs.SetInt(GetSkippedAdsKey(), GetSkippedAdsDefault());			}
 
 	public bool  CheckBlockSet()						{ return PlayerPrefs.HasKey(GetBlockSetKey());							}
 	public int   GetBlockSet()						{ return PlayerPrefs.GetInt(GetBlockSetKey());							}
@@ -334,6 +350,14 @@ public class DataManager : MonoBehaviour
 			}
 		}
 
+		if (CheckPlayTime() == false)
+		{
+			InitPlayTime();
+		}
+		if (CheckSkippedAds() == false)
+		{
+			InitSkippedAds();
+		}
 		if (CheckBlockSet() == false)
 		{
 			InitBlockSet();

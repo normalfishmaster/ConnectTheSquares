@@ -40,6 +40,14 @@ public class LevelLogic : MonoBehaviour
 
 	private const float MAX_AD_LOAD_TIME = 5.0f;
 
+	private float _playStartTime;
+	private float _playEndTime;
+
+	// Ads
+
+	public float ADS_MAX_PLAY_TIME;
+	public float ADS_MAX_SKIPPED_ADS;
+
 	// Map
 
 	public float MAP_ANIMATE_WALL_ENTER_ROTATION;
@@ -715,7 +723,9 @@ public class LevelLogic : MonoBehaviour
 		HINT_AD,
 		WIN_LOAD_HINT_AD,
 		WIN_HINT_AD,
-		AD,
+		AD_MENU,
+		AD_REPLAY,
+		AD_NEXT,
 	};
 
 	private TouchState _touchState;
@@ -916,6 +926,12 @@ public class LevelLogic : MonoBehaviour
 		if (MoveBlockFromPreEndToEnd() == true)
 		{
 			_audio.PlayMapExit();
+
+			// Update play time
+
+			_playEndTime = Time.realtimeSinceStartup;
+
+			_data.SetPlayTime(_data.GetPlayTime() + (_playStartTime - _playEndTime));
 
 			// Update stars
 
@@ -1163,13 +1179,28 @@ public class LevelLogic : MonoBehaviour
 		CommonHintAd(TouchState.WIN);
 	}
 
-	private void DoTouchStateAd()
+	private void CommonAd(string scene)
 	{
 		if (_ad.GetInterstitialVideoStatus() == AdManager.InterstitialVideoStatus.CLOSE)
 		{
 			_ad.ClearInterstitialVideoStatus();
-			SceneManager.LoadScene("LevelScene");
+			SceneManager.LoadScene(scene);
 		}
+	}
+
+	private void DoTouchStateAdMenu()
+	{
+		CommonAd("MapMenuScene");
+	}
+
+	private void DoTouchStateAdReplay()
+	{
+		CommonAd("LevelScene");
+	}
+
+	private void DoTouchStateAdNext()
+	{
+		CommonAd("LevelScene");
 	}
 
 	// UI - Top
@@ -1593,6 +1624,44 @@ public class LevelLogic : MonoBehaviour
 		);
 	}
 
+	private void PlaySceneTransitionAds(TouchState nextState, string scene)
+	{
+		bool playAd = false;
+		bool adPlayed = false;
+
+		if (_data.GetPlayTime() >= ADS_MAX_PLAY_TIME)
+		{
+			playAd = true;
+		}
+		if (_data.GetSkippedAds() >= ADS_MAX_SKIPPED_ADS)
+		{
+			playAd = true;
+		}
+
+		if (playAd)
+		{
+			_ad.ClearInterstitialVideoStatus();
+
+			if (_ad.ShowInterstitialVideo() == 0)
+			{
+				_ui.SetActiveBlinder(true);
+				_touchState = nextState;
+				adPlayed = true;
+			}
+		}
+
+		if (adPlayed)
+		{
+			_data.SetPlayTime(0f);
+			_data.SetSkippedAds(0);
+		}
+		else
+		{
+			_data.SetSkippedAds(_data.GetSkippedAds() + 1);
+			SceneManager.LoadScene(scene);
+		}
+	}
+
 	public void OnWinMenuButtonPressed()
 	{
 		_audio.PlayButtonPressed();
@@ -1606,7 +1675,7 @@ public class LevelLogic : MonoBehaviour
 				(
 					()=>
 					{
-						SceneManager.LoadScene("MapMenuScene");
+						PlaySceneTransitionAds(TouchState.AD_MENU, "MapMenuScene");
 					}
 				);
 			}
@@ -1626,7 +1695,7 @@ public class LevelLogic : MonoBehaviour
 				(
 					()=>
 					{
-						SceneManager.LoadScene("LevelScene");
+						PlaySceneTransitionAds(TouchState.AD_REPLAY, "LevelScene");
 					}
 				);
 			}
@@ -1668,17 +1737,7 @@ public class LevelLogic : MonoBehaviour
 				(
 					()=>
 					{
-						_ad.ClearInterstitialVideoStatus();
-
-						if (_ad.ShowInterstitialVideo() == 0)
-						{
-							_ui.SetActiveBlinder(true);
-							_touchState = TouchState.AD;
-						}
-						else
-						{
-							SceneManager.LoadScene("LevelScene");
-						}
+						PlaySceneTransitionAds(TouchState.AD_NEXT, "LevelScene");
 					}
 				);
 			}
@@ -1904,6 +1963,8 @@ public class LevelLogic : MonoBehaviour
 						_ui.SetEnableControlButton(true);
 						_ui.SetInteractableControlButton(true);
 						_touchState = TouchState.NONE;
+
+						_playStartTime = Time.realtimeSinceStartup;
 					}
 				);
 			}
@@ -1960,9 +2021,17 @@ public class LevelLogic : MonoBehaviour
 		{
 			DoTouchStateWinHintAd();
 		}
-		else if (_touchState == TouchState.AD)
+		else if (_touchState == TouchState.AD_MENU)
 		{
-			DoTouchStateAd();
+			DoTouchStateAdMenu();
+		}
+		else if (_touchState == TouchState.AD_REPLAY)
+		{
+			DoTouchStateAdReplay();
+		}
+		else if (_touchState == TouchState.AD_NEXT)
+		{
+			DoTouchStateAdNext();
 		}
 	}
 }
