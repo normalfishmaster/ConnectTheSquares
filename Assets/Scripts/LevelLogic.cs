@@ -10,12 +10,12 @@ public class LevelLogic : MonoBehaviour
 	private LevelUI _ui;
 	private LoadUI _loadUi;
 	private AdUI _adUi;
-	private DataManager _data;
-	private EventManager _event;
-	private LevelManager _level;
-	private AudioManager _audio;
 	private AdManager _ad;
+	private AudioManager _audio;
 	private BlockManager _block;
+	private CloudOnceManager _cloudOnce;
+	private DataManager _data;
+	private LevelManager _level;
 
 	private int _menuColor;
 	private int _menuAlphabet;
@@ -916,6 +916,8 @@ public class LevelLogic : MonoBehaviour
 		{
 			_audio.PlayMapExit();
 
+			// Update stars
+
 			int move = GetBlockMoveCount();
 			int star = 1;
 
@@ -941,23 +943,7 @@ public class LevelLogic : MonoBehaviour
 				_data.SetColorStar(_menuColor, currentColorStar + (star - currentStar));
 			}
 
-			if (_touchHint)
-			{
-				_touchHint = false;
-				_ui.SetActiveControlHintOn(false);
-				_ui.SetActiveControlHintOff(true);
-
-				_ui.SetActiveHint(false);
-				AnimateHintDirectionStop();
-			}
-
-			int moveCount = GetBlockMoveCount();
-			_ui.SetTopMoveCurrent(moveCount);
-			if (moveCount > _data.GetLevelMove(_menuColor, _menuAlphabet, _menuMap))
-			{
-				_data.SetLevelMove(_menuColor, _menuAlphabet, _menuMap, moveCount);
-				_ui.SetTopMoveBest(moveCount);
-			}
+			// Unlock next level
 
 			int nextColor = _menuColor;
 			int nextAlphabet = _menuAlphabet;
@@ -984,6 +970,60 @@ public class LevelLogic : MonoBehaviour
 			{
 				enableNext = true;
 				_data.SetLevelLock(nextColor, nextAlphabet, nextMap, 0);
+			}
+
+			_cloudOnce.SetLastColor(nextColor);
+			_cloudOnce.SetLastAlphabet(nextAlphabet);
+			_cloudOnce.SetLastMap(nextMap);
+
+			// Update achievements
+
+			int numSolved = 0;
+
+			for (int i = 0; i < _level.GetNumMap(_menuColor, _menuAlphabet); i++)
+			{
+				if (_data.GetLevelStar(_menuColor, _menuAlphabet, i) >= 1)
+				{
+					numSolved += 1;
+				}
+			}
+
+			_cloudOnce.IncrementClearAchivement(_menuColor, _menuAlphabet, numSolved, 60);
+			_cloudOnce.IncrementFullClearAchivement(_menuColor, _menuAlphabet, _data.GetAlphabetStar(_menuColor, _menuAlphabet), 60 * 3);
+
+			int totalStars = 0;
+
+			for (int i = 0; i < _level.GetNumColor(); i++)
+			{
+				totalStars += _data.GetColorStar(i);
+			}
+
+			_cloudOnce.IncrementThePerfectionistAchivement(totalStars, 13 * 60 * 3);
+			_cloudOnce.SubmitLeaderboardHighScore(totalStars);
+
+			// Save data to cloud
+
+			_cloudOnce.SaveDataToCloud();
+			_cloudOnce.Save();
+
+			// Update UI
+
+			if (_touchHint)
+			{
+				_touchHint = false;
+				_ui.SetActiveControlHintOn(false);
+				_ui.SetActiveControlHintOff(true);
+
+				_ui.SetActiveHint(false);
+				AnimateHintDirectionStop();
+			}
+
+			int moveCount = GetBlockMoveCount();
+			_ui.SetTopMoveCurrent(moveCount);
+			if (moveCount > _data.GetLevelMove(_menuColor, _menuAlphabet, _menuMap))
+			{
+				_data.SetLevelMove(_menuColor, _menuAlphabet, _menuMap, moveCount);
+				_ui.SetTopMoveBest(moveCount);
 			}
 
 			_ui.SetEnableControlButton(false);
@@ -1056,8 +1096,8 @@ public class LevelLogic : MonoBehaviour
 
 		if (status == AdManager.RewardStatus.SUCCESS)
 		{
-			_data.SetHint(_data.GetHint() + 1);
-			_ui.SetControlHintCount(_data.GetHint());
+			_cloudOnce.IncrementHint(1);
+			_ui.SetControlHintCount(_cloudOnce.GetHint());
 			_ui.SetActiveControlHintAd(false);
 			_ui.SetActiveControlHintOn(false);
 			_ui.SetActiveControlHintOff(true);
@@ -1175,9 +1215,9 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetEnableControlButton(false);
 		_ui.SetInteractableControlButton(false);
 
-		_ui.SetControlHintCount(_data.GetHint());
+		_ui.SetControlHintCount(_cloudOnce.GetHint());
 
-		if (_data.GetHint() > 0)
+		if (_cloudOnce.GetHint() > 0)
 		{
 			_ui.SetActiveControlHintAd(false);
 			_ui.SetActiveControlHintOn(false);
@@ -1311,8 +1351,8 @@ public class LevelLogic : MonoBehaviour
 
 		if (_hintUsed == false)
 		{
-			_data.SetHint(_data.GetHint() - 1);
-			_ui.SetControlHintCount(_data.GetHint());
+			_cloudOnce.DecrementHint(1);
+			_ui.SetControlHintCount(_cloudOnce.GetHint());
 			_hintUsed = true;
 		}
 
@@ -1781,12 +1821,13 @@ public class LevelLogic : MonoBehaviour
 		_ui = GameObject.Find("LevelUI").GetComponent<LevelUI>();
 		_loadUi = GameObject.Find("LoadUI").GetComponent<LoadUI>();
 		_adUi = GameObject.Find("AdUI").GetComponent<AdUI>();
-		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
-		_event = GameObject.Find("EventManager").GetComponent<EventManager>();
-		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+
 		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
+		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
+		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
+		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
 		FindMapGameObject();
 	}
@@ -1801,9 +1842,10 @@ public class LevelLogic : MonoBehaviour
 
 		_hintUsed = false;
 
-		_data.SetLastColor(_menuColor);
-		_data.SetLastAlphabet(_menuAlphabet);
-		_data.SetLastMap(_menuMap);
+		_cloudOnce.SetLastColor(_menuColor);
+		_cloudOnce.SetLastAlphabet(_menuAlphabet);
+		_cloudOnce.SetLastMap(_menuMap);
+		_cloudOnce.Save();
 
 		SetupMap();	// SetupMap() must preceed SetupPhysics()
 		SetupPhysics();

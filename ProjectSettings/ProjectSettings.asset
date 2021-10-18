@@ -240,7 +240,7 @@ PlayerSettings:
   useCustomLauncherGradleManifest: 0
   useCustomBaseGradleTemplate: 0
   useCustomGradlePropertiesTemplate: 0
-  useCustomProguardFile: 0
+  useCustomProguardFile: 1
   AndroidTargetArchitectures: 3
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
@@ -260,7 +260,7 @@ PlayerSettings:
   androidGamepadSupportLevel: 0
   AndroidMinifyWithR8: 0
   AndroidMinifyRelease: 1
-  AndroidMinifyDebug: 0
+  AndroidMinifyDebug: 1
   AndroidValidateAppBundleSize: 1
   AndroidAppBundleSizeToValidate: 150
   m_BuildTargetIcons: []
@@ -672,7 +672,8 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    7: BUILD_ANDROID_DEBUG;TEST_IAP
+    4: 
+    7: BUILD_ANDROID_DEBUG;TEST_IAP;CLOUDONCE_GOOGLE;CLOUDONCE_DEBUG
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

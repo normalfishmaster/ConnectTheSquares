@@ -6,13 +6,17 @@ using UnityEngine.SceneManagement;
 public class StartupLogic : MonoBehaviour
 {
 	private DataManager _data;
+	private CloudOnceManager _cloudOnce;
 	private LevelManager _level;
 
-	// Event Callbacks
+	private bool _dataInitComplete;
+	private bool _cloudOnceInitComplete;
+
+	// InitComplete Callbacks
 
 	private void OnDataInitComplete()
 	{
-		EventManager.UnsubscribeDataInitCompleteEvent(OnDataInitComplete);
+		_data.UnsubscribeInitComplete(OnDataInitComplete);
 
 		if (_data.GetUnlockAllLevels() == 1)
 		{
@@ -34,7 +38,39 @@ public class StartupLogic : MonoBehaviour
 			}
 		}
 
-		SceneManager.LoadScene("MainMenuScene");
+		_dataInitComplete = true;
+	}
+
+	private void OnCloudOnceInitComplete()
+	{
+		_cloudOnce.UnsubscribeInitComplete(OnCloudOnceInitComplete);
+
+		if (_cloudOnce.IsSignedIn())
+		{
+			_cloudOnce.SubscribeCloudLoadComplete(OnCloudLoadComplete);
+			_cloudOnce.Load();
+		}
+		else
+		{
+			_cloudOnceInitComplete = true;
+		}
+	}
+
+	// Cloud Load
+
+	private void OnCloudLoadComplete(bool success)
+	{
+                _cloudOnce.UnsubscribeCloudLoadComplete(OnCloudLoadComplete);
+
+		if (success)
+		{
+			_cloudOnce.LoadCloudToData();
+		}
+
+		_cloudOnce.SaveDataToCloud();
+		_cloudOnce.Save();
+
+		_cloudOnceInitComplete = true;
 	}
 
 	// Unity Lifecycle
@@ -42,9 +78,23 @@ public class StartupLogic : MonoBehaviour
 	private void Awake()
 	{
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
 		Application.targetFrameRate = 300;
-		EventManager.SubscribeDataInitCompleteEvent(OnDataInitComplete);
+
+		_dataInitComplete = false;
+		_data.SubscribeInitComplete(OnDataInitComplete);
+
+		_cloudOnceInitComplete = false;
+		_cloudOnce.SubscribeInitComplete(OnCloudOnceInitComplete);
+	}
+
+	private void Update()
+	{
+		if (_dataInitComplete && _cloudOnceInitComplete)
+		{
+			SceneManager.LoadScene("MainMenuScene");
+		}
 	}
 }
