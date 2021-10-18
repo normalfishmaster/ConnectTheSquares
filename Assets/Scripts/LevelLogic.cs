@@ -1672,10 +1672,7 @@ public class LevelLogic : MonoBehaviour
 
 						if (_ad.ShowInterstitialVideo() == 0)
 						{
-//							_ui.SetActiveBlinder(true);
-
-							_loadUi.SetActiveLoad(true);
-							_loadUi.AnimateLoadBlockStart();
+							_ui.SetActiveBlinder(true);
 							_touchState = TouchState.AD;
 						}
 						else
