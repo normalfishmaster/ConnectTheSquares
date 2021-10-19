@@ -538,6 +538,86 @@ public class MainMenuUI : MonoBehaviour
 		Animate.AnimateButtonPressed(_cloudOnceCloseButton, CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_SCALE, CLOUD_ONCE_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
+	// Settings
+
+	public float SETTINGS_ANIMATE_BOARD_ENTER_DURATION;
+	public float SETTINGS_ANIMATE_BOARD_EXIT_DURATION;
+
+	public float SETTINGS_ANIMATE_BUTTON_PRESSED_SCALE;
+	public float SETTINGS_ANIMATE_BUTTON_PRESSED_DURATION;
+
+	private GameObject _settings;
+	private GameObject _settingsBoard;
+
+	private GameObject _settingsAudioOn;
+	private GameObject _settingsAudioOff;
+	private GameObject _settingsClose;
+
+	private GameObject _settingsAudioOnButton;
+	private GameObject _settingsAudioOffButton;
+	private GameObject _settingsCloseButton;
+
+	private void FindSettingsGameObject()
+	{
+		_settings = GameObject.Find("/Canvas/Settings");
+		_settingsBoard = GameObject.Find("/Canvas/Settings/Board");
+
+		_settingsAudioOn = GameObject.Find("/Canvas/Settings/Board/AudioOn");
+		_settingsAudioOff = GameObject.Find("/Canvas/Settings/Board/AudioOff");
+		_settingsClose = GameObject.Find("/Canvas/Settings/Board/Close");
+
+		_settingsAudioOnButton = GameObject.Find("/Canvas/Settings/Board/AudioOn/Button");
+		_settingsAudioOffButton = GameObject.Find("/Canvas/Settings/Board/AudioOff/Button");
+		_settingsCloseButton = GameObject.Find("/Canvas/Settings/Board/Close/Button");
+	}
+
+	public void SetActiveSettings(bool active)
+	{
+		_settings.SetActive(active);
+	}
+
+	public void SetEnableSettingsButton(bool enable)
+	{
+		_settingsAudioOnButton.GetComponent<Button>().enabled = enable;
+		_settingsAudioOffButton.GetComponent<Button>().enabled = enable;
+		_settingsCloseButton.GetComponent<Button>().enabled = enable;
+	}
+
+	public void SetActiveSettingsAudioOnButton(bool active)
+	{
+		_settingsAudioOn.SetActive(active);
+	}
+
+	public void SetActiveSettingsAudioOffButton(bool active)
+	{
+		_settingsAudioOff.SetActive(active);
+	}
+
+	public void AnimateSettingsBoardEnter(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateBoardEnter(_settings, _settingsBoard, SETTINGS_ANIMATE_BOARD_ENTER_DURATION, callback);
+	}
+
+	public void AnimateSettingsBoardExit(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateBoardExit(_settings, _settingsBoard, SETTINGS_ANIMATE_BOARD_EXIT_DURATION, callback);
+	}
+
+	public void AnimateSettingsAudioOnButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_settingsAudioOnButton, SETTINGS_ANIMATE_BUTTON_PRESSED_SCALE, SETTINGS_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateSettingsAudioOffButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_settingsAudioOffButton, SETTINGS_ANIMATE_BUTTON_PRESSED_SCALE, SETTINGS_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateSettingsCloseButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_settingsCloseButton, SETTINGS_ANIMATE_BUTTON_PRESSED_SCALE, SETTINGS_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
 	// Exit
 
 	public float EXIT_ANIMATE_BOARD_ENTER_DURATION;
@@ -609,6 +689,7 @@ public class MainMenuUI : MonoBehaviour
 		FindFrontGameObject();
 		FindBottomGameObject();
 		FindCloudOnceGameObject();
+		FindSettingsGameObject();
 		FindExitGameObject();
         }
 }

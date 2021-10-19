@@ -97,10 +97,36 @@ public class MainMenuLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
+		_canExit = false;
+
+		_ui.SetEnableFrontButton(false);
+		_ui.SetEnableBottomButton(false);
+
 		_ui.AnimateFrontSettingsButtonPressed
 		(
 			()=>
 			{
+				_ui.SetActiveSettings(true);
+				_ui.SetEnableSettingsButton(false);
+
+				if (_data.GetAudio() == 1)
+				{
+					_ui.SetActiveSettingsAudioOnButton(true);
+					_ui.SetActiveSettingsAudioOffButton(false);
+				}
+				else
+				{
+					_ui.SetActiveSettingsAudioOnButton(false);
+					_ui.SetActiveSettingsAudioOffButton(true);
+				}
+
+				_ui.AnimateSettingsBoardEnter
+				(
+					()=>
+					{
+						_ui.SetEnableSettingsButton(true);
+					}
+				);
 			}
 		);
 	}
@@ -523,6 +549,67 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
+	// UI - Settings
+
+	private void SetupSettings()
+	{
+		_ui.SetActiveSettings(false);
+	}
+
+	public void OnSettingsAudioOnPressed()
+	{
+		_data.SetAudio(0);
+		_audio.SetEnable(false);
+
+		_ui.SetActiveSettingsAudioOnButton(false);
+		_ui.SetActiveSettingsAudioOffButton(true);
+
+		_ui.AnimateSettingsAudioOffButtonPressed
+		(
+			()=>
+			{
+			}
+		);
+	}
+
+	public void OnSettingsAudioOffPressed()
+	{
+		_data.SetAudio(1);
+		_audio.SetEnable(true);
+
+		_audio.PlayButtonPressed();
+
+		_ui.SetActiveSettingsAudioOnButton(true);
+		_ui.SetActiveSettingsAudioOffButton(false);
+
+		_ui.AnimateSettingsAudioOnButtonPressed
+		(
+			()=>
+			{
+			}
+		);
+	}
+
+	public void OnSettingsCloseButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+		_ui.SetEnableSettingsButton(false);
+
+		_ui.AnimateSettingsBoardExit
+		(
+			()=>
+			{
+				_canExit = true;
+
+				_ui.SetActiveSettings(false);
+
+				_ui.SetEnableFrontButton(true);
+				_ui.SetEnableBottomButton(true);
+			}
+		);
+	}
+
 	// UI - Exit
 
 	private void SetupExit()
@@ -620,6 +707,7 @@ public class MainMenuLogic : MonoBehaviour
 		SetupFront();
 		SetupBottom();
 		SetupCloudOnce();
+		SetupSettings();
 		SetupExit();
 
 		_audio.PlayFrontButtonEnter();
