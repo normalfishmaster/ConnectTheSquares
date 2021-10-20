@@ -171,6 +171,20 @@
 			"DefaultValue":"0",
 			"PersistenceType":"0",
 			"AllowNegative":false
+		},
+		{
+			"Key":"RewardsLastDateTime",
+			"Type":"9",
+			"DefaultValue":"-1",
+			"PersistenceType":"0",
+			"AllowNegative":false
+		},
+		{
+			"Key":"RewardsDayCount",
+			"Type":"0",
+			"DefaultValue":"0",
+			"PersistenceType":"0",
+			"AllowNegative":false
 		}
 	],
 	"AppleSupported":false,

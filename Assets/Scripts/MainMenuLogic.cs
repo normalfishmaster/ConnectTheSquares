@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,13 +8,14 @@ using UnityEngine.SceneManagement;
 public class MainMenuLogic : MonoBehaviour
 {
 	private MainMenuUI _ui;
+	private AdUI _adUi;
 	private AdManager _ad;
 	private AudioManager _audio;
 	private CloudOnceManager _cloudOnce;
 	private DataManager _data;
 	private LevelManager _level;
 
-	private bool _canExit;
+	private bool _allowExit;
 
 	// UI - Front
 
@@ -55,10 +57,11 @@ public class MainMenuLogic : MonoBehaviour
 
 		_audio.PlayContinuePressed();
 
-		_canExit = false;
+		_allowExit = false;
 
 		_ui.SetEnableFrontButton(false);
 		_ui.SetEnableBottomButton(false);
+		_ui.SetEnableRewardsOpenButton(false);
 
 		_ui.AnimateFrontContinueButtonPressed
 		(
@@ -79,10 +82,11 @@ public class MainMenuLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-		_canExit = false;
+		_allowExit = false;
 
 		_ui.SetEnableFrontButton(false);
 		_ui.SetEnableBottomButton(false);
+		_ui.SetEnableRewardsOpenButton(false);
 
 		_ui.AnimateFrontLevelsButtonPressed
 		(
@@ -97,10 +101,11 @@ public class MainMenuLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-		_canExit = false;
+		_allowExit = false;
 
 		_ui.SetEnableFrontButton(false);
 		_ui.SetEnableBottomButton(false);
+		_ui.SetEnableRewardsOpenButton(false);
 
 		_ui.AnimateFrontSettingsButtonPressed
 		(
@@ -135,7 +140,11 @@ public class MainMenuLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-		_canExit = false;
+		_allowExit = false;
+
+		_ui.SetEnableFrontButton(false);
+		_ui.SetEnableBottomButton(false);
+		_ui.SetEnableRewardsOpenButton(false);
 
 		_ui.AnimateFrontStoreButtonPressed
 		(
@@ -163,10 +172,11 @@ public class MainMenuLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-		_canExit = false;
+		_allowExit = false;
 
 		_ui.SetEnableFrontButton(false);
 		_ui.SetEnableBottomButton(false);
+		_ui.SetEnableRewardsOpenButton(false);
 
 		_ui.AnimateBottomGooglePlayButtonPressed
 		(
@@ -219,10 +229,11 @@ public class MainMenuLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-		_canExit = false;
+		_allowExit = false;
 
 		_ui.SetEnableFrontButton(false);
 		_ui.SetEnableBottomButton(false);
+		_ui.SetEnableRewardsOpenButton(false);
 
 		_ui.AnimateBottomRateButtonPressed
 		(
@@ -237,6 +248,7 @@ public class MainMenuLogic : MonoBehaviour
 				}
 				_ui.SetEnableFrontButton(true);
 				_ui.SetEnableBottomButton(true);
+				_ui.SetEnableRewardsOpenButton(true);
 			}
 		);
 	}
@@ -537,12 +549,13 @@ public class MainMenuLogic : MonoBehaviour
 				(
 					()=>
 					{
-						_canExit = true;
+						_allowExit = true;
 
 						_ui.SetActiveCloudOnce(false);
 
 						_ui.SetEnableFrontButton(true);
 						_ui.SetEnableBottomButton(true);
+						_ui.SetEnableRewardsOpenButton(true);
 					}
 				);
 			}
@@ -600,12 +613,208 @@ public class MainMenuLogic : MonoBehaviour
 		(
 			()=>
 			{
-				_canExit = true;
+				_allowExit = true;
 
 				_ui.SetActiveSettings(false);
 
 				_ui.SetEnableFrontButton(true);
 				_ui.SetEnableBottomButton(true);
+				_ui.SetEnableRewardsOpenButton(true);
+			}
+		);
+	}
+
+	// UI - Rewards
+
+	private bool _rewardClaimed;
+	private int _rewardDay;
+	private DateTime _rewardToday;
+
+	private void SetupRewards()
+	{
+		DateTime today = DateTime.Now;
+		DateTime lastDay = _cloudOnce.GetRewardsLastDateTime();
+		int dayCount = _cloudOnce.GetRewardsDayCount();
+		bool rewardClaimed = false;
+		bool continuationReward = false;
+		int rewardDay = 1;
+
+		Debug.Log("today.DayOfYear:" + today.DayOfYear);
+		Debug.Log("lastDay.DayOfYear:" + lastDay.DayOfYear);
+		Debug.Log("lastDay:" + lastDay);
+		Debug.Log("dayCount:" + dayCount);
+
+		if (today.DayOfYear == lastDay.DayOfYear
+			&& today.Year == lastDay.Year)
+		{
+			rewardClaimed = true;
+		}
+		else
+		{
+			if (lastDay.Month == 12 && lastDay.Day == 31
+					&& today.Month == 1 && today.Day == 1
+					&& (today.Year == lastDay.Year + 1))
+			{
+				continuationReward = true;
+			}
+			else if (today.DayOfYear == lastDay.DayOfYear + 1)
+			{
+				continuationReward = true;
+			}
+
+			if (continuationReward == true)
+			{
+				rewardDay = dayCount + 1;
+			}
+			else
+			{
+				rewardDay = 1;
+			}
+		}
+
+		_rewardClaimed = rewardClaimed;
+		_rewardDay = rewardDay;
+		_rewardToday = today;
+
+		_ui.SetActiveRewards(false);
+	}
+
+	private void ClaimReward()
+	{
+		if (_rewardClaimed == false)
+		{
+			// From testing, it seems that increment hint needs to come
+			// after SetRewards or else the rewards parameters will not
+			// be saved.
+
+			_cloudOnce.SetRewardsLastDateTime(_rewardToday);
+			_cloudOnce.SetRewardsDayCount(_rewardDay);
+			_cloudOnce.IncrementHint(1);
+
+			_cloudOnce.Save();
+
+			_rewardClaimed = true;
+		}
+	}
+
+	public void OnRewardsOpenButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+		_allowExit = false;
+
+		_ui.SetEnableFrontButton(false);
+		_ui.SetEnableBottomButton(false);
+		_ui.SetEnableRewardsOpenButton(false);
+
+		_ui.AnimateRewardsOpenButtonPressed
+		(
+			()=>
+			{
+				_ui.SetActiveRewards(true);
+				_ui.SetEnableRewardsCloseButton(false);
+				_ui.SetEnableRewardsDayButton(false);
+
+				for (int i = 1; i <= 3; i++)
+				{
+					if (i <= _rewardDay)
+					{
+						_ui.SetActiveRewardsDayClaimed((i - 1), true);
+					}
+					else
+					{
+						_ui.SetActiveRewardsDayClaimed((i - 1), false);
+					}
+				}
+
+				_ui.AnimateRewardsBoardEnter
+				(
+					()=>
+					{
+						_ui.SetEnableRewardsCloseButton(true);
+						_ui.SetEnableRewardsDayButton(false);
+					}
+				);
+			}
+		);
+	}
+
+	public void OnRewardsCloseButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+		_ui.SetEnableRewardsCloseButton(false);
+		_ui.SetEnableRewardsDayButton(false);
+
+		_ui.AnimateRewardsCloseButtonPressed
+		(
+			()=>
+			{
+				_ui.AnimateRewardsBoardExit
+				(
+					()=>
+					{
+						_ui.SetActiveRewards(false);
+
+						_allowExit = true;
+						_ui.SetEnableFrontButton(true);
+						_ui.SetEnableBottomButton(true);
+						_ui.SetEnableRewardsOpenButton(true);
+					}
+				);
+			}
+		);
+	}
+
+	// UI - Ad Success
+	// This is used specificcally for daily rewards
+
+	private void SetupAdSuccess()
+	{
+		_adUi.SetActiveAdSuccess(false);
+	}
+
+	public void OnAdSuccessCloseButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+		_adUi.SetEnableAdSuccessButton(false);
+		_adUi.AnimateAdSuccessCloseButtonPressed
+		(
+			()=>
+			{
+				_adUi.AnimateAdSuccessBoardExit
+				(
+					()=>
+					{
+						_adUi.SetActiveAdSuccess(false);
+
+						_ui.SetActiveRewards(true);
+						_ui.SetEnableRewardsCloseButton(false);
+						_ui.SetEnableRewardsDayButton(false);
+
+						for (int i = 1; i <= 3; i++)
+						{
+							if (i <= _rewardDay)
+							{
+								_ui.SetActiveRewardsDayClaimed((i - 1), true);
+							}
+							else
+							{
+								_ui.SetActiveRewardsDayClaimed((i - 1), false);
+							}
+						}
+
+						_ui.AnimateRewardsBoardEnter
+						(
+							()=>
+							{
+								_ui.SetEnableRewardsCloseButton(true);
+								_ui.SetEnableRewardsDayButton(false);
+							}
+						);
+					}
+				);
 			}
 		);
 	}
@@ -620,18 +829,19 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void OnExitButtonPressed()
 	{
-		if (_canExit == false)
+		if (_allowExit == false)
 		{
 			return;
 		}
 
-		_canExit = false;
+		_allowExit = false;
 
 		_audio.PlayButtonPressed();
 
 		_ui.SetActiveExit(true);
 		_ui.SetEnableFrontButton(false);
 		_ui.SetEnableBottomButton(false);
+		_ui.SetEnableRewardsOpenButton(false);
 
 		_ui.AnimateExitBoardEnter
 		(
@@ -677,11 +887,12 @@ public class MainMenuLogic : MonoBehaviour
 				(
 					()=>
 					{
-						_canExit = true;
-
 						_ui.SetActiveExit(false);
+
+						_allowExit = true;
 						_ui.SetEnableFrontButton(true);
 						_ui.SetEnableBottomButton(true);
+						_ui.SetEnableRewardsOpenButton(false);
 					}
 				);
 			}
@@ -693,13 +904,12 @@ public class MainMenuLogic : MonoBehaviour
 	private void Awake()
 	{
 		_ui = GameObject.Find("MainMenuUI").GetComponent<MainMenuUI>();
+		_adUi = GameObject.Find("AdUI").GetComponent<AdUI>();
 		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-
-		_canExit = false;
 	}
 
 	private void Start()
@@ -708,21 +918,66 @@ public class MainMenuLogic : MonoBehaviour
 		SetupBottom();
 		SetupCloudOnce();
 		SetupSettings();
+		SetupRewards();
+		SetupAdSuccess();
 		SetupExit();
 
-		_audio.PlayFrontButtonEnter();
-
-		_canExit = false;
+		_allowExit = false;
 
 		_ui.SetEnableFrontButton(false);
 		_ui.SetEnableBottomButton(false);
+		_ui.SetEnableRewardsOpenButton(false);
+
+		_audio.PlayFrontButtonEnter();
+
 		_ui.AnimateFrontEnter
 		(
 			()=>
 			{
-				_canExit = true;
-				_ui.SetEnableFrontButton(true);
-				_ui.SetEnableBottomButton(true);
+				if (_rewardClaimed == false)
+				{
+					ClaimReward();
+
+		                        _adUi.SetActiveAdSuccess(true);
+                		        _adUi.SetAdSuccessItem("hint");
+		                        _adUi.SetActiveAdSuccessCount(false);
+		                        _adUi.SetActiveAdSuccessItem(false);
+                		        _adUi.SetEnableAdSuccessButton(false);
+
+					if (_rewardDay <= 2)
+					{
+	                		        _adUi.SetAdSuccessCountValue("+1");
+					}
+					else
+					{
+	                		        _adUi.SetAdSuccessCountValue("+2");
+					}
+
+					_audio.PlayRewardReceived();
+
+		                        _adUi.AnimateAdSuccessBoardEnter
+                		        (
+                                		()=>
+		                                {
+                		                        _adUi.SetActiveAdSuccessItem(true);
+                                		        _adUi.SetActiveAdSuccessCount(true);
+		                                        _adUi.AnimateAdSuccessItemEnter
+                		                        (
+                                		                ()=>
+		                                                {
+                		                                        _adUi.SetEnableAdSuccessButton(true);
+                                		                }
+		                                        );
+                		                }
+		                        );
+				}
+				else
+				{
+					_allowExit = true;
+					_ui.SetEnableFrontButton(true);
+					_ui.SetEnableBottomButton(true);
+					_ui.SetEnableRewardsOpenButton(true);
+				}
 			}
 		);
 	}

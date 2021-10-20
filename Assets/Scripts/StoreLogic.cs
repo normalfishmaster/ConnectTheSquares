@@ -285,8 +285,6 @@ public class StoreLogic : MonoBehaviour
 
 		_purchasePending = 0;
 
-		_audio.PlayRewardReceived();
-
 		_ui.SetEnableProductButton(false);
 		_ui.SetEnableBottomButton(false);
 
@@ -357,6 +355,8 @@ public class StoreLogic : MonoBehaviour
 		{
 			_adUi.SetAdSuccessCountValue("");
 		}
+
+		_audio.PlayRewardReceived();
 
 		_adUi.AnimateAdSuccessBoardEnter
 		(

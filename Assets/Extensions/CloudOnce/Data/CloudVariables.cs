@@ -44,5 +44,21 @@ namespace CloudOnce
             get { return s_lastMap.Value; }
             set { s_lastMap.Value = value; }
         }
+
+        private static readonly CloudDateTime s_rewardsLastDateTime = new CloudDateTime("RewardsLastDateTime", PersistenceType.Latest);
+
+        public static System.DateTime RewardsLastDateTime
+        {
+            get { return s_rewardsLastDateTime.Value; }
+            set { s_rewardsLastDateTime.Value = value; }
+        }
+
+        private static readonly CloudInt s_rewardsDayCount = new CloudInt("RewardsDayCount", PersistenceType.Latest, 0);
+
+        public static int RewardsDayCount
+        {
+            get { return s_rewardsDayCount.Value; }
+            set { s_rewardsDayCount.Value = value; }
+        }
     }
 }

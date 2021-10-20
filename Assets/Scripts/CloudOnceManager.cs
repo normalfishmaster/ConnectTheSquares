@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -382,6 +383,26 @@ public class CloudOnceManager : MonoBehaviour
 	public int GetHint()
 	{
 		return CloudVariables.Hint;
+	}
+
+	public void SetRewardsLastDateTime(DateTime value)
+	{
+		CloudVariables.RewardsLastDateTime = value;
+	}
+
+	public void SetRewardsDayCount(int value)
+	{
+		CloudVariables.RewardsDayCount = value;
+	}
+
+	public DateTime GetRewardsLastDateTime()
+	{
+		return CloudVariables.RewardsLastDateTime;
+	}
+
+	public int GetRewardsDayCount()
+	{
+		return CloudVariables.RewardsDayCount;
 	}
 
 	public void DeleteAll()

@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class MainMenuUI : MonoBehaviour
 {
-	private LevelManager _level;
 	private AudioManager _audio;
+	private LevelManager _level;
 
 	// Canvas
 
@@ -618,6 +618,104 @@ public class MainMenuUI : MonoBehaviour
 		Animate.AnimateButtonPressed(_settingsCloseButton, SETTINGS_ANIMATE_BUTTON_PRESSED_SCALE, SETTINGS_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
+	// Rewards
+
+	public float REWARDS_ANIMATE_BOARD_ENTER_DURATION;
+	public float REWARDS_ANIMATE_BOARD_EXIT_DURATION;
+
+	public float REWARDS_ANIMATE_BUTTON_PRESSED_SCALE;
+	public float REWARDS_ANIMATE_BUTTON_PRESSED_DURATION;
+
+	private GameObject _rewards;
+	private GameObject _rewardsBoard;
+
+	private GameObject _rewardsOpen;
+	private GameObject _rewardsClose;
+
+	private GameObject _rewardsOpenButton;
+	private GameObject _rewardsCloseButton;
+
+	private GameObject[] _rewardsDay;
+	private GameObject[] _rewardsDayButton;
+	private GameObject[] _rewardsDayClaimed;
+	private GameObject[] _rewardsDayUnclaimed;
+
+	private void FindRewardsGameObject()
+	{
+		_rewards = GameObject.Find("/Canvas/Rewards");
+		_rewardsBoard = GameObject.Find("/Canvas/Rewards/Board");
+
+		_rewardsOpen = GameObject.Find("/Canvas/RewardsOpen");
+		_rewardsClose = GameObject.Find("/Canvas/Rewards/Board/Close");
+
+		_rewardsOpenButton = GameObject.Find("/Canvas/RewardsOpen/Button");
+		_rewardsCloseButton = GameObject.Find("/Canvas/Rewards/Board/Close/Button");
+
+		_rewardsDay = new GameObject[3];
+		_rewardsDayButton = new GameObject[3];
+		_rewardsDayClaimed = new GameObject[3];
+		_rewardsDayUnclaimed = new GameObject[3];
+
+		for (int i = 0; i < 3; i++)
+		{
+			int day = i + 1;
+
+			_rewardsDay[i] = GameObject.Find("/Canvas/Rewards/Board/Day" + day);
+			_rewardsDayButton[i] = GameObject.Find("/Canvas/Rewards/Board/Day" + day + "/Button");
+			_rewardsDayClaimed[i] = GameObject.Find("/Canvas/Rewards/Board/Day" + day + "/Button/Claimed");
+			_rewardsDayUnclaimed[i] = GameObject.Find("/Canvas/Rewards/Board/Day" + day + "/Button/Unclaimed");
+		}
+	}
+
+	public void SetActiveRewards(bool active)
+	{
+		_rewards.SetActive(active);
+	}
+
+	public void SetEnableRewardsOpenButton(bool enable)
+	{
+		_rewardsOpenButton.GetComponent<Button>().enabled = enable;
+	}
+
+	public void SetEnableRewardsDayButton(bool enable)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			_rewardsDayButton[i].GetComponent<Button>().enabled = enable;
+		}
+	}
+
+	public void SetActiveRewardsDayClaimed(int day, bool active)
+	{
+		_rewardsDayClaimed[day].SetActive(active);
+		_rewardsDayUnclaimed[day].SetActive(!active);
+	}
+
+	public void SetEnableRewardsCloseButton(bool enable)
+	{
+		_rewardsCloseButton.GetComponent<Button>().enabled = enable;
+	}
+
+	public void AnimateRewardsBoardEnter(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateBoardEnter(_rewards, _rewardsBoard, REWARDS_ANIMATE_BOARD_ENTER_DURATION, callback);
+	}
+
+	public void AnimateRewardsBoardExit(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateBoardExit(_rewards, _rewardsBoard, REWARDS_ANIMATE_BOARD_EXIT_DURATION, callback);
+	}
+
+	public void AnimateRewardsOpenButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_rewardsOpenButton, REWARDS_ANIMATE_BUTTON_PRESSED_SCALE, REWARDS_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateRewardsCloseButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_rewardsCloseButton, REWARDS_ANIMATE_BUTTON_PRESSED_SCALE, REWARDS_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
 	// Exit
 
 	public float EXIT_ANIMATE_BOARD_ENTER_DURATION;
@@ -690,6 +788,7 @@ public class MainMenuUI : MonoBehaviour
 		FindBottomGameObject();
 		FindCloudOnceGameObject();
 		FindSettingsGameObject();
+		FindRewardsGameObject();
 		FindExitGameObject();
         }
 }
