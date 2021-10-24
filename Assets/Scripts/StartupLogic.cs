@@ -73,6 +73,19 @@ public class StartupLogic : MonoBehaviour
 		_cloudOnceInitComplete = true;
 	}
 
+	// Co-routine to delay and load MainMenuScene
+	// A delay is needed before loading the MainMenuScene to allow all the Google Play
+	// initialization to complete and to avoid any lags in Main Menu Scene
+
+	public float _loadDelay;
+	private bool _loadDelayStarted;
+
+	IEnumerator DelayAndLoadMainMenu()
+	{
+		yield return new WaitForSeconds(_loadDelay);
+		SceneManager.LoadScene("MainMenuScene");
+	}
+
 	// Unity Lifecycle
 
 	private void Awake()
@@ -94,7 +107,11 @@ public class StartupLogic : MonoBehaviour
 	{
 		if (_dataInitComplete && _cloudOnceInitComplete)
 		{
-			SceneManager.LoadScene("MainMenuScene");
+			if (_loadDelayStarted == false)
+			{
+				_loadDelayStarted = true;
+				StartCoroutine(DelayAndLoadMainMenu());
+			}
 		}
 	}
 }
