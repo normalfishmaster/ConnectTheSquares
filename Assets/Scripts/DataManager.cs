@@ -38,17 +38,26 @@ public class DataManager : MonoBehaviour
 	public string GetLevelStarKey(int color, int alphabet, int map)		{ return "LevelStarKey" + "_" + color + "_" + alphabet + "_" + map;				}
 	public int    GetLevelStarDefault()					{ return 0;											}
 
-	public string GetAlphabetStarKey(int color, int alphabet)		{ return "LevelAlphabetStarKey" + "_" + color + "_" + alphabet;					}
+	public string GetAlphabetStarKey(int color, int alphabet)		{ return "AlphabetStarKey" + "_" + color + "_" + alphabet;					}
 	public int    GetAlphabetStarDefault()					{ return 0;											}
 
-	public string GetAlphabetStarTotalKey(int color, int alphabet)		{ return "LevelAlphabetStarTotalKey" + "_" + color + "_" + alphabet;				}
+	public string GetAlphabetStarTotalKey(int color, int alphabet)		{ return "AlphabetStarTotalKey" + "_" + color + "_" + alphabet;					}
 	public int    GetAlphabetStarTotalDefault()				{ return 0;											}
 
-	public string GetColorStarKey(int color)				{ return "LevelColorStarKey" + "_" + color;							}
+	public string GetColorStarKey(int color)				{ return "ColorStarKey" + "_" + color;								}
 	public int    GetColorStarDefault()					{ return 0;											}
 
-	public string GetColorStarTotalKey(int color)				{ return "LevelColorStarTotalKey" + "_" + color;						}
+	public string GetColorStarTotalKey(int color)				{ return "ColorStarTotalKey" + "_" + color;							}
 	public int    GetColorStarTotalDefault()				{ return 0;											}
+
+	public string GetColorSolvedKey(int color)				{ return "ColorSolvedKey" + "_" + color;							}
+	public int    GetColorSolvedDefault()					{ return 0;											}
+
+	public string GetColorSolvedTotalKey(int color)				{ return "ColorSolvedTotalKey" + "_" + color;							}
+	public int    GetColorSolvedTotalDefault()				{ return 0;											}
+
+	public string GetBackgroundColorKey()					{ return "BackgroundColorKey";									}
+	public int    GetBackgroundColorDefault()				{ return 0;											}
 
 	public string GetPlayTimeKey()						{ return "PlayTimeKey";										}
 	public float  GetPlayTimeDefault()					{ return 0f;											}
@@ -140,12 +149,27 @@ public class DataManager : MonoBehaviour
 	public bool  CheckColorStar(int color)					{ return PlayerPrefs.HasKey(GetColorStarKey(color));						}
 	public int   GetColorStar(int color)					{ return PlayerPrefs.GetInt(GetColorStarKey(color));						}
 	public void  SetColorStar(int color, int value)				{        PlayerPrefs.SetInt(GetColorStarKey(color), value);					}
-	public void  InitColorStar(int color)					{        PlayerPrefs.SetInt(GetColorStarKey(color), GetAlphabetStarDefault());			}
+	public void  InitColorStar(int color)					{        PlayerPrefs.SetInt(GetColorStarKey(color), GetColorStarDefault());			}
 
 	public bool  CheckColorStarTotal(int color)				{ return PlayerPrefs.HasKey(GetColorStarTotalKey(color));					}
 	public int   GetColorStarTotal(int color)				{ return PlayerPrefs.GetInt(GetColorStarTotalKey(color));					}
 	public void  SetColorStarTotal(int color, int value)			{        PlayerPrefs.SetInt(GetColorStarTotalKey(color), value);				}
-	public void  InitColorStarTotal(int color)				{        PlayerPrefs.SetInt(GetColorStarTotalKey(color), GetAlphabetStarTotalDefault());	}
+	public void  InitColorStarTotal(int color)				{        PlayerPrefs.SetInt(GetColorStarTotalKey(color), GetColorStarTotalDefault());		}
+
+	public bool  CheckColorSolved(int color)				{ return PlayerPrefs.HasKey(GetColorSolvedKey(color));						}
+	public int   GetColorSolved(int color)					{ return PlayerPrefs.GetInt(GetColorSolvedKey(color));						}
+	public void  SetColorSolved(int color, int value)			{        PlayerPrefs.SetInt(GetColorSolvedKey(color), value);					}
+	public void  InitColorSolved(int color)					{        PlayerPrefs.SetInt(GetColorSolvedKey(color), GetColorSolvedDefault());			}
+
+	public bool  CheckColorSolvedTotal(int color)				{ return PlayerPrefs.HasKey(GetColorSolvedTotalKey(color));					}
+	public int   GetColorSolvedTotal(int color)				{ return PlayerPrefs.GetInt(GetColorSolvedTotalKey(color));					}
+	public void  SetColorSolvedTotal(int color, int value)			{        PlayerPrefs.SetInt(GetColorSolvedTotalKey(color), value);				}
+	public void  InitColorSolvedtotal(int color)				{        PlayerPrefs.SetInt(GetColorSolvedTotalKey(color), GetColorSolvedTotalDefault());	}
+
+	public bool  CheckBackgroundColor()					{ return PlayerPrefs.HasKey(GetBackgroundColorKey());						}
+	public int   GetBackgroundColor()					{ return PlayerPrefs.GetInt(GetBackgroundColorKey());						}
+	public void  SetBackgroundColor(int value)				{        PlayerPrefs.SetInt(GetBackgroundColorKey(), value);					}
+	public void  InitBackgroundColor()					{        PlayerPrefs.SetInt(GetBackgroundColorKey(), GetBackgroundColorDefault());		}
 
 	public bool  CheckPlayTime()						{ return PlayerPrefs.HasKey(GetPlayTimeKey());							}
 	public float GetPlayTime()						{ return PlayerPrefs.GetFloat(GetPlayTimeKey());						}
@@ -245,6 +269,78 @@ public class DataManager : MonoBehaviour
 		PlayerPrefs.DeleteAll();
 	}
 
+	// Calculation Methods
+
+	public void RecalculateBackgroundColor()
+	{
+		int numColor = _level.GetNumColor();
+
+		for (int i = numColor - 1; i >= 0; i--)
+		{
+			if (GetColorSolved(i) == GetColorSolvedTotal(i))
+			{
+				if (i == numColor - 1)
+				{
+					SetBackgroundColor(i);
+				}
+				else
+				{
+					SetBackgroundColor(i + 1);
+				}
+				return;
+			}
+		}
+
+		SetBackgroundColor(0);
+	}
+
+	public void RecalculateLevelTotal()
+	{
+		int numColor = _level.GetNumColor();
+
+		for (int i = 0; i < numColor; i++)
+		{
+			int numAlphabet = _level.GetNumAlphabet(i);
+			int starColorEarned = 0;
+			int starColorTotal = 0;
+			int solvedColorEarned = 0;
+			int solvedColorTotal = 0;
+
+			for (int j = 0; j < numAlphabet; j++)
+			{
+				int numMap = _level.GetNumMap(i, j);
+				int starAlphabetEarned = 0;
+				int starAlphabetTotal = 0;
+
+				for (int k = 0; k < numMap; k++)
+				{
+					int star = GetLevelStar(i, j, k);
+					if (star >= 1)
+					{
+						starAlphabetEarned += star;
+						solvedColorEarned += 1;
+					}
+					starAlphabetTotal += 3;
+					solvedColorTotal += 1;
+				}
+
+				SetAlphabetStar(i, j, starAlphabetEarned);
+				SetAlphabetStarTotal(i, j, starAlphabetTotal);
+
+				starColorEarned += starAlphabetEarned;
+				starColorTotal += starAlphabetTotal;
+			}
+
+			SetColorStar(i, starColorEarned);
+			SetColorStarTotal(i, starColorTotal);
+
+			SetColorSolved(i, solvedColorEarned);
+			SetColorSolvedTotal(i, solvedColorTotal);
+		}
+
+		RecalculateBackgroundColor();
+	}
+
 	// Delegates
 	// This is used exclusively by the StartupScene
 
@@ -290,6 +386,9 @@ public class DataManager : MonoBehaviour
 
 	private void Start()
 	{
+
+		/* Initialize data */
+
 		if (CheckAudio() == false)
 		{
 			InitAudio();
@@ -315,6 +414,8 @@ public class DataManager : MonoBehaviour
 			InitMenuMap();
 		}
 
+		SetLevelLock(0, 0, 0, 0);
+
 		int numColor = _level.GetNumColor();
 
 		for (int i = 0; i < numColor; i++)
@@ -330,11 +431,6 @@ public class DataManager : MonoBehaviour
 					if (CheckLevelLock(i, j, k) == false)
 					{
 						InitLevelLock(i, j, k);
-
-						if (i == 0 && j == 0 && k == 0)
-						{
-							SetLevelLock(0, 0, 0, 0);
-						}
 					}
 
 					if (CheckLevelStar(i, j, k) == false)
@@ -391,36 +487,11 @@ public class DataManager : MonoBehaviour
 			InitBlockIllusionUnlocked();
 		}
 
-		// Calculate Color and Alphabet Star as well as Totals
+		// Calculate totals stars and background color
 
-		for (int i = 0; i < numColor; i++)
-		{
-			int numAlphabet = _level.GetNumAlphabet(i);
-			int starColorEarned = 0;
-			int starColorTotal = 0;
+		RecalculateLevelTotal();
 
-			for (int j = 0; j < numAlphabet; j++)
-			{
-				int numMap = _level.GetNumMap(i, j);
-				int starAlphabetEarned = 0;
-				int starAlphabetTotal = 0;
-
-				for (int k = 0; k < numMap; k++)
-				{
-					starAlphabetEarned += GetLevelStar(i, j, k);
-					starAlphabetTotal += 3;
-				}
-
-				SetAlphabetStar(i, j, starAlphabetEarned);
-				SetAlphabetStarTotal(i, j, starAlphabetTotal);
-
-				starColorEarned += starAlphabetEarned;
-				starColorTotal += starAlphabetTotal;
-			}
-
-			SetColorStar(i, starColorEarned);
-			SetColorStarTotal(i, starColorTotal);
-		}
+		// Initialize audio
 
 		if (GetAudio() == 0)
 		{

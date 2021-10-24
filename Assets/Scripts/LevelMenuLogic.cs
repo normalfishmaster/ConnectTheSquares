@@ -12,6 +12,13 @@ public class LevelMenuLogic : MonoBehaviour
 
 	private int _menuColor;
 
+	// UI - Background
+
+	private void SetupBackground()
+	{
+		_ui.SetBackgroundColor(_data.GetBackgroundColor());
+	}
+
 	// UI - Level
 
 	private const float LEVEL_ANIMATE_PANEL_ENTER_TIME = 0.3f;
@@ -103,6 +110,7 @@ public class LevelMenuLogic : MonoBehaviour
         {
 		_menuColor = _data.GetMenuColor();
 
+		SetupBackground();
 		SetupLevel();
 
 		_ui.SetEnableLevelButton(false);

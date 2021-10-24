@@ -10,6 +10,22 @@ public class LevelMenuUI : MonoBehaviour
 	private DataManager _data;
 	private LevelManager _level;
 
+	// Background
+
+	public Sprite[] _backgroundSprite;
+
+	private GameObject _background;
+
+	private void FindBackgroundGameObject()
+	{
+		_background = GameObject.Find("/Background/Color");
+	}
+
+	public void SetBackgroundColor(int color)
+	{
+		_background.GetComponent<Image>().sprite = _backgroundSprite[color];
+	}
+
 	// Level
 
 	public float LEVEL_ANIMATE_ENTER_DURATION;
@@ -18,13 +34,15 @@ public class LevelMenuUI : MonoBehaviour
 	public float LEVEL_ANIMATE_BUTTON_PRESSED_SCALE;
 	public float LEVEL_ANIMATE_BUTTON_PRESSED_DURATION;
 
+	public Sprite[] _levelButtonColor;
+	public Sprite _levelButtonLock;
+
 	private enum LevelButtonType
 	{
 		SINGLE,
 		TRIPLE,
 	};
 
-	public GameObject _levelPanel;
 	public GameObject _levelButtonSinglePrefab;
 	public GameObject _levelButtonTriplePrefab;
 
@@ -34,6 +52,7 @@ public class LevelMenuUI : MonoBehaviour
 	private float[] _levelPercentB;
 	private float[] _levelPercentC;
 
+	private GameObject _levelPanel;
 	private GameObject _levelContent;
 
 	private void FindLevelGameObject()
@@ -77,8 +96,9 @@ public class LevelMenuUI : MonoBehaviour
 		_levelButton[color] = Instantiate(_levelButtonSinglePrefab);
 		_levelButton[color].transform.SetParent(_levelContent.transform);
 		_levelButton[color].transform.localScale = new Vector3(1, 1, 1);
+		_levelButton[color].transform.Find("Color").GetComponent<Image>().sprite = _levelButtonColor[color];
 		_levelButton[color].transform.Find("Color/Label").GetComponent<Text>().text = _level.GetColorString(color);
-		_levelButton[color].transform.Find("Moves").GetComponent<Text>().text = moves;
+		_levelButton[color].transform.Find("Difficulty/Label").GetComponent<Text>().text = moves;
 		_levelButton[color].transform.Find("A").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 0); });
 	}
 
@@ -93,8 +113,20 @@ public class LevelMenuUI : MonoBehaviour
 		_levelButton[color] = Instantiate(_levelButtonTriplePrefab);
 		_levelButton[color].transform.SetParent(_levelContent.transform);
 		_levelButton[color].transform.localScale = new Vector3(1, 1, 1);
+
+		if (_data.GetLevelLock(color, 0, 0) == 0)
+		{
+			_levelButton[color].transform.Find("Color").GetComponent<Image>().sprite = _levelButtonColor[color];
+			_levelButton[color].transform.Find("Color/Label").GetComponent<Text>().color = new Color32(236, 189, 150, 255);
+		}
+		else
+		{
+			_levelButton[color].transform.Find("Color").GetComponent<Image>().sprite = _levelButtonLock;
+			_levelButton[color].transform.Find("Color/Label").GetComponent<Text>().color = new Color32(130, 130, 130, 255);
+		}
+
 		_levelButton[color].transform.Find("Color/Label").GetComponent<Text>().text = _level.GetColorString(color);
-		_levelButton[color].transform.Find("Moves").GetComponent<Text>().text = moves;
+		_levelButton[color].transform.Find("Difficulty/Label").GetComponent<Text>().text = moves;
 		_levelButton[color].transform.Find("A").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 0); });
 		_levelButton[color].transform.Find("B").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 1); });
 		_levelButton[color].transform.Find("C").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 2); });
@@ -191,6 +223,7 @@ public class LevelMenuUI : MonoBehaviour
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
+		FindBackgroundGameObject();
 		FindLevelGameObject();
 		FindBottomGameObject();
 	}

@@ -8,6 +8,22 @@ public class MainMenuUI : MonoBehaviour
 	private AudioManager _audio;
 	private LevelManager _level;
 
+	// Background
+
+	public Sprite[] _backgroundSprite;
+
+	private GameObject _background;
+
+	private void FindBackgroundGameObject()
+	{
+		_background = GameObject.Find("/Background/Color");
+	}
+
+	public void SetBackgroundColor(int color)
+	{
+		_background.GetComponent<Image>().sprite = _backgroundSprite[color];
+	}
+
 	// Canvas
 
 	private GameObject _canvas;
@@ -783,6 +799,7 @@ public class MainMenuUI : MonoBehaviour
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
+		FindBackgroundGameObject();
 		FindCanvasGameObject();
 		FindFrontGameObject();
 		FindBottomGameObject();

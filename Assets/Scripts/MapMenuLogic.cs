@@ -13,6 +13,13 @@ public class MapMenuLogic : MonoBehaviour
 	private int _menuColor;
 	private int _menuAlphabet;
 
+	// UI - Background
+
+	private void SetupBackground()
+	{
+		_ui.SetBackgroundColor(_data.GetBackgroundColor());
+	}
+
 	// UI - Map
 
 	private const float MAP_ANIMATE_ENTER_TIME = 0.3f;
@@ -89,6 +96,7 @@ public class MapMenuLogic : MonoBehaviour
 		_menuColor = _data.GetMenuColor();
 		_menuAlphabet = _data.GetMenuAlphabet();
 
+		SetupBackground();
 		SetupTop();
 		SetupMap();
 

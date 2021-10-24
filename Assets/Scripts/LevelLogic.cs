@@ -933,7 +933,7 @@ public class LevelLogic : MonoBehaviour
 
 			_data.SetPlayTime(_data.GetPlayTime() + (_playEndTime - _playStartTime));
 
-			// Update stars
+			// Update stars and solved levels
 
 			int move = GetBlockMoveCount();
 			int star = 1;
@@ -958,6 +958,19 @@ public class LevelLogic : MonoBehaviour
 
 				int currentColorStar = _data.GetColorStar(_menuColor);
 				_data.SetColorStar(_menuColor, currentColorStar + (star - currentStar));
+			}
+
+			if (currentStar == 0)
+			{
+				_data.SetColorSolved(_menuColor, _data.GetColorSolved(_menuColor) + 1);
+
+				if (_data.GetColorSolved(_menuColor) == _data.GetColorSolvedTotal(_menuColor))
+				{
+					if (_menuColor + 1 > _data.GetBackgroundColor())
+					{
+						_data.SetBackgroundColor(_menuColor + 1);
+					}
+				}
 			}
 
 			// Unlock next level
@@ -1415,6 +1428,7 @@ public class LevelLogic : MonoBehaviour
 	private void SetupGo()
 	{
 		_ui.SetActiveGo(false);
+		_ui.SetGoColor(_menuColor);
 	}
 
 	// UI - Pause
@@ -1501,6 +1515,9 @@ public class LevelLogic : MonoBehaviour
 	public void OnPauseMenuButtonPressed()
 	{
 		_audio.PlayButtonPressed();
+
+		_playEndTime = Time.realtimeSinceStartup;
+		_data.SetPlayTime(_data.GetPlayTime() + (_playEndTime - _playStartTime));
 
 		_ui.SetEnablePauseButton(false);
 		_ui.AnimatePauseMenuButtonPressed
@@ -1593,6 +1610,7 @@ public class LevelLogic : MonoBehaviour
 	private void SetupWin()
 	{
 		_ui.SetActiveWin(false);
+		_ui.SetWinColor(_menuColor);
 
 		for (int i = 0; i < 3; i++)
 		{

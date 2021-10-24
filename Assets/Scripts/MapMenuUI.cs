@@ -9,6 +9,22 @@ public class MapMenuUI : MonoBehaviour
 	private DataManager _data;
 	private LevelManager _level;
 
+	// Background
+
+	public Sprite[] _backgroundSprite;
+
+	private GameObject _background;
+
+	private void FindBackgroundGameObject()
+	{
+		_background = GameObject.Find("/Background/Color");
+	}
+
+	public void SetBackgroundColor(int color)
+	{
+		_background.GetComponent<Image>().sprite = _backgroundSprite[color];
+	}
+
 	// Map
 
 	public float MAP_ANIMATE_ENTER_DURATION;
@@ -149,6 +165,7 @@ public class MapMenuUI : MonoBehaviour
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
+		FindBackgroundGameObject();
 		FindMapGameObject();
 		FindTopGameObject();
 		FindBottomGameObject();

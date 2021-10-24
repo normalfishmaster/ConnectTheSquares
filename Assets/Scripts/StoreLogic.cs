@@ -16,6 +16,13 @@ public class StoreLogic : MonoBehaviour
 
 	private int _purchasePending;
 
+	// UI - Background
+
+	private void SetupBackground()
+	{
+		_ui.SetBackgroundColor(_data.GetBackgroundColor());
+	}
+
 	// State
 
 	private const float MAX_AD_LOAD_TIME = 5.0f;
@@ -524,6 +531,7 @@ public class StoreLogic : MonoBehaviour
 
 	private void Start()
 	{
+		SetupBackground();
 		SetupState();
 		SetupTop();
 		SetupProduct();

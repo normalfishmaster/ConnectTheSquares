@@ -6320,7 +6320,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5c51e4ed931c91655a720e87ed72e251, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2b178fa2a58347b2db125d0f3dc5a9e1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6926,7 +6926,7 @@ GameObject:
   - component: {fileID: 610704698}
   - component: {fileID: 610704697}
   m_Layer: 5
-  m_Name: BannerYellow
+  m_Name: BannerFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7137,8 +7137,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4288069100
-  m_fontColor: {r: 0.9254902, g: 0.7411765, b: 0.5882353, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -10267,7 +10267,7 @@ GameObject:
   - component: {fileID: 901413650}
   - component: {fileID: 901413649}
   m_Layer: 5
-  m_Name: BannerBlack
+  m_Name: BannerBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10643,6 +10643,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7db2d3086be1c6498aa9c948bb2daed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _topColorSprite:
+  - {fileID: 21300000, guid: 5c51e4ed931c91655a720e87ed72e251, type: 3}
+  - {fileID: 21300000, guid: bc88a52500b43c25eaf8a878eac8fb37, type: 3}
+  - {fileID: 21300000, guid: ce6fb6f40d0df1ef4a27f0ea3eac6924, type: 3}
+  - {fileID: 21300000, guid: 2b178fa2a58347b2db125d0f3dc5a9e1, type: 3}
+  - {fileID: 21300000, guid: fcdc000f759320818a8bc7566ea7a003, type: 3}
   CONTROL_ANIMATE_BUTTON_PRESSED_SCALE: 1.15
   CONTROL_ANIMATE_BUTTON_PRESSED_DURATION: 0.15
   GO_ANIMATE_BANNER_ENTER_DELAY: 0.1
@@ -10663,6 +10669,12 @@ MonoBehaviour:
   WIN_ANIMATE_STAR_ENTER_DURATION: 0.3
   WIN_ANIMATE_BUTTON_PRESSED_SCALE: 1.15
   WIN_ANIMATE_BUTTON_PRESSED_DURATION: 0.15
+  _winColorSprite:
+  - {fileID: 21300000, guid: a8217d28258c54f47818c8505c941384, type: 3}
+  - {fileID: 21300000, guid: c68a8e612b43dfe098a461c78e465986, type: 3}
+  - {fileID: 21300000, guid: 603ee6c878e91887ca9d0c4bff6b9114, type: 3}
+  - {fileID: 21300000, guid: 35bc607f10b8a3d729799b4221b2908e, type: 3}
+  - {fileID: 21300000, guid: 162d1c976849450d6a16e2c277caa3ae, type: 3}
 --- !u!4 &923933099
 Transform:
   m_ObjectHideFlags: 0
@@ -11268,7 +11280,7 @@ GameObject:
   - component: {fileID: 1013677478}
   - component: {fileID: 1013677477}
   m_Layer: 5
-  m_Name: Leather
+  m_Name: Color
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11313,7 +11325,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a8217d28258c54f47818c8505c941384, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 35bc607f10b8a3d729799b4221b2908e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

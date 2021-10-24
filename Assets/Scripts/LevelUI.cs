@@ -12,6 +12,9 @@ public class LevelUI : MonoBehaviour
 
 	// Top
 
+	public Sprite[] _topColorSprite;
+
+	private GameObject _topColor;
 	private GameObject _topColorText;
 
 	private GameObject _topAlphabetA;
@@ -28,6 +31,7 @@ public class LevelUI : MonoBehaviour
 
 	private void FindTopGameObject()
 	{
+		_topColor = GameObject.Find("/Canvas/Top/Color");
 		_topColorText = GameObject.Find("/Canvas/Top/Color/Label");
 
 		_topAlphabetA = GameObject.Find("/Canvas/Top/Alphabet/A");
@@ -50,6 +54,7 @@ public class LevelUI : MonoBehaviour
 
 	public void SetTopColor(int color)
 	{
+		_topColor.GetComponent<Image>().sprite = _topColorSprite[color];
 		_topColorText.GetComponent<Text>().text = _level.GetColorString(color);
 	}
 
@@ -401,21 +406,45 @@ public class LevelUI : MonoBehaviour
 	public float GO_ANIMATE_LABEL_EXIT_DELAY;
 
 	private GameObject _go;
-	private GameObject _goBannerBlack;
-	private GameObject _goBannerYellow;
+	private GameObject _goBannerBack;
+	private GameObject _goBannerFront;
 	private GameObject _goLabel;
 
 	private void FindGoGameObject()
 	{
 		_go = GameObject.Find("/Canvas/Go");
-		_goBannerBlack = GameObject.Find("/Canvas/Go/BannerBlack");
-		_goBannerYellow = GameObject.Find("/Canvas/Go/BannerYellow");
+		_goBannerBack = GameObject.Find("/Canvas/Go/BannerBack");
+		_goBannerFront = GameObject.Find("/Canvas/Go/BannerFront");
 		_goLabel = GameObject.Find("/Canvas/Go/Label");
 	}
 
 	public void SetActiveGo(bool enable)
 	{
 		_go.SetActive(enable);
+	}
+
+	public void SetGoColor(int color)
+	{
+		if (color == 0)
+		{
+			_goBannerFront.GetComponent<Image>().color = new Color32(229, 159, 66, 255);
+		}
+		else if (color == 1)
+		{
+			_goBannerFront.GetComponent<Image>().color = new Color32(0, 194, 162, 255);
+		}
+		else if (color == 2)
+		{
+			_goBannerFront.GetComponent<Image>().color = new Color32(107, 126, 203, 255);
+		}
+		else if (color == 3)
+		{
+			_goBannerFront.GetComponent<Image>().color = new Color32(198, 69, 138, 255);
+		}
+		else if (color == 4)
+		{
+			_goBannerFront.GetComponent<Image>().color = new Color32(115, 115, 115, 255);
+		}
 	}
 
 	public void AnimateGoEnterAndExit(Animate.AnimateComplete callback)
@@ -426,32 +455,32 @@ public class LevelUI : MonoBehaviour
 
 		// Animate Banner Black
 
-		rectTransform = (RectTransform)_goBannerBlack.transform;
+		rectTransform = (RectTransform)_goBannerBack.transform;
 		pos = rectTransform.anchoredPosition;
 		width = rectTransform.rect.width;
 
 		rectTransform.anchoredPosition = new Vector3(pos.x - width, pos.y, pos.z);
 
-		LeanTween.cancel(_goBannerBlack);
-		LeanTween.moveLocalX(_goBannerBlack, 0.0f, GO_ANIMATE_BANNER_ENTER_EXIT_DURATION).setEase(LeanTweenType.easeOutSine)
+		LeanTween.cancel(_goBannerBack);
+		LeanTween.moveLocalX(_goBannerBack, 0.0f, GO_ANIMATE_BANNER_ENTER_EXIT_DURATION).setEase(LeanTweenType.easeOutSine)
 				.setDelay(GO_ANIMATE_BANNER_ENTER_DELAY);
-		LeanTween.moveLocalX(_goBannerBlack, pos.x + width, GO_ANIMATE_BANNER_ENTER_EXIT_DURATION).setEase(LeanTweenType.easeOutSine)
+		LeanTween.moveLocalX(_goBannerBack, pos.x + width, GO_ANIMATE_BANNER_ENTER_EXIT_DURATION).setEase(LeanTweenType.easeOutSine)
 				.setDelay(GO_ANIMATE_BANNER_ENTER_DELAY + GO_ANIMATE_BANNER_ENTER_EXIT_DURATION
 						+ GO_ANIMATE_LABEL_ENTER_DELAY + GO_ANIMATE_LABEL_ENTER_EXIT_DURATION
 						+ GO_ANIMATE_LABEL_EXIT_DELAY + GO_ANIMATE_LABEL_ENTER_EXIT_DURATION);
 
 		// Animate Banner Yellow
 
-		rectTransform = (RectTransform)_goBannerYellow.transform;
+		rectTransform = (RectTransform)_goBannerFront.transform;
 		pos = rectTransform.anchoredPosition;
 		width = rectTransform.rect.width;
 
 		rectTransform.anchoredPosition = new Vector3(pos.x + width, pos.y, pos.z);
 
-		LeanTween.cancel(_goBannerYellow);
-		LeanTween.moveLocalX(_goBannerYellow, 0.0f, GO_ANIMATE_BANNER_ENTER_EXIT_DURATION).setEase(LeanTweenType.easeOutSine)
+		LeanTween.cancel(_goBannerFront);
+		LeanTween.moveLocalX(_goBannerFront, 0.0f, GO_ANIMATE_BANNER_ENTER_EXIT_DURATION).setEase(LeanTweenType.easeOutSine)
 				.setDelay(GO_ANIMATE_BANNER_ENTER_DELAY);
-		LeanTween.moveLocalX(_goBannerYellow, pos.x - width, GO_ANIMATE_BANNER_ENTER_EXIT_DURATION).setEase(LeanTweenType.easeOutSine)
+		LeanTween.moveLocalX(_goBannerFront, pos.x - width, GO_ANIMATE_BANNER_ENTER_EXIT_DURATION).setEase(LeanTweenType.easeOutSine)
 				.setDelay(GO_ANIMATE_BANNER_ENTER_DELAY + GO_ANIMATE_BANNER_ENTER_EXIT_DURATION
 						+ GO_ANIMATE_LABEL_ENTER_DELAY + GO_ANIMATE_LABEL_ENTER_EXIT_DURATION
 						+ GO_ANIMATE_LABEL_EXIT_DELAY + GO_ANIMATE_LABEL_ENTER_EXIT_DURATION);
@@ -676,8 +705,11 @@ public class LevelUI : MonoBehaviour
 	public float WIN_ANIMATE_BUTTON_PRESSED_SCALE;
 	public float WIN_ANIMATE_BUTTON_PRESSED_DURATION;
 
+	public Sprite[] _winColorSprite;
+
 	private GameObject _win;
 	private GameObject _winBoard;
+	private GameObject _winColor;
 	private GameObject[] _winStar;
 	private GameObject[] _winStarParticleSystem;
 
@@ -692,6 +724,7 @@ public class LevelUI : MonoBehaviour
 	{
 		_win = GameObject.Find("/Canvas/Win");
 		_winBoard = GameObject.Find("/Canvas/Win/Board");
+		_winColor = GameObject.Find("/Canvas/Win/Board/Color");
 		_winStar = new GameObject[3];
 		_winStarParticleSystem = new GameObject[3];
 
@@ -705,6 +738,11 @@ public class LevelUI : MonoBehaviour
 		_winMenuButton = GameObject.Find("/Canvas/Win/Board/Menu/Button");
 		_winReplayButton = GameObject.Find("/Canvas/Win/Board/Replay/Button");
 		_winNextButton = GameObject.Find("/Canvas/Win/Board/Next/Button");
+	}
+
+	public void SetWinColor(int color)
+	{
+		_winColor.GetComponent<Image>().sprite = _winColorSprite[color];
 	}
 
 	public void SetActiveWin(bool active)

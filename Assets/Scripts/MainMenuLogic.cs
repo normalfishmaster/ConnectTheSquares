@@ -17,6 +17,13 @@ public class MainMenuLogic : MonoBehaviour
 
 	private bool _allowExit;
 
+	// UI - Background
+
+	private void SetupBackground()
+	{
+		_ui.SetBackgroundColor(_data.GetBackgroundColor());
+	}
+
 	// UI - Front
 
 	private void SetupFront()
@@ -253,9 +260,17 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
+	int count = 0;
+
 	public void OnBottomLanguageButtonPressed()
 	{
 		_audio.PlayButtonPressed();
+
+		count += 1;
+		if (count >= 5)
+			count = 0;
+
+		_ui.SetBackgroundColor(count);
 
 		_ui.AnimateBottomLanguageButtonPressed
 		(
@@ -354,6 +369,7 @@ public class MainMenuLogic : MonoBehaviour
 		if (success)
 		{
 			_cloudOnce.LoadCloudToData();
+			_ui.SetBackgroundColor(_data.GetBackgroundColor());
 			_ui.SetActiveCloudOnceMessage(9);
 		}
 		else
@@ -636,18 +652,13 @@ public class MainMenuLogic : MonoBehaviour
 		DateTime lastDay = _cloudOnce.GetRewardsLastDateTime();
 		int dayCount = _cloudOnce.GetRewardsDayCount();
 		bool rewardClaimed = false;
-		bool continuationReward = false;
 		int rewardDay = 1;
-
-		Debug.Log("today.DayOfYear:" + today.DayOfYear);
-		Debug.Log("lastDay.DayOfYear:" + lastDay.DayOfYear);
-		Debug.Log("lastDay:" + lastDay);
-		Debug.Log("dayCount:" + dayCount);
 
 		if (today.DayOfYear == lastDay.DayOfYear
 			&& today.Year == lastDay.Year)
 		{
 			rewardClaimed = true;
+			rewardDay = dayCount;
 		}
 		else
 		{
@@ -655,14 +666,10 @@ public class MainMenuLogic : MonoBehaviour
 					&& today.Month == 1 && today.Day == 1
 					&& (today.Year == lastDay.Year + 1))
 			{
-				continuationReward = true;
+				rewardDay = dayCount + 1;
 			}
-			else if (today.DayOfYear == lastDay.DayOfYear + 1)
-			{
-				continuationReward = true;
-			}
-
-			if (continuationReward == true)
+			else if (today.Year == lastDay.Year
+					&& today.DayOfYear == lastDay.DayOfYear + 1)
 			{
 				rewardDay = dayCount + 1;
 			}
@@ -689,7 +696,15 @@ public class MainMenuLogic : MonoBehaviour
 
 			_cloudOnce.SetRewardsLastDateTime(_rewardToday);
 			_cloudOnce.SetRewardsDayCount(_rewardDay);
-			_cloudOnce.IncrementHint(1);
+
+			if (_rewardDay >= 3)
+			{
+				_cloudOnce.IncrementHint(2);
+			}
+			else
+			{
+				_cloudOnce.IncrementHint(1);
+			}
 
 			_cloudOnce.Save();
 
@@ -914,6 +929,7 @@ public class MainMenuLogic : MonoBehaviour
 
 	private void Start()
 	{
+		SetupBackground();
 		SetupFront();
 		SetupBottom();
 		SetupCloudOnce();

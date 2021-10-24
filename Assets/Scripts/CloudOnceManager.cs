@@ -271,6 +271,7 @@ public class CloudOnceManager : MonoBehaviour
 		{
 			int numAlphabet = _level.GetNumAlphabet(i);
 			int starColorEarned = 0;
+			int solvedColorEarned = 0;
 
 			for (int j = 0; j < numAlphabet; j++)
 			{
@@ -295,14 +296,22 @@ public class CloudOnceManager : MonoBehaviour
 						}
 					}
 
-					starAlphabetEarned += _data.GetLevelStar(i, j, k);
+					int finalStar = _data.GetLevelStar(i, j, k);
+					if (finalStar >= 1)
+					{
+						starAlphabetEarned += finalStar;
+						solvedColorEarned += 1;
+					}
 				}
 
 				_data.SetAlphabetStar(i, j, starAlphabetEarned);
 			}
 
 			_data.SetColorStar(i, starColorEarned);
+			_data.SetColorSolved(i, solvedColorEarned);
 		}
+
+		_data.RecalculateBackgroundColor();
 	}
 
 	public void SaveDataToCloud()
