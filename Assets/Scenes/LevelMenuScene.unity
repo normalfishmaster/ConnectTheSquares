@@ -1783,12 +1783,12 @@ MonoBehaviour:
   LEVEL_ANIMATE_BUTTON_PRESSED_SCALE: 1.1
   LEVEL_ANIMATE_BUTTON_PRESSED_DURATION: 0.15
   _levelButtonColor:
-  - {fileID: 21300000, guid: 77c58c02dfea80549aa12c0a16d104ac, type: 3}
-  - {fileID: 21300000, guid: abbc908a007e678a5b3b5d81b1e04b2d, type: 3}
-  - {fileID: 21300000, guid: f15c2f170c35b3fb6a3a0306ba3a5f7c, type: 3}
-  - {fileID: 21300000, guid: ceb56043b84f75b2f84acae9795aa1ce, type: 3}
-  - {fileID: 21300000, guid: 9f1a2e95e7f6c7d22b3abc28526435d3, type: 3}
-  _levelButtonLock: {fileID: 21300000, guid: 1114b4d230e2ec664b10d69b87c51d6e, type: 3}
+  - {fileID: 21300000, guid: affd6559a89d0081e9045cfd491e828d, type: 3}
+  - {fileID: 21300000, guid: 46c52abf3160075e39d62401e8a09ff8, type: 3}
+  - {fileID: 21300000, guid: 4d159e2951763e69c88f0c0c26049ed4, type: 3}
+  - {fileID: 21300000, guid: 8eaf838a54eb94c03b6b0a5f8abdd0d1, type: 3}
+  - {fileID: 21300000, guid: 8ce49a976ba9bd8ddb016f6e2349501a, type: 3}
+  _levelButtonLock: {fileID: 21300000, guid: 96621566e24f47306a92f50091ef5b74, type: 3}
   _levelButtonSinglePrefab: {fileID: 7660679513493152306, guid: 8ab408f019951ad6aa2504c142d4dff8, type: 3}
   _levelButtonTriplePrefab: {fileID: 8060267582285321287, guid: 2f6e6dc6dd109fa07a9b6de4755d5948, type: 3}
   BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE: 1.15
