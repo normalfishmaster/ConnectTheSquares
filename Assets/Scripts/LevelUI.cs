@@ -879,6 +879,37 @@ public class LevelUI : MonoBehaviour
 		Animate.AnimateButtonPressed(_winNextButton, WIN_ANIMATE_BUTTON_PRESSED_SCALE, WIN_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
+	// Darken
+
+	public float DARKEN_ANIMATE_DURATION;
+
+	private GameObject _darken;
+
+	private void FindDarkenGameObject()
+	{
+		_darken = GameObject.Find("/Canvas/Darken");
+	}
+
+	public void SetActiveDarken(bool active)
+	{
+		_darken.SetActive(active);
+	}
+
+	public void AnimateDarken()
+	{
+		_darken.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0f);
+
+		LeanTween.cancel(_darken);
+
+		LeanTween.value(_darken, 0f, 1f, DARKEN_ANIMATE_DURATION).setEase(LeanTweenType.easeOutSine).setOnUpdate
+		(
+			(float val) =>
+			{
+				_darken.GetComponent<Image>().color = new Color(0f, 0f, 0f, val);
+			}
+		);
+	}
+
 	// Blinder
 
 	private GameObject _blinder;
@@ -909,6 +940,7 @@ public class LevelUI : MonoBehaviour
 		FindPauseGameObject();
 		FindExitPreviewGameObject();
 		FindWinGameObject();
+		FindDarkenGameObject();
 		FindBlinderGameObject();
 	}
 }

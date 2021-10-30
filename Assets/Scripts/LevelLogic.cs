@@ -917,6 +917,8 @@ public class LevelLogic : MonoBehaviour
 		if (MoveBlockFromStartToPreEnd() == true)
 		{
 			_audio.PlayMovePreEndToEnd();
+			_ui.SetActiveDarken(true);
+			_ui.AnimateDarken();
 			_touchState = TouchState.PRE_END_TO_END;
 		}
 	}
@@ -1058,6 +1060,8 @@ public class LevelLogic : MonoBehaviour
 
 			_ui.SetEnableControlButton(false);
 			_touchState = TouchState.WIN;
+
+			_ui.SetActiveDarken(false);
 
 			AnimateMapExit(
 				()=>
@@ -1911,6 +1915,13 @@ public class LevelLogic : MonoBehaviour
 		);
 	}
 
+	// Darken
+
+	private void SetupDarken()
+	{
+		_ui.SetActiveDarken(false);
+	}
+
 	// Blinder
 
 	private void SetupBlinder()
@@ -1961,6 +1972,7 @@ public class LevelLogic : MonoBehaviour
 		SetupPause();
 		SetupExitPreview();
 		SetupWin();
+		SetupDarken();
 		SetupBlinder();
 		SetupLoad();
 		SetupAdSuccess();
