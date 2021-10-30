@@ -10765,6 +10765,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 603ee6c878e91887ca9d0c4bff6b9114, type: 3}
   - {fileID: 21300000, guid: 35bc607f10b8a3d729799b4221b2908e, type: 3}
   - {fileID: 21300000, guid: 162d1c976849450d6a16e2c277caa3ae, type: 3}
+  DARKEN_ANIMATE_DURATION: 2
 --- !u!4 &923933099
 Transform:
   m_ObjectHideFlags: 0
