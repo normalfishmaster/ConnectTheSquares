@@ -6584,6 +6584,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1524606155}
     m_Modifications:
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: lengthInSec
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: InitialModule.gravityModifier.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].value
+      value: 0.60811067
+      objectReference: {fileID: 0}
     - target: {fileID: 2208832605671519081, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
       propertyPath: m_Name
       value: StarParticleSystem2
@@ -8417,6 +8453,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1524606155}
     m_Modifications:
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: lengthInSec
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: InitialModule.gravityModifier.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].value
+      value: 0.60811067
+      objectReference: {fileID: 0}
     - target: {fileID: 2208832605671519081, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
       propertyPath: m_Name
       value: StarParticleSystem1
@@ -10959,6 +11031,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 936566692}
   m_CullTransparentMesh: 1
+--- !u!224 &954725630 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4541707546064631892, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+  m_PrefabInstance: {fileID: 580380263}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &960159697
 GameObject:
   m_ObjectHideFlags: 0
@@ -16564,8 +16641,8 @@ RectTransform:
   - {fileID: 2085493241}
   - {fileID: 896442919}
   - {fileID: 1191608296}
-  - {fileID: 1753503902}
-  - {fileID: 1837729995}
+  - {fileID: 1656995984}
+  - {fileID: 954725630}
   m_Father: {fileID: 373612082}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17123,6 +17200,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1524606155}
     m_Modifications:
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: lengthInSec
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: InitialModule.gravityModifier.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1777766766905892787, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].value
+      value: 0.60811067
+      objectReference: {fileID: 0}
     - target: {fileID: 2208832605671519081, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
       propertyPath: m_Name
       value: StarParticleSystem0
@@ -18507,6 +18620,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1654721766}
   m_CullTransparentMesh: 1
+--- !u!224 &1656995984 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4541707546064631892, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
+  m_PrefabInstance: {fileID: 717849242}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1660544098
 GameObject:
   m_ObjectHideFlags: 0
@@ -19380,11 +19498,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 2
   m_AspectRatio: 1
---- !u!224 &1753503902 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4541707546064631892, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
-  m_PrefabInstance: {fileID: 717849242}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1764105910
 GameObject:
   m_ObjectHideFlags: 0
@@ -20387,11 +20500,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1833725175}
   m_CullTransparentMesh: 1
---- !u!224 &1837729995 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4541707546064631892, guid: 4675f319604d33500a9ba842ed73f8b2, type: 3}
-  m_PrefabInstance: {fileID: 580380263}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1842048472
 GameObject:
   m_ObjectHideFlags: 0
