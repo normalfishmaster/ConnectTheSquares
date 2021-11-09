@@ -8,12 +8,12 @@ using UnityEngine.SceneManagement;
 public class MainMenuLogic : MonoBehaviour
 {
 	private MainMenuUI _ui;
-	private AdUI _adUi;
 	private AdManager _ad;
 	private AudioManager _audio;
 	private CloudOnceManager _cloudOnce;
 	private DataManager _data;
 	private LevelManager _level;
+	private MessageManager _message;
 
 	private bool _allowExit;
 
@@ -166,7 +166,7 @@ public class MainMenuLogic : MonoBehaviour
 
 	private void SetupBottom()
 	{
-		#if (BUILD_ANDROID_DEBUG || BUILD_ANDROID_RELEASE)
+		#if UNITY_ANDROID
 			_ui.SetActiveBottomGameCenter(false);
 		#else
 			_ui.SetActiveBottomGooglePlay(false);
@@ -712,6 +712,58 @@ public class MainMenuLogic : MonoBehaviour
 		}
 	}
 
+	public void OpenRewards()
+	{
+		_allowExit = false;
+
+		_ui.SetEnableFrontButton(false);
+		_ui.SetEnableBottomButton(false);
+		_ui.SetEnableRewardsOpenButton(false);
+
+		_ui.SetActiveRewards(true);
+		_ui.SetEnableRewardsCloseButton(false);
+
+		for (int i = 0; i < 3; i++)
+		{
+			_ui.AnimateRewardsDaySunburstRotate(i);
+		}
+
+		for (int i = 1; i <= 3; i++)
+		{
+			_ui.SetActiveRewardsDayGet((i - 1), false);
+
+			if (i < _rewardDay)
+			{
+				_ui.SetActiveRewardsDayClaimed((i - 1), true);
+			}
+			else
+			{
+				_ui.SetActiveRewardsDayClaimed((i - 1), false);
+			}
+		}
+
+		if (_rewardClaimed)
+		{
+			_ui.SetActiveRewardsDayClaimed((_rewardDay - 1), true);
+		}
+		else
+		{
+			_ui.SetActiveRewardsDayGet((_rewardDay - 1), true);
+			_ui.SetEnableRewardsDayGetButton((_rewardDay - 1), false);
+			_ui.AnimateRewardsDayGetLabel(_rewardDay - 1);
+		}
+
+		_ui.AnimateRewardsBoardEnter
+		(
+			()=>
+			{
+				_ui.SetEnableRewardsCloseButton(true);
+				_ui.SetEnableRewardsDayGetButton((_rewardDay - 1), true);
+			}
+		);
+	}
+
+
 	public void OnRewardsOpenButtonPressed()
 	{
 		_audio.PlayButtonPressed();
@@ -726,30 +778,7 @@ public class MainMenuLogic : MonoBehaviour
 		(
 			()=>
 			{
-				_ui.SetActiveRewards(true);
-				_ui.SetEnableRewardsCloseButton(false);
-				_ui.SetEnableRewardsDayButton(false);
-
-				for (int i = 1; i <= 3; i++)
-				{
-					if (i <= _rewardDay)
-					{
-						_ui.SetActiveRewardsDayClaimed((i - 1), true);
-					}
-					else
-					{
-						_ui.SetActiveRewardsDayClaimed((i - 1), false);
-					}
-				}
-
-				_ui.AnimateRewardsBoardEnter
-				(
-					()=>
-					{
-						_ui.SetEnableRewardsCloseButton(true);
-						_ui.SetEnableRewardsDayButton(false);
-					}
-				);
+				OpenRewards();
 			}
 		);
 	}
@@ -759,7 +788,11 @@ public class MainMenuLogic : MonoBehaviour
 		_audio.PlayButtonPressed();
 
 		_ui.SetEnableRewardsCloseButton(false);
-		_ui.SetEnableRewardsDayButton(false);
+
+		for (int i = 0; i < 3; i++)
+		{
+			_ui.SetEnableRewardsDayGetButton(i, false);
+		}
 
 		_ui.AnimateRewardsCloseButtonPressed
 		(
@@ -781,51 +814,42 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
-	// UI - Ad Success
-	// This is used specificcally for daily rewards
-
-	private void SetupAdSuccess()
+	public void OnRewardsDayGetButtonPressed(int day)
 	{
-		_adUi.SetActiveAdSuccess(false);
-	}
+		ClaimReward();
 
-	public void OnAdSuccessCloseButtonPressed()
-	{
 		_audio.PlayButtonPressed();
 
-		_adUi.SetEnableAdSuccessButton(false);
-		_adUi.AnimateAdSuccessCloseButtonPressed
-		(
+		_ui.SetEnableRewardsCloseButton(false);
+		_ui.SetEnableRewardsDayGetButton(day - 1, false);
+
+		_ui.AnimateRewardsDayGetButtonPressed(day - 1,
 			()=>
 			{
-				_adUi.AnimateAdSuccessBoardExit
+				_ui.AnimateRewardsBoardExit
 				(
 					()=>
 					{
-						_adUi.SetActiveAdSuccess(false);
+						_audio.PlayRewardReceived();
 
-						_ui.SetActiveRewards(true);
-						_ui.SetEnableRewardsCloseButton(false);
-						_ui.SetEnableRewardsDayButton(false);
+						_ui.SetActiveRewards(false);
 
-						for (int i = 1; i <= 3; i++)
+						if (_rewardDay >= 3)
 						{
-							if (i <= _rewardDay)
-							{
-								_ui.SetActiveRewardsDayClaimed((i - 1), true);
-							}
-							else
-							{
-								_ui.SetActiveRewardsDayClaimed((i - 1), false);
-							}
+							_message.SetHintCount(2);
+						}
+						else
+						{
+							_message.SetHintCount(1);
 						}
 
-						_ui.AnimateRewardsBoardEnter
+						_message.SetActiveHint(true);
+						_message.SetEnableHintBackButton(false);
+						_message.AnimateHintEnter
 						(
 							()=>
 							{
-								_ui.SetEnableRewardsCloseButton(true);
-								_ui.SetEnableRewardsDayButton(false);
+								_message.SetEnableHintBackButton(true);
 							}
 						);
 					}
@@ -907,7 +931,41 @@ public class MainMenuLogic : MonoBehaviour
 						_allowExit = true;
 						_ui.SetEnableFrontButton(true);
 						_ui.SetEnableBottomButton(true);
-						_ui.SetEnableRewardsOpenButton(false);
+						_ui.SetEnableRewardsOpenButton(true);
+					}
+				);
+			}
+		);
+	}
+
+	// Message - Hint
+
+	private void SetupMessageHint()
+	{
+		_message.SetActiveHint(false);
+	}
+
+	public void OnMessageHintBackButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+		_message.SetEnableHintBackButton(false);
+
+		_message.AnimateHintBackButtonPressed
+		(
+			()=>
+			{
+				_message.AnimateHintExit
+				(
+					()=>
+					{
+						_message.SetActiveHint(false);
+
+						_allowExit = true;
+
+						_ui.SetEnableFrontButton(true);
+						_ui.SetEnableBottomButton(true);
+						_ui.SetEnableRewardsOpenButton(true);
 					}
 				);
 			}
@@ -919,12 +977,12 @@ public class MainMenuLogic : MonoBehaviour
 	private void Awake()
 	{
 		_ui = GameObject.Find("MainMenuUI").GetComponent<MainMenuUI>();
-		_adUi = GameObject.Find("AdUI").GetComponent<AdUI>();
 		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		_message = GameObject.Find("MessageManager").GetComponent<MessageManager>();
 	}
 
 	private void Start()
@@ -935,8 +993,8 @@ public class MainMenuLogic : MonoBehaviour
 		SetupCloudOnce();
 		SetupSettings();
 		SetupRewards();
-		SetupAdSuccess();
 		SetupExit();
+		SetupMessageHint();
 
 		_allowExit = false;
 
@@ -952,40 +1010,7 @@ public class MainMenuLogic : MonoBehaviour
 			{
 				if (_rewardClaimed == false)
 				{
-					ClaimReward();
-
-		                        _adUi.SetActiveAdSuccess(true);
-                		        _adUi.SetAdSuccessItem("hint");
-		                        _adUi.SetActiveAdSuccessCount(false);
-		                        _adUi.SetActiveAdSuccessItem(false);
-                		        _adUi.SetEnableAdSuccessButton(false);
-
-					if (_rewardDay <= 2)
-					{
-	                		        _adUi.SetAdSuccessCountValue("+1");
-					}
-					else
-					{
-	                		        _adUi.SetAdSuccessCountValue("+2");
-					}
-
-					_audio.PlayRewardReceived();
-
-		                        _adUi.AnimateAdSuccessBoardEnter
-                		        (
-                                		()=>
-		                                {
-                		                        _adUi.SetActiveAdSuccessItem(true);
-                                		        _adUi.SetActiveAdSuccessCount(true);
-		                                        _adUi.AnimateAdSuccessItemEnter
-                		                        (
-                                		                ()=>
-		                                                {
-                		                                        _adUi.SetEnableAdSuccessButton(true);
-                                		                }
-		                                        );
-                		                }
-		                        );
+					OpenRewards();
 				}
 				else
 				{
@@ -996,6 +1021,7 @@ public class MainMenuLogic : MonoBehaviour
 				}
 			}
 		);
+
 	}
 
 	private void Update()

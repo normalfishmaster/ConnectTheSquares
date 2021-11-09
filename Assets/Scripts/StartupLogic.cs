@@ -17,27 +17,6 @@ public class StartupLogic : MonoBehaviour
 	private void OnDataInitComplete()
 	{
 		_data.UnsubscribeInitComplete(OnDataInitComplete);
-
-		if (_data.GetUnlockAllLevels() == 1)
-		{
-			int numColor = _level.GetNumColor();
-
-			for (int i = 0; i < numColor; i++)
-			{
-				int numAlphabet = _level.GetNumAlphabet(i);
-
-				for (int j = 0; j < numAlphabet; j++)
-				{
-					int numMap = _level.GetNumMap(i, j);
-
-					for (int k = 0; k < numMap; k++)
-					{
-						_data.SetLevelLock(i, j, k, 0);
-					}
-				}
-			}
-		}
-
 		_dataInitComplete = true;
 	}
 
@@ -75,7 +54,8 @@ public class StartupLogic : MonoBehaviour
 
 	// Co-routine to delay and load MainMenuScene
 	// A delay is needed before loading the MainMenuScene to allow all the Google Play
-	// initialization to complete and to avoid any lags in Main Menu Scene
+	// initialization to complete and to avoid any lags in MainMenuScene.
+	// (Note: This is a solution to fix the front enter audio lag in MainMenuScene)
 
 	public float _loadDelay;
 	private bool _loadDelayStarted;
@@ -84,6 +64,14 @@ public class StartupLogic : MonoBehaviour
 	{
 		yield return new WaitForSeconds(_loadDelay);
 		SceneManager.LoadScene("MainMenuScene");
+	}
+
+	// Test
+
+	private void RunTestSequence()
+	{
+		_data.DeleteAll();
+		_cloudOnce.DeleteAll();
 	}
 
 	// Unity Lifecycle
@@ -109,6 +97,8 @@ public class StartupLogic : MonoBehaviour
 		{
 			if (_loadDelayStarted == false)
 			{
+				RunTestSequence();
+
 				_loadDelayStarted = true;
 				StartCoroutine(DelayAndLoadMainMenu());
 			}

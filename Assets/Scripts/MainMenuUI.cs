@@ -642,6 +642,10 @@ public class MainMenuUI : MonoBehaviour
 	public float REWARDS_ANIMATE_BUTTON_PRESSED_SCALE;
 	public float REWARDS_ANIMATE_BUTTON_PRESSED_DURATION;
 
+	public float REWARDS_ANIMATE_SUNBURST_RORATE_TIME;
+
+	public float REWARDS_ANIMATE_LABEL_TIME;
+
 	private GameObject _rewards;
 	private GameObject _rewardsBoard;
 
@@ -652,9 +656,13 @@ public class MainMenuUI : MonoBehaviour
 	private GameObject _rewardsCloseButton;
 
 	private GameObject[] _rewardsDay;
-	private GameObject[] _rewardsDayButton;
+	private GameObject[] _rewardsDayGet;
+	private GameObject[] _rewardsDayGetButton;
+	private GameObject[] _rewardsDayGetButtonLabel;
 	private GameObject[] _rewardsDayClaimed;
-	private GameObject[] _rewardsDayUnclaimed;
+	private GameObject[] _rewardsDaySunburst;
+
+	private int[] _rewardsLabelRotateDir;
 
 	private void FindRewardsGameObject()
 	{
@@ -668,19 +676,27 @@ public class MainMenuUI : MonoBehaviour
 		_rewardsCloseButton = GameObject.Find("/Canvas/Rewards/Board/Close/Button");
 
 		_rewardsDay = new GameObject[3];
-		_rewardsDayButton = new GameObject[3];
+		_rewardsDayGet = new GameObject[3];
+		_rewardsDayGetButton = new GameObject[3];
+		_rewardsDayGetButtonLabel = new GameObject[3];
 		_rewardsDayClaimed = new GameObject[3];
-		_rewardsDayUnclaimed = new GameObject[3];
+		_rewardsDaySunburst = new GameObject[3];
+		_rewardsLabelRotateDir = new int[3];
 
 		for (int i = 0; i < 3; i++)
 		{
 			int day = i + 1;
 
 			_rewardsDay[i] = GameObject.Find("/Canvas/Rewards/Board/Day" + day);
-			_rewardsDayButton[i] = GameObject.Find("/Canvas/Rewards/Board/Day" + day + "/Button");
-			_rewardsDayClaimed[i] = GameObject.Find("/Canvas/Rewards/Board/Day" + day + "/Button/Claimed");
-			_rewardsDayUnclaimed[i] = GameObject.Find("/Canvas/Rewards/Board/Day" + day + "/Button/Unclaimed");
+			_rewardsDayGet[i] = GameObject.Find("/Canvas/Rewards/Board/Day" + day + "/Get");
+			_rewardsDayGetButton[i] = GameObject.Find("/Canvas/Rewards/Board/Day" + day + "/Get/Button");
+			_rewardsDayGetButtonLabel[i] = GameObject.Find("/Canvas/Rewards/Board/Day" + day + "/Get/Button/Label");
+			_rewardsDayClaimed[i] = GameObject.Find("/Canvas/Rewards/Board/Day" + day + "/Claimed");
+			_rewardsDaySunburst[i] = GameObject.Find("/Canvas/Rewards/Board/Day" + day + "/SunburstWide");
+
+			_rewardsLabelRotateDir[i] = 1;
 		}
+
 	}
 
 	public void SetActiveRewards(bool active)
@@ -693,18 +709,19 @@ public class MainMenuUI : MonoBehaviour
 		_rewardsOpenButton.GetComponent<Button>().enabled = enable;
 	}
 
-	public void SetEnableRewardsDayButton(bool enable)
+	public void SetActiveRewardsDayGet(int day, bool active)
 	{
-		for (int i = 0; i < 3; i++)
-		{
-			_rewardsDayButton[i].GetComponent<Button>().enabled = enable;
-		}
+		_rewardsDayGet[day].SetActive(active);
+	}
+
+	public void SetEnableRewardsDayGetButton(int day, bool enable)
+	{
+		_rewardsDayGetButton[day].GetComponent<Button>().enabled = enable;
 	}
 
 	public void SetActiveRewardsDayClaimed(int day, bool active)
 	{
 		_rewardsDayClaimed[day].SetActive(active);
-		_rewardsDayUnclaimed[day].SetActive(!active);
 	}
 
 	public void SetEnableRewardsCloseButton(bool enable)
@@ -730,6 +747,46 @@ public class MainMenuUI : MonoBehaviour
 	public void AnimateRewardsCloseButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_rewardsCloseButton, REWARDS_ANIMATE_BUTTON_PRESSED_SCALE, REWARDS_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateRewardsDayGetButtonPressed(int day, Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_rewardsDayGet[day], REWARDS_ANIMATE_BUTTON_PRESSED_SCALE, REWARDS_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateRewardsDaySunburstRotate(int day)
+	{
+		_rewardsDaySunburst[day].transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
+
+		LeanTween.cancel(_rewardsDaySunburst[day]);
+
+		LeanTween.rotateAround(_rewardsDaySunburst[day], Vector3.forward, -360.0f, REWARDS_ANIMATE_SUNBURST_RORATE_TIME).setOnComplete
+		(
+			()=>
+			{
+				AnimateRewardsDaySunburstRotate(day);
+			}
+		);
+	}
+
+	public void AnimateRewardsDayGetLabel(int day)
+	{
+		_rewardsDayGetButtonLabel[day].transform.localScale = Vector3.one;
+		_rewardsDayGetButtonLabel[day].transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
+
+		LeanTween.cancel(_rewardsDayGetButtonLabel[day]);
+
+		LeanTween.scale(_rewardsDayGetButtonLabel[day], Vector3.one * 1.25f, REWARDS_ANIMATE_LABEL_TIME).setEasePunch();
+
+		LeanTween.rotateAround(_rewardsDayGetButtonLabel[day], Vector3.forward, _rewardsLabelRotateDir[day] * 20.0f, REWARDS_ANIMATE_LABEL_TIME).setEasePunch().setOnComplete
+		(
+			()=>
+			{
+
+				_rewardsLabelRotateDir[day] *= -1;
+				AnimateRewardsDayGetLabel(day);
+			}
+		);
 	}
 
 	// Exit

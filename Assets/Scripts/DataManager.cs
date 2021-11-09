@@ -341,54 +341,35 @@ public class DataManager : MonoBehaviour
 		RecalculateBackgroundColor();
 	}
 
-	// Delegates
-	// This is used exclusively by the StartupScene
+	// Unlock Levels
 
-	public delegate void InitComplete();
-	private static event InitComplete _initComplete;
-
-	public void SubscribeInitComplete(InitComplete callback)
+	private void UnlockAllLevels()
 	{
-		_initComplete += callback;
-	}
-
-	public void UnsubscribeInitComplete(InitComplete callback)
-	{
-		_initComplete -= callback;
-	}
-
-	private void TriggerInitComplete()
-	{
-		if (_initComplete != null)
+		if (GetUnlockAllLevels() == 1)
 		{
-			_initComplete();
+			int numColor = _level.GetNumColor();
+
+			for (int i = 0; i < numColor; i++)
+			{
+				int numAlphabet = _level.GetNumAlphabet(i);
+
+				for (int j = 0; j < numAlphabet; j++)
+				{
+					int numMap = _level.GetNumMap(i, j);
+
+					for (int k = 0; k < numMap; k++)
+					{
+						SetLevelLock(i, j, k, 0);
+					}
+				}
+			}
 		}
 	}
 
-	// Unity Lifecyle
+	// Initialize Data
 
-	private void Awake()
+	private void InitializeData()
 	{
-		// Singleton implementation
-
-	        if (_instance != null && _instance != this)
-		{
-			Destroy(this.gameObject);
-			return;
-		}
-
-		_instance = this;
-		DontDestroyOnLoad(this.gameObject);
-
-		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-	}
-
-	private void Start()
-	{
-
-		/* Initialize data */
-
 		if (CheckAudio() == false)
 		{
 			InitAudio();
@@ -486,10 +467,64 @@ public class DataManager : MonoBehaviour
 		{
 			InitBlockIllusionUnlocked();
 		}
+	}
+
+	// Delegates
+	// This is used exclusively by the StartupScene
+
+	public delegate void InitComplete();
+	private static event InitComplete _initComplete;
+
+	public void SubscribeInitComplete(InitComplete callback)
+	{
+		_initComplete += callback;
+	}
+
+	public void UnsubscribeInitComplete(InitComplete callback)
+	{
+		_initComplete -= callback;
+	}
+
+	private void TriggerInitComplete()
+	{
+		if (_initComplete != null)
+		{
+			_initComplete();
+		}
+	}
+
+	// Unity Lifecyle
+
+	private void Awake()
+	{
+		// Singleton implementation
+
+	        if (_instance != null && _instance != this)
+		{
+			Destroy(this.gameObject);
+			return;
+		}
+
+		_instance = this;
+		DontDestroyOnLoad(this.gameObject);
+
+		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+	}
+
+	private void Start()
+	{
+		// Initialize Data if not yet initialized
+
+		InitializeData();
 
 		// Calculate totals stars and background color
 
 		RecalculateLevelTotal();
+
+		// Unlock all levels if purchased
+
+		UnlockAllLevels();
 
 		// Initialize audio
 
