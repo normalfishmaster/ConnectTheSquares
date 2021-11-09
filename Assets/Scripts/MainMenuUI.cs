@@ -287,6 +287,9 @@ public class MainMenuUI : MonoBehaviour
 	private GameObject _cloudOnceGooglePlayLabel;
 	private GameObject _cloudOnceGameCenterLabel;
 
+	private GameObject _cloudOnceGooglePlayImage;
+	private GameObject _cloudOnceGameCenterImage;
+
 	private GameObject _cloudOnceSignIn;
 	private GameObject _cloudOnceSignOut;
 	private GameObject _cloudOnceLoad;
@@ -316,13 +319,32 @@ public class MainMenuUI : MonoBehaviour
 	private GameObject _cloudOnceMessageSaveDataFailed;
 	private GameObject _cloudOnceMessageLoadDataFailed;
 
+	public enum CloudOnceMessage
+	{
+		SIGNING_IN,
+		SIGNING_OUT,
+		SIGNED_IN,
+		SIGNED_OUT,
+		SIGN_IN_FAILED,
+		SIGN_OUT_FAILED,
+		SAVING_DATA,
+		LOADING_DATA,
+		DATA_SAVED,
+		DATA_LOADED,
+		SAVE_DATA_FAILED,
+		LOAD_DATA_FAILED
+	};
+
 	private void FindCloudOnceGameObject()
 	{
 		_cloudOnce = GameObject.Find("/Canvas/CloudOnce");
 		_cloudOnceBoard = GameObject.Find("/Canvas/CloudOnce/Board");
 
-		_cloudOnceGooglePlayLabel = GameObject.Find("/Canvas/CloudOnce/Board/GooglePlayLabel");
-		_cloudOnceGameCenterLabel = GameObject.Find("/Canvas/CloudOnce/Board/GameCenterLabel");
+		_cloudOnceGooglePlayLabel = GameObject.Find("/Canvas/CloudOnce/Board/Title/GooglePlayLabel");
+		_cloudOnceGameCenterLabel = GameObject.Find("/Canvas/CloudOnce/Board/Title/GameCenterLabel");
+
+		_cloudOnceGooglePlayImage = GameObject.Find("/Canvas/CloudOnce/Board/GooglePlayImage");
+		_cloudOnceGameCenterImage = GameObject.Find("/Canvas/CloudOnce/Board/GameCenterImage");
 
 		_cloudOnceSignIn = GameObject.Find("/Canvas/CloudOnce/Board/SignIn");
 		_cloudOnceSignOut = GameObject.Find("/Canvas/CloudOnce/Board/SignOut");
@@ -367,6 +389,16 @@ public class MainMenuUI : MonoBehaviour
 	public void SetActiveCloudOnceGameCenterLabel(bool active)
 	{
 		_cloudOnceGameCenterLabel.SetActive(active);
+	}
+
+	public void SetActiveCloudOnceGooglePlayImage(bool active)
+	{
+		_cloudOnceGooglePlayImage.SetActive(active);
+	}
+
+	public void SetActiveCloudOnceGameCenterImage(bool active)
+	{
+		_cloudOnceGameCenterImage.SetActive(active);
 	}
 
 	public void SetActiveCloudOnceSignInButton(bool active)
@@ -444,7 +476,7 @@ public class MainMenuUI : MonoBehaviour
 		}
 	}
 
-	public void SetActiveCloudOnceMessage(int index)
+	public void SetActiveCloudOnceMessage(CloudOnceMessage message)
 	{
 		_cloudOnceMessageSigningIn.SetActive(false);
 		_cloudOnceMessageSigningOut.SetActive(false);
@@ -459,51 +491,51 @@ public class MainMenuUI : MonoBehaviour
 		_cloudOnceMessageSaveDataFailed.SetActive(false);
 		_cloudOnceMessageLoadDataFailed.SetActive(false);
 
-		if (index == 0)
+		if (message == CloudOnceMessage.SIGNING_IN)
 		{
 			_cloudOnceMessageSigningIn.SetActive(true);
 		}
-		else if (index == 1)
+		else if (message == CloudOnceMessage.SIGNING_OUT)
 		{
 			_cloudOnceMessageSigningOut.SetActive(true);
 		}
-		else if (index == 2)
+		else if (message == CloudOnceMessage.SIGNED_IN)
 		{
 			_cloudOnceMessageSignedIn.SetActive(true);
 		}
-		else if (index == 3)
+		else if (message == CloudOnceMessage.SIGNED_OUT)
 		{
 			_cloudOnceMessageSignedOut.SetActive(true);
 		}
-		else if (index == 4)
+		else if (message == CloudOnceMessage.SIGN_IN_FAILED)
 		{
 			_cloudOnceMessageSignInFailed.SetActive(true);
 		}
-		else if (index == 5)
+		else if (message == CloudOnceMessage.SIGN_OUT_FAILED)
 		{
 			_cloudOnceMessageSignOutFailed.SetActive(true);
 		}
-		else if (index == 6)
+		else if (message == CloudOnceMessage.SAVING_DATA)
 		{
 			_cloudOnceMessageSavingData.SetActive(true);
 		}
-		else if (index == 7)
+		else if (message == CloudOnceMessage.LOADING_DATA)
 		{
 			_cloudOnceMessageLoadingData.SetActive(true);
 		}
-		else if (index == 8)
+		else if (message == CloudOnceMessage.DATA_SAVED)
 		{
 			_cloudOnceMessageDataSaved.SetActive(true);
 		}
-		else if (index == 9)
+		else if (message == CloudOnceMessage.DATA_LOADED)
 		{
 			_cloudOnceMessageDataLoaded.SetActive(true);
 		}
-		else if (index == 10)
+		else if (message == CloudOnceMessage.SAVE_DATA_FAILED)
 		{
 			_cloudOnceMessageSaveDataFailed.SetActive(true);
 		}
-		else if (index == 11)
+		else if (message == CloudOnceMessage.LOAD_DATA_FAILED)
 		{
 			_cloudOnceMessageLoadDataFailed.SetActive(true);
 		}

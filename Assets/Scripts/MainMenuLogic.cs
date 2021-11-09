@@ -198,7 +198,7 @@ public class MainMenuLogic : MonoBehaviour
 					_ui.SetActiveCloudOnceSignOutButton(true);
 					_ui.SetInteractableCloudOnceSignInButton(true);
 					_ui.SetInteractableCloudOnceFunctionalButton(true);
-					_ui.SetActiveCloudOnceMessage(2);
+					_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_IN);
 				}
 				else
 				{
@@ -206,7 +206,7 @@ public class MainMenuLogic : MonoBehaviour
 					_ui.SetActiveCloudOnceSignOutButton(false);
 					_ui.SetInteractableCloudOnceSignInButton(true);
 					_ui.SetInteractableCloudOnceFunctionalButton(false);
-					_ui.SetActiveCloudOnceMessage(3);
+					_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_OUT);
 				}
 
 				_ui.AnimateCloudOnceBoardEnter
@@ -284,16 +284,17 @@ public class MainMenuLogic : MonoBehaviour
 
 	private void SetupCloudOnce()
 	{
-		if (Application.platform == RuntimePlatform.IPhonePlayer)
-		{
-			_ui.SetActiveCloudOnceGooglePlayLabel(false);
-			_ui.SetActiveCloudOnceGameCenterLabel(true);
-		}
-		else
-		{
+		#if UNITY_ANDROID
 			_ui.SetActiveCloudOnceGooglePlayLabel(true);
+			_ui.SetActiveCloudOnceGooglePlayImage(true);
 			_ui.SetActiveCloudOnceGameCenterLabel(false);
-		}
+			_ui.SetActiveCloudOnceGameCenterImage(false);
+		#else
+			_ui.SetActiveCloudOnceGooglePlayLabel(false);
+			_ui.SetActiveCloudOnceGooglePlayImage(false);
+			_ui.SetActiveCloudOnceGameCenterLabel(true);
+			_ui.SetActiveCloudOnceGameCenterImage(true);
+		#endif
 
 		_ui.SetEnableCloudOnceButton(false);
 		_ui.SetActiveCloudOnce(false);
@@ -326,12 +327,12 @@ public class MainMenuLogic : MonoBehaviour
 		if (isSignedIn)
 		{
 			OnCloudOnceSignedIn();
-			_ui.SetActiveCloudOnceMessage(2);
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_IN);
 		}
 		else
 		{
 			OnCloudOnceSignedOut();
-			_ui.SetActiveCloudOnceMessage(3);
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_OUT);
 		}
 	}
 
@@ -341,7 +342,7 @@ public class MainMenuLogic : MonoBehaviour
 		_cloudOnce.UnsubscribeSignInFailed(OnCloudOnceSignInFailed);
 
 		OnCloudOnceSignedOut();
-		_ui.SetActiveCloudOnceMessage(4);
+		_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGN_IN_FAILED);
 	}
 
 	private void OnCloudSaveComplete(bool success)
@@ -354,11 +355,11 @@ public class MainMenuLogic : MonoBehaviour
 
 		if (success)
 		{
-			_ui.SetActiveCloudOnceMessage(8);
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.DATA_SAVED);
 		}
 		else
 		{
-			_ui.SetActiveCloudOnceMessage(10);
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SAVE_DATA_FAILED);
 		}
 	}
 
@@ -370,11 +371,11 @@ public class MainMenuLogic : MonoBehaviour
 		{
 			_cloudOnce.LoadCloudToData();
 			_ui.SetBackgroundColor(_data.GetBackgroundColor());
-			_ui.SetActiveCloudOnceMessage(9);
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.DATA_LOADED);
 		}
 		else
 		{
-			_ui.SetActiveCloudOnceMessage(11);
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.LOAD_DATA_FAILED);
 		}
 
 		_ui.SetInteractableCloudOnceSignInButton(true);
@@ -389,14 +390,14 @@ public class MainMenuLogic : MonoBehaviour
 		if (_cloudOnce.IsSignedIn())
 		{
 			OnCloudOnceSignedIn();
-			_ui.SetActiveCloudOnceMessage(2);
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_IN);
 		}
 		else
 		{
 			_ui.SetInteractableCloudOnceSignInButton(false);
 			_ui.SetInteractableCloudOnceFunctionalButton(false);
 			_ui.SetInteractableCloudOnceCloseButton(false);
-			_ui.SetActiveCloudOnceMessage(0);
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNING_IN);
 
 			_cloudOnce.SubscribeSignedInChanged(OnCloudOnceSignedInChanged);
 			_cloudOnce.SubscribeSignInFailed(OnCloudOnceSignInFailed);
@@ -419,7 +420,7 @@ public class MainMenuLogic : MonoBehaviour
 		_ui.SetInteractableCloudOnceSignInButton(false);
 		_ui.SetInteractableCloudOnceFunctionalButton(false);
 		_ui.SetInteractableCloudOnceCloseButton(false);
-		_ui.SetActiveCloudOnceMessage(1);
+		_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNING_OUT);
 
 		_ui.AnimateCloudOnceSignOutButtonPressed
 		(
@@ -433,7 +434,7 @@ public class MainMenuLogic : MonoBehaviour
 				else
 				{
 					OnCloudOnceSignedOut();
-					_ui.SetActiveCloudOnceMessage(3);
+					_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_OUT);
 				}
 			}
 		);
@@ -448,7 +449,7 @@ public class MainMenuLogic : MonoBehaviour
 			_ui.SetInteractableCloudOnceSignInButton(false);
 			_ui.SetInteractableCloudOnceFunctionalButton(false);
 			_ui.SetInteractableCloudOnceCloseButton(false);
-			_ui.SetActiveCloudOnceMessage(6);
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SAVING_DATA);
 
 			_cloudOnce.SubscribeCloudSaveComplete(OnCloudSaveComplete);
 			_cloudOnce.SaveDataToCloud();
@@ -457,7 +458,7 @@ public class MainMenuLogic : MonoBehaviour
 		else
 		{
 			OnCloudOnceSignedOut();
-			_ui.SetActiveCloudOnceMessage(3);
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_OUT);
 		}
 
 		_ui.AnimateCloudOnceSaveButtonPressed
@@ -477,7 +478,7 @@ public class MainMenuLogic : MonoBehaviour
 			_ui.SetInteractableCloudOnceSignInButton(false);
 			_ui.SetInteractableCloudOnceFunctionalButton(false);
 			_ui.SetInteractableCloudOnceCloseButton(false);
-			_ui.SetActiveCloudOnceMessage(7);
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.LOADING_DATA);
 
 			_cloudOnce.SubscribeCloudLoadComplete(OnCloudLoadComplete);
 			_cloudOnce.Load();
@@ -485,7 +486,7 @@ public class MainMenuLogic : MonoBehaviour
 		else
 		{
 			OnCloudOnceSignedOut();
-			_ui.SetActiveCloudOnceMessage(3);
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_OUT);
 		}
 
 		_ui.AnimateCloudOnceLoadButtonPressed
@@ -503,12 +504,12 @@ public class MainMenuLogic : MonoBehaviour
 		if (_cloudOnce.IsSignedIn())
 		{
 			_cloudOnce.ShowAchievements();
-			_ui.SetActiveCloudOnceMessage(2);
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_IN);
 		}
 		else
 		{
 			OnCloudOnceSignedOut();
-			_ui.SetActiveCloudOnceMessage(3);
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_OUT);
 		}
 
 		_ui.AnimateCloudOnceAchivementsButtonPressed
@@ -535,12 +536,12 @@ public class MainMenuLogic : MonoBehaviour
 			_cloudOnce.SubmitLeaderboardHighScore(totalStars);
 			_cloudOnce.ShowLeaderboard();
 
-			_ui.SetActiveCloudOnceMessage(2);
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_IN);
 		}
 		else
 		{
 			OnCloudOnceSignedOut();
-			_ui.SetActiveCloudOnceMessage(3);
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_OUT);
 		}
 
 		_ui.AnimateCloudOnceLeaderboardButtonPressed
