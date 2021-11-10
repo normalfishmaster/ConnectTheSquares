@@ -28,14 +28,14 @@ public class MainMenuLogic : MonoBehaviour
 
 	private void SetupFront()
 	{
-		string label = "Start";
+		string label = "START";
 		int loadColor = 0;
 		int loadAlphabet = 0;
 		int loadMap = 0;
 
 		if (_data.GetLevelStar(0, 0, 0) != 0)
 		{
-			label = "Continue";
+			label = "CONTINUE";
 			loadColor = _cloudOnce.GetLastColor();
 			loadAlphabet = _cloudOnce.GetLastAlphabet();
 			loadMap = _cloudOnce.GetLastMap();

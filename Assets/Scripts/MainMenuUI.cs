@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainMenuUI : MonoBehaviour
 {
@@ -89,7 +90,7 @@ public class MainMenuUI : MonoBehaviour
 
 	public void SetFrontContinueButtonLabel(string text)
 	{
-		_frontContinueButtonLabel.GetComponent<Text>().text = text;
+		_frontContinueButtonLabel.GetComponent<TextMeshProUGUI>().SetText(text);
 	}
 
 	public void SetFrontContinueLevel(int color, int alphabet, int map)
