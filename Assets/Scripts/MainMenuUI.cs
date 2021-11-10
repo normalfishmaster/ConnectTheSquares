@@ -864,12 +864,32 @@ public class MainMenuUI : MonoBehaviour
 
 	public void AnimateExitBoardEnter(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateBoardEnter(_exit, _exitBoard, EXIT_ANIMATE_BOARD_ENTER_DURATION, callback);
+		LeanTween.cancel(_exitBoard);
+
+		_exitBoard.transform.localScale = Vector3.zero;
+
+		LeanTween.scale(_exitBoard, Vector3.one, EXIT_ANIMATE_BOARD_ENTER_DURATION).setEase(LeanTweenType.easeInOutElastic).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
 	}
 
 	public void AnimateExitBoardExit(Animate.AnimateComplete callback)
 	{
-		Animate.AnimateBoardExit(_exit, _exitBoard, EXIT_ANIMATE_BOARD_EXIT_DURATION, callback);
+		LeanTween.cancel(_exitBoard);
+
+		_exitBoard.transform.localScale = Vector3.one;
+
+		LeanTween.scale(_exitBoard, Vector3.zero, EXIT_ANIMATE_BOARD_EXIT_DURATION).setEase(LeanTweenType.easeInOutElastic).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
 	}
 
 	public void AnimateExitYesButtonPressed(Animate.AnimateComplete callback)
