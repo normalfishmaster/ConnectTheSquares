@@ -258,6 +258,22 @@ public class LevelLogic : MonoBehaviour
 		);
 	}
 
+	void BringBlockSortingLayerToFront()
+	{
+		for (int i = 0; i < NUM_BLOCK; i++)
+		{
+			_mapBlock[i].GetComponent<SpriteRenderer>().sortingLayerName = "SquarePreEndToEnd";
+		}
+	}
+
+	void BringBlockSortingLayerToBack()
+	{
+		for (int i = 0; i < NUM_BLOCK; i++)
+		{
+			_mapBlock[i].GetComponent<SpriteRenderer>().sortingLayerName = "Square";
+		}
+	}
+
 	// Physics
 
 	private const float DECELERATION_RATE_START_TO_END = 0.07f;
@@ -916,8 +932,12 @@ public class LevelLogic : MonoBehaviour
 		if (MoveBlockFromStartToPreEnd() == true)
 		{
 			_audio.PlayMovePreEndToEnd();
-			_ui.SetActiveDarken(true);
-			_ui.AnimateDarken();
+
+			BringBlockSortingLayerToFront();
+
+			_ui.SetActiveBlinder(true);
+			_ui.AnimateBlinder();
+
 			_touchState = TouchState.PRE_END_TO_END;
 		}
 	}
@@ -1060,7 +1080,8 @@ public class LevelLogic : MonoBehaviour
 			_ui.SetEnableControlButton(false);
 			_touchState = TouchState.WIN;
 
-			_ui.SetActiveDarken(false);
+			_ui.SetActiveBlinder(false);
+			BringBlockSortingLayerToBack();
 
 			AnimateMapExit(
 				()=>

@@ -912,6 +912,8 @@ public class LevelUI : MonoBehaviour
 
 	// Blinder
 
+	public float BLINDER_ANIMATE_DURATION;
+
 	private GameObject _blinder;
 
 	private void FindBlinderGameObject()
@@ -922,6 +924,21 @@ public class LevelUI : MonoBehaviour
 	public void SetActiveBlinder(bool active)
 	{
 		_blinder.SetActive(active);
+	}
+
+	public void AnimateBlinder()
+	{
+		_blinder.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0f);
+
+		LeanTween.cancel(_blinder);
+
+		LeanTween.value(_blinder, 0f, 1f, BLINDER_ANIMATE_DURATION).setEase(LeanTweenType.easeOutSine).setOnUpdate
+		(
+			(float val) =>
+			{
+				_blinder.GetComponent<Image>().color = new Color(0f, 0f, 0f, val);
+			}
+		);
 	}
 
 	// Unity Lifecycle
