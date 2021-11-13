@@ -483,7 +483,13 @@ public class LevelUI : MonoBehaviour
 		LeanTween.moveLocalX(_goBannerFront, pos.x - width, GO_ANIMATE_BANNER_ENTER_EXIT_DURATION).setEase(LeanTweenType.easeOutSine)
 				.setDelay(GO_ANIMATE_BANNER_ENTER_DELAY + GO_ANIMATE_BANNER_ENTER_EXIT_DURATION
 						+ GO_ANIMATE_LABEL_ENTER_DELAY + GO_ANIMATE_LABEL_ENTER_EXIT_DURATION
-						+ GO_ANIMATE_LABEL_EXIT_DELAY + GO_ANIMATE_LABEL_ENTER_EXIT_DURATION);
+						+ GO_ANIMATE_LABEL_EXIT_DELAY + GO_ANIMATE_LABEL_ENTER_EXIT_DURATION)
+				.setOnComplete(
+					()=>
+					{
+						callback();
+					}
+				);
 
 		// Animate Label
 
@@ -499,13 +505,7 @@ public class LevelUI : MonoBehaviour
 		LeanTween.moveLocalX(_goLabel, pos.x + width, GO_ANIMATE_BANNER_ENTER_EXIT_DURATION).setEase(LeanTweenType.easeOutSine)
 				.setDelay(GO_ANIMATE_BANNER_ENTER_DELAY + GO_ANIMATE_BANNER_ENTER_EXIT_DURATION
 						+ GO_ANIMATE_LABEL_ENTER_DELAY + GO_ANIMATE_LABEL_ENTER_EXIT_DURATION
-						+ GO_ANIMATE_LABEL_EXIT_DELAY)
-				.setOnComplete(
-					()=>
-					{
-						callback();
-					}
-				);
+						+ GO_ANIMATE_LABEL_EXIT_DELAY);
 	}
 
 	// Pause
@@ -881,7 +881,11 @@ public class LevelUI : MonoBehaviour
 
 	// Darken
 
-	public float DARKEN_ANIMATE_DURATION;
+	public float DARKEN_ANIMATE_ENTER_DELAY;
+	public float DARKEN_ANIMATE_ENTER_DURATION;
+
+	public float DARKEN_ANIMATE_EXIT_DELAY;
+	public float DARKEN_ANIMATE_EXIT_DURATION;
 
 	private GameObject _darken;
 
@@ -895,19 +899,32 @@ public class LevelUI : MonoBehaviour
 		_darken.SetActive(active);
 	}
 
-	public void AnimateDarken()
+	public void AnimateDarkenEnterAndExit()
 	{
 		_darken.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0f);
 
 		LeanTween.cancel(_darken);
 
-		LeanTween.value(_darken, 0f, 1f, DARKEN_ANIMATE_DURATION).setEase(LeanTweenType.easeOutSine).setOnUpdate
+		LeanTween.value(_darken, 0f, 1f, DARKEN_ANIMATE_ENTER_DURATION).setDelay(DARKEN_ANIMATE_ENTER_DELAY).setEase(LeanTweenType.easeOutSine).setOnUpdate
 		(
 			(float val) =>
 			{
 				_darken.GetComponent<Image>().color = new Color(0f, 0f, 0f, val);
 			}
-		);
+		)
+				.setOnComplete
+				(
+					()=>
+					{
+						LeanTween.value(_darken, 1f, 0f, DARKEN_ANIMATE_EXIT_DURATION).setDelay(DARKEN_ANIMATE_EXIT_DELAY).setEase(LeanTweenType.easeOutSine).setOnUpdate
+						(
+							(float val) =>
+							{
+								_darken.GetComponent<Image>().color = new Color(0f, 0f, 0f, val);
+							}
+						);
+					}
+				);
 	}
 
 	// Blinder
@@ -932,7 +949,7 @@ public class LevelUI : MonoBehaviour
 
 		LeanTween.cancel(_blinder);
 
-		LeanTween.value(_blinder, 0f, 1f, BLINDER_ANIMATE_DURATION).setEase(LeanTweenType.easeOutSine).setOnUpdate
+		LeanTween.value(_blinder, 0f, 1f, BLINDER_ANIMATE_DURATION).setEase(LeanTweenType.easeOutQuint).setOnUpdate
 		(
 			(float val) =>
 			{

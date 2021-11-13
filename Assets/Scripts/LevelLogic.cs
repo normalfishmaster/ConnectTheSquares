@@ -1083,7 +1083,8 @@ public class LevelLogic : MonoBehaviour
 			_ui.SetActiveBlinder(false);
 			BringBlockSortingLayerToBack();
 
-			AnimateMapExit(
+			AnimateMapExit
+			(
 				()=>
 				{
 					_audio.PlayWinEnter();
@@ -1092,7 +1093,8 @@ public class LevelLogic : MonoBehaviour
 					_ui.SetEnableWinButton(false);
 					_ui.SetInteractableWinNextButton(enableNext);
 
-					_ui.AnimateWinBoardEnter(
+					_ui.AnimateWinBoardEnter
+					(
 						()=>
 						{
 							_ui.AnimateWinStarEnter(star,
@@ -2008,13 +2010,21 @@ public class LevelLogic : MonoBehaviour
 			()=>
 			{
 				_audio.PlayGoEnter();
+
 				_ui.SetActiveGo(true);
+				_ui.SetActiveDarken(true);
+
+				_ui.AnimateDarkenEnterAndExit();
 				_ui.AnimateGoEnterAndExit
 				(
 					()=>
 					{
+						_ui.SetActiveGo(false);
+						_ui.SetActiveDarken(false);
+
 						_ui.SetEnableControlButton(true);
 						_ui.SetInteractableControlButton(true);
+
 						_touchState = TouchState.NONE;
 
 						_playStartTime = Time.realtimeSinceStartup;
