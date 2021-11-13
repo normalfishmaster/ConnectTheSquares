@@ -8,14 +8,13 @@ using UnityEngine.UI;
 public class LevelLogic : MonoBehaviour
 {
 	private LevelUI _ui;
-	private LoadUI _loadUi;
-	private AdUI _adUi;
 	private AdManager _ad;
 	private AudioManager _audio;
 	private BlockManager _block;
 	private CloudOnceManager _cloudOnce;
 	private DataManager _data;
 	private LevelManager _level;
+	private MessageManager _message;
 
 	private int _menuColor;
 	private int _menuAlphabet;
@@ -1099,27 +1098,46 @@ public class LevelLogic : MonoBehaviour
 
 	private void CommonLoadHintAd(TouchState adState, TouchState postAdState)
 	{
-		_ad.ClearRewardStatus();
-
-		if (_ad.ShowRewarded() == 0)
+		if (_messageLoadEnterInProgress)
 		{
-			_loadUi.AnimateLoadBlockStop();
-			_loadUi.SetActiveLoad(false);
+			return;
+		}
+
+		if (_ad.IsRewardedLoaded())
+		{
+			_ad.ClearRewardStatus();
+
+			_message.AnimateLoadExit
+			(
+				()=>
+				{
+					_message.SetActiveLoad(false);
+					_ad.ShowRewarded();
+				}
+			);
+
 			_touchState = adState;
 		}
 		else if (Time.time - _touchLoadAdStartTime > MAX_AD_LOAD_TIME)
 		{
-			_loadUi.AnimateLoadBlockStop();
-			_loadUi.SetActiveLoad(false);
-			_adUi.SetActiveAdFail(true);
-			_adUi.SetEnableAdFailButton(false);
-			_adUi.AnimateAdFailBoardEnter
+			_message.AnimateLoadExit
 			(
 				()=>
 				{
-					_adUi.SetEnableAdFailButton(true);
+					_message.SetActiveLoad(false);
+
+					_message.SetActiveError(true);
+					_message.SetEnableErrorBackButton(false);
+					_message.AnimateErrorEnter
+					(
+						()=>
+						{
+							_message.SetEnableErrorBackButton(true);
+						}
+					);
 				}
 			);
+
 			_touchState = postAdState;
 		}
 	}
@@ -1135,43 +1153,41 @@ public class LevelLogic : MonoBehaviour
 			_ui.SetActiveControlHintAd(false);
 			_ui.SetActiveControlHintOn(false);
 			_ui.SetActiveControlHintOff(true);
-			_adUi.SetActiveAdSuccess(true);
-			_adUi.SetAdSuccessItem("hint");
-			_adUi.SetActiveAdSuccessCount(false);
-			_adUi.SetAdSuccessCountValue("+1");
-			_adUi.SetActiveAdSuccessItem(false);
-			_adUi.SetEnableAdSuccessButton(false);
 
 			_audio.PlayRewardReceived();
 
-			_adUi.AnimateAdSuccessBoardEnter
+			_message.SetHintCount(1);
+			_message.SetActiveHint(true);
+			_message.SetEnableHintBackButton(false);
+			_message.AnimateHintEnter
 			(
 				()=>
 				{
-					_adUi.SetActiveAdSuccessItem(true);
-					_adUi.SetActiveAdSuccessCount(true);
-					_adUi.AnimateAdSuccessItemEnter
-					(
-						()=>
-						{
-							_adUi.SetEnableAdSuccessButton(true);
-						}
-					);
+					_message.SetEnableHintBackButton(true);
 				}
 			);
+
 			_touchState = postAdState;
 		}
 		else if (status == AdManager.RewardStatus.FAIL)
 		{
-			_adUi.SetActiveAdAbort(true);
-			_adUi.SetEnableAdAbortButton(false);
-			_adUi.AnimateAdAbortBoardEnter
-			(
-				()=>
-				{
-					_adUi.SetEnableAdAbortButton(true);
-				}
-			);
+			if (postAdState == TouchState.WIN)
+			{
+				_ui.SetActiveWin(true);
+
+				_ui.AnimateWinBoardEnter
+				(
+					()=>
+					{
+						_ui.SetEnableWinButton(true);
+					}
+				);
+			}
+			else if (postAdState == TouchState.NONE)
+			{
+				_ui.SetEnableControlButton(true);
+			}
+
 			_touchState = postAdState;
 		}
 	}
@@ -1376,9 +1392,29 @@ public class LevelLogic : MonoBehaviour
 	public void OnControlHintAdButtonPressed()
 	{
 		_audio.PlayButtonPressed();
+
+		_ui.SetEnableControlButton(false);
+
 		_ui.AnimateControlHintAdButtonPressed(()=>{});
-		_loadUi.SetActiveLoad(true);
-		_loadUi.AnimateLoadBlockStart();
+
+		if (_ad.IsRewardedLoaded())
+		{
+			_ad.ShowRewarded();
+			_touchState = TouchState.LOAD_HINT_AD;
+			return;
+		}
+
+		_messageLoadEnterInProgress = true;
+
+		_message.SetActiveLoad(true);
+		_message.AnimateLoadEnter
+		(
+			()=>
+			{
+				_messageLoadEnterInProgress = false;
+			}
+		);
+
 		_touchLoadAdStartTime = Time.time;
 		_touchState = TouchState.LOAD_HINT_AD;
 	}
@@ -1636,8 +1672,25 @@ public class LevelLogic : MonoBehaviour
 					()=>
 					{
 						_ui.SetActiveWin(false);
-						_loadUi.SetActiveLoad(true);
-						_loadUi.AnimateLoadBlockStart();
+
+						if (_ad.IsRewardedLoaded())
+						{
+							_ad.ShowRewarded();
+							_touchState = TouchState.WIN_HINT_AD;
+							return;
+						}
+
+						_messageLoadEnterInProgress = true;
+
+						_message.SetActiveLoad(true);
+						_message.AnimateLoadEnter
+						(
+							()=>
+							{
+								_messageLoadEnterInProgress = false;
+							}
+						);
+
 						_touchLoadAdStartTime = Time.time;
 						_touchState = TouchState.WIN_LOAD_HINT_AD;
 					}
@@ -1766,155 +1819,6 @@ public class LevelLogic : MonoBehaviour
 		);
 	}
 
-	// Load
-
-	private void SetupLoad()
-	{
-		_loadUi.SetActiveLoad(false);
-	}
-
-	// Ad - Success
-
-	private void SetupAdSuccess()
-	{
-		_adUi.SetActiveAdSuccess(false);
-	}
-
-	public void OnAdSuccessCloseButtonPressed()
-	{
-		_audio.PlayButtonPressed();
-
-		_adUi.SetEnableAdSuccessButton(false);
-		_adUi.AnimateAdSuccessCloseButtonPressed
-		(
-			()=>
-			{
-				_adUi.AnimateAdSuccessBoardExit
-				(
-					()=>
-					{
-						_adUi.SetActiveAdSuccess(false);
-
-						if (_touchState == TouchState.WIN)
-						{
-							_ui.SetActiveWin(true);
-
-							_ui.AnimateWinBoardEnter
-							(
-								()=>
-								{
-									_ui.SetEnableWinButton(true);
-								}
-							);
-						}
-						else if (_touchState == TouchState.PAUSE)
-						{
-							_ui.SetActivePause(true);
-
-							_ui.AnimatePauseBoardEnter
-							(
-								()=>
-								{
-									_ui.SetEnablePauseButton(true);
-								}
-							);
-						}
-					}
-				);
-			}
-		);
-	}
-
-	// Ad - Abort
-
-	private void SetupAdAbort()
-	{
-		_adUi.SetActiveAdAbort(false);
-	}
-
-	public void OnAdAbortCloseButtonPressed()
-	{
-		_audio.PlayButtonPressed();
-
-		_adUi.SetEnableAdAbortButton(false);
-		_adUi.AnimateAdAbortBoardExit
-		(
-			()=>
-			{
-				_adUi.SetActiveAdAbort(false);
-
-				if (_touchState == TouchState.WIN)
-				{
-					_ui.SetActiveWin(true);
-
-					_ui.AnimateWinBoardEnter
-					(
-						()=>
-						{
-							_ui.SetEnableWinButton(true);
-						}
-					);
-				}
-				else if (_touchState == TouchState.PAUSE)
-				{
-					_ui.SetActivePause(true);
-
-					_ui.AnimatePauseBoardEnter(
-						()=>
-						{
-							_ui.SetEnablePauseButton(true);
-						}
-					);
-				}
-			}
-		);
-	}
-
-	// Ad - Fail
-
-	private void SetupAdFail()
-	{
-		_adUi.SetActiveAdFail(false);
-	}
-
-	public void OnAdFailCloseButtonPressed()
-	{
-		_audio.PlayButtonPressed();
-
-		_adUi.SetEnableAdFailButton(false);
-		_adUi.AnimateAdFailBoardExit
-		(
-			()=>
-			{
-				_adUi.SetActiveAdFail(false);
-
-				if (_touchState == TouchState.WIN)
-				{
-					_ui.SetActiveWin(true);
-
-					_ui.AnimateWinBoardEnter
-					(
-						()=>
-						{
-							_ui.SetEnableWinButton(true);
-						}
-					);
-				}
-				else if (_touchState == TouchState.PAUSE)
-				{
-					_ui.SetActivePause(true);
-
-					_ui.AnimatePauseBoardEnter(
-						()=>
-						{
-							_ui.SetEnablePauseButton(true);
-						}
-					);
-				}
-			}
-		);
-	}
-
 	// Darken
 
 	private void SetupDarken()
@@ -1929,20 +1833,119 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetActiveBlinder(false);
 	}
 
+	// Message - Hint
+
+	private void SetupMessageHint()
+	{
+		_message.SetActiveHint(false);
+	}
+
+	public void OnMessageHintBackButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+		_message.SetEnableHintBackButton(false);
+
+		_message.AnimateHintBackButtonPressed
+		(
+			()=>
+			{
+				_message.AnimateHintExit
+				(
+					()=>
+					{
+						_message.SetActiveHint(false);
+
+						if (_touchState == TouchState.WIN)
+						{
+							_ui.SetActiveWin(true);
+
+							_ui.AnimateWinBoardEnter
+							(
+								()=>
+								{
+									_ui.SetEnableWinButton(true);
+								}
+							);
+						}
+						else if (_touchState == TouchState.NONE)
+						{
+							_ui.SetEnableControlButton(true);
+						}
+					}
+				);
+			}
+		);
+	}
+
+	// Message - Load()
+
+	private bool _messageLoadEnterInProgress;
+
+	private void SetupMessageLoad()
+	{
+		_message.SetActiveLoad(false);
+
+		_messageLoadEnterInProgress = false;
+	}
+
+	// Message - Error
+
+	private void SetupMessageError()
+	{
+		_message.SetActiveError(false);
+	}
+
+	public void OnMessageErrorBackButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+		_message.SetEnableErrorBackButton(false);
+
+		_message.AnimateErrorBackButtonPressed
+		(
+			()=>
+			{
+				_message.AnimateErrorExit
+				(
+					()=>
+					{
+						_message.SetActiveError(false);
+
+						if (_touchState == TouchState.WIN)
+						{
+							_ui.SetActiveWin(true);
+
+							_ui.AnimateWinBoardEnter
+							(
+								()=>
+								{
+									_ui.SetEnableWinButton(true);
+								}
+							);
+						}
+						else if (_touchState == TouchState.NONE)
+						{
+							_ui.SetEnableControlButton(true);
+						}
+					}
+				);
+			}
+		);
+	}
+
 	// Unity Lifecyle
 
 	private void Awake()
 	{
 		_ui = GameObject.Find("LevelUI").GetComponent<LevelUI>();
-		_loadUi = GameObject.Find("LoadUI").GetComponent<LoadUI>();
-		_adUi = GameObject.Find("AdUI").GetComponent<AdUI>();
-
 		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		_message = GameObject.Find("MessageManager").GetComponent<MessageManager>();
 
 		FindMapGameObject();
 	}
@@ -1974,10 +1977,9 @@ public class LevelLogic : MonoBehaviour
 		SetupWin();
 		SetupDarken();
 		SetupBlinder();
-		SetupLoad();
-		SetupAdSuccess();
-		SetupAdAbort();
-		SetupAdFail();
+		SetupMessageHint();
+		SetupMessageLoad();
+		SetupMessageError();
 
 		_audio.PlayMapEnter();
 		AnimateMapEnter

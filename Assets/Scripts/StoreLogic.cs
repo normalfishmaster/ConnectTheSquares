@@ -35,12 +35,10 @@ public class StoreLogic : MonoBehaviour
 
 	private State _state;
 	private float _stateLoadAdStartTime;
-	private bool _loadAnimationInProgress;
 
 	private void SetupState()
 	{
 		_state = State.NONE;
-		_loadAnimationInProgress = false;
 	}
 
 	private void DoStateNone()
@@ -49,13 +47,15 @@ public class StoreLogic : MonoBehaviour
 
 	private void DoStateLoadAd()
 	{
-		if (_loadAnimationInProgress)
+		if (_messageLoadEnterInProgress)
 		{
 			return;
 		}
 
 		if (_ad.IsRewardedLoaded())
 		{
+			_ad.ClearRewardStatus();
+
 			_message.AnimateLoadExit
 			(
 				()=>
@@ -65,7 +65,6 @@ public class StoreLogic : MonoBehaviour
 				}
 			);
 
-			_ad.ClearRewardStatus();
 			_state = State.AD;
 		}
 		else if (Time.time - _stateLoadAdStartTime > MAX_AD_LOAD_TIME)
@@ -238,14 +237,14 @@ public class StoreLogic : MonoBehaviour
 					return;
 				}
 
-				_loadAnimationInProgress = true;
+				_messageLoadEnterInProgress = true;
 
 				_message.SetActiveLoad(true);
 				_message.AnimateLoadEnter
 				(
 					()=>
 					{
-						_loadAnimationInProgress = false;
+						_messageLoadEnterInProgress = false;
 					}
 				);
 
@@ -580,9 +579,12 @@ public class StoreLogic : MonoBehaviour
 
 	// Message - Load()
 
+	private bool _messageLoadEnterInProgress;
+
 	private void SetupMessageLoad()
 	{
 		_message.SetActiveLoad(false);
+		_messageLoadEnterInProgress = false;
 	}
 
 	// Message - Error
