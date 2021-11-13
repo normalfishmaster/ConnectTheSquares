@@ -58,11 +58,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 433e4fa3f13a07fe1aabd1c0bb51df8d, type: 3}
   - {fileID: 21300000, guid: ed311b7317ef9bd0e84507bbe9d2ff2b, type: 3}
   - {fileID: 21300000, guid: 3d0ad85462b9f8f2480e2aec6e462cef, type: 3}
-  _blockIllusion:
-  - {fileID: 21300000, guid: b2fd5bbe5ba1afd5db4561a19090430c, type: 3}
-  - {fileID: 21300000, guid: 3aadd3583075f9801995480a9407890c, type: 3}
-  - {fileID: 21300000, guid: b324b1ba41f3ec95da9a00bdcf09918d, type: 3}
-  - {fileID: 21300000, guid: e5b1269a9f7ac718ab93def5b8cd76b4, type: 3}
   _blockGreenMarble:
   - {fileID: 21300000, guid: ffa695c2d99f057f28305e2bf116a35c, type: 3}
   - {fileID: 21300000, guid: 5d5e3d2230c6f32559e8e58c81c3a7ed, type: 3}
@@ -78,7 +73,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 34b1712b55ebec90a8c35bb4fc9a525c, type: 3}
   - {fileID: 21300000, guid: b2f72efc49c42a3b68167115af1d499b, type: 3}
   - {fileID: 21300000, guid: 4caf355661cd434c78c87ce242393c13, type: 3}
-  _blockRareMarble:
+  _blockPurpleMarble:
   - {fileID: 21300000, guid: c3235d6e093a66366a940e21be4b3c0e, type: 3}
   - {fileID: 21300000, guid: d1e38cfa75274e9f4bbbb59e8de22c41, type: 3}
   - {fileID: 21300000, guid: b82c41af45168b02caaf8041b12a9b11, type: 3}

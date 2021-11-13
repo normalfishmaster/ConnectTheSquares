@@ -214,9 +214,14 @@ public class AdManager : MonoBehaviour
 		RequestRewarded();
 	}
 
+	public bool IsRewardedLoaded()
+	{
+		return _rewarded.IsLoaded();
+	}
+
 	public int ShowRewarded()
 	{
-		if (_rewarded.IsLoaded())
+		if (IsRewardedLoaded())
 		{
 			_rewarded.Show();
 			return 0;

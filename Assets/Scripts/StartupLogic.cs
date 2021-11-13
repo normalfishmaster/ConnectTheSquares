@@ -71,6 +71,7 @@ public class StartupLogic : MonoBehaviour
 	private void RunTestSequence()
 	{
 		_data.DeleteAll();
+		_data.InitializeData();
 		_cloudOnce.DeleteAll();
 	}
 

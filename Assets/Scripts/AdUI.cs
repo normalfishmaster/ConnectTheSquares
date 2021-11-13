@@ -91,13 +91,9 @@ public class AdUI : MonoBehaviour
 		{
 			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[11];
 		}
-		else if (item == IAPManager._productBlockRareMarble)
+		else if (item == IAPManager._productBlockPurpleMarble)
 		{
 			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[12];
-		}
-		else if (item == IAPManager._productBlockIllusion)
-		{
-			_adSuccessItem.GetComponent<Image>().sprite = _adSuccessItemSprite[13];
 		}
 	}
 

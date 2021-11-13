@@ -6517,7 +6517,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5781070564507033946, guid: d98bd97e823237625bd818f72b59134d, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5781070564507033946, guid: d98bd97e823237625bd818f72b59134d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8076,6 +8076,63 @@ MonoBehaviour:
   m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!1001 &1103453112
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4106255402529805000, guid: 73fff779d7187fcf5b49684aac5443b6, type: 3}
+      propertyPath: m_Name
+      value: ItemManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106255402529805014, guid: 73fff779d7187fcf5b49684aac5443b6, type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106255402529805014, guid: 73fff779d7187fcf5b49684aac5443b6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106255402529805014, guid: 73fff779d7187fcf5b49684aac5443b6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106255402529805014, guid: 73fff779d7187fcf5b49684aac5443b6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106255402529805014, guid: 73fff779d7187fcf5b49684aac5443b6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106255402529805014, guid: 73fff779d7187fcf5b49684aac5443b6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106255402529805014, guid: 73fff779d7187fcf5b49684aac5443b6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106255402529805014, guid: 73fff779d7187fcf5b49684aac5443b6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106255402529805014, guid: 73fff779d7187fcf5b49684aac5443b6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106255402529805014, guid: 73fff779d7187fcf5b49684aac5443b6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106255402529805014, guid: 73fff779d7187fcf5b49684aac5443b6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 73fff779d7187fcf5b49684aac5443b6, type: 3}
 --- !u!1 &1104510036
 GameObject:
   m_ObjectHideFlags: 0
@@ -14916,7 +14973,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2413063454501040643, guid: f191cb20138121a7d8f8203b22dc87a9, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2413063454501040643, guid: f191cb20138121a7d8f8203b22dc87a9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -15252,7 +15309,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8964933980093858516, guid: 783745dd4fa980a288be2125bd6714a8, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8964933980093858516, guid: 783745dd4fa980a288be2125bd6714a8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -15293,10 +15350,6 @@ PrefabInstance:
     - target: {fileID: 8964933980093858516, guid: 783745dd4fa980a288be2125bd6714a8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8964933980093858517, guid: 783745dd4fa980a288be2125bd6714a8, type: 3}
-      propertyPath: HINT_ANIMATE_SUNBURST_ENTER_DURATION
-      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 8964933980093858518, guid: 783745dd4fa980a288be2125bd6714a8, type: 3}
       propertyPath: m_Name

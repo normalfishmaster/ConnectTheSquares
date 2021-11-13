@@ -6,13 +6,12 @@ using UnityEngine.SceneManagement;
 public class StoreLogic : MonoBehaviour
 {
         private StoreUI _ui;
-	private LoadUI _loadUi;
-	private AdUI _adUi;
 	private AdManager _ad;
         private AudioManager _audio;
 	private CloudOnceManager _cloudOnce;
         private DataManager _data;
         private LevelManager _level;
+	private MessageManager _message;
 
 	private int _purchasePending;
 
@@ -36,10 +35,12 @@ public class StoreLogic : MonoBehaviour
 
 	private State _state;
 	private float _stateLoadAdStartTime;
+	private bool _loadAnimationInProgress;
 
 	private void SetupState()
 	{
 		_state = State.NONE;
+		_loadAnimationInProgress = false;
 	}
 
 	private void DoStateNone()
@@ -48,27 +49,45 @@ public class StoreLogic : MonoBehaviour
 
 	private void DoStateLoadAd()
 	{
-		_ad.ClearRewardStatus();
-
-		if (_ad.ShowRewarded() == 0)
+		if (_loadAnimationInProgress)
 		{
-			_loadUi.AnimateLoadBlockStop();
-			_loadUi.SetActiveLoad(false);
+			return;
+		}
+
+		if (_ad.IsRewardedLoaded())
+		{
+			_message.AnimateLoadExit
+			(
+				()=>
+				{
+					_message.SetActiveLoad(false);
+					_ad.ShowRewarded();
+				}
+			);
+
+			_ad.ClearRewardStatus();
 			_state = State.AD;
 		}
 		else if (Time.time - _stateLoadAdStartTime > MAX_AD_LOAD_TIME)
 		{
-			_loadUi.AnimateLoadBlockStop();
-			_loadUi.SetActiveLoad(false);
-			_adUi.SetActiveAdFail(true);
-			_adUi.SetEnableAdFailButton(false);
-			_adUi.AnimateAdFailBoardEnter
+			_message.AnimateLoadExit
 			(
 				()=>
 				{
-					_adUi.SetEnableAdFailButton(true);
+					_message.SetActiveLoad(false);
+
+					_message.SetActiveError(true);
+					_message.SetEnableErrorBackButton(false);
+					_message.AnimateErrorEnter
+					(
+						()=>
+						{
+							_message.SetEnableErrorBackButton(true);
+						}
+					);
 				}
 			);
+
                         _state = State.NONE;
 		}
 	}
@@ -81,44 +100,27 @@ public class StoreLogic : MonoBehaviour
 		{
 			_cloudOnce.IncrementHint(1);
 
-			_ui.SetTopHintCount(_cloudOnce.GetHint());
-
 			_audio.PlayRewardReceived();
 
-			_adUi.SetActiveAdSuccess(true);
-			_adUi.SetAdSuccessItem("hint");
-			_adUi.SetActiveAdSuccessCount(false);
-			_adUi.SetAdSuccessCountValue("+1");
-			_adUi.SetActiveAdSuccessItem(false);
-			_adUi.SetEnableAdSuccessButton(false);
-			_adUi.AnimateAdSuccessBoardEnter
+			_ui.SetTopHintCount(_cloudOnce.GetHint());
+
+			_message.SetHintCount(1);
+			_message.SetActiveHint(true);
+			_message.SetEnableHintBackButton(false);
+			_message.AnimateHintEnter
 			(
 				()=>
 				{
-					_adUi.SetActiveAdSuccessItem(true);
-					_adUi.SetActiveAdSuccessCount(true);
-					_adUi.AnimateAdSuccessItemEnter
-					(
-						()=>
-						{
-							_adUi.SetEnableAdSuccessButton(true);
-						}
-					);
+					_message.SetEnableHintBackButton(true);
 				}
 			);
+
 			_state = State.NONE;
 		}
 		else if (status == AdManager.RewardStatus.FAIL)
 		{
-			_adUi.SetActiveAdAbort(true);
-			_adUi.SetEnableAdAbortButton(false);
-			_adUi.AnimateAdAbortBoardEnter
-			(
-				()=>
-				{
-					_adUi.SetEnableAdAbortButton(true);
-				}
-			);
+			_ui.SetEnableProductPriceButton(true);
+			_ui.SetEnableBottomButton(true);
 			_state = State.NONE;
 		}
 	}
@@ -138,59 +140,115 @@ public class StoreLogic : MonoBehaviour
 		int lastAlphabet = _level.GetNumAlphabet(lastColor) - 1;
 		int lastMap = _level.GetNumMap(lastColor, lastAlphabet) - 1;
 
-		_ui.SetEnableProductButton(false);
+		_ui.AnimateProductSunburst();
 
 		if (_data.GetRemoveAds() == 1)
 		{
-			_ui.SetInteractableProductRemoveAds(false);
+			_ui.SetActiveProductRemoveAdsPriceAndPurchased(false, true);
 		}
-		if (_data.GetUnlockAllLevels() == 1 || _data.GetLevelLock(lastColor, lastAlphabet, lastMap) == 0)
+		else
 		{
+			_ui.SetActiveProductRemoveAdsPriceAndPurchased(true, false);
+		}
+
+		if (_data.GetUnlockAllLevels() == 1)
+		{
+			_ui.SetActiveProductUnlockAllLevelsPriceAndPurchased(false, true);
+		}
+		else if (_data.GetLevelLock(lastColor, lastAlphabet, lastMap) == 0)
+		{
+			_ui.SetActiveProductUnlockAllLevelsPriceAndPurchased(true, false);
 			_ui.SetInteractableProductUnlockAllLevels(false);
 		}
+		else
+		{
+			_ui.SetActiveProductUnlockAllLevelsPriceAndPurchased(true, false);
+		}
+
 		if (_data.GetBlockMetalUnlocked() == 1)
 		{
-			_ui.SetInteractableProductBlockMetal(false);
+			_ui.SetActiveProductBlockMetalPriceAndPurchased(false, true);
 		}
+		else
+		{
+			_ui.SetActiveProductBlockMetalPriceAndPurchased(true, false);
+		}
+
 		if (_data.GetBlockWoodUnlocked() == 1)
 		{
-			_ui.SetInteractableProductBlockWood(false);
+			_ui.SetActiveProductBlockWoodPriceAndPurchased(false, true);
 		}
+		else
+		{
+			_ui.SetActiveProductBlockWoodPriceAndPurchased(true, false);
+		}
+
 		if (_data.GetBlockGreenMarbleUnlocked() == 1)
 		{
-			_ui.SetInteractableProductBlockGreenMarble(false);
+			_ui.SetActiveProductBlockGreenMarblePriceAndPurchased(false, true);
 		}
+		else
+		{
+			_ui.SetActiveProductBlockGreenMarblePriceAndPurchased(true, false);
+		}
+
 		if (_data.GetBlockBlueMarbleUnlocked() == 1)
 		{
-			_ui.SetInteractableProductBlockBlueMarble(false);
+			_ui.SetActiveProductBlockBlueMarblePriceAndPurchased(false, true);
 		}
+		else
+		{
+			_ui.SetActiveProductBlockBlueMarblePriceAndPurchased(true, false);
+		}
+
 		if (_data.GetBlockRedMarbleUnlocked() == 1)
 		{
-			_ui.SetInteractableProductBlockRedMarble(false);
+			_ui.SetActiveProductBlockRedMarblePriceAndPurchased(false, true);
 		}
-		if (_data.GetBlockRareMarbleUnlocked() == 1)
+		else
 		{
-			_ui.SetInteractableProductBlockRareMarble(false);
+			_ui.SetActiveProductBlockRedMarblePriceAndPurchased(true, false);
 		}
-		if (_data.GetBlockIllusionUnlocked() == 1)
+
+		if (_data.GetBlockPurpleMarbleUnlocked() == 1)
 		{
-			_ui.SetInteractableProductBlockIllusion(false);
+			_ui.SetActiveProductBlockPurpleMarblePriceAndPurchased(false, true);
+		}
+		else
+		{
+			_ui.SetActiveProductBlockPurpleMarblePriceAndPurchased(true, false);
 		}
 	}
 
 	public void OnProductHintAdButtonPressed()
 	{
 		_audio.PlayButtonPressed();
-		_ui.SetEnableProductButton(false);
+
+		_ui.SetEnableProductPriceButton(false);
 		_ui.SetEnableBottomButton(false);
+
 		_ui.AnimateProductHintAdButtonPressed
 		(
 			()=>
 			{
-				_ui.SetEnableProductButton(false);
-				_ui.SetEnableBottomButton(false);
-				_loadUi.SetActiveLoad(true);
-				_loadUi.AnimateLoadBlockStart();
+				if (_ad.IsRewardedLoaded())
+				{
+					_ad.ShowRewarded();
+					_state = State.AD;
+					return;
+				}
+
+				_loadAnimationInProgress = true;
+
+				_message.SetActiveLoad(true);
+				_message.AnimateLoadEnter
+				(
+					()=>
+					{
+						_loadAnimationInProgress = false;
+					}
+				);
+
 				_stateLoadAdStartTime = Time.time;
 				_state = State.LOAD_AD;
 			}
@@ -269,21 +327,15 @@ public class StoreLogic : MonoBehaviour
 		_ui.AnimateProductBlockRedMarbleButtonPressed(()=>{});
 	}
 
-	public void OnProductBlockRareMarbleButtonPressed()
+	public void OnProductBlockPurpleMarbleButtonPressed()
 	{
 		OnProductButtonPressedCommon();
-		_ui.AnimateProductBlockRareMarbleButtonPressed(()=>{});
-	}
-
-	public void OnProductBlockIllusionButtonPressed()
-	{
-		OnProductButtonPressedCommon();
-		_ui.AnimateProductBlockIllusionButtonPressed(()=>{});
+		_ui.AnimateProductBlockPurpleMarbleButtonPressed(()=>{});
 	}
 
 	// IAP
 
-	public void OnPurchaseSuccess(string product)
+	public void OnPurchaseItemSuccess(int itemNumber)
 	{
 		if (_purchasePending == 0)
 		{
@@ -292,92 +344,110 @@ public class StoreLogic : MonoBehaviour
 
 		_purchasePending = 0;
 
-		_ui.SetEnableProductButton(false);
-		_ui.SetEnableBottomButton(false);
-
-		_adUi.SetActiveAdSuccess(true);
-		_adUi.SetActiveAdSuccessItem(false);
-		_adUi.SetEnableAdSuccessButton(false);
-		_adUi.SetAdSuccessItem(product);
-		_adUi.SetActiveAdSuccessCount(false);
-
-		if (product == IAPManager._productRemoveAds)
+		if (itemNumber == ItemManager.REMOVE_ADS)
 		{
-			_ui.SetInteractableProductRemoveAds(false);
+			_ui.SetActiveProductRemoveAdsPriceAndPurchased(false, true);
 		}
-		else if (product == IAPManager._productUnlockAllLevels)
+		else if (itemNumber == ItemManager.UNLOCK_ALL_LEVELS)
 		{
-			_ui.SetInteractableProductUnlockAllLevels(false);
-		}
-		else if (product == IAPManager._productBlockMetal)
-		{
-			_ui.SetInteractableProductBlockMetal(false);
-		}
-		else if (product == IAPManager._productBlockWood)
-		{
-			_ui.SetInteractableProductBlockWood(false);
-		}
-		else if (product == IAPManager._productBlockGreenMarble)
-		{
-			_ui.SetInteractableProductBlockGreenMarble(false);
-		}
-		else if (product == IAPManager._productBlockBlueMarble)
-		{
-			_ui.SetInteractableProductBlockBlueMarble(false);
-		}
-		else if (product == IAPManager._productBlockRedMarble)
-		{
-			_ui.SetInteractableProductBlockRedMarble(false);
-		}
-		else if (product == IAPManager._productBlockRareMarble)
-		{
-			_ui.SetInteractableProductBlockRareMarble(false);
-		}
-		else if (product == IAPManager._productBlockIllusion)
-		{
-			_ui.SetInteractableProductBlockIllusion(false);
-		}
-
-		if (product == IAPManager._productHints3)
-		{
-			_ui.SetTopHintCount(_cloudOnce.GetHint());
-			_adUi.SetAdSuccessCountValue("+3");
-		}
-		else if (product == IAPManager._productHints15p3)
-		{
-			_ui.SetTopHintCount(_cloudOnce.GetHint());
-			_adUi.SetAdSuccessCountValue("+18");
-		}
-		else if (product == IAPManager._productHints30p9)
-		{
-			_ui.SetTopHintCount(_cloudOnce.GetHint());
-			_adUi.SetAdSuccessCountValue("+39");
-		}
-		else if (product == IAPManager._productHints60p24)
-		{
-			_ui.SetTopHintCount(_cloudOnce.GetHint());
-			_adUi.SetAdSuccessCountValue("+84");
-		}
-		else
-		{
-			_adUi.SetAdSuccessCountValue("");
+			_ui.SetActiveProductUnlockAllLevelsPriceAndPurchased(false, true);
 		}
 
 		_audio.PlayRewardReceived();
 
-		_adUi.AnimateAdSuccessBoardEnter
+		_ui.SetEnableProductPriceButton(false);
+		_ui.SetEnableBottomButton(false);
+
+		_message.SetActiveItem(true);
+		_message.SetEnableItemBackButton(false);
+		_message.SetItemImageAndMessage(itemNumber);
+
+		_message.AnimateItemEnter
 		(
 			()=>
 			{
-				_adUi.SetActiveAdSuccessItem(true);
-				_adUi.SetActiveAdSuccessCount(true);
-				_adUi.AnimateAdSuccessItemEnter
-				(
-					()=>
-					{
-						_adUi.SetEnableAdSuccessButton(true);
-					}
-				);
+				_message.SetEnableItemBackButton(true);
+			}
+		);
+	}
+
+	public void OnPurchaseHintSuccess(int numHint)
+	{
+		if (_purchasePending == 0)
+		{
+			return;
+		}
+
+		_purchasePending = 0;
+
+		_audio.PlayRewardReceived();
+
+		_ui.SetTopHintCount(_cloudOnce.GetHint());
+
+		_ui.SetEnableProductPriceButton(false);
+		_ui.SetEnableBottomButton(false);
+
+		_message.SetHintCount(numHint);
+
+		_message.SetActiveHint(true);
+		_message.SetEnableHintBackButton(false);
+		_message.AnimateHintEnter
+		(
+			()=>
+			{
+				_message.SetEnableHintBackButton(true);
+			}
+		);
+	}
+
+	public void OnPurchaseBlockSetSuccess(int setNumber)
+	{
+		if (_purchasePending == 0)
+		{
+			return;
+		}
+
+		_purchasePending = 0;
+
+		if (setNumber == BlockManager.BLOCK_SET_METAL)
+		{
+			_ui.SetActiveProductBlockMetalPriceAndPurchased(false, true);
+		}
+		else if (setNumber == BlockManager.BLOCK_SET_WOOD)
+		{
+			_ui.SetActiveProductBlockWoodPriceAndPurchased(false, true);
+		}
+		else if (setNumber == BlockManager.BLOCK_SET_GREEN_MARBLE)
+		{
+			_ui.SetActiveProductBlockGreenMarblePriceAndPurchased(false, true);
+		}
+		else if (setNumber == BlockManager.BLOCK_SET_BLUE_MARBLE)
+		{
+			_ui.SetActiveProductBlockBlueMarblePriceAndPurchased(false, true);
+		}
+		else if (setNumber == BlockManager.BLOCK_SET_RED_MARBLE)
+		{
+			_ui.SetActiveProductBlockRedMarblePriceAndPurchased(false, true);
+		}
+		else if (setNumber == BlockManager.BLOCK_SET_PURPLE_MARBLE)
+		{
+			_ui.SetActiveProductBlockPurpleMarblePriceAndPurchased(false, true);
+		}
+
+		_audio.PlayRewardReceived();
+
+		_ui.SetEnableProductPriceButton(false);
+		_ui.SetEnableBottomButton(false);
+
+		_message.SetActiveBlock(true);
+		_message.SetEnableBlockBackButton(false);
+		_message.SetBlockImageAndMessage(setNumber);
+
+		_message.AnimateBlockEnter
+		(
+			()=>
+			{
+				_message.SetEnableBlockBackButton(true);
 			}
 		);
 	}
@@ -385,22 +455,6 @@ public class StoreLogic : MonoBehaviour
 	public void OnPurchaseFail()
 	{
 		_purchasePending = 0;
-
-/*
-
-		_ui.SetEnableProductButton(false);
-		_ui.SetEnableBottomButton(false);
-
-		_adUi.SetActiveAdFail(true);
-		_adUi.SetEnableAdFailButton(false);
-		_adUi.AnimateAdFailBoardEnter
-		(
-			()=>
-			{
-				_adUi.SetEnableAdFailButton(true);
-			}
-		);
-*/
 	}
 
 	// UI - Bottom
@@ -409,7 +463,7 @@ public class StoreLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.SetEnableProductButton(false);
+		_ui.SetEnableProductPriceButton(false);
 		_ui.SetEnableBottomButton(false);
 
 		_ui.AnimateBottomBackButtonPressed
@@ -431,35 +485,30 @@ public class StoreLogic : MonoBehaviour
 		_ui.SetEnableBottomButton(true);
 	}
 
-	// LoadUI
+	// Message - Item
 
-	private void SetupLoad()
+	private void SetupMessageItem()
 	{
-		_loadUi.SetActiveLoad(false);
+		_message.SetActiveItem(false);
 	}
 
-	// AdUI - Success
-
-	private void SetupAdSuccess()
-	{
-		_adUi.SetActiveAdSuccess(false);
-	}
-
-	public void OnAdSuccessCloseButtonPressed()
+	public void OnMessageItemBackButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
-		_adUi.SetEnableAdSuccessButton(false);
-		_adUi.AnimateAdSuccessCloseButtonPressed
+		_message.SetEnableItemBackButton(false);
+
+		_message.AnimateItemBackButtonPressed
 		(
 			()=>
 			{
-				_adUi.AnimateAdSuccessBoardExit
+				_message.AnimateItemExit
 				(
 					()=>
 					{
-						_adUi.SetActiveAdSuccess(false);
-						_ui.SetEnableProductButton(true);
+						_message.SetActiveItem(false);
+
+						_ui.SetEnableProductPriceButton(true);
 						_ui.SetEnableBottomButton(true);
 					}
 				);
@@ -467,48 +516,102 @@ public class StoreLogic : MonoBehaviour
 		);
 	}
 
-	// AdUI - Abort
+	// Message - Hint
 
-	private void SetupAdAbort()
+	private void SetupMessageHint()
 	{
-		_adUi.SetActiveAdAbort(false);
+		_message.SetActiveHint(false);
 	}
 
-	public void OnAdAbortCloseButtonPressed()
+	public void OnMessageHintBackButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
-		_adUi.SetEnableAdAbortButton(false);
-		_adUi.AnimateAdAbortBoardExit
+		_message.SetEnableHintBackButton(false);
+
+		_message.AnimateHintBackButtonPressed
 		(
 			()=>
 			{
-				_adUi.SetActiveAdAbort(false);
-				_ui.SetEnableProductButton(true);
-				_ui.SetEnableBottomButton(true);
+				_message.AnimateHintExit
+				(
+					()=>
+					{
+						_message.SetActiveHint(false);
+
+						_ui.SetEnableProductPriceButton(true);
+						_ui.SetEnableBottomButton(true);
+					}
+				);
 			}
 		);
 	}
 
-	// AdUI - Fail
+	// Message - Block
 
-	private void SetupAdFail()
+	private void SetupMessageBlock()
 	{
-		_adUi.SetActiveAdFail(false);
+		_message.SetActiveBlock(false);
 	}
 
-	public void OnAdFailCloseButtonPressed()
+	public void OnMessageBlockBackButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
-		_adUi.SetEnableAdFailButton(false);
-		_adUi.AnimateAdFailBoardExit
+		_message.SetEnableBlockBackButton(false);
+
+		_message.AnimateBlockBackButtonPressed
 		(
 			()=>
 			{
-				_adUi.SetActiveAdFail(false);
-				_ui.SetEnableProductButton(true);
-				_ui.SetEnableBottomButton(true);
+				_message.AnimateBlockExit
+				(
+					()=>
+					{
+						_message.SetActiveBlock(false);
+
+						_ui.SetEnableProductPriceButton(true);
+						_ui.SetEnableBottomButton(true);
+					}
+				);
+			}
+		);
+	}
+
+	// Message - Load()
+
+	private void SetupMessageLoad()
+	{
+		_message.SetActiveLoad(false);
+	}
+
+	// Message - Error
+
+	private void SetupMessageError()
+	{
+		_message.SetActiveError(false);
+	}
+
+	public void OnMessageErrorBackButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+		_message.SetEnableErrorBackButton(false);
+
+		_message.AnimateErrorBackButtonPressed
+		(
+			()=>
+			{
+				_message.AnimateErrorExit
+				(
+					()=>
+					{
+						_message.SetActiveError(false);
+
+						_ui.SetEnableProductPriceButton(true);
+						_ui.SetEnableBottomButton(true);
+					}
+				);
 			}
 		);
 	}
@@ -518,13 +621,12 @@ public class StoreLogic : MonoBehaviour
 	private void Awake()
 	{
 		_ui = GameObject.Find("StoreUI").GetComponent<StoreUI>();
-		_loadUi = GameObject.Find("LoadUI").GetComponent<LoadUI>();
-		_adUi = GameObject.Find("AdUI").GetComponent<AdUI>();
 		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		_message = GameObject.Find("MessageManager").GetComponent<MessageManager>();
 
 		_purchasePending = 0;
 	}
@@ -536,17 +638,18 @@ public class StoreLogic : MonoBehaviour
 		SetupTop();
 		SetupProduct();
 		SetupBottom();
-		SetupLoad();
-		SetupAdSuccess();
-		SetupAdAbort();
-		SetupAdFail();
+		SetupMessageItem();
+		SetupMessageHint();
+		SetupMessageBlock();
+		SetupMessageLoad();
+		SetupMessageError();
 
-		_ui.SetEnableProductButton(false);
+		_ui.SetEnableProductPriceButton(false);
 		_ui.AnimateProductEnter
 		(
 			()=>
 			{
-				_ui.SetEnableProductButton(true);
+				_ui.SetEnableProductPriceButton(true);
 			}
 		);
 	}

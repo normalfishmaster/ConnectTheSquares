@@ -83,11 +83,8 @@ public class DataManager : MonoBehaviour
 	public string GetBlockRedMarbleUnlockedKey()				{ return "BlockRedMarbleUnlockedKey";								}
 	public int    GetBlockRedMarbleUnlockedDefault()			{ return 0;											}
 
-	public string GetBlockRareMarbleUnlockedKey()				{ return "BlockRareMarbleUnlockedKey";								}
-	public int    GetBlockRareMarbleUnlockedDefault()			{ return 0;											}
-
-	public string GetBlockIllusionUnlockedKey()				{ return "BlockIllusionUnlockedKey";								}
-	public int    GetBlockIllusionUnlockedDefault()				{ return 0;											}
+	public string GetBlockPurpleMarbleUnlockedKey()				{ return "BlockPurpleMarbleUnlockedKey";								}
+	public int    GetBlockPurpleMarbleUnlockedDefault()			{ return 0;											}
 
 	// Operations by Data Type
 
@@ -211,15 +208,10 @@ public class DataManager : MonoBehaviour
 	public void  SetBlockRedMarbleUnlocked(int value)			{        PlayerPrefs.SetInt(GetBlockRedMarbleUnlockedKey(), value);				}
 	public void  InitBlockRedMarbleUnlocked()				{        PlayerPrefs.SetInt(GetBlockRedMarbleUnlockedKey(), GetBlockRedMarbleUnlockedDefault()); }
 
-	public bool  CheckBlockRareMarbleUnlocked()				{ return PlayerPrefs.HasKey(GetBlockRareMarbleUnlockedKey());					}
-	public int   GetBlockRareMarbleUnlocked()				{ return PlayerPrefs.GetInt(GetBlockRareMarbleUnlockedKey());					}
-	public void  SetBlockRareMarbleUnlocked(int value)			{        PlayerPrefs.SetInt(GetBlockRareMarbleUnlockedKey(), value);				}
-	public void  InitBlockRareMarbleUnlocked()				{        PlayerPrefs.SetInt(GetBlockRareMarbleUnlockedKey(), GetBlockRareMarbleUnlockedDefault()); }
-
-	public bool  CheckBlockIllusionUnlocked()				{ return PlayerPrefs.HasKey(GetBlockIllusionUnlockedKey());					}
-	public int   GetBlockIllusionUnlocked()					{ return PlayerPrefs.GetInt(GetBlockIllusionUnlockedKey());					}
-	public void  SetBlockIllusionUnlocked(int value)			{        PlayerPrefs.SetInt(GetBlockIllusionUnlockedKey(), value);				}
-	public void  InitBlockIllusionUnlocked()				{        PlayerPrefs.SetInt(GetBlockIllusionUnlockedKey(), GetBlockIllusionUnlockedDefault());	}
+	public bool  CheckBlockPurpleMarbleUnlocked()				{ return PlayerPrefs.HasKey(GetBlockPurpleMarbleUnlockedKey());					}
+	public int   GetBlockPurpleMarbleUnlocked()				{ return PlayerPrefs.GetInt(GetBlockPurpleMarbleUnlockedKey());					}
+	public void  SetBlockPurpleMarbleUnlocked(int value)			{        PlayerPrefs.SetInt(GetBlockPurpleMarbleUnlockedKey(), value);				}
+	public void  InitBlockPurpleMarbleUnlocked()				{        PlayerPrefs.SetInt(GetBlockPurpleMarbleUnlockedKey(), GetBlockPurpleMarbleUnlockedDefault()); }
 
 	// Check by Key
 
@@ -368,7 +360,7 @@ public class DataManager : MonoBehaviour
 
 	// Initialize Data
 
-	private void InitializeData()
+	public void InitializeData()
 	{
 		if (CheckAudio() == false)
 		{
@@ -459,13 +451,9 @@ public class DataManager : MonoBehaviour
 		{
 			InitBlockRedMarbleUnlocked();
 		}
-		if (CheckBlockRareMarbleUnlocked() == false)
+		if (CheckBlockPurpleMarbleUnlocked() == false)
 		{
-			InitBlockRareMarbleUnlocked();
-		}
-		if (CheckBlockIllusionUnlocked() == false)
-		{
-			InitBlockIllusionUnlocked();
+			InitBlockPurpleMarbleUnlocked();
 		}
 	}
 
