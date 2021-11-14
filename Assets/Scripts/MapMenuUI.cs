@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MapMenuUI : MonoBehaviour
 {
@@ -123,16 +124,16 @@ public class MapMenuUI : MonoBehaviour
 
 	// Top
 
-	private Text _topLabelText;
+	private GameObject _topLabel;
 
 	private void FindTopGameObject()
 	{
-		_topLabelText = GameObject.Find("/Canvas/Top/Label").GetComponent<Text>();
+		_topLabel = GameObject.Find("/Canvas/Top/Label");
 	}
 
 	public void SetTopLabel(int color, int alphabet)
 	{
-		_topLabelText.text = _level.GetColorString(color) + " - " + _level.GetAlphabetString(alphabet);
+		_topLabel.GetComponent<TextMeshProUGUI>().SetText(_level.GetColorString(color) + " - " + _level.GetAlphabetString(alphabet));
 	}
 
 	// Bottom
