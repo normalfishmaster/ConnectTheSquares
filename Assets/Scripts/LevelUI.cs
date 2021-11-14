@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class LevelUI : MonoBehaviour
 {
@@ -55,7 +56,7 @@ public class LevelUI : MonoBehaviour
 	public void SetTopColor(int color)
 	{
 		_topColor.GetComponent<Image>().sprite = _topColorSprite[color];
-		_topColorText.GetComponent<Text>().text = _level.GetColorString(color);
+		_topColorText.GetComponent<TextMeshProUGUI>().SetText(_level.GetColorString(color));
 	}
 
 	public void SetTopAlphabet(int alphabet)
@@ -785,26 +786,6 @@ public class LevelUI : MonoBehaviour
 		SetActiveWinStar(star, true);
 
 		LeanTween.cancel(_winStar[star]);
-
-		// X and Y
-
-		float height = ((RectTransform)(_winBoard.transform)).rect.height * 0.25f;
-		float width = ((RectTransform)(_winBoard.transform)).rect.width * 0.25f;
-
-		if (star == 0)
-		{
-			width *= -1;
-		}
-		else if (star == 1)
-		{
-			width = 0;
-		}
-
-		Vector3 pos = ((RectTransform)_winStar[star].transform).anchoredPosition;
-		((RectTransform)_winStar[star].transform).anchoredPosition = new Vector3(pos.x + width, pos.y + height, pos.z);
-
-		LeanTween.moveLocalX(_winStar[star], pos.x, WIN_ANIMATE_STAR_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad);
-		LeanTween.moveLocalY(_winStar[star], pos.y, WIN_ANIMATE_STAR_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad);
 
 		// Scale
 
