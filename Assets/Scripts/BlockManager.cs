@@ -183,6 +183,17 @@ public class BlockManager : MonoBehaviour
 		return newNumber;
 	}
 
+	public int DecrementSetNumber(int setNumber)
+	{
+		int newNumber = setNumber - 1;
+
+		if (newNumber < 0)
+		{
+			return NUM_BLOCK_SET - 1;
+		}
+		return newNumber;
+	}
+
 	// Unity Lifecyle
 
 	private void Awake()

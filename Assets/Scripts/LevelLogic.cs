@@ -1350,8 +1350,7 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetEnablePauseButton(false);
 		_ui.SetPauseBlockSprite(_data.GetBlockSet());
 		_pauseBlockSetNumber = _data.GetBlockSet();
-		_ui.SetActivePausePreviewButton(false);
-		_ui.SetActivePauseBlockLock(false);
+		_ui.SetActivePauseLock(false);
 
 		if (_data.GetAudio() == 0)
 		{
@@ -1503,34 +1502,25 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetActivePause(false);
 	}
 
-	public void OnPausePreviewButtonPressed()
+	public void OnPausePrevButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
-		SetMapBlockSprite(_pauseBlockSetNumber);
+		_pauseBlockSetNumber = _block.DecrementSetNumber(_pauseBlockSetNumber);
+		_ui.SetPauseBlockSprite(_pauseBlockSetNumber);
+		if (_block.IsBlockSetUnlocked(_pauseBlockSetNumber) == 1)
+		{
+			_ui.SetActivePauseLock(false);
+		}
+		else
+		{
+			_ui.SetActivePauseLock(true);
+		}
 
-		_ui.SetInteractableControlButton(false);
-
-		_ui.SetEnablePauseButton(false);
-		_ui.AnimatePausePreviewButtonPressed
-		(
-			()=>
-			{
-				_ui.AnimatePauseBoardExit
-				(
-					()=>
-					{
-						_ui.SetActivePause(false);
-						_ui.SetActiveExitPreviewButton(true);
-						_ui.SetEnableExitPreviewButton(true);
-						_ui.AnimateActiveExitButtonPunch();
-					}
-				);
-			}
-		);
+		_ui.AnimatePausePrevButtonPressed(()=>{});
 	}
 
-	public void OnPauseBlockButtonPressed()
+	public void OnPauseNextButtonPressed()
 	{
 		_audio.PlayButtonPressed();
 
@@ -1538,17 +1528,14 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetPauseBlockSprite(_pauseBlockSetNumber);
 		if (_block.IsBlockSetUnlocked(_pauseBlockSetNumber) == 1)
 		{
-			_ui.SetActivePausePreviewButton(false);
-			_ui.SetActivePauseBlockLock(false);
+			_ui.SetActivePauseLock(false);
 		}
 		else
 		{
-			_ui.SetActivePausePreviewButton(true);
-			_ui.SetActivePauseBlockLock(true);
-			_ui.AnimatePausePreviewButtonBounce();
+			_ui.SetActivePauseLock(true);
 		}
 
-		_ui.AnimatePauseBlockButtonPressed(()=>{});
+		_ui.AnimatePauseNextButtonPressed(()=>{});
 	}
 
 	public void OnPauseAudioOnButtonPressed()
@@ -1620,43 +1607,6 @@ public class LevelLogic : MonoBehaviour
 						_ui.SetActivePause(false);
 						_ui.SetEnableControlButton(true);
 						_touchState = TouchState.NONE;
-					}
-				);
-			}
-		);
-	}
-
-	// UI - ExitPreview
-
-	private void SetupExitPreview()
-	{
-		_ui.SetActiveExitPreviewButton(false);
-	}
-
-	public void OnExitPreviewButtonPressed()
-	{
-		_audio.PlayButtonPressed();
-
-		_ui.SetEnableExitPreviewButton(false);
-
-		_ui.AnimateActiveExitButtonPressed
-		(
-			()=>
-			{
-				_ui.SetActiveExitPreviewButton(false);
-
-				_ui.SetInteractableControlButton(true);
-
-				_ui.SetActivePause(true);
-				_ui.SetEnablePauseButton(false);
-
-				_ui.AnimatePauseBoardEnter
-				(
-					()=>
-					{
-						SetMapBlockSprite(_block.GetBlockSetNumber());
-						_ui.SetEnablePauseButton(true);
-						_ui.AnimatePausePreviewButtonBounce();
 					}
 				);
 			}
@@ -1996,7 +1946,6 @@ public class LevelLogic : MonoBehaviour
 		SetupControl();
 		SetupGo();
 		SetupPause();
-		SetupExitPreview();
 		SetupWin();
 		SetupDarken();
 		SetupBlinder();
