@@ -30,7 +30,7 @@ public class BlockManager : MonoBehaviour
 
 		"Plastic Set",
 		"Brushed Metal Set",
-		"Wooden Set",
+		"Antique Wood Set",
 		"Green Marble Set",
 		"Blue Marble Set",
 		"Red Marble Set",
@@ -107,6 +107,39 @@ public class BlockManager : MonoBehaviour
 		{
 			_data.SetBlockPurpleMarbleUnlocked(unlock);
 		}
+	}
+
+	public void SetBlockPreview(int setNumber)
+	{
+		if (setNumber == BLOCK_SET_METAL)
+		{
+			_data.SetBlockPreview(BLOCK_SET_METAL);
+		}
+		else if (setNumber == BLOCK_SET_WOOD)
+		{
+			_data.SetBlockPreview(BLOCK_SET_WOOD);
+		}
+		else if (setNumber == BLOCK_SET_GREEN_MARBLE)
+		{
+			_data.SetBlockPreview(BLOCK_SET_GREEN_MARBLE);
+		}
+		else if (setNumber == BLOCK_SET_BLUE_MARBLE)
+		{
+			_data.SetBlockPreview(BLOCK_SET_BLUE_MARBLE);
+		}
+		else if (setNumber == BLOCK_SET_RED_MARBLE)
+		{
+			_data.SetBlockPreview(BLOCK_SET_RED_MARBLE);
+		}
+		else if (setNumber == BLOCK_SET_PURPLE_MARBLE)
+		{
+			_data.SetBlockPreview(BLOCK_SET_PURPLE_MARBLE);
+		}
+	}
+
+	public int GetBlockPreview()
+	{
+		return _data.GetBlockPreview();
 	}
 
 	public Sprite GetBlockSprite(int setNumber, int blockIndex)

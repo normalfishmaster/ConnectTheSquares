@@ -83,8 +83,11 @@ public class DataManager : MonoBehaviour
 	public string GetBlockRedMarbleUnlockedKey()				{ return "BlockRedMarbleUnlockedKey";								}
 	public int    GetBlockRedMarbleUnlockedDefault()			{ return 0;											}
 
-	public string GetBlockPurpleMarbleUnlockedKey()				{ return "BlockPurpleMarbleUnlockedKey";								}
+	public string GetBlockPurpleMarbleUnlockedKey()				{ return "BlockPurpleMarbleUnlockedKey";							}
 	public int    GetBlockPurpleMarbleUnlockedDefault()			{ return 0;											}
+
+	public string GetBlockPreviewKey()					{ return "BlockPreviewKey";									}
+	public int    GetBlockPreviewDefault()					{ return 0;											}
 
 	// Operations by Data Type
 
@@ -212,6 +215,11 @@ public class DataManager : MonoBehaviour
 	public int   GetBlockPurpleMarbleUnlocked()				{ return PlayerPrefs.GetInt(GetBlockPurpleMarbleUnlockedKey());					}
 	public void  SetBlockPurpleMarbleUnlocked(int value)			{        PlayerPrefs.SetInt(GetBlockPurpleMarbleUnlockedKey(), value);				}
 	public void  InitBlockPurpleMarbleUnlocked()				{        PlayerPrefs.SetInt(GetBlockPurpleMarbleUnlockedKey(), GetBlockPurpleMarbleUnlockedDefault()); }
+
+	public bool  CheckBlockPreview()					{ return PlayerPrefs.HasKey(GetBlockPreviewKey());						}
+	public int   GetBlockPreview()						{ return PlayerPrefs.GetInt(GetBlockPreviewKey());						}
+	public void  SetBlockPreview(int value)					{        PlayerPrefs.SetInt(GetBlockPreviewKey(), value);					}
+	public void  InitBlockPreview()						{        PlayerPrefs.SetInt(GetBlockPreviewKey(), GetBlockPreviewDefault());			}
 
 	// Check by Key
 
@@ -454,6 +462,10 @@ public class DataManager : MonoBehaviour
 		if (CheckBlockPurpleMarbleUnlocked() == false)
 		{
 			InitBlockPurpleMarbleUnlocked();
+		}
+		if (CheckBlockPreview() == false)
+		{
+			InitBlockPreview();
 		}
 	}
 

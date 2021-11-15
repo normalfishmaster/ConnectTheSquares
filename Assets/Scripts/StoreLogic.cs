@@ -8,6 +8,7 @@ public class StoreLogic : MonoBehaviour
         private StoreUI _ui;
 	private AdManager _ad;
         private AudioManager _audio;
+	private BlockManager _block;
 	private CloudOnceManager _cloudOnce;
         private DataManager _data;
         private LevelManager _level;
@@ -118,7 +119,7 @@ public class StoreLogic : MonoBehaviour
 		}
 		else if (status == AdManager.RewardStatus.FAIL)
 		{
-			_ui.SetEnableProductPriceButton(true);
+			_ui.SetEnableProductButton(true);
 			_ui.SetEnableBottomButton(true);
 			_state = State.NONE;
 		}
@@ -167,66 +168,90 @@ public class StoreLogic : MonoBehaviour
 		if (_data.GetBlockMetalUnlocked() == 1)
 		{
 			_ui.SetActiveProductBlockMetalPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockMetal(false);
+			_ui.SetActiveBlockMetalTry(false);
 		}
 		else
 		{
 			_ui.SetActiveProductBlockMetalPriceAndPurchased(true, false);
+			_ui.SetInteractableBlockMetal(true);
+			_ui.SetActiveBlockMetalTry(true);
 		}
 
 		if (_data.GetBlockWoodUnlocked() == 1)
 		{
 			_ui.SetActiveProductBlockWoodPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockWood(false);
+			_ui.SetActiveBlockWoodTry(false);
 		}
 		else
 		{
 			_ui.SetActiveProductBlockWoodPriceAndPurchased(true, false);
+			_ui.SetInteractableBlockWood(true);
+			_ui.SetActiveBlockWoodTry(true);
 		}
 
 		if (_data.GetBlockGreenMarbleUnlocked() == 1)
 		{
 			_ui.SetActiveProductBlockGreenMarblePriceAndPurchased(false, true);
+			_ui.SetInteractableBlockGreenMarble(false);
+			_ui.SetActiveBlockGreenMarbleTry(false);
 		}
 		else
 		{
 			_ui.SetActiveProductBlockGreenMarblePriceAndPurchased(true, false);
+			_ui.SetInteractableBlockGreenMarble(true);
+			_ui.SetActiveBlockGreenMarbleTry(true);
 		}
 
 		if (_data.GetBlockBlueMarbleUnlocked() == 1)
 		{
 			_ui.SetActiveProductBlockBlueMarblePriceAndPurchased(false, true);
+			_ui.SetInteractableBlockBlueMarble(false);
+			_ui.SetActiveBlockBlueMarbleTry(false);
 		}
 		else
 		{
 			_ui.SetActiveProductBlockBlueMarblePriceAndPurchased(true, false);
+			_ui.SetInteractableBlockBlueMarble(true);
+			_ui.SetActiveBlockBlueMarbleTry(true);
 		}
 
 		if (_data.GetBlockRedMarbleUnlocked() == 1)
 		{
 			_ui.SetActiveProductBlockRedMarblePriceAndPurchased(false, true);
+			_ui.SetInteractableBlockRedMarble(false);
+			_ui.SetActiveBlockRedMarbleTry(false);
 		}
 		else
 		{
 			_ui.SetActiveProductBlockRedMarblePriceAndPurchased(true, false);
+			_ui.SetInteractableBlockRedMarble(true);
+			_ui.SetActiveBlockRedMarbleTry(true);
 		}
 
 		if (_data.GetBlockPurpleMarbleUnlocked() == 1)
 		{
 			_ui.SetActiveProductBlockPurpleMarblePriceAndPurchased(false, true);
+			_ui.SetInteractableBlockPurpleMarble(false);
+			_ui.SetActiveBlockPurpleMarbleTry(false);
 		}
 		else
 		{
 			_ui.SetActiveProductBlockPurpleMarblePriceAndPurchased(true, false);
+			_ui.SetInteractableBlockPurpleMarble(true);
+			_ui.SetActiveBlockPurpleMarbleTry(true);
 		}
 	}
 
-	public void OnProductHintAdButtonPressed()
+	public void OnProductHintAdButtonPricePressed()
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.SetEnableProductPriceButton(false);
+		_ui.SetEnableProductButton(false);
 		_ui.SetEnableBottomButton(false);
 
-		_ui.AnimateProductHintAdButtonPressed
+		_ui.AnimateProductHintAdPriceButtonPressed
 		(
 			()=>
 			{
@@ -254,82 +279,167 @@ public class StoreLogic : MonoBehaviour
 		);
 	}
 
-	private void OnProductButtonPressedCommon()
+	private void OnProductPriceButtonPressedCommon()
 	{
 		_audio.PlayButtonPressed();
 		_purchasePending = 1;
 	}
 
-	public void OnProductRemoveAdsButtonPressed()
+	public void OnProductRemoveAdsButtonPricePressed()
 	{
-		OnProductButtonPressedCommon();
-		_ui.AnimateProductRemoveAdsButtonPressed(()=>{});
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductRemoveAdsPriceButtonPressed(()=>{});
 	}
 
-	public void OnProductUnlockAllLevelsButtonPressed()
+	public void OnProductUnlockAllLevelsButtonPricePressed()
 	{
-		OnProductButtonPressedCommon();
-		_ui.AnimateProductUnlockAllLevelsButtonPressed(()=>{});
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductUnlockAllLevelsPriceButtonPressed(()=>{});
 	}
 
-	public void OnProductHints3ButtonPressed()
+	public void OnProductHints3ButtonPressedPrice()
 	{
-		OnProductButtonPressedCommon();
-		_ui.AnimateProductHints3ButtonPressed(()=>{});
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductHints3PriceButtonPressed(()=>{});
 	}
 
-	public void OnProductHints15p3ButtonPressed()
+	public void OnProductHints15p3ButtonPricePressed()
 	{
-		OnProductButtonPressedCommon();
-		_ui.AnimateProductHints15p3ButtonPressed(()=>{});
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductHints15p3PriceButtonPressed(()=>{});
 	}
 
-	public void OnProductHints30p9ButtonPressed()
+	public void OnProductHints30p9ButtonPricePressed()
 	{
-		OnProductButtonPressedCommon();
-		_ui.AnimateProductHints30p9ButtonPressed(()=>{});
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductHints30p9PriceButtonPressed(()=>{});
 	}
 
-	public void OnProductHints60p24ButtonPressed()
+	public void OnProductHints60p24PriceButtonPressed()
 	{
-		OnProductButtonPressedCommon();
-		_ui.AnimateProductHints60p24ButtonPressed(()=>{});
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductHints60p24PriceButtonPressed(()=>{});
 	}
 
-	public void OnProductBlockMetalButtonPressed()
+	public void OnProductBlockMetalPriceButtonPressed()
 	{
-		OnProductButtonPressedCommon();
-		_ui.AnimateProductBlockMetalButtonPressed(()=>{});
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductBlockMetalPriceButtonPressed(()=>{});
 	}
 
-	public void OnProductBlockWoodButtonPressed()
+	public void OnProductBlockWoodButtonPricePressed()
 	{
-		OnProductButtonPressedCommon();
-		_ui.AnimateProductBlockWoodButtonPressed(()=>{});
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductBlockWoodPriceButtonPressed(()=>{});
 	}
 
-	public void OnProductBlockGreenMarbleButtonPressed()
+	public void OnProductBlockGreenMarbleButtonPricePressed()
 	{
-		OnProductButtonPressedCommon();
-		_ui.AnimateProductBlockGreenMarbleButtonPressed(()=>{});
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductBlockGreenMarblePriceButtonPressed(()=>{});
 	}
 
-	public void OnProductBlockBlueMarbleButtonPressed()
+	public void OnProductBlockBlueMarbleButtonPricePressed()
 	{
-		OnProductButtonPressedCommon();
-		_ui.AnimateProductBlockBlueMarbleButtonPressed(()=>{});
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductBlockBlueMarblePriceButtonPressed(()=>{});
 	}
 
-	public void OnProductBlockRedMarbleButtonPressed()
+	public void OnProductBlockRedMarbleButtonPricePressed()
 	{
-		OnProductButtonPressedCommon();
-		_ui.AnimateProductBlockRedMarbleButtonPressed(()=>{});
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductBlockRedMarblePriceButtonPressed(()=>{});
 	}
 
-	public void OnProductBlockPurpleMarbleButtonPressed()
+	public void OnProductBlockPurpleMarbleButtonPricePressed()
 	{
-		OnProductButtonPressedCommon();
-		_ui.AnimateProductBlockPurpleMarbleButtonPressed(()=>{});
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductBlockPurpleMarblePriceButtonPressed(()=>{});
+	}
+
+	public void OnProductTryButtonPressedCommon()
+	{
+		_audio.PlayButtonPressed();
+		_ui.SetEnableProductButton(false);
+		_ui.SetEnableBottomButton(false);
+	}
+
+	public void OnProductBlockMetalButtonTryPressed()
+	{
+		OnProductTryButtonPressedCommon();
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_METAL);
+		_ui.AnimateProductBlockMetalButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("PreviewScene");
+			}
+		);
+	}
+
+	public void OnProductBlockWoodButtonTryPressed()
+	{
+		OnProductTryButtonPressedCommon();
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_WOOD);
+		_ui.AnimateProductBlockWoodButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("PreviewScene");
+			}
+		);
+	}
+
+	public void OnProductBlockGreenMarbleButtonTryPressed()
+	{
+		OnProductTryButtonPressedCommon();
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_GREEN_MARBLE);
+		_ui.AnimateProductBlockGreenMarbleButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("PreviewScene");
+			}
+		);
+	}
+
+	public void OnProductBlockBlueMarbleButtonTryPressed()
+	{
+		OnProductTryButtonPressedCommon();
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_BLUE_MARBLE);
+		_ui.AnimateProductBlockBlueMarbleButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("PreviewScene");
+			}
+		);
+	}
+
+	public void OnProductBlockRedMarbleButtonTryPressed()
+	{
+		OnProductTryButtonPressedCommon();
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_RED_MARBLE);
+		_ui.AnimateProductBlockRedMarbleButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("PreviewScene");
+			}
+		);
+	}
+
+	public void OnProductBlockPurpleMarbleButtonTryPressed()
+	{
+		OnProductTryButtonPressedCommon();
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_PURPLE_MARBLE);
+		_ui.AnimateProductBlockPurpleMarbleButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("PreviewScene");
+			}
+		);
 	}
 
 	// IAP
@@ -346,6 +456,7 @@ public class StoreLogic : MonoBehaviour
 		if (itemNumber == ItemManager.REMOVE_ADS)
 		{
 			_ui.SetActiveProductRemoveAdsPriceAndPurchased(false, true);
+			_ui.SetActiveRemoveAdsRibbon(false);
 		}
 		else if (itemNumber == ItemManager.UNLOCK_ALL_LEVELS)
 		{
@@ -354,7 +465,7 @@ public class StoreLogic : MonoBehaviour
 
 		_audio.PlayRewardReceived();
 
-		_ui.SetEnableProductPriceButton(false);
+		_ui.SetEnableProductButton(false);
 		_ui.SetEnableBottomButton(false);
 
 		_message.SetActiveItem(true);
@@ -383,7 +494,7 @@ public class StoreLogic : MonoBehaviour
 
 		_ui.SetTopHintCount(_cloudOnce.GetHint());
 
-		_ui.SetEnableProductPriceButton(false);
+		_ui.SetEnableProductButton(false);
 		_ui.SetEnableBottomButton(false);
 
 		_message.SetHintCount(numHint);
@@ -411,31 +522,45 @@ public class StoreLogic : MonoBehaviour
 		if (setNumber == BlockManager.BLOCK_SET_METAL)
 		{
 			_ui.SetActiveProductBlockMetalPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockMetal(false);
+			_ui.SetActiveBlockMetalTry(false);
 		}
 		else if (setNumber == BlockManager.BLOCK_SET_WOOD)
 		{
 			_ui.SetActiveProductBlockWoodPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockWood(false);
+			_ui.SetActiveBlockWoodTry(false);
+			_ui.SetActiveBlockWoodRibbon(false);
 		}
 		else if (setNumber == BlockManager.BLOCK_SET_GREEN_MARBLE)
 		{
 			_ui.SetActiveProductBlockGreenMarblePriceAndPurchased(false, true);
+			_ui.SetInteractableBlockGreenMarble(false);
+			_ui.SetActiveBlockGreenMarbleTry(false);
 		}
 		else if (setNumber == BlockManager.BLOCK_SET_BLUE_MARBLE)
 		{
 			_ui.SetActiveProductBlockBlueMarblePriceAndPurchased(false, true);
+			_ui.SetInteractableBlockBlueMarble(false);
+			_ui.SetActiveBlockBlueMarbleTry(false);
 		}
 		else if (setNumber == BlockManager.BLOCK_SET_RED_MARBLE)
 		{
 			_ui.SetActiveProductBlockRedMarblePriceAndPurchased(false, true);
+			_ui.SetInteractableBlockRedMarble(false);
+			_ui.SetActiveBlockRedMarbleTry(false);
+			_ui.SetActiveBlockRedMarbleRibbon(false);
 		}
 		else if (setNumber == BlockManager.BLOCK_SET_PURPLE_MARBLE)
 		{
 			_ui.SetActiveProductBlockPurpleMarblePriceAndPurchased(false, true);
+			_ui.SetInteractableBlockPurpleMarble(false);
+			_ui.SetActiveBlockPurpleMarbleTry(false);
 		}
 
 		_audio.PlayRewardReceived();
 
-		_ui.SetEnableProductPriceButton(false);
+		_ui.SetEnableProductButton(false);
 		_ui.SetEnableBottomButton(false);
 
 		_message.SetActiveBlock(true);
@@ -462,7 +587,7 @@ public class StoreLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.SetEnableProductPriceButton(false);
+		_ui.SetEnableProductButton(false);
 		_ui.SetEnableBottomButton(false);
 
 		_ui.AnimateBottomBackButtonPressed
@@ -507,7 +632,7 @@ public class StoreLogic : MonoBehaviour
 					{
 						_message.SetActiveItem(false);
 
-						_ui.SetEnableProductPriceButton(true);
+						_ui.SetEnableProductButton(true);
 						_ui.SetEnableBottomButton(true);
 					}
 				);
@@ -538,7 +663,7 @@ public class StoreLogic : MonoBehaviour
 					{
 						_message.SetActiveHint(false);
 
-						_ui.SetEnableProductPriceButton(true);
+						_ui.SetEnableProductButton(true);
 						_ui.SetEnableBottomButton(true);
 					}
 				);
@@ -569,7 +694,7 @@ public class StoreLogic : MonoBehaviour
 					{
 						_message.SetActiveBlock(false);
 
-						_ui.SetEnableProductPriceButton(true);
+						_ui.SetEnableProductButton(true);
 						_ui.SetEnableBottomButton(true);
 					}
 				);
@@ -610,7 +735,7 @@ public class StoreLogic : MonoBehaviour
 					{
 						_message.SetActiveError(false);
 
-						_ui.SetEnableProductPriceButton(true);
+						_ui.SetEnableProductButton(true);
 						_ui.SetEnableBottomButton(true);
 					}
 				);
@@ -625,6 +750,7 @@ public class StoreLogic : MonoBehaviour
 		_ui = GameObject.Find("StoreUI").GetComponent<StoreUI>();
 		_ad = GameObject.Find("AdManager").GetComponent<AdManager>();
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
@@ -646,12 +772,12 @@ public class StoreLogic : MonoBehaviour
 		SetupMessageLoad();
 		SetupMessageError();
 
-		_ui.SetEnableProductPriceButton(false);
+		_ui.SetEnableProductButton(false);
 		_ui.AnimateProductEnter
 		(
 			()=>
 			{
-				_ui.SetEnableProductPriceButton(true);
+				_ui.SetEnableProductButton(true);
 			}
 		);
 	}

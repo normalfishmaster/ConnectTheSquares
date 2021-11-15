@@ -51,6 +51,23 @@ public class StoreUI : MonoBehaviour
 	private GameObject _productPanel;
 
 	private GameObject _productUnlockAllLevelsPanel;
+	private GameObject _productBlockMetalPanel;
+	private GameObject _productBlockWoodPanel;
+	private GameObject _productBlockGreenMarblePanel;
+	private GameObject _productBlockBlueMarblePanel;
+	private GameObject _productBlockRedMarblePanel;
+	private GameObject _productBlockPurpleMarblePanel;
+
+	private GameObject _productBlockMetalTry;
+	private GameObject _productBlockWoodTry;
+	private GameObject _productBlockGreenMarbleTry;
+	private GameObject _productBlockBlueMarbleTry;
+	private GameObject _productBlockRedMarbleTry;
+	private GameObject _productBlockPurpleMarbleTry;
+
+	private GameObject _productRemoveAdsRibbon;
+	private GameObject _productBlockWoodRibbon;
+	private GameObject _productBlockRedMarbleRibbon;
 
 	private GameObject _productHintAdSunburst;
 	private GameObject _productRemoveAdsSunburst;
@@ -108,6 +125,23 @@ public class StoreUI : MonoBehaviour
 		_productPanel = GameObject.Find("/Canvas/Product");
 
 		_productUnlockAllLevelsPanel = GameObject.Find("/Canvas/Product/Viewport/Content/UnlockAllLevels/Panel");
+		_productBlockMetalPanel = GameObject.Find("/Canvas/Product/Viewport/Content/BlockMetal/Panel");
+		_productBlockWoodPanel = GameObject.Find("/Canvas/Product/Viewport/Content/BlockWood/Panel");
+		_productBlockGreenMarblePanel = GameObject.Find("/Canvas/Product/Viewport/Content/BlockGreenMarble/Panel");
+		_productBlockBlueMarblePanel = GameObject.Find("/Canvas/Product/Viewport/Content/BlockBlueMarble/Panel");
+		_productBlockRedMarblePanel = GameObject.Find("/Canvas/Product/Viewport/Content/BlockRedMarble/Panel");
+		_productBlockPurpleMarblePanel = GameObject.Find("/Canvas/Product/Viewport/Content/BlockPurpleMarble/Panel");
+
+		_productBlockMetalTry = GameObject.Find("/Canvas/Product/Viewport/Content/BlockMetal/Panel/Try");
+		_productBlockWoodTry = GameObject.Find("/Canvas/Product/Viewport/Content/BlockWood/Panel/Try");
+		_productBlockGreenMarbleTry = GameObject.Find("/Canvas/Product/Viewport/Content/BlockGreenMarble/Panel/Try");
+		_productBlockBlueMarbleTry = GameObject.Find("/Canvas/Product/Viewport/Content/BlockBlueMarble/Panel/Try");
+		_productBlockRedMarbleTry = GameObject.Find("/Canvas/Product/Viewport/Content/BlockRedMarble/Panel/Try");
+		_productBlockPurpleMarbleTry = GameObject.Find("/Canvas/Product/Viewport/Content/BlockPurpleMarble/Panel/Try");
+
+		_productRemoveAdsRibbon = GameObject.Find("/Canvas/Product/Viewport/Content/RemoveAds/Panel/Ribbon");
+		_productBlockWoodRibbon = GameObject.Find("/Canvas/Product/Viewport/Content/BlockWood/Panel/Ribbon");
+		_productBlockRedMarbleRibbon = GameObject.Find("/Canvas/Product/Viewport/Content/BlockRedMarble/Panel/Ribbon");
 
 		_productHintAdSunburst = GameObject.Find("/Canvas/Product/Viewport/Content/HintAd/Panel/Sunburst");
 		_productRemoveAdsSunburst = GameObject.Find("/Canvas/Product/Viewport/Content/RemoveAds/Panel/Sunburst");
@@ -209,7 +243,7 @@ public class StoreUI : MonoBehaviour
 		_productBlockPurpleMarblePurchased.SetActive(purchased);
 	}
 
-	public void SetEnableProductPriceButton(bool enable)
+	public void SetEnableProductButton(bool enable)
 	{
 		if (_productUnlockAllLevelsPriceButton.GetComponent<Button>().interactable)
 		{
@@ -228,6 +262,13 @@ public class StoreUI : MonoBehaviour
 		_productBlockBlueMarblePriceButton.GetComponent<Button>().enabled = enable;
 		_productBlockRedMarblePriceButton.GetComponent<Button>().enabled = enable;
 		_productBlockPurpleMarblePriceButton.GetComponent<Button>().enabled = enable;
+
+		_productBlockMetalPanel.GetComponent<Button>().enabled = enable;
+		_productBlockWoodPanel.GetComponent<Button>().enabled = enable;
+		_productBlockGreenMarblePanel.GetComponent<Button>().enabled = enable;
+		_productBlockBlueMarblePanel.GetComponent<Button>().enabled = enable;
+		_productBlockRedMarblePanel.GetComponent<Button>().enabled = enable;
+		_productBlockPurpleMarblePanel.GetComponent<Button>().enabled = enable;
 	}
 
 	public void SetInteractableProductUnlockAllLevels(bool interactable)
@@ -242,6 +283,81 @@ public class StoreUI : MonoBehaviour
 			_productUnlockAllLevelsPanel.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 			_productUnlockAllLevelsPriceButton.GetComponent<Button>().interactable = interactable;
 		}
+	}
+
+	public void SetInteractableBlockMetal(bool interactable)
+	{
+		_productBlockMetalPanel.GetComponent<Button>().interactable = interactable;
+	}
+
+	public void SetInteractableBlockWood(bool interactable)
+	{
+		_productBlockWoodPanel.GetComponent<Button>().interactable = interactable;
+	}
+
+	public void SetInteractableBlockGreenMarble(bool interactable)
+	{
+		_productBlockGreenMarblePanel.GetComponent<Button>().interactable = interactable;
+	}
+
+	public void SetInteractableBlockBlueMarble(bool interactable)
+	{
+		_productBlockBlueMarblePanel.GetComponent<Button>().interactable = interactable;
+	}
+
+	public void SetInteractableBlockRedMarble(bool interactable)
+	{
+		_productBlockRedMarblePanel.GetComponent<Button>().interactable = interactable;
+	}
+
+	public void SetInteractableBlockPurpleMarble(bool interactable)
+	{
+		_productBlockPurpleMarblePanel.GetComponent<Button>().interactable = interactable;
+	}
+
+	public void SetActiveBlockMetalTry(bool active)
+	{
+		_productBlockMetalTry.SetActive(active);
+	}
+
+	public void SetActiveBlockWoodTry(bool active)
+	{
+		_productBlockWoodTry.SetActive(active);
+	}
+
+	public void SetActiveBlockGreenMarbleTry(bool active)
+	{
+		_productBlockGreenMarbleTry.SetActive(active);
+	}
+
+	public void SetActiveBlockBlueMarbleTry(bool active)
+	{
+		_productBlockBlueMarbleTry.SetActive(active);
+	}
+
+	public void SetActiveBlockRedMarbleTry(bool active)
+	{
+		_productBlockRedMarbleTry.SetActive(active);
+	}
+
+	public void SetActiveBlockPurpleMarbleTry(bool active)
+	{
+		_productBlockPurpleMarbleTry.SetActive(active);
+	}
+
+	public void SetActiveRemoveAdsRibbon(bool active)
+	{
+		_productRemoveAdsRibbon.SetActive(active);
+	}
+
+	public void SetActiveBlockWoodRibbon(bool active)
+	{
+		_productBlockWoodRibbon.SetActive(active);
+	}
+
+	public void SetActiveBlockRedMarbleRibbon(bool active)
+	{
+		_productBlockRedMarbleRibbon.SetActive(active);
 	}
 
 	public void AnimateProductSunburst()
@@ -285,69 +401,99 @@ public class StoreUI : MonoBehaviour
 		);
 	}
 
-	public void AnimateProductHintAdButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateProductHintAdPriceButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_productHintAdPriceButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateProductRemoveAdsButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateProductRemoveAdsPriceButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_productRemoveAdsPriceButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateProductUnlockAllLevelsButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateProductUnlockAllLevelsPriceButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_productUnlockAllLevelsPriceButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateProductHints3ButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateProductHints3PriceButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_productHints3PriceButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateProductHints15p3ButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateProductHints15p3PriceButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_productHints15p3PriceButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateProductHints30p9ButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateProductHints30p9PriceButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_productHints30p9PriceButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateProductHints60p24ButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateProductHints60p24PriceButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_productHints60p24PriceButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateProductBlockMetalButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateProductBlockMetalPriceButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_productBlockMetalPriceButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateProductBlockWoodButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateProductBlockWoodPriceButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_productBlockWoodPriceButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateProductBlockGreenMarbleButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateProductBlockGreenMarblePriceButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_productBlockGreenMarblePriceButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateProductBlockBlueMarbleButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateProductBlockBlueMarblePriceButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_productBlockBlueMarblePriceButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateProductBlockRedMarbleButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateProductBlockRedMarblePriceButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_productBlockRedMarblePriceButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
-	public void AnimateProductBlockPurpleMarbleButtonPressed(Animate.AnimateComplete callback)
+	public void AnimateProductBlockPurpleMarblePriceButtonPressed(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateButtonPressed(_productBlockPurpleMarblePriceButton, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateProductBlockMetalButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_productBlockMetalPanel, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateProductBlockWoodButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_productBlockWoodPanel, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateProductBlockGreenMarbleButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_productBlockGreenMarblePanel, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateProductBlockBlueMarbleButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_productBlockBlueMarblePanel, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateProductBlockRedMarbleButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_productBlockRedMarblePanel, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	public void AnimateProductBlockPurpleMarbleButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_productBlockPurpleMarblePanel, PRODUCT_ANIMATE_BUTTON_PRESSED_SCALE, PRODUCT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
 	}
 
 	// Bottom

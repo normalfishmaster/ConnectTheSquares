@@ -72,6 +72,7 @@ public class StartupLogic : MonoBehaviour
 	{
 		_data.DeleteAll();
 		_data.InitializeData();
+		_data.SetBlockMetalUnlocked(1);
 		_cloudOnce.DeleteAll();
 	}
 
