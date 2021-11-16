@@ -675,9 +675,10 @@ public class MainMenuUI : MonoBehaviour
 	public float REWARDS_ANIMATE_BUTTON_PRESSED_SCALE;
 	public float REWARDS_ANIMATE_BUTTON_PRESSED_DURATION;
 
-	public float REWARDS_ANIMATE_SUNBURST_RORATE_TIME;
+	public float REWARDS_ANIMATE_SUNBURST_RORATE_DURATION;
 
-	public float REWARDS_ANIMATE_LABEL_TIME;
+	public float REWARDS_ANIMATE_LABEL_DURATION;
+	public float REWARDS_ANIMATE_LABEL_DELAY;
 
 	private GameObject _rewards;
 	private GameObject _rewardsBoard;
@@ -793,7 +794,7 @@ public class MainMenuUI : MonoBehaviour
 
 		LeanTween.cancel(_rewardsDaySunburst[day]);
 
-		LeanTween.rotateAround(_rewardsDaySunburst[day], Vector3.forward, -360.0f, REWARDS_ANIMATE_SUNBURST_RORATE_TIME).setOnComplete
+		LeanTween.rotateAround(_rewardsDaySunburst[day], Vector3.forward, -360.0f, REWARDS_ANIMATE_SUNBURST_RORATE_DURATION).setOnComplete
 		(
 			()=>
 			{
@@ -809,14 +810,10 @@ public class MainMenuUI : MonoBehaviour
 
 		LeanTween.cancel(_rewardsDayGetButtonLabel[day]);
 
-		LeanTween.scale(_rewardsDayGetButtonLabel[day], Vector3.one * 1.25f, REWARDS_ANIMATE_LABEL_TIME).setEasePunch();
-
-		LeanTween.rotateAround(_rewardsDayGetButtonLabel[day], Vector3.forward, _rewardsLabelRotateDir[day] * 20.0f, REWARDS_ANIMATE_LABEL_TIME).setEasePunch().setOnComplete
+		LeanTween.scale(_rewardsDayGetButtonLabel[day], Vector3.one * 1.45f, REWARDS_ANIMATE_LABEL_DURATION).setDelay(REWARDS_ANIMATE_LABEL_DELAY).setEasePunch().setOnComplete
 		(
 			()=>
 			{
-
-				_rewardsLabelRotateDir[day] *= -1;
 				AnimateRewardsDayGetLabel(day);
 			}
 		);
