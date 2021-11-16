@@ -11,6 +11,8 @@ public class NotificationManager : MonoBehaviour
 {
 	private NotificationManager _instance;
 
+	private DataManager _data;
+
 	// Android
 
 	AndroidNotificationChannel _channel;
@@ -142,6 +144,8 @@ public class NotificationManager : MonoBehaviour
 
 		_instance = this;
 		DontDestroyOnLoad(this.gameObject);
+
+		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 	}
 
 	void Start()
@@ -158,11 +162,17 @@ public class NotificationManager : MonoBehaviour
 			return;
 		}
 
-		ScheduleNotification();
+		if (_data.GetNotification() == 1)
+		{
+			ScheduleNotification();
+		}
 	}
 
 	void OnApplicationQuit()
 	{
-		ScheduleNotification();
+		if (_data.GetNotification() == 1)
+		{
+			ScheduleNotification();
+		}
 	}
 }

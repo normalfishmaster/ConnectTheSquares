@@ -14,6 +14,9 @@ public class DataManager : MonoBehaviour
 	public string GetAudioKey()						{ return "AudioKey";										}
 	public int    GetAudioDefault()						{ return 1;											}
 
+	public string GetNotificationKey()					{ return "NotificationKey";									}
+	public int    GetNotificationDefault()					{ return 1;											}
+
 	public string GetRemoveAdsKey()						{ return "RemoveAdsKey";									}
 	public int    GetRemoveAdsDefault()					{ return 0;											}
 
@@ -95,6 +98,11 @@ public class DataManager : MonoBehaviour
 	public int   GetAudio()							{ return PlayerPrefs.GetInt(GetAudioKey());							}
 	public void  SetAudio(int value)					{        PlayerPrefs.SetInt(GetAudioKey(), value);						}
 	public void  InitAudio()						{        PlayerPrefs.SetInt(GetAudioKey(), GetAudioDefault());					}
+
+	public bool  CheckNotification()					{ return PlayerPrefs.HasKey(GetNotificationKey());						}
+	public int   GetNotification()						{ return PlayerPrefs.GetInt(GetNotificationKey());						}
+	public void  SetNotification(int value)					{        PlayerPrefs.SetInt(GetNotificationKey(), value);					}
+	public void  InitNotification()						{        PlayerPrefs.SetInt(GetNotificationKey(), GetNotificationDefault());			}
 
 	public bool  CheckRemoveAds()						{ return PlayerPrefs.HasKey(GetRemoveAdsKey());							}
 	public int   GetRemoveAds()						{ return PlayerPrefs.GetInt(GetRemoveAdsKey());							}
@@ -373,6 +381,10 @@ public class DataManager : MonoBehaviour
 		if (CheckAudio() == false)
 		{
 			InitAudio();
+		}
+		if (CheckNotification() == false)
+		{
+			InitNotification();
 		}
 		if (CheckRemoveAds() == false)
 		{

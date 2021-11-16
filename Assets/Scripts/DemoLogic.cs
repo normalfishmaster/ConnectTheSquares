@@ -708,6 +708,22 @@ public class DemoLogic : MonoBehaviour
 		_ui.SetActiveBlinder(false);
 	}
 
+	// Misc
+
+	private void SetupMisc()
+	{
+		if (_block.IsBlockSetUnlocked(_blockSet) == 1)
+		{
+			_ui.SetActiveMiscLocked(false);
+			_ui.SetActiveMiscUnlocked(true);
+		}
+		else
+		{
+			_ui.SetActiveMiscLocked(true);
+			_ui.SetActiveMiscUnlocked(false);
+		}
+	}
+
 	// Unity Lifecyle
 
 	private void Awake()
@@ -730,6 +746,7 @@ public class DemoLogic : MonoBehaviour
 		SetupTouch();
 		SetupControl();
 		SetupBlinder();
+		SetupMisc();
 
 		_ui.SetActiveBlinder(true);
 		_ui.AnimateBlinderLighten

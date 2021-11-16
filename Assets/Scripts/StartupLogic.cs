@@ -70,10 +70,11 @@ public class StartupLogic : MonoBehaviour
 
 	private void RunTestSequence()
 	{
-		_data.DeleteAll();
+/*		_data.DeleteAll();
 		_data.InitializeData();
 		_data.SetBlockMetalUnlocked(1);
 		_cloudOnce.DeleteAll();
+*/
 	}
 
 	// Unity Lifecycle
