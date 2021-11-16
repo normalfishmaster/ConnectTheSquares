@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/StoreScene.unity
     guid: 631bcedccc1960f0995305edcc0ec5f3
   - enabled: 1
-    path: Assets/Scenes/PreviewScene.unity
+    path: Assets/Scenes/DemoScene.unity
     guid: b9f0fbe3fe8ed2d53be64cc1b2fd77e7
   - enabled: 1
     path: Assets/Scenes/LevelMenuScene.unity

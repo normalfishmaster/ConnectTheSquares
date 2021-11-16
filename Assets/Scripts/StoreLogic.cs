@@ -372,7 +372,7 @@ public class StoreLogic : MonoBehaviour
 		(
 			()=>
 			{
-				SceneManager.LoadScene("PreviewScene");
+				SceneManager.LoadScene("DemoScene");
 			}
 		);
 	}
@@ -385,7 +385,7 @@ public class StoreLogic : MonoBehaviour
 		(
 			()=>
 			{
-				SceneManager.LoadScene("PreviewScene");
+				SceneManager.LoadScene("DemoScene");
 			}
 		);
 	}
@@ -398,7 +398,7 @@ public class StoreLogic : MonoBehaviour
 		(
 			()=>
 			{
-				SceneManager.LoadScene("PreviewScene");
+				SceneManager.LoadScene("DemoScene");
 			}
 		);
 	}
@@ -411,7 +411,7 @@ public class StoreLogic : MonoBehaviour
 		(
 			()=>
 			{
-				SceneManager.LoadScene("PreviewScene");
+				SceneManager.LoadScene("DemoScene");
 			}
 		);
 	}
@@ -424,7 +424,7 @@ public class StoreLogic : MonoBehaviour
 		(
 			()=>
 			{
-				SceneManager.LoadScene("PreviewScene");
+				SceneManager.LoadScene("DemoScene");
 			}
 		);
 	}
@@ -437,7 +437,7 @@ public class StoreLogic : MonoBehaviour
 		(
 			()=>
 			{
-				SceneManager.LoadScene("PreviewScene");
+				SceneManager.LoadScene("DemoScene");
 			}
 		);
 	}

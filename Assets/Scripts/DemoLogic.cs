@@ -5,9 +5,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PreviewLogic : MonoBehaviour
+public class DemoLogic : MonoBehaviour
 {
-	private PreviewUI _ui;
+	private DemoUI _ui;
 	private AudioManager _audio;
 	private BlockManager _block;
 	private DataManager _data;
@@ -116,6 +116,7 @@ public class PreviewLogic : MonoBehaviour
 
 	private sbyte[,] _physicsMapLayout;
 	private Vector2[] _physicsBlockPos;
+	private Vector2[] _physicsStartBlockPos;
 
 	private Vector2 _physicsDirection;
 
@@ -133,16 +134,17 @@ public class PreviewLogic : MonoBehaviour
 	private void SetupPhysics()
 	{
 		_physicsBlockPos = new Vector2[Level.NUM_BLOCK];
+		_physicsStartBlockPos = new Vector2[Level.NUM_BLOCK];
 
 		_physicsMapLayout = new sbyte[,]
 		{
 			{ X, X, X, X, X, X, X, X, },
-			{ X, X, 0, 0, 0, 0, X, X, },
-			{ X, 0, A, 0, 0, C, 0, X, },
+			{ X, 0, 0, 0, 0, 0, X, X, },
+			{ X, 0, C, 0, 0, A, 0, X, },
 			{ X, 0, 0, X, X, 0, 0, X, },
 			{ X, 0, 0, X, X, 0, 0, X, },
-			{ X, 0, B, 0, 0, D, 0, X, },
-			{ X, X, 0, 0, 0, 0, X, X, },
+			{ X, 0, D, 0, 0, B, 0, X, },
+			{ X, X, 0, 0, 0, 0, 0, X, },
 			{ X, X, X, X, X, X, X, X, },
 		};
 
@@ -156,6 +158,7 @@ public class PreviewLogic : MonoBehaviour
 				{
 					int n = Level.GetBlockNumber(tile);
 					_physicsBlockPos[n] = new Vector2(i, j);
+					_physicsStartBlockPos[n] = new Vector2(i, j);
                                         SetMapBlockPos(n, i, j);
                                 }
 
@@ -451,6 +454,25 @@ public class PreviewLogic : MonoBehaviour
 		return ret;
 	}
 
+	private void ResetBlockPos()
+	{
+
+		for (int i = 0; i < NUM_BLOCK; i++)
+		{
+			_physicsMapLayout[(int)_physicsBlockPos[i].x, (int)_physicsBlockPos[i].y] = Level.EMPTY;
+		}
+
+		for (int i = 0; i < NUM_BLOCK; i++)
+		{
+			_physicsBlockPos[i].x = _physicsStartBlockPos[i].x;
+			_physicsBlockPos[i].y = _physicsStartBlockPos[i].y;
+
+			_physicsMapLayout[(int)_physicsBlockPos[i].x, (int)_physicsBlockPos[i].y] = Level.GetBlock((sbyte)i);
+
+			SetMapBlockPos(i, _physicsBlockPos[i].x, _physicsBlockPos[i].y);
+		}
+	}
+
 	// Touch
 
 	private const float TOUCH_DIRECTION_MULTIPLIER = 1.5f;
@@ -655,21 +677,28 @@ public class PreviewLogic : MonoBehaviour
 
 		_ui.AnimateControlBlockButtonPressed(()=>{});
 
-		int nextSet = _blockSet;
+		_blockSet = _block.IncrementSetNumber(_blockSet);
+		SetMapBlockSprite(_blockSet);
 
-		do
+		if (_block.IsBlockSetUnlocked(_blockSet) == 1)
 		{
-			nextSet = _block.IncrementSetNumber(nextSet);
-
-			if (_block.IsBlockSetUnlocked(nextSet) == 0)
-			{
-				SetMapBlockSprite(nextSet);
-				_blockSet = nextSet;
-				break;
-			}
-
+			_ui.SetActiveMiscLocked(false);
+			_ui.SetActiveMiscUnlocked(true);
 		}
-		while (nextSet != _blockSet);
+		else
+		{
+			_ui.SetActiveMiscLocked(true);
+			_ui.SetActiveMiscUnlocked(false);
+		}
+	}
+
+	public void OnControlResetkButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+		ResetBlockPos();
+
+		_ui.AnimateControlResetButtonPressed(()=>{});
 	}
 
 	// Blinder
@@ -683,7 +712,7 @@ public class PreviewLogic : MonoBehaviour
 
 	private void Awake()
 	{
-		_ui = GameObject.Find("PreviewUI").GetComponent<PreviewUI>();
+		_ui = GameObject.Find("DemoUI").GetComponent<DemoUI>();
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
