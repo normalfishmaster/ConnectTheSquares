@@ -1090,6 +1090,8 @@ public class LevelLogic : MonoBehaviour
 					_audio.PlayWinEnter();
 
 					_ui.SetActiveWin(true);
+					_ui.SetActiveWinMessagePerfect(false);
+					_ui.SetActiveWinMessageTry(false);
 					_ui.SetEnableWinButton(false);
 					_ui.SetInteractableWinNextButton(enableNext);
 
@@ -1100,8 +1102,34 @@ public class LevelLogic : MonoBehaviour
 							_ui.AnimateWinStarEnter(star,
 								()=>
 								{
-									_ui.SetEnableWinButton(true);
-									_ui.SetInteractableWinNextButton(enableNext);
+									if (star == 3)
+									{
+										_ui.SetActiveWinMessagePerfect(true);
+										_ui.AnimateWinMessagePerfectEnter
+										(
+											()=>
+											{
+												_ui.SetEnableWinButton(true);
+												_ui.SetInteractableWinNextButton(enableNext);
+											}
+										);
+									}
+									else
+									{
+										_ui.SetActiveWinMessageTry(true);
+										_ui.SetWinMessageTryMovesNumber(_levelMap._hint.Length);
+										_ui.AnimateWinMessageTryEnter
+										(
+											()=>
+											{
+												_ui.SetEnableWinButton(true);
+												_ui.SetInteractableWinNextButton(enableNext);
+											}
+										);
+
+									}
+
+
 								}
 							);
 						}
@@ -1641,6 +1669,8 @@ public class LevelLogic : MonoBehaviour
 		(
 			()=>
 			{
+				_ui.SetActiveWinMessagePerfect(false);
+				_ui.SetActiveWinMessageTry(false);
 				_ui.AnimateWinBoardExit
 				(
 					()=>
@@ -1721,6 +1751,8 @@ public class LevelLogic : MonoBehaviour
 		(
 			()=>
 			{
+				_ui.SetActiveWinMessagePerfect(false);
+				_ui.SetActiveWinMessageTry(false);
 				_ui.AnimateWinBoardExit
 				(
 					()=>
@@ -1741,6 +1773,8 @@ public class LevelLogic : MonoBehaviour
 		(
 			()=>
 			{
+				_ui.SetActiveWinMessagePerfect(false);
+				_ui.SetActiveWinMessageTry(false);
 				_ui.AnimateWinBoardExit
 				(
 					()=>
@@ -1783,6 +1817,8 @@ public class LevelLogic : MonoBehaviour
 		(
 			()=>
 			{
+				_ui.SetActiveWinMessagePerfect(false);
+				_ui.SetActiveWinMessageTry(false);
 				_ui.AnimateWinBoardExit
 				(
 					()=>

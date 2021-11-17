@@ -643,6 +643,12 @@ public class LevelUI : MonoBehaviour
 	public float WIN_ANIMATE_BUTTON_PRESSED_SCALE;
 	public float WIN_ANIMATE_BUTTON_PRESSED_DURATION;
 
+	public float WIN_ANIMATE_MESSAGE_PERFECT_ENTER_DURATION;
+	public float WIN_ANIMATE_MESSAGE_PERFECT_EXIT_DURATION;
+
+	public float WIN_ANIMATE_MESSAGE_TRY_ENTER_DURATION;
+	public float WIN_ANIMATE_MESSAGE_TRY_EXIT_DURATION;
+
 	public Sprite[] _winColorSprite;
 
 	private GameObject _win;
@@ -655,6 +661,9 @@ public class LevelUI : MonoBehaviour
 	private GameObject _winMenuButton;
 	private GameObject _winReplayButton;
 	private GameObject _winNextButton;
+
+	private GameObject _winMessagePerfect;
+	private GameObject _winMessageTry;
 
 	int _winNumStar;
 
@@ -676,6 +685,9 @@ public class LevelUI : MonoBehaviour
 		_winMenuButton = GameObject.Find("/Canvas/Win/Board/Menu/Button");
 		_winReplayButton = GameObject.Find("/Canvas/Win/Board/Replay/Button");
 		_winNextButton = GameObject.Find("/Canvas/Win/Board/Next/Button");
+
+		_winMessagePerfect = GameObject.Find("/Canvas/Win/Board/MessagePerfect");
+		_winMessageTry = GameObject.Find("/Canvas/Win/Board/MessageTry");
 	}
 
 	public void SetWinColor(int color)
@@ -693,6 +705,16 @@ public class LevelUI : MonoBehaviour
 		_winStar[star].SetActive(active);
 	}
 
+	public void SetActiveWinMessagePerfect(bool active)
+	{
+		_winMessagePerfect.SetActive(active);
+	}
+
+	public void SetActiveWinMessageTry(bool active)
+	{
+		_winMessageTry.SetActive(active);
+	}
+
 	public void SetEnableWinButton(bool enable)
 	{
 		_winHintAdButton.GetComponent<Button>().enabled = enable;
@@ -704,6 +726,11 @@ public class LevelUI : MonoBehaviour
 	public void SetInteractableWinNextButton(bool interactable)
 	{
 		_winNextButton.GetComponent<Button>().interactable = interactable;
+	}
+
+	public void SetWinMessageTryMovesNumber(int moves)
+	{
+		_winMessageTry.GetComponent<TextMeshProUGUI>().SetText("Solve within <color=#EC2167><b><u>" + moves + " moves</u></b></color>\nto get 3 stars");
 	}
 
 	public void AnimateWinBoardEnter(Animate.AnimateComplete callback)
@@ -775,6 +802,64 @@ public class LevelUI : MonoBehaviour
 				}
 			);
 		}
+	}
+
+	public void AnimateWinMessagePerfectEnter(Animate.AnimateComplete callback)
+	{
+		_winMessagePerfect.transform.localScale = Vector3.zero;
+		LeanTween.scale(_winMessagePerfect, Vector3.one, WIN_ANIMATE_MESSAGE_PERFECT_ENTER_DURATION).setEase(LeanTweenType.easeOutBack).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
+	}
+
+	public void AnimateWinMessagePerfectExit(Animate.AnimateComplete callback)
+	{
+		_winMessagePerfect.transform.localScale = Vector3.one;
+		LeanTween.scale(_winMessagePerfect, Vector3.zero, WIN_ANIMATE_MESSAGE_PERFECT_EXIT_DURATION).setEase(LeanTweenType.easeOutExpo).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
+	}
+
+	public void AnimateWinMessageTryEnter(Animate.AnimateComplete callback)
+	{
+		Color currentColor = _winMessageTry.GetComponent<TextMeshProUGUI>().color;
+
+		_winMessageTry.GetComponent<TextMeshProUGUI>().color = new Color(currentColor.r, currentColor.g, currentColor.b, 0);
+
+		LeanTween.value(_winMessageTry, 0.0f, 1, WIN_ANIMATE_MESSAGE_TRY_ENTER_DURATION).setEase(LeanTweenType.easeInSine).setOnUpdate
+		(
+			(float val) =>
+			{
+				_winMessageTry.GetComponent<TextMeshProUGUI>().color = new Color(currentColor.r, currentColor.g, currentColor.b, val);
+			}
+		)
+				.setOnComplete
+				(
+					()=>
+					{
+						callback();
+					}
+				);
+	}
+
+	public void AnimateWinMessageTryExit(Animate.AnimateComplete callback)
+	{
+		_winMessageTry.transform.localScale = Vector3.one;
+		LeanTween.scale(_winMessageTry, Vector3.zero, WIN_ANIMATE_MESSAGE_TRY_EXIT_DURATION).setEase(LeanTweenType.easeOutExpo).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
 	}
 
 	public void AnimateWinHintAdButtonPressed(Animate.AnimateComplete callback)
