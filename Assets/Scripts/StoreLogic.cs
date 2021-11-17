@@ -257,6 +257,7 @@ public class StoreLogic : MonoBehaviour
 			{
 				if (_ad.IsRewardedLoaded())
 				{
+					_ad.ClearRewardStatus();
 					_ad.ShowRewarded();
 					_state = State.AD;
 					return;

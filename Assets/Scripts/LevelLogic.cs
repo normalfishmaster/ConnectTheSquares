@@ -1421,8 +1421,9 @@ public class LevelLogic : MonoBehaviour
 
 		if (_ad.IsRewardedLoaded())
 		{
+			_ad.ClearRewardStatus();
 			_ad.ShowRewarded();
-			_touchState = TouchState.LOAD_HINT_AD;
+			_touchState = TouchState.HINT_AD;
 			return;
 		}
 
@@ -1648,6 +1649,7 @@ public class LevelLogic : MonoBehaviour
 
 						if (_ad.IsRewardedLoaded())
 						{
+							_ad.ClearRewardStatus();
 							_ad.ShowRewarded();
 							_touchState = TouchState.WIN_HINT_AD;
 							return;
