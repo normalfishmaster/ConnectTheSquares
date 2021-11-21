@@ -745,6 +745,7 @@ public class LevelLogic : MonoBehaviour
 
 	private TouchState _touchState;
 	private bool _touchHint;
+	private bool _touchSolution;
 
 	private Vector2 _touchStartPos;
 	private float _touchStartTime;
@@ -755,6 +756,7 @@ public class LevelLogic : MonoBehaviour
 	{
 		_touchState = TouchState.WAIT;
 		_touchHint = false;
+		_touchSolution = false;
 	}
 
 	private Vector2 CalculateTouchDirection(Vector2 start, Vector2 end, float multiplier, float offset)
@@ -865,7 +867,7 @@ public class LevelLogic : MonoBehaviour
 				return;
 			}
 
-			if (_touchHint && CheckHintDirection(direction) == false)
+			if ((_touchHint || _touchSolution) && CheckHintDirection(direction) == false)
 			{
 				_ui.SetInteractableControlButton(true);
 				_touchState = TouchState.NONE;
@@ -914,11 +916,9 @@ public class LevelLogic : MonoBehaviour
 			_ui.SetTopMoveCurrent(move);
 			_ui.SetInteractableControlButton(true);
 
-			if (_touchHint)
+			if (_touchHint || _touchSolution)
 			{
-				_ui.SetActiveHintDirection(_levelMap._hint[move]);
-				AnimateHintDirectionStop();
-				AnimateHintDirectionStart(_levelMap._hint[move]);
+				_ui.StartAnimateSolution(_levelMap._hint[move]);
 			}
 
 			_audio.PlayMoveStartToEnd();
@@ -1059,14 +1059,16 @@ public class LevelLogic : MonoBehaviour
 
 			// Update UI
 
-			if (_touchHint)
+			if (_touchHint || _touchSolution)
 			{
 				_touchHint = false;
+				_touchSolution = false;
+
 				_ui.SetActiveControlHintOn(false);
 				_ui.SetActiveControlHintOff(true);
 
-				_ui.SetActiveHint(false);
-				AnimateHintDirectionStop();
+				_ui.StopAnimateSolution();
+				_ui.SetActiveSolution(false);
 			}
 
 			int moveCount = GetBlockMoveCount();
@@ -1314,25 +1316,6 @@ public class LevelLogic : MonoBehaviour
 		}
 	}
 
-	// UI - Hint
-
-	private const float HINT_ANIMATE_DIRECTION_TIME = 0.75f;
-
-	private void SetupHint()
-	{
-		_ui.SetActiveHint(false);
-	}
-
-	private void AnimateHintDirectionStop()
-	{
-		_ui.AnimateHintDirectionStop();
-	}
-
-	private void AnimateHintDirectionStart(char direction)
-	{
-		_ui.AnimateHintDirectionStart(direction, HINT_ANIMATE_DIRECTION_TIME);
-	}
-
 	// UI - Control
 
 	private void SetupControl()
@@ -1362,15 +1345,18 @@ public class LevelLogic : MonoBehaviour
 
 		_touchState = TouchState.PAUSE;
 
-		if (_touchHint == true)
+		if (_touchHint == true || _touchSolution == true)
 		{
+			// Note: Do not reset _touchSolution.  We need it to
+			// play the solution after unpausing
+
 			_touchHint = false;
 
 			_ui.SetActiveControlHintOn(false);
 			_ui.SetActiveControlHintOff(true);
 
-			AnimateHintDirectionStop();
-			_ui.SetActiveHint(false);
+			_ui.StopAnimateSolution();
+			_ui.SetActiveSolution(false);
 		}
 
 		_ui.SetEnableControlButton(false);
@@ -1410,11 +1396,9 @@ public class LevelLogic : MonoBehaviour
 		int move = GetBlockMoveCount();
 		_ui.SetTopMoveCurrent(move);
 
-		if (_touchHint == true)
+		if (_touchHint || _touchSolution)
 		{
-			_ui.SetActiveHintDirection(_levelMap._hint[move]);
-			AnimateHintDirectionStop();
-			AnimateHintDirectionStart(_levelMap._hint[move]);
+			_ui.StartAnimateSolution(_levelMap._hint[move]);
 		}
 
 		_ui.AnimateControlUndoButtonPressed(()=>{});
@@ -1429,11 +1413,9 @@ public class LevelLogic : MonoBehaviour
 		int move = GetBlockMoveCount();
 		_ui.SetTopMoveCurrent(move);
 
-		if (_touchHint == true)
+		if (_touchHint || _touchSolution)
 		{
-			_ui.SetActiveHintDirection(_levelMap._hint[move]);
-			AnimateHintDirectionStop();
-			AnimateHintDirectionStart(_levelMap._hint[move]);
+			_ui.StartAnimateSolution(_levelMap._hint[move]);
 		}
 
 		_ui.AnimateControlResetButtonPressed(()=>{});
@@ -1479,8 +1461,8 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetActiveControlHintOn(false);
 		_ui.SetActiveControlHintOff(true);
 
-		AnimateHintDirectionStop();
-		_ui.SetActiveHint(false);
+		_ui.StopAnimateSolution();
+		_ui.SetActiveSolution(false);
 
 		_ui.AnimateControlHintOffButtonPressed(()=>{});
 	}
@@ -1506,10 +1488,8 @@ public class LevelLogic : MonoBehaviour
 
 		_ui.SetTopMoveCurrent(move);
 
-		_ui.SetActiveHint(true);
-		_ui.SetActiveHintDirection(_levelMap._hint[move]);
-		AnimateHintDirectionStop();
-		AnimateHintDirectionStart(_levelMap._hint[move]);
+		_ui.SetActiveSolution(true);
+		_ui.StartAnimateSolution(_levelMap._hint[move]);
 
 		_ui.AnimateControlHintOnButtonPressed(()=>{});
 	}
@@ -1635,6 +1615,15 @@ public class LevelLogic : MonoBehaviour
 					{
 						_ui.SetActivePause(false);
 						_ui.SetEnableControlButton(true);
+
+						if (_touchSolution)
+						{
+							int move = GetBlockMoveCount();
+
+							_ui.SetActiveSolution(true);
+							_ui.StartAnimateSolution(_levelMap._hint[move]);
+						}
+
 						_touchState = TouchState.NONE;
 					}
 				);
@@ -1844,6 +1833,52 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetActiveBlinder(false);
 	}
 
+	// Tutorial
+
+	private void SetupTutorial()
+	{
+		_ui.SetActiveTutorial(false);
+	}
+
+	public void OnTutorialCloseButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+		_ui.SetEnableTutorialButton(false);
+		_ui.StopAnimateTutorial();
+
+		_ui.AnimateTutorialCloseButtonPressed
+		(
+			()=>
+			{
+				_ui.AnimateTutorialExit
+				(
+					()=>
+					{
+			                        int move = GetBlockMoveCount();
+
+						_ui.SetActiveSolution(true);
+						_ui.StartAnimateSolution(_levelMap._hint[move]);
+
+						_ui.SetEnableControlButton(true);
+						_ui.SetInteractableControlButton(true);
+
+						_touchState = TouchState.NONE;
+
+						_playStartTime = Time.realtimeSinceStartup;
+					}
+				);
+			}
+		);
+	}
+
+	// Solution
+
+	private void SetupSolution()
+	{
+		_ui.SetActiveSolution(false);
+	}
+
 	// Message - Hint
 
 	private void SetupMessageHint()
@@ -1980,13 +2015,14 @@ public class LevelLogic : MonoBehaviour
 		SetupPhysics();
 		SetupTouch();
 		SetupTop();
-		SetupHint();
 		SetupControl();
 		SetupGo();
 		SetupPause();
 		SetupWin();
 		SetupDarken();
 		SetupBlinder();
+		SetupTutorial();
+		SetupSolution();
 		SetupMessageHint();
 		SetupMessageLoad();
 		SetupMessageError();
@@ -2009,12 +2045,32 @@ public class LevelLogic : MonoBehaviour
 						_ui.SetActiveGo(false);
 						_ui.SetActiveDarken(false);
 
-						_ui.SetEnableControlButton(true);
-						_ui.SetInteractableControlButton(true);
+						if (_menuColor == 0 && _menuAlphabet == 0 && _menuMap == 0)
+						{
+							_touchSolution = true;
 
-						_touchState = TouchState.NONE;
+							_ui.SetPermanentlyNonInteractableControlHintOffButton();
 
-						_playStartTime = Time.realtimeSinceStartup;
+							_ui.SetActiveTutorial(true);
+							_ui.SetEnableTutorialButton(false);
+							_ui.AnimateTutorialEnter
+							(
+								()=>
+								{
+									_ui.StartAnimateTutorial();
+									_ui.SetEnableTutorialButton(true);
+								}
+							);
+						}
+						else
+						{
+							_ui.SetEnableControlButton(true);
+							_ui.SetInteractableControlButton(true);
+
+							_touchState = TouchState.NONE;
+
+							_playStartTime = Time.realtimeSinceStartup;
+						}
 					}
 				);
 			}

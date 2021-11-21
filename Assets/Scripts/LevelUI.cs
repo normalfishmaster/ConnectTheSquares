@@ -117,178 +117,6 @@ public class LevelUI : MonoBehaviour
 		LeanTween.scale(_topStar[star], Vector3.one, duration).setEase(LeanTweenType.easeOutQuad);
 	}
 
-	// Hint
-
-	private GameObject _hint;
-
-	private GameObject _hintUp;
-	private GameObject _hintDown;
-	private GameObject _hintLeft;
-	private GameObject _hintRight;
-
-	private void FindHintGameObject()
-	{
-		_hint = GameObject.Find("/Canvas/Hint");
-		_hintUp = GameObject.Find("/Canvas/Hint/Up");
-		_hintDown = GameObject.Find("/Canvas/Hint/Down");
-		_hintLeft = GameObject.Find("/Canvas/Hint/Left");
-		_hintRight = GameObject.Find("/Canvas/Hint/Right");
-	}
-
-	public void SetActiveHint(bool active)
-	{
-		_hint.SetActive(active);
-	}
-
-	public void SetActiveHintDirection(char direction)
-	{
-		char directionUpper = char.ToUpper(direction);
-
-		_hintUp.SetActive(false);
-		_hintDown.SetActive(false);
-		_hintLeft.SetActive(false);
-		_hintRight.SetActive(false);
-
-		if (directionUpper == 'U')
-		{
-			_hintUp.SetActive(true);
-		}
-		else if (directionUpper == 'D')
-		{
-			_hintDown.SetActive(true);
-		}
-		else if (directionUpper == 'L')
-		{
-			_hintLeft.SetActive(true);
-		}
-		else if (directionUpper == 'R')
-		{
-			_hintRight.SetActive(true);
-		}
-	}
-
-	private void AnimateHintDirectionUpStop()
-	{
-		LeanTween.cancel(_hintUp);
-	}
-
-	private void AnimateHintDirectionDownStop()
-	{
-		LeanTween.cancel(_hintDown);
-	}
-
-	private void AnimateHintDirectionLeftStop()
-	{
-		LeanTween.cancel(_hintLeft);
-	}
-
-	private void AnimateHintDirectionRightStop()
-	{
-		LeanTween.cancel(_hintRight);
-	}
-
-	private void AnimateHintDirectionUpStart(float animateTime)
-	{
-		RectTransform rectTransform = (RectTransform)_hintUp.transform;
-		Vector3 pos = rectTransform.anchoredPosition;
-		float delta = ((((RectTransform)(_hint.transform)).rect.height / 2) - (rectTransform.rect.height / 2)) / 2;
-
-		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y - delta, pos.z);
-
-		LeanTween.moveLocalY(_hintUp, pos.y + delta, animateTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
-		(
-			()=>
-			{
-				rectTransform.anchoredPosition = new Vector3(pos.x, pos.y, pos.z);
-				AnimateHintDirectionUpStart(animateTime);
-			}
-		);
-	}
-
-	private void AnimateHintDirectionDownStart(float animateTime)
-	{
-		RectTransform rectTransform = (RectTransform)_hintDown.transform;
-		Vector3 pos = rectTransform.anchoredPosition;
-		float delta = ((((RectTransform)(_hint.transform)).rect.height / 2) - (rectTransform.rect.height / 2)) / 2;
-
-		rectTransform.anchoredPosition = new Vector3(pos.x, pos.y + delta, pos.z);
-
-		LeanTween.moveLocalY(_hintDown, pos.y - delta, animateTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
-		(
-			()=>
-			{
-				rectTransform.anchoredPosition = new Vector3(pos.x, pos.y, pos.z);
-				AnimateHintDirectionDownStart(animateTime);
-			}
-		);
-	}
-
-	private void AnimateHintDirectionLeftStart(float animateTime)
-	{
-		RectTransform rectTransform = (RectTransform)_hintLeft.transform;
-		Vector3 pos = rectTransform.anchoredPosition;
-		float delta = ((((RectTransform)(_hint.transform)).rect.height / 2) - (rectTransform.rect.height / 2)) / 2;
-
-		rectTransform.anchoredPosition = new Vector3(pos.x + delta, pos.y, pos.z);
-
-		LeanTween.moveLocalX(_hintLeft, pos.x - delta, animateTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
-		(
-			()=>
-			{
-				rectTransform.anchoredPosition = new Vector3(pos.x, pos.y, pos.z);
-				AnimateHintDirectionLeftStart(animateTime);
-			}
-		);
-	}
-
-	private void AnimateHintDirectionRightStart(float animateTime)
-	{
-		RectTransform rectTransform = (RectTransform)_hintRight.transform;
-		Vector3 pos = rectTransform.anchoredPosition;
-		float delta = ((((RectTransform)(_hint.transform)).rect.height / 2) - (rectTransform.rect.height / 2)) / 2;
-
-		rectTransform.anchoredPosition = new Vector3(pos.x - delta, pos.y, pos.z);
-
-		LeanTween.moveLocalX(_hintRight, pos.x + delta, animateTime).setEase(LeanTweenType.easeOutQuad).setOnComplete
-		(
-			()=>
-			{
-				rectTransform.anchoredPosition = new Vector3(pos.x, pos.y, pos.z);
-				AnimateHintDirectionRightStart(animateTime);
-			}
-		);
-	}
-
-	public void AnimateHintDirectionStop()
-	{
-		AnimateHintDirectionUpStop();
-		AnimateHintDirectionDownStop();
-		AnimateHintDirectionLeftStop();
-		AnimateHintDirectionRightStop();
-	}
-
-	public void AnimateHintDirectionStart(char direction, float animateTime)
-	{
-		char directionUpper = char.ToUpper(direction);
-
-		if (directionUpper == 'U')
-		{
-			AnimateHintDirectionUpStart(animateTime);
-		}
-		else if (directionUpper == 'D')
-		{
-			AnimateHintDirectionDownStart(animateTime);
-		}
-		else if (directionUpper == 'L')
-		{
-			AnimateHintDirectionLeftStart(animateTime);
-		}
-		else if (directionUpper == 'R')
-		{
-			AnimateHintDirectionRightStart(animateTime);
-		}
-	}
-
 	// Control
 
 	public float CONTROL_ANIMATE_BUTTON_PRESSED_SCALE;
@@ -308,6 +136,8 @@ public class LevelUI : MonoBehaviour
 	private GameObject _controlHintOnText;
 	private GameObject _controlHintOffText;
 
+	private bool _controlHintOffPermanentlyNonInteractable;
+
 	private void FindControlGameObject()
 	{
 		_controlHintAdButton = GameObject.Find("/Canvas/ControlL/HintAd/Button");
@@ -323,26 +153,41 @@ public class LevelUI : MonoBehaviour
 
 		_controlHintOnText = GameObject.Find("/Canvas/ControlL/HintOn/Label");
 		_controlHintOffText = GameObject.Find("/Canvas/ControlL/HintOff/Label");
+
+		_controlHintOffPermanentlyNonInteractable = false;
 	}
 
 	public void SetEnableControlButton(bool enable)
 	{
 		_controlHintAdButton.GetComponent<Button>().enabled = enable;
 		_controlHintOnButton.GetComponent<Button>().enabled = enable;
-		_controlHintOffButton.GetComponent<Button>().enabled = enable;
 		_controlPauseButton.GetComponent<Button>().enabled = enable;
 		_controlUndoButton.GetComponent<Button>().enabled = enable;
 		_controlResetButton.GetComponent<Button>().enabled = enable;
+	}
+
+	public void SetPermanentlyNonInteractableControlHintOffButton()
+	{
+		_controlHintOffButton.GetComponent<Button>().interactable = false;
+		_controlHintOffPermanentlyNonInteractable = true;
 	}
 
 	public void SetInteractableControlButton(bool interactable)
 	{
 		_controlHintAdButton.GetComponent<Button>().interactable = interactable;
 		_controlHintOnButton.GetComponent<Button>().interactable = interactable;
-		_controlHintOffButton.GetComponent<Button>().interactable = interactable;
 		_controlPauseButton.GetComponent<Button>().interactable = interactable;
 		_controlUndoButton.GetComponent<Button>().interactable = interactable;
 		_controlResetButton.GetComponent<Button>().interactable = interactable;
+
+		if (_controlHintOffPermanentlyNonInteractable)
+		{
+			_controlHintOffButton.GetComponent<Button>().interactable = false;
+		}
+		else
+		{
+			_controlHintOffButton.GetComponent<Button>().interactable = interactable;
+		}
 	}
 
 	public void SetActiveControlHintAd(bool active)
@@ -961,6 +806,918 @@ public class LevelUI : MonoBehaviour
 		);
 	}
 
+	// Tutorial
+
+	public float TUTORIAL_ANIMATE_ENTER_DURATION;
+	public float TUTORIAL_ANIMATE_EXIT_DURATION;
+
+	public float TUTORIAL_ANIMATE_TARGET_SUNBURST_ROTATE_DURATION;
+
+	public float TUTORIAL_ANIMATE_CONTROLS_HAND_HAND_SWIPE_DURATION;
+	public float TUTORIAL_ANIMATE_CONTROLS_HAND_HAND_SWIPE_DELAY;
+
+	public float TUTORIAL_ANIMATE_CONTROLS_HAND_ARROW_SWIPE_DURATION;
+	public float TUTORIAL_ANIMATE_CONTROLS_HAND_ARROW_SWIPE_DELAY;
+
+	public float TUTORIAL_ANIMATE_CONTROLS_ARROW_MOVE_DURATION;
+	public float TUTORIAL_ANIMATE_CONTROLS_ARROW_MOVE_DELAY;
+
+	public float TUTORIAL_ANIMATE_BUTTON_PRESSED_SCALE;
+	public float TUTORIAL_ANIMATE_BUTTON_PRESSED_DURATION;
+
+	private GameObject _tutorial;
+
+	private GameObject _tutorialTargetArrow;
+	private GameObject _tutorialTargetSunburst;
+
+	private GameObject _tutorialControlsArrowUp;
+	private GameObject _tutorialControlsArrowDown;
+	private GameObject _tutorialControlsArrowLeft;
+	private GameObject _tutorialControlsArrowRight;
+
+	private GameObject[] _tutorialControlsArrowUpArrow;
+	private GameObject[] _tutorialControlsArrowDownArrow;
+	private GameObject[] _tutorialControlsArrowLeftArrow;
+	private GameObject[] _tutorialControlsArrowRightArrow;
+
+	private GameObject _tutorialControlsHand;
+	private GameObject _tutorialControlsHandHandVertical;
+	private GameObject _tutorialControlsHandHandHorizontal;
+	private GameObject _tutorialControlsHandArrowUp;
+	private GameObject _tutorialControlsHandArrowDown;
+	private GameObject _tutorialControlsHandArrowLeft;
+	private GameObject _tutorialControlsHandArrowRight;
+
+	private GameObject _tutorialCloseButton;
+
+	private Vector3 _tutorialControlsHandHandOriginalPos;
+	private Vector3[] _tutorialControlsArrowOriginalPos;
+
+	private void FindTutorialGameObject()
+	{
+		_tutorial = GameObject.Find("/Canvas/Tutorial");
+
+		_tutorialTargetArrow = GameObject.Find("/Canvas/Tutorial/Target/Arrow");
+		_tutorialTargetSunburst = GameObject.Find("/Canvas/Tutorial/Target/BlockArranged/SunburstWide");
+
+		_tutorialControlsArrowUp = GameObject.Find("/Canvas/Tutorial/Controls/ArrowUp");
+		_tutorialControlsArrowDown = GameObject.Find("/Canvas/Tutorial/Controls/ArrowDown");
+		_tutorialControlsArrowLeft = GameObject.Find("/Canvas/Tutorial/Controls/ArrowLeft");
+		_tutorialControlsArrowRight = GameObject.Find("/Canvas/Tutorial/Controls/ArrowRight");
+
+		_tutorialControlsArrowUpArrow = new GameObject[4];
+		_tutorialControlsArrowDownArrow = new GameObject[4];
+		_tutorialControlsArrowLeftArrow = new GameObject[4];
+		_tutorialControlsArrowRightArrow = new GameObject[4];
+
+		for (int i = 0; i < 4; i++)
+		{
+			_tutorialControlsArrowUpArrow[i] = GameObject.Find("/Canvas/Tutorial/Controls/ArrowUp/Arrow" + i);
+			_tutorialControlsArrowDownArrow[i] = GameObject.Find("/Canvas/Tutorial/Controls/ArrowDown/Arrow" + i);
+			_tutorialControlsArrowLeftArrow[i] = GameObject.Find("/Canvas/Tutorial/Controls/ArrowLeft/Arrow" + i);
+			_tutorialControlsArrowRightArrow[i] = GameObject.Find("/Canvas/Tutorial/Controls/ArrowRight/Arrow" + i);
+		}
+
+		_tutorialControlsHand = GameObject.Find("/Canvas/Tutorial/Controls/Hand");
+		_tutorialControlsHandHandVertical = GameObject.Find("/Canvas/Tutorial/Controls/Hand/HandVertical");
+		_tutorialControlsHandHandHorizontal = GameObject.Find("/Canvas/Tutorial/Controls/Hand/HandHorizontal");
+		_tutorialControlsHandArrowUp = GameObject.Find("/Canvas/Tutorial/Controls/Hand/ArrowUp");
+		_tutorialControlsHandArrowDown = GameObject.Find("/Canvas/Tutorial/Controls/Hand/ArrowDown");
+		_tutorialControlsHandArrowLeft = GameObject.Find("/Canvas/Tutorial/Controls/Hand/ArrowLeft");
+		_tutorialControlsHandArrowRight = GameObject.Find("/Canvas/Tutorial/Controls/Hand/ArrowRight");
+
+		_tutorialCloseButton = GameObject.Find("/Canvas/Tutorial/Close");
+
+		// Store original positions
+
+		_tutorialControlsHandHandOriginalPos = ((RectTransform)_tutorialControlsHandHandVertical.transform).anchoredPosition;
+		_tutorialControlsArrowOriginalPos = new Vector3[4];
+		for (int i = 0; i < 4; i++)
+		{
+			_tutorialControlsArrowOriginalPos[i] = ((RectTransform)_tutorialControlsArrowUpArrow[i].transform).anchoredPosition;
+		}
+	}
+
+	public void SetActiveTutorial(bool active)
+	{
+		_tutorial.SetActive(active);
+	}
+
+	public void SetEnableTutorialButton(bool enable)
+	{
+		_tutorialCloseButton.GetComponent<Button>().enabled = enable;
+	}
+
+	public void AnimateTutorialEnter(Animate.AnimateComplete callback)
+	{
+		_tutorial.transform.localScale = Vector3.zero;
+
+		LeanTween.cancel(_tutorial);
+
+		LeanTween.scale(_tutorial, Vector3.one, TUTORIAL_ANIMATE_ENTER_DURATION)
+				.setEase(LeanTweenType.easeInOutQuint)
+				.setOnComplete
+				(
+					()=>
+					{
+						callback();
+					}
+				);
+	}
+
+	public void AnimateTutorialExit(Animate.AnimateComplete callback)
+	{
+		_tutorial.transform.localScale = Vector3.one;
+
+		LeanTween.cancel(_tutorial);
+
+		LeanTween.scale(_tutorial, Vector3.zero, TUTORIAL_ANIMATE_ENTER_DURATION)
+				.setEase(LeanTweenType.easeInOutQuint)
+				.setOnComplete
+				(
+					()=>
+					{
+						callback();
+					}
+				);
+	}
+
+	private void StopAnimateTutorialTargetSunburst()
+	{
+		LeanTween.cancel(_tutorialTargetSunburst);
+	}
+
+	private void AnimateTutorialTargetSunburst()
+	{
+		LeanTween.rotateAround(_tutorialTargetSunburst, Vector3.forward, -360.0f, TUTORIAL_ANIMATE_TARGET_SUNBURST_ROTATE_DURATION).setOnComplete
+		(
+			()=>
+			{
+				AnimateTutorialTargetSunburst();
+			}
+		);
+	}
+
+	private void AnimateTutorialTarget()
+	{
+		StopAnimateTutorialTargetSunburst();
+		AnimateTutorialTargetSunburst();
+	}
+
+	private void StopAnimateTutorialTarget()
+	{
+		StopAnimateTutorialTargetSunburst();
+	}
+
+	private void StopAnimateTutorialControls()
+	{
+		LeanTween.cancel(_tutorialControlsHandHandVertical);
+		LeanTween.cancel(_tutorialControlsHandHandHorizontal);
+		LeanTween.cancel(_tutorialControlsHandArrowUp);
+		LeanTween.cancel(_tutorialControlsHandArrowDown);
+		LeanTween.cancel(_tutorialControlsHandArrowLeft);
+		LeanTween.cancel(_tutorialControlsHandArrowRight);
+
+		for (int i = 0; i < 4; i++)
+		{
+			LeanTween.cancel(_tutorialControlsArrowUpArrow[i]);
+			LeanTween.cancel(_tutorialControlsArrowDownArrow[i]);
+			LeanTween.cancel(_tutorialControlsArrowLeftArrow[i]);
+			LeanTween.cancel(_tutorialControlsArrowRightArrow[i]);
+		}
+	}
+
+	private void AnimateTutorialControlsSwipeVertical(int dir, Animate.AnimateComplete callback)
+	{
+		GameObject handArrow;
+		GameObject[] arrowArrow = new GameObject[4];
+
+		RectTransform parentRectTransform = (RectTransform)_tutorialControlsHand.transform;
+		RectTransform handRectTransform = (RectTransform)_tutorialControlsHandHandVertical.transform;
+		RectTransform handArrowRectTransform;
+		RectTransform[] arrowRectTransform = new RectTransform[4];
+
+		if (dir == 1)
+		{
+			handArrow = _tutorialControlsHandArrowUp;
+			handArrowRectTransform = (RectTransform)handArrow.transform;
+			for (int i = 0; i < 4; i++)
+			{
+				arrowArrow[i] = _tutorialControlsArrowUpArrow[i];
+				arrowRectTransform[i] = (RectTransform)arrowArrow[i].transform;
+			}
+		}
+		else
+		{
+			handArrow = _tutorialControlsHandArrowDown;
+			handArrowRectTransform = (RectTransform)handArrow.transform;
+			for (int i = 0; i < 4; i++)
+			{
+				arrowArrow[i] = _tutorialControlsArrowDownArrow[i];
+				arrowRectTransform[i] = (RectTransform)arrowArrow[i].transform;
+			}
+		}
+
+		// Set Active
+
+		_tutorialControlsHandHandVertical.SetActive(true);
+		_tutorialControlsHandHandHorizontal.SetActive(false);
+
+		if (dir == 1)
+		{
+			_tutorialControlsHandArrowUp.SetActive(true);
+			_tutorialControlsHandArrowDown.SetActive(false);
+			_tutorialControlsHandArrowLeft.SetActive(false);
+			_tutorialControlsHandArrowRight.SetActive(false);
+
+			for (int i = 0; i < 4; i++)
+			{
+				_tutorialControlsArrowUpArrow[i].SetActive(true);
+				_tutorialControlsArrowDownArrow[i].SetActive(false);
+				_tutorialControlsArrowLeftArrow[i].SetActive(false);
+				_tutorialControlsArrowRightArrow[i].SetActive(false);
+			}
+		}
+		else
+		{
+			_tutorialControlsHandArrowUp.SetActive(false);
+			_tutorialControlsHandArrowDown.SetActive(true);
+			_tutorialControlsHandArrowLeft.SetActive(false);
+			_tutorialControlsHandArrowRight.SetActive(false);
+
+			for (int i = 0; i < 4; i++)
+			{
+				_tutorialControlsArrowUpArrow[i].SetActive(false);
+				_tutorialControlsArrowDownArrow[i].SetActive(true);
+				_tutorialControlsArrowLeftArrow[i].SetActive(false);
+				_tutorialControlsArrowRightArrow[i].SetActive(false);
+			}
+		}
+
+		// Cancel Animations
+
+		StopAnimateTutorialControls();
+
+		// Animate Hand - Direction
+
+		float handDeltaY = ((parentRectTransform.rect.height / 2) - (handRectTransform.rect.height / 2)) * 2;
+
+		float handStartPosY = _tutorialControlsHandHandOriginalPos.y - ((handDeltaY / 2) * dir);
+		float handEndPosY = _tutorialControlsHandHandOriginalPos.y + ((handDeltaY / 2) * dir);
+
+		handRectTransform.anchoredPosition = new Vector3(_tutorialControlsHandHandOriginalPos.x, handStartPosY, _tutorialControlsHandHandOriginalPos.z);
+
+		LeanTween.moveLocalY(_tutorialControlsHandHandVertical, handEndPosY, TUTORIAL_ANIMATE_CONTROLS_HAND_HAND_SWIPE_DURATION)
+				.setDelay(TUTORIAL_ANIMATE_CONTROLS_HAND_HAND_SWIPE_DELAY)
+				.setEase(LeanTweenType.easeInOutQuint);
+
+		// Animate Hand - Opacity
+
+		_tutorialControlsHandHandVertical.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+
+		LeanTween.value(_tutorialControlsHandHandVertical, 1f, 0f, TUTORIAL_ANIMATE_CONTROLS_HAND_HAND_SWIPE_DURATION)
+				.setDelay(TUTORIAL_ANIMATE_CONTROLS_HAND_HAND_SWIPE_DELAY)
+				.setEase(LeanTweenType.easeInOutQuint)
+				.setOnUpdate
+				(
+					(float val) =>
+					{
+						_tutorialControlsHandHandVertical.GetComponent<Image>().color = new Color(1f, 1f, 1f, val);
+					}
+				)
+				.setOnComplete
+				(
+					()=>
+					{
+						_tutorialControlsHandHandVertical.SetActive(false);
+					}
+				);
+
+		// Animate Hand Arrow - Direction
+
+		float handArrowStartPosY = handStartPosY;
+		float handArrowEndPosY = handEndPosY;
+
+		handArrowRectTransform.anchoredPosition = new Vector3(_tutorialControlsHandHandOriginalPos.x, handArrowStartPosY, _tutorialControlsHandHandOriginalPos.z);
+
+		LeanTween.moveLocalY(handArrow, handArrowEndPosY, TUTORIAL_ANIMATE_CONTROLS_HAND_ARROW_SWIPE_DURATION)
+				.setDelay(TUTORIAL_ANIMATE_CONTROLS_HAND_ARROW_SWIPE_DELAY)
+				.setEase(LeanTweenType.easeInOutQuint);
+
+		// Animate Hand Arrow - Scale
+
+		handArrow.transform.localScale = Vector3.zero;
+
+		LeanTween.scale(handArrow, Vector3.one, TUTORIAL_ANIMATE_CONTROLS_HAND_ARROW_SWIPE_DURATION)
+				.setDelay(TUTORIAL_ANIMATE_CONTROLS_HAND_ARROW_SWIPE_DELAY)
+				.setEase(LeanTweenType.easeInOutQuint)
+				.setOnComplete
+				(
+					()=>
+					{
+						handArrow.SetActive(false);
+					}
+				);
+
+		// Animate Arrow - Direction
+
+		for (int i = 0; i < 4; i++)
+		{
+			float arrowStartPosY = 0;
+			float arrowEndPosY = arrowStartPosY + ((1.10f * arrowRectTransform[i].rect.height) * dir);
+
+			arrowRectTransform[i].anchoredPosition = new Vector3(_tutorialControlsArrowOriginalPos[i].x, arrowStartPosY, _tutorialControlsArrowOriginalPos[i].z);
+
+			LeanTween.moveY((RectTransform)arrowArrow[i].transform, arrowEndPosY, TUTORIAL_ANIMATE_CONTROLS_ARROW_MOVE_DURATION)
+					.setDelay(TUTORIAL_ANIMATE_CONTROLS_ARROW_MOVE_DELAY)
+					.setEase(LeanTweenType.easeInOutQuint);
+		}
+
+		// Animate Arrow - Scale
+
+		for (int i = 0; i < 4; i++)
+		{
+			arrowArrow[i].transform.localScale = Vector3.zero;
+			LeanTween.scale(arrowArrow[i], Vector3.one, TUTORIAL_ANIMATE_CONTROLS_ARROW_MOVE_DURATION)
+					.setDelay(TUTORIAL_ANIMATE_CONTROLS_ARROW_MOVE_DELAY)
+					.setEase(LeanTweenType.easeInOutQuint).setOnComplete
+					(
+						()=>
+						{
+							arrowArrow[0].SetActive(false);
+							arrowArrow[1].SetActive(false);
+							arrowArrow[2].SetActive(false);
+							arrowArrow[3].SetActive(false);
+						}
+					);
+		}
+
+		// Callback
+
+		LeanTween.value(arrowArrow[0], 0f, 1f, TUTORIAL_ANIMATE_CONTROLS_ARROW_MOVE_DURATION)
+					.setDelay(TUTORIAL_ANIMATE_CONTROLS_ARROW_MOVE_DURATION)
+					.setEase(LeanTweenType.easeInSine)
+					.setOnUpdate
+					(
+						(float val) =>
+						{
+						}
+					)
+					.setOnComplete
+					(
+						()=>
+						{
+							callback();
+						}
+					);
+	}
+
+	private void AnimateTutorialControlsSwipeHorizontal(int dir, Animate.AnimateComplete callback)
+	{
+		GameObject handArrow;
+		GameObject[] arrowArrow = new GameObject[4];
+
+		RectTransform parentRectTransform = (RectTransform)_tutorialControlsHand.transform;
+		RectTransform handRectTransform = (RectTransform)_tutorialControlsHandHandHorizontal.transform;
+		RectTransform handArrowRectTransform;
+		RectTransform[] arrowRectTransform = new RectTransform[4];
+
+		if (dir == 1)
+		{
+			handArrow = _tutorialControlsHandArrowRight;
+			handArrowRectTransform = (RectTransform)handArrow.transform;
+			for (int i = 0; i < 4; i++)
+			{
+				arrowArrow[i] = _tutorialControlsArrowRightArrow[i];
+				arrowRectTransform[i] = (RectTransform)arrowArrow[i].transform;
+			}
+		}
+		else
+		{
+			handArrow = _tutorialControlsHandArrowLeft;
+			handArrowRectTransform = (RectTransform)handArrow.transform;
+			for (int i = 0; i < 4; i++)
+			{
+				arrowArrow[i] = _tutorialControlsArrowLeftArrow[i];
+				arrowRectTransform[i] = (RectTransform)arrowArrow[i].transform;
+			}
+		}
+
+		// Set Active
+
+		_tutorialControlsHandHandVertical.SetActive(false);
+		_tutorialControlsHandHandHorizontal.SetActive(true);
+
+		if (dir == 1)
+		{
+			_tutorialControlsHandArrowUp.SetActive(false);
+			_tutorialControlsHandArrowDown.SetActive(false);
+			_tutorialControlsHandArrowLeft.SetActive(false);
+			_tutorialControlsHandArrowRight.SetActive(true);
+
+			for (int i = 0; i < 4; i++)
+			{
+				_tutorialControlsArrowUpArrow[i].SetActive(false);
+				_tutorialControlsArrowDownArrow[i].SetActive(false);
+				_tutorialControlsArrowLeftArrow[i].SetActive(false);
+				_tutorialControlsArrowRightArrow[i].SetActive(true);
+			}
+		}
+		else
+		{
+			_tutorialControlsHandArrowUp.SetActive(false);
+			_tutorialControlsHandArrowDown.SetActive(false);
+			_tutorialControlsHandArrowLeft.SetActive(true);
+			_tutorialControlsHandArrowRight.SetActive(false);
+
+			for (int i = 0; i < 4; i++)
+			{
+				_tutorialControlsArrowUpArrow[i].SetActive(false);
+				_tutorialControlsArrowDownArrow[i].SetActive(false);
+				_tutorialControlsArrowLeftArrow[i].SetActive(true);
+				_tutorialControlsArrowRightArrow[i].SetActive(false);
+			}
+		}
+
+		// Cancel Animations
+
+		StopAnimateTutorialControls();
+
+		// Animate Hand - Direction
+
+		float handDeltaX = ((parentRectTransform.rect.width / 2) - (handRectTransform.rect.width / 2)) * 2;
+
+		float handStartPosX = _tutorialControlsHandHandOriginalPos.x - ((handDeltaX / 2) * dir);
+		float handEndPosX = _tutorialControlsHandHandOriginalPos.x + ((handDeltaX / 2) * dir);
+
+		handRectTransform.anchoredPosition = new Vector3(handStartPosX, _tutorialControlsHandHandOriginalPos.y, _tutorialControlsHandHandOriginalPos.z);
+
+		LeanTween.moveLocalX(_tutorialControlsHandHandHorizontal, handEndPosX, TUTORIAL_ANIMATE_CONTROLS_HAND_HAND_SWIPE_DURATION)
+				.setDelay(TUTORIAL_ANIMATE_CONTROLS_HAND_HAND_SWIPE_DELAY)
+				.setEase(LeanTweenType.easeInOutQuint);
+
+		// Animate Hand - Opacity
+
+		_tutorialControlsHandHandHorizontal.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+
+		LeanTween.value(_tutorialControlsHandHandHorizontal, 1f, 0f, TUTORIAL_ANIMATE_CONTROLS_HAND_HAND_SWIPE_DURATION)
+				.setDelay(TUTORIAL_ANIMATE_CONTROLS_HAND_HAND_SWIPE_DELAY)
+				.setEase(LeanTweenType.easeInOutQuint)
+				.setOnUpdate
+				(
+					(float val) =>
+					{
+						_tutorialControlsHandHandHorizontal.GetComponent<Image>().color = new Color(1f, 1f, 1f, val);
+					}
+				)
+				.setOnComplete
+				(
+					()=>
+					{
+						_tutorialControlsHandHandHorizontal.SetActive(false);
+					}
+				);
+
+		// Animate Hand Arrow - Direction
+
+		float handArrowStartPosX = handStartPosX;
+		float handArrowEndPosX = handEndPosX;
+
+		handArrowRectTransform.anchoredPosition = new Vector3(handArrowStartPosX, _tutorialControlsHandHandOriginalPos.y, _tutorialControlsHandHandOriginalPos.z);
+
+		LeanTween.moveLocalX(handArrow, handArrowEndPosX, TUTORIAL_ANIMATE_CONTROLS_HAND_ARROW_SWIPE_DURATION)
+				.setDelay(TUTORIAL_ANIMATE_CONTROLS_HAND_ARROW_SWIPE_DELAY)
+				.setEase(LeanTweenType.easeInOutQuint);
+
+		// Animate Hand Arrow - Scale
+
+		handArrow.transform.localScale = Vector3.zero;
+
+
+		LeanTween.scale(handArrow, Vector3.one, TUTORIAL_ANIMATE_CONTROLS_HAND_ARROW_SWIPE_DURATION)
+				.setDelay(TUTORIAL_ANIMATE_CONTROLS_HAND_ARROW_SWIPE_DELAY)
+				.setEase(LeanTweenType.easeInOutQuint)
+				.setOnComplete
+				(
+					()=>
+					{
+						handArrow.SetActive(false);
+					}
+				);
+
+		// Animate Arrow - Direction
+
+		for (int i = 0; i < 4; i++)
+		{
+			float arrowStartPosX = 0;
+			float arrowEndPosX = arrowStartPosX + ((1.10f * arrowRectTransform[i].rect.width) * dir);
+
+			arrowRectTransform[i].anchoredPosition = new Vector3(arrowStartPosX, _tutorialControlsArrowOriginalPos[i].y, _tutorialControlsArrowOriginalPos[i].z);
+
+			LeanTween.moveX((RectTransform)arrowArrow[i].transform, arrowEndPosX, TUTORIAL_ANIMATE_CONTROLS_ARROW_MOVE_DURATION)
+					.setDelay(TUTORIAL_ANIMATE_CONTROLS_ARROW_MOVE_DELAY)
+					.setEase(LeanTweenType.easeInOutQuint);
+		}
+
+		// Animate Arrow - Scale
+
+		for (int i = 0; i < 4; i++)
+		{
+			arrowArrow[i].transform.localScale = Vector3.zero;
+			LeanTween.scale(arrowArrow[i], Vector3.one, TUTORIAL_ANIMATE_CONTROLS_ARROW_MOVE_DURATION)
+					.setDelay(TUTORIAL_ANIMATE_CONTROLS_ARROW_MOVE_DELAY)
+					.setEase(LeanTweenType.easeInOutQuint).setOnComplete
+					(
+						()=>
+						{
+							arrowArrow[0].SetActive(false);
+							arrowArrow[1].SetActive(false);
+							arrowArrow[2].SetActive(false);
+							arrowArrow[3].SetActive(false);
+						}
+					);
+		}
+
+		// Callback
+
+		LeanTween.value(arrowArrow[0], 0f, 1f, TUTORIAL_ANIMATE_CONTROLS_ARROW_MOVE_DURATION)
+					.setDelay(TUTORIAL_ANIMATE_CONTROLS_ARROW_MOVE_DURATION)
+					.setEase(LeanTweenType.easeInSine)
+					.setOnUpdate
+					(
+						(float val) =>
+						{
+						}
+					)
+					.setOnComplete
+					(
+						()=>
+						{
+							callback();
+						}
+					);
+	}
+
+	private void AnimateTutorialControls()
+	{
+		AnimateTutorialControlsSwipeVertical(1,
+			()=>
+			{
+				AnimateTutorialControlsSwipeHorizontal(1,
+					()=>
+					{
+						AnimateTutorialControlsSwipeVertical(-1,
+							()=>
+							{
+								AnimateTutorialControlsSwipeHorizontal(-1,
+									()=>
+									{
+										AnimateTutorialControls();
+									}
+								);
+							}
+						);
+					}
+				);
+			}
+		);
+	}
+
+	public void StartAnimateTutorial()
+	{
+		AnimateTutorialTarget();
+		AnimateTutorialControls();
+	}
+
+	public void StopAnimateTutorial()
+	{
+		StopAnimateTutorialTarget();
+		StopAnimateTutorialControls();
+	}
+
+	public void AnimateTutorialCloseButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_tutorialCloseButton, TUTORIAL_ANIMATE_BUTTON_PRESSED_SCALE, TUTORIAL_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
+
+	// Solution
+
+	public float SOLUTION_ANIMATE_SWIPE_HAND_DURATION;
+	public float SOLUTION_ANIMATE_SWIPE_HAND_DELAY;
+
+	public float SOLUTION_ANIMATE_SWIPE_ARROW_DURATION;
+	public float SOLUTION_ANIMATE_SWIPE_ARROW_DELAY;
+
+	private GameObject _solution;
+	private GameObject _solutionHandVertical;
+	private GameObject _solutionHandHorizontal;
+	private GameObject _solutionArrowUp;
+	private GameObject _solutionArrowDown;
+	private GameObject _solutionArrowLeft;
+	private GameObject _solutionArrowRight;
+
+	private Vector3 _solutionHandOriginalPos;
+
+	private void FindSolutionGameObject()
+	{
+		_solution = GameObject.Find("/Canvas/Solution");
+		_solutionHandVertical = GameObject.Find("/Canvas/Solution/HandVertical");
+		_solutionHandHorizontal = GameObject.Find("/Canvas/Solution/HandHorizontal");
+		_solutionArrowUp = GameObject.Find("/Canvas/Solution/ArrowUp");
+		_solutionArrowDown = GameObject.Find("/Canvas/Solution/ArrowDown");
+		_solutionArrowLeft = GameObject.Find("/Canvas/Solution/ArrowLeft");
+		_solutionArrowRight = GameObject.Find("/Canvas/Solution/ArrowRight");
+
+		_solutionHandOriginalPos = ((RectTransform)_solutionHandVertical.transform).anchoredPosition;
+	}
+
+	public void SetActiveSolution(bool active)
+	{
+		_solution.SetActive(active);
+	}
+
+	private void AnimateSolutionSwipeVertical(int dir)
+	{
+		GameObject arrow;
+
+		RectTransform parentRectTransform = (RectTransform)_solution.transform;
+		RectTransform handRectTransform = (RectTransform)_solutionHandVertical.transform;
+		RectTransform arrowRectTransform;
+
+		if (dir == 1)
+		{
+			arrow = _solutionArrowUp;
+			arrowRectTransform = (RectTransform)_solutionArrowUp.transform;
+		}
+		else
+		{
+			arrow = _solutionArrowDown;
+			arrowRectTransform = (RectTransform)_solutionArrowDown.transform;
+		}
+
+		// Set Active
+
+		_solutionHandVertical.SetActive(true);
+		_solutionHandHorizontal.SetActive(false);
+
+		if (dir == 1)
+		{
+			_solutionArrowUp.SetActive(true);
+			_solutionArrowDown.SetActive(false);
+			_solutionArrowLeft.SetActive(false);
+			_solutionArrowRight.SetActive(false);
+		}
+		else
+		{
+			_solutionArrowUp.SetActive(false);
+			_solutionArrowDown.SetActive(true);
+			_solutionArrowLeft.SetActive(false);
+			_solutionArrowRight.SetActive(false);
+		}
+
+		// Cancel Animation
+
+		StopAnimateSolution();
+
+		// Animate Hand - Direction
+
+		float handDeltaY = ((parentRectTransform.rect.height / 2) - (handRectTransform.rect.height / 2)) * 2;
+
+		float handStartPosY = _solutionHandOriginalPos.y - ((handDeltaY / 2) * dir);
+		float handEndPosY = _solutionHandOriginalPos.y + ((handDeltaY / 2) * dir);
+
+		handRectTransform.anchoredPosition = new Vector3(_solutionHandOriginalPos.x, handStartPosY, _solutionHandOriginalPos.z);
+
+		LeanTween.moveLocalY(_solutionHandVertical, handEndPosY, SOLUTION_ANIMATE_SWIPE_HAND_DURATION)
+				.setDelay(SOLUTION_ANIMATE_SWIPE_HAND_DELAY)
+				.setEase(LeanTweenType.easeInOutQuint);
+
+		// Animate Hand - Opacity
+
+		_solutionHandVertical.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+
+		LeanTween.value(_solutionHandVertical, 1f, 0f, SOLUTION_ANIMATE_SWIPE_HAND_DURATION)
+				.setDelay(SOLUTION_ANIMATE_SWIPE_HAND_DELAY)
+				.setEase(LeanTweenType.easeInOutQuint)
+				.setOnUpdate
+				(
+					(float val) =>
+					{
+						_solutionHandVertical.GetComponent<Image>().color = new Color(1f, 1f, 1f, val);
+					}
+				)
+				.setOnComplete
+				(
+					()=>
+					{
+						_solutionHandVertical.SetActive(false);
+					}
+				);
+
+		// Animate Arrow - Direction
+
+		float arrowStartPosY = handStartPosY;
+		float arrowEndPosY = handEndPosY;
+
+		arrowRectTransform.anchoredPosition = new Vector3(_solutionHandOriginalPos.x, arrowStartPosY, _solutionHandOriginalPos.z);
+
+		LeanTween.moveLocalY(arrow, arrowEndPosY, SOLUTION_ANIMATE_SWIPE_ARROW_DURATION)
+				.setDelay(SOLUTION_ANIMATE_SWIPE_ARROW_DELAY)
+				.setEase(LeanTweenType.easeInOutQuint);
+
+		// Animate Arrow - Scale
+
+		arrow.transform.localScale = Vector3.zero;
+
+		LeanTween.scale(arrow, Vector3.one, SOLUTION_ANIMATE_SWIPE_ARROW_DURATION)
+				.setDelay(SOLUTION_ANIMATE_SWIPE_ARROW_DELAY)
+				.setEase(LeanTweenType.easeInOutQuint)
+				.setOnComplete
+				(
+					()=>
+					{
+						arrow.SetActive(false);
+					}
+				);
+
+		// Callback
+
+		LeanTween.value(arrow, 0f, 1f, SOLUTION_ANIMATE_SWIPE_ARROW_DURATION)
+				.setDelay(SOLUTION_ANIMATE_SWIPE_ARROW_DELAY)
+				.setEase(LeanTweenType.easeInSine)
+				.setOnUpdate
+				(
+					(float val) =>
+					{
+					}
+				)
+				.setOnComplete
+				(
+					()=>
+					{
+						AnimateSolutionSwipeVertical(dir);
+					}
+				);
+	}
+
+	private void AnimateSolutionSwipeHorizontal(int dir)
+	{
+		GameObject arrow;
+
+		RectTransform parentRectTransform = (RectTransform)_solution.transform;
+		RectTransform handRectTransform = (RectTransform)_solutionHandHorizontal.transform;
+		RectTransform arrowRectTransform;
+
+		if (dir == 1)
+		{
+			arrow = _solutionArrowRight;
+			arrowRectTransform = (RectTransform)_solutionArrowRight.transform;
+		}
+		else
+		{
+			arrow = _solutionArrowLeft;
+			arrowRectTransform = (RectTransform)_solutionArrowLeft.transform;
+		}
+
+		// Set Active
+
+		_solutionHandVertical.SetActive(false);
+		_solutionHandHorizontal.SetActive(true);
+
+		if (dir == 1)
+		{
+			_solutionArrowUp.SetActive(false);
+			_solutionArrowDown.SetActive(false);
+			_solutionArrowLeft.SetActive(false);
+			_solutionArrowRight.SetActive(true);
+		}
+		else
+		{
+			_solutionArrowUp.SetActive(false);
+			_solutionArrowDown.SetActive(false);
+			_solutionArrowLeft.SetActive(true);
+			_solutionArrowRight.SetActive(false);
+		}
+
+		// Cancel Animation
+
+		StopAnimateSolution();
+
+		// Animate Hand - Direction
+
+		float handDeltaX = ((parentRectTransform.rect.width / 2) - (handRectTransform.rect.width / 2)) * 2;
+
+		float handStartPosX = _solutionHandOriginalPos.x - ((handDeltaX / 2) * dir);
+		float handEndPosX = _solutionHandOriginalPos.x + ((handDeltaX / 2) * dir);
+
+		handRectTransform.anchoredPosition = new Vector3(handStartPosX, _solutionHandOriginalPos.y, _solutionHandOriginalPos.z);
+
+		LeanTween.cancel(_solutionHandHorizontal);
+		LeanTween.moveLocalX(_solutionHandHorizontal, handEndPosX, SOLUTION_ANIMATE_SWIPE_HAND_DURATION)
+				.setDelay(SOLUTION_ANIMATE_SWIPE_HAND_DELAY)
+				.setEase(LeanTweenType.easeInOutQuint);
+
+		// Animate Hand - Opacity
+
+		_solutionHandHorizontal.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+
+		LeanTween.value(_solutionHandHorizontal, 1f, 0f, SOLUTION_ANIMATE_SWIPE_HAND_DURATION)
+				.setDelay(SOLUTION_ANIMATE_SWIPE_HAND_DELAY)
+				.setEase(LeanTweenType.easeInOutQuint)
+				.setOnUpdate
+				(
+					(float val) =>
+					{
+						_solutionHandHorizontal.GetComponent<Image>().color = new Color(1f, 1f, 1f, val);
+					}
+				)
+				.setOnComplete
+				(
+					()=>
+					{
+						_solutionHandHorizontal.SetActive(false);
+					}
+				);
+
+		// Animate Arrow - Direction
+
+		float arrowStartPosX = handStartPosX;
+		float arrowEndPosX = handEndPosX;
+
+		arrowRectTransform.anchoredPosition = new Vector3(arrowStartPosX, _solutionHandOriginalPos.y, _solutionHandOriginalPos.z);
+
+		LeanTween.cancel(arrow);
+		LeanTween.moveLocalX(arrow, arrowEndPosX, SOLUTION_ANIMATE_SWIPE_ARROW_DURATION)
+				.setDelay(SOLUTION_ANIMATE_SWIPE_ARROW_DELAY)
+				.setEase(LeanTweenType.easeInOutQuint);
+
+		// Animate Arrow - Scale
+
+		arrow.transform.localScale = Vector3.zero;
+
+		LeanTween.scale(arrow, Vector3.one, SOLUTION_ANIMATE_SWIPE_ARROW_DURATION)
+				.setDelay(SOLUTION_ANIMATE_SWIPE_ARROW_DELAY)
+				.setEase(LeanTweenType.easeInOutQuint)
+				.setOnComplete
+				(
+					()=>
+					{
+						arrow.SetActive(false);
+					}
+				);
+
+		// Callback
+
+		LeanTween.value(arrow, 0f, 1f, SOLUTION_ANIMATE_SWIPE_ARROW_DURATION)
+				.setDelay(SOLUTION_ANIMATE_SWIPE_ARROW_DELAY)
+				.setEase(LeanTweenType.easeInSine)
+				.setOnUpdate
+				(
+					(float val) =>
+					{
+					}
+				)
+				.setOnComplete
+				(
+					()=>
+					{
+						AnimateSolutionSwipeHorizontal(dir);
+					}
+				);
+	}
+
+	public void StartAnimateSolution(char direction)
+	{
+		char directionUpper = char.ToUpper(direction);
+
+		if (directionUpper == 'U')
+		{
+			AnimateSolutionSwipeVertical(1);
+		}
+		else if (directionUpper == 'D')
+		{
+			AnimateSolutionSwipeVertical(-1);
+		}
+		else if (directionUpper == 'L')
+		{
+			AnimateSolutionSwipeHorizontal(-1);
+		}
+		else if (directionUpper == 'R')
+		{
+			AnimateSolutionSwipeHorizontal(1);
+		}
+	}
+
+	public void StopAnimateSolution()
+	{
+		LeanTween.cancel(_solutionHandVertical);
+		LeanTween.cancel(_solutionHandHorizontal);
+		LeanTween.cancel(_solutionArrowUp);
+		LeanTween.cancel(_solutionArrowDown);
+		LeanTween.cancel(_solutionArrowLeft);
+		LeanTween.cancel(_solutionArrowRight);
+	}
+
 	// Unity Lifecycle
 
 	private void Awake()
@@ -971,12 +1728,13 @@ public class LevelUI : MonoBehaviour
 		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 
 		FindTopGameObject();
-		FindHintGameObject();
 		FindControlGameObject();
 		FindGoGameObject();
 		FindPauseGameObject();
 		FindWinGameObject();
 		FindDarkenGameObject();
 		FindBlinderGameObject();
+		FindTutorialGameObject();
+		FindSolutionGameObject();
 	}
 }
