@@ -883,6 +883,18 @@ public class LevelLogic : MonoBehaviour
 
 			if (IsBlockEndPosWinning() == true)
 			{
+				if (_touchHint || _touchSolution)
+				{
+					_touchHint = false;
+					_touchSolution = false;
+
+					_ui.SetActiveControlHintOn(false);
+					_ui.SetActiveControlHintOff(true);
+
+					_ui.StopAnimateSolution();
+					_ui.SetActiveSolution(false);
+				}
+
 				_ui.SetInteractableControlButton(false);
 				_touchState = TouchState.START_TO_PRE_END;
 				return;
@@ -1058,18 +1070,6 @@ public class LevelLogic : MonoBehaviour
 			_cloudOnce.Save();
 
 			// Update UI
-
-			if (_touchHint || _touchSolution)
-			{
-				_touchHint = false;
-				_touchSolution = false;
-
-				_ui.SetActiveControlHintOn(false);
-				_ui.SetActiveControlHintOff(true);
-
-				_ui.StopAnimateSolution();
-				_ui.SetActiveSolution(false);
-			}
 
 			int moveCount = GetBlockMoveCount();
 			_ui.SetTopMoveCurrent(moveCount);

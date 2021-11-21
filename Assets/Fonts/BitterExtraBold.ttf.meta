@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 22cd4c0a8ae6828cfba81ddbaab423bd
+guid: 641f6fdea64071c82995856c88c96adb
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,8 +9,10 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - American Typewriter BQ
-  fallbackFontReferences: []
+  - Bitter
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: ec402baba47d35c60b20f56806c16264, type: 3}
+  - {fileID: 12800000, guid: c9397fd9f00bd4b5d88390778ef7afcd, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

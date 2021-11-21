@@ -1231,8 +1231,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Levels
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 0811d0bb917f7574eaed35137de31de8, type: 2}
-  m_sharedMaterial: {fileID: 4214940188289705959, guid: 0811d0bb917f7574eaed35137de31de8, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0b8e62a53b198da23919850a5a0a5dda, type: 2}
+  m_sharedMaterial: {fileID: -2231486952372202611, guid: 0b8e62a53b198da23919850a5a0a5dda, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1364,7 +1364,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 22cd4c0a8ae6828cfba81ddbaab423bd, type: 3}
+    m_Font: {fileID: 12800000, guid: 641f6fdea64071c82995856c88c96adb, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
@@ -1957,7 +1957,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4d159e2951763e69c88f0c0c26049ed4, type: 3}
   - {fileID: 21300000, guid: 8eaf838a54eb94c03b6b0a5f8abdd0d1, type: 3}
   - {fileID: 21300000, guid: 8ce49a976ba9bd8ddb016f6e2349501a, type: 3}
-  _levelButtonLock: {fileID: 21300000, guid: 96621566e24f47306a92f50091ef5b74, type: 3}
   _levelButtonSinglePrefab: {fileID: 7660679513493152306, guid: 8ab408f019951ad6aa2504c142d4dff8, type: 3}
   _levelButtonTriplePrefab: {fileID: 8060267582285321287, guid: 2f6e6dc6dd109fa07a9b6de4755d5948, type: 3}
   BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE: 1.15
