@@ -888,8 +888,11 @@ public class LevelLogic : MonoBehaviour
 					_touchHint = false;
 					_touchSolution = false;
 
-					_ui.SetActiveControlHintOn(false);
-					_ui.SetActiveControlHintOff(true);
+					if (_touchHint)
+					{
+						_ui.SetActiveControlHintOn(false);
+						_ui.SetActiveControlHintOff(true);
+					}
 
 					_ui.StopAnimateSolution();
 					_ui.SetActiveSolution(false);
@@ -966,6 +969,29 @@ public class LevelLogic : MonoBehaviour
 
 			_data.SetPlayTime(_data.GetPlayTime() + (_playEndTime - _playStartTime));
 
+			// Get previous values for calculation of achievements.
+
+			int numSolvedPrevious = 0;
+			int numStarsPrevious = 0;
+			int totalStarsPrevious = 0;
+
+			for (int i = 0; i < _level.GetNumMap(_menuColor, _menuAlphabet); i++)
+			{
+				int tmpStar = _data.GetLevelStar(_menuColor, _menuAlphabet, i);
+
+				numStarsPrevious += tmpStar;
+
+				if (tmpStar >= 1)
+				{
+					numSolvedPrevious += 1;
+				}
+			}
+
+			for (int i = 0; i < _level.GetNumColor(); i++)
+			{
+				totalStarsPrevious += _data.GetColorStar(i);
+			}
+
 			// Update stars and solved levels
 
 			int move = GetBlockMoveCount();
@@ -999,7 +1025,7 @@ public class LevelLogic : MonoBehaviour
 
 				if (_data.GetColorSolved(_menuColor) == _data.GetColorSolvedTotal(_menuColor))
 				{
-					if (_menuColor + 1 > _data.GetBackgroundColor())
+					if (_menuColor + 1 < _level.GetNumColor() && _menuColor + 1 > _data.GetBackgroundColor())
 					{
 						_data.SetBackgroundColor(_menuColor + 1);
 					}
@@ -1028,6 +1054,7 @@ public class LevelLogic : MonoBehaviour
 			if (nextColor >= _level.GetNumColor())
 			{
 				enableNext = false;
+				nextColor = 0;
 			}
 			else
 			{
@@ -1042,6 +1069,7 @@ public class LevelLogic : MonoBehaviour
 			// Update achievements
 
 			int numSolved = 0;
+			int numStars = 0;
 
 			for (int i = 0; i < _level.GetNumMap(_menuColor, _menuAlphabet); i++)
 			{
@@ -1051,14 +1079,31 @@ public class LevelLogic : MonoBehaviour
 				}
 			}
 
+			numStars = _data.GetAlphabetStar(_menuColor, _menuAlphabet);
+
+			if (numSolved >= 60 && numSolvedPrevious < numSolved)
+			{
+				_achievementShowClear = true;
+			}
+
+			if (numStars == 60 * 3 && numStarsPrevious < numStars)
+			{
+				_achievementShowFullClear = true;
+			}
+
 			_cloudOnce.IncrementClearAchivement(_menuColor, _menuAlphabet, numSolved, 60);
-			_cloudOnce.IncrementFullClearAchivement(_menuColor, _menuAlphabet, _data.GetAlphabetStar(_menuColor, _menuAlphabet), 60 * 3);
+			_cloudOnce.IncrementFullClearAchivement(_menuColor, _menuAlphabet, numStars, 60 * 3);
 
 			int totalStars = 0;
 
 			for (int i = 0; i < _level.GetNumColor(); i++)
 			{
 				totalStars += _data.GetColorStar(i);
+			}
+
+			if (totalStars == 13 * 60 * 3 && totalStarsPrevious < totalStars)
+			{
+				_achievementShowPerfectionist = true;
 			}
 
 			_cloudOnce.IncrementThePerfectionistAchivement(totalStars, 13 * 60 * 3);
@@ -1084,6 +1129,8 @@ public class LevelLogic : MonoBehaviour
 
 			_ui.SetActiveBlinder(false);
 			BringBlockSortingLayerToBack();
+
+			_ui.SetInteractableWinNextButton(enableNext);
 
 			AnimateMapExit
 			(
@@ -1111,8 +1158,7 @@ public class LevelLogic : MonoBehaviour
 										(
 											()=>
 											{
-												_ui.SetEnableWinButton(true);
-												_ui.SetInteractableWinNextButton(enableNext);
+												ShowAchievements();
 											}
 										);
 									}
@@ -1124,8 +1170,7 @@ public class LevelLogic : MonoBehaviour
 										(
 											()=>
 											{
-												_ui.SetEnableWinButton(true);
-												_ui.SetInteractableWinNextButton(enableNext);
+												ShowAchievements();
 											}
 										);
 
@@ -1879,6 +1924,125 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetActiveSolution(false);
 	}
 
+	// Message - Achievement
+
+	bool _achievementShowClear;
+	bool _achievementShowFullClear;
+	bool _achievementShowPerfectionist;
+
+	private void SetupMessageAchievement()
+	{
+		_message.SetActiveAchievement(false);
+		_achievementShowClear = false;
+		_achievementShowFullClear = false;
+	}
+
+	private void ShowClearAchievement()
+	{
+		_audio.PlayAchievementReceived();
+
+		_message.SetActiveAchievement(true);
+		_message.SetEnableAchievementBackButton(false);
+		_message.SetActiveAchievementMedalSiver(true);
+		_message.SetActiveAchievementMedalSiverGold(false);
+		_message.SetActiveAchievementMedalGold(false);
+		_message.SetAchievementMessage(_menuColor, _menuAlphabet, false, false);
+
+		_message.AnimateAchievementEnter
+		(
+			()=>
+			{
+				_message.SetEnableAchievementBackButton(true);
+			}
+		);
+	}
+
+	private void ShowFullClearAchievement()
+	{
+		_audio.PlayAchievementReceived();
+
+		_message.SetActiveAchievement(true);
+		_message.SetEnableAchievementBackButton(false);
+		_message.SetActiveAchievementMedalSiver(false);
+		_message.SetActiveAchievementMedalSiverGold(true);
+		_message.SetActiveAchievementMedalGold(false);
+		_message.SetAchievementMessage(_menuColor, _menuAlphabet, true, false);
+
+		_message.AnimateAchievementEnter
+		(
+			()=>
+			{
+				_message.SetEnableAchievementBackButton(true);
+			}
+		);
+	}
+
+	private void ShowPerfectionistAchievement()
+	{
+		_audio.PlayAchievementReceived();
+
+		_message.SetActiveAchievement(true);
+		_message.SetEnableAchievementBackButton(false);
+		_message.SetActiveAchievementMedalSiver(false);
+		_message.SetActiveAchievementMedalSiverGold(false);
+		_message.SetActiveAchievementMedalGold(true);
+		_message.SetAchievementMessage(_menuColor, _menuAlphabet, true, false);
+
+		_message.AnimateAchievementEnter
+		(
+			()=>
+			{
+				_message.SetEnableAchievementBackButton(true);
+			}
+		);
+	}
+
+	private void ShowAchievements()
+	{
+		if (_achievementShowClear)
+		{
+			ShowClearAchievement();
+			_achievementShowClear = false;
+			return;
+		}
+		else if (_achievementShowFullClear)
+		{
+			ShowFullClearAchievement();
+			_achievementShowFullClear = false;
+			return;
+		}
+		else if (_achievementShowPerfectionist)
+		{
+			ShowPerfectionistAchievement();
+			_achievementShowPerfectionist = false;
+			return;
+		}
+
+		_ui.SetEnableWinButton(true);
+	}
+
+	public void OnMessageAchievementBackButtonPressed()
+	{
+		_audio.PlayButtonPressed();
+
+		_message.SetEnableAchievementBackButton(false);
+
+		_message.AnimateAchievementBackButtonPressed
+		(
+			()=>
+			{
+				_message.AnimateAchievementExit
+				(
+					()=>
+					{
+						_message.SetActiveAchievement(false);
+						ShowAchievements();
+					}
+				);
+			}
+		);
+	}
+
 	// Message - Hint
 
 	private void SetupMessageHint()
@@ -2023,6 +2187,7 @@ public class LevelLogic : MonoBehaviour
 		SetupBlinder();
 		SetupTutorial();
 		SetupSolution();
+		SetupMessageAchievement();
 		SetupMessageHint();
 		SetupMessageLoad();
 		SetupMessageError();

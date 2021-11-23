@@ -245,19 +245,20 @@ public class MainMenuLogic : MonoBehaviour
 	public void OnBottomLanguageButtonPressed()
 	{
 		_audio.PlayButtonPressed();
-
+/*
 		count += 1;
 		if (count >= 5)
 			count = 0;
 
 		_ui.SetBackgroundColor(count);
-
+*/
 		_ui.AnimateBottomLanguageButtonPressed
 		(
 			()=>
 			{
 			}
 		);
+
 	}
 
 	// UI - CloudOnce

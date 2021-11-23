@@ -32,6 +32,24 @@ public class LevelBrownA : Level
 				_layout = new sbyte[,]
 				{
 					{ X, X, X, X, X, X, X, X, },
+					{ X, 0, 0, 0, 0, C, 0, X, },
+					{ X, X, 0, 0, 0, D, 0, X, },
+					{ X, X, 0, 0, 0, 0, X, X, },
+					{ X, X, 0, 0, 0, 0, X, X, },
+					{ X, X, A, 0, 0, 0, X, X, },
+					{ X, 0, B, 0, 0, 0, 0, X, },
+					{ X, X, X, X, X, X, X, X, },
+				},
+
+				_hint = new char[] { 'U','R', },
+			},
+
+			// Puzzle 002
+			new Map()
+			{
+				_layout = new sbyte[,]
+				{
+					{ X, X, X, X, X, X, X, X, },
 					{ X, X, X, X, X, X, X, X, },
 					{ X, X, X, X, C, D, X, X, },
 					{ X, X, X, X, 0, 0, X, X, },
@@ -42,24 +60,6 @@ public class LevelBrownA : Level
 				},
 
 				_hint = new char[] { 'D','L', },
-			},
-
-			// Puzzle 002
-			new Map()
-			{
-				_layout = new sbyte[,]
-				{
-					{ X, X, X, X, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
-					{ X, X, 0, 0, 0, 0, 0, X, },
-					{ X, 0, 0, 0, 0, 0, 0, X, },
-					{ X, X, A, X, X, C, X, X, },
-					{ X, X, B, X, X, D, X, X, },
-					{ X, X, 0, 0, 0, 0, X, X, },
-					{ X, X, X, X, X, X, X, X, },
-				},
-
-				_hint = new char[] { 'U','R', },
 			},
 
 			// Puzzle 003

@@ -8,6 +8,215 @@ public class MessageManager : MonoBehaviour
 {
 	private BlockManager _blk;
 	private ItemManager _itm;
+	private LevelManager _level;
+
+	// Achievement
+
+	public float ACHIEVEMENT_ANIMATE_ENTER_DURATION;
+
+	public float ACHIEVEMENT_ANIMATE_SUNBURST_ENTER_DURATION;
+	public float ACHIEVEMENT_ANIMATE_SUNBURST_ROTATE_DURATION;
+
+	public float ACHIEVEMENT_ANIMATE_BUTTON_PRESSED_SCALE;
+	public float ACHIEVEMENT_ANIMATE_BUTTON_PRESSED_DURATION;
+
+	public float ACHIEVEMENT_ANIMATE_EXIT_DURATION;
+
+	private GameObject _achievement;
+	private GameObject _achievementSunburstWide;
+	private GameObject _achievementSunburstNarrow;
+	private GameObject _achievementMedalSilver;
+	private GameObject _achievementMedalSilverGold;
+	private GameObject _achievementMedalGold;
+	private GameObject _achievementGeneric;
+	private GameObject _achievementName;
+	private GameObject _achievementBack;
+	private GameObject _achievementBackButton;
+
+	private void FindAchievementGameObject()
+	{
+		_achievement = GameObject.Find("/Canvas/MessageAchievement");
+		_achievementSunburstWide = GameObject.Find("/Canvas/MessageAchievement/Board/SunburstWide");
+		_achievementSunburstNarrow = GameObject.Find("/Canvas/MessageAchievement/Board/SunburstNarrow");
+		_achievementMedalSilver = GameObject.Find("/Canvas/MessageAchievement/Board/MedalSilver");
+		_achievementMedalSilverGold = GameObject.Find("/Canvas/MessageAchievement/Board/MedalSilverGold");
+		_achievementMedalGold = GameObject.Find("/Canvas/MessageAchievement/Board/MedalGold");
+		_achievementGeneric = GameObject.Find("/Canvas/MessageAchievement/Board/Generic");
+		_achievementName = GameObject.Find("/Canvas/MessageAchievement/Board/Name");
+		_achievementBack = GameObject.Find("/Canvas/MessageAchievement/Board/Back");
+		_achievementBackButton = GameObject.Find("/Canvas/MessageAchievement/Board/Back/Button");
+	}
+
+	public void SetActiveAchievement(bool active)
+	{
+		_achievement.SetActive(active);
+	}
+
+	public void SetEnableAchievementBackButton(bool enable)
+	{
+		_achievementBackButton.GetComponent<Button>().enabled = enable;
+	}
+
+	public void SetActiveAchievementMedalSiver(bool active)
+	{
+		_achievementMedalSilver.SetActive(active);
+	}
+
+	public void SetActiveAchievementMedalSiverGold(bool active)
+	{
+		_achievementMedalSilverGold.SetActive(active);
+	}
+
+	public void SetActiveAchievementMedalGold(bool active)
+	{
+		_achievementMedalGold.SetActive(active);
+	}
+
+	public void SetAchievementMessage(int color, int alphabet, bool fullClear, bool perfectionist)
+	{
+		string str = _level.GetColorString(color) + " - " + _level.GetAlphabetString(alphabet);
+
+		if (perfectionist)
+		{
+			str = "Perfectionist";
+		}
+		else if (fullClear)
+		{
+			str += " Full Clear";
+		}
+		else
+		{
+			str += " Clear";
+		}
+
+		_achievementName.GetComponent<TextMeshProUGUI>().SetText(str);
+	}
+
+	private void AnimateAchievementSunburstWideRotate()
+	{
+		LeanTween.rotateAround(_achievementSunburstWide, Vector3.forward, -360.0f, ACHIEVEMENT_ANIMATE_SUNBURST_ROTATE_DURATION).setOnComplete
+		(
+			()=>
+			{
+				AnimateAchievementSunburstWideRotate();
+			}
+		);
+	}
+
+	public void AnimateAchievementEnter(Animate.AnimateComplete callback)
+	{
+		// Animate Sunburst Wide
+
+		LeanTween.cancel(_achievementSunburstWide);
+
+		_achievementSunburstWide.transform.localScale = Vector3.zero;
+
+		LeanTween.scale(_achievementSunburstWide, Vector3.one, ACHIEVEMENT_ANIMATE_SUNBURST_ENTER_DURATION).setEase(LeanTweenType.easeOutQuad);
+
+		LeanTween.value(_achievementSunburstWide, 0.0f, 1, ACHIEVEMENT_ANIMATE_SUNBURST_ENTER_DURATION).setEase(LeanTweenType.easeOutSine).setOnUpdate
+		(
+			(float val) =>
+			{
+				_achievementSunburstWide.GetComponent<Image>().color = new Color(1f, 1f, 1f, val);
+			}
+		);
+
+		AnimateAchievementSunburstWideRotate();
+
+		// Animate Sunburst Narrow
+
+		LeanTween.cancel(_achievementSunburstNarrow);
+
+		_achievementSunburstNarrow.transform.localScale = Vector3.zero;
+
+		LeanTween.scale(_achievementSunburstNarrow, Vector3.one, ACHIEVEMENT_ANIMATE_ENTER_DURATION).setEase(LeanTweenType.easeInOutElastic);
+
+		// Animate Medal
+
+		LeanTween.cancel(_achievementMedalSilver);
+		LeanTween.cancel(_achievementMedalSilverGold);
+		LeanTween.cancel(_achievementMedalGold);
+
+		_achievementMedalSilver.transform.localScale = Vector3.zero;
+		_achievementMedalSilverGold.transform.localScale = Vector3.zero;
+		_achievementMedalGold.transform.localScale = Vector3.zero;
+
+		LeanTween.scale(_achievementMedalSilver, Vector3.one, ACHIEVEMENT_ANIMATE_ENTER_DURATION).setEase(LeanTweenType.easeInOutElastic);
+		LeanTween.scale(_achievementMedalSilverGold, Vector3.one, ACHIEVEMENT_ANIMATE_ENTER_DURATION).setEase(LeanTweenType.easeInOutElastic);
+		LeanTween.scale(_achievementMedalGold, Vector3.one, ACHIEVEMENT_ANIMATE_ENTER_DURATION).setEase(LeanTweenType.easeInOutElastic);
+
+		// Animate Message
+
+		LeanTween.cancel(_achievementGeneric);
+		LeanTween.cancel(_achievementName);
+
+		_achievementGeneric.transform.localScale = Vector3.zero;
+		_achievementName.transform.localScale = Vector3.zero;
+
+		LeanTween.scale(_achievementGeneric, Vector3.one, ACHIEVEMENT_ANIMATE_ENTER_DURATION).setEase(LeanTweenType.easeInOutElastic);
+		LeanTween.scale(_achievementName, Vector3.one, ACHIEVEMENT_ANIMATE_ENTER_DURATION).setEase(LeanTweenType.easeInOutElastic);
+
+		// Animate Back
+
+		LeanTween.cancel(_achievementBack);
+
+		_achievementBack.transform.localScale = Vector3.zero;
+		_achievementBack.transform.eulerAngles = new Vector3(0, 0, 20);
+
+		LeanTween.scale(_achievementBack, Vector3.one, ACHIEVEMENT_ANIMATE_ENTER_DURATION).setEase(LeanTweenType.easeInOutElastic);
+		LeanTween.rotateAround(_achievementBack, Vector3.forward, -20.0f, ACHIEVEMENT_ANIMATE_ENTER_DURATION).setEase(LeanTweenType.easeInOutElastic).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
+	}
+
+	public void AnimateAchievementExit(Animate.AnimateComplete callback)
+	{
+		// Animate Sunburst Wide
+
+		_achievementSunburstWide.transform.localScale = Vector3.one;
+		LeanTween.scale(_achievementSunburstWide, Vector3.zero, ACHIEVEMENT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeInBack);
+
+		// Animate Sunburst Narrow
+
+		_achievementSunburstNarrow.transform.localScale = Vector3.one;
+		LeanTween.scale(_achievementSunburstNarrow, Vector3.zero, ACHIEVEMENT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeInBack);
+
+		// Animate Medal
+
+		_achievementMedalSilver.transform.localScale = Vector3.one;
+		_achievementMedalSilverGold.transform.localScale = Vector3.one;
+		_achievementMedalGold.transform.localScale = Vector3.one;
+		LeanTween.scale(_achievementMedalSilver, Vector3.zero, ACHIEVEMENT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeInBack);
+		LeanTween.scale(_achievementMedalSilverGold, Vector3.zero, ACHIEVEMENT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeInBack);
+		LeanTween.scale(_achievementMedalGold, Vector3.zero, ACHIEVEMENT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeInBack);
+
+		// Animate Message
+
+		_achievementGeneric.transform.localScale = Vector3.one;
+		_achievementName.transform.localScale = Vector3.one;
+		LeanTween.scale(_achievementGeneric, Vector3.zero, ACHIEVEMENT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeInBack);
+		LeanTween.scale(_achievementName, Vector3.zero, ACHIEVEMENT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeInBack);
+
+		// Animate Back
+
+		_achievementBack.transform.localScale = Vector3.one;
+		LeanTween.scale(_achievementBack, Vector3.zero, ACHIEVEMENT_ANIMATE_EXIT_DURATION).setEase(LeanTweenType.easeInBack).setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
+	}
+
+	public void AnimateAchievementBackButtonPressed(Animate.AnimateComplete callback)
+	{
+		Animate.AnimateButtonPressed(_achievementBackButton, ACHIEVEMENT_ANIMATE_BUTTON_PRESSED_SCALE, ACHIEVEMENT_ANIMATE_BUTTON_PRESSED_DURATION, callback);
+	}
 
 	// Item
 
@@ -708,7 +917,9 @@ public class MessageManager : MonoBehaviour
 	{
 		_blk = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 		_itm = GameObject.Find("ItemManager").GetComponent<ItemManager>();
+		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
+		FindAchievementGameObject();
 		FindItemGameObject();
 		FindHintGameObject();
 		FindBlockGameObject();
