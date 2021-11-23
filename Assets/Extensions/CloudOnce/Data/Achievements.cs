@@ -14,34 +14,34 @@ namespace CloudOnce
     /// </summary>
     public static class Achievements
     {
-        private static readonly UnifiedAchievement s_tutorialAClear = new UnifiedAchievement("TutorialAClear",
+        private static readonly UnifiedAchievement s_noviceAClear = new UnifiedAchievement("NoviceAClear",
 #if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
             ""
 #elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
             "CgkIqeu6h8oLEAIQAg"
 #else
-            "TutorialAClear"
+            "NoviceAClear"
 #endif
             );
 
-        public static UnifiedAchievement TutorialAClear
+        public static UnifiedAchievement NoviceAClear
         {
-            get { return s_tutorialAClear; }
+            get { return s_noviceAClear; }
         }
 
-        private static readonly UnifiedAchievement s_tutorialAFullClear = new UnifiedAchievement("TutorialAFullClear",
+        private static readonly UnifiedAchievement s_noviceAFullClear = new UnifiedAchievement("NoviceAFullClear",
 #if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
             ""
 #elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
             "CgkIqeu6h8oLEAIQAw"
 #else
-            "TutorialAFullClear"
+            "NoviceAFullClear"
 #endif
             );
 
-        public static UnifiedAchievement TutorialAFullClear
+        public static UnifiedAchievement NoviceAFullClear
         {
-            get { return s_tutorialAFullClear; }
+            get { return s_noviceAFullClear; }
         }
 
         private static readonly UnifiedAchievement s_easyAClear = new UnifiedAchievement("EasyAClear",
@@ -421,8 +421,8 @@ namespace CloudOnce
 
         public static readonly UnifiedAchievement[] All =
         {
-            s_tutorialAClear,
-            s_tutorialAFullClear,
+            s_noviceAClear,
+            s_noviceAFullClear,
             s_easyAClear,
             s_easyAFullClear,
             s_easyBClear,
@@ -459,8 +459,8 @@ namespace CloudOnce
 
         private static readonly Dictionary<string, UnifiedAchievement> s_achievementDictionary = new Dictionary<string, UnifiedAchievement>
         {
-            { "TutorialAClear", s_tutorialAClear },
-            { "TutorialAFullClear", s_tutorialAFullClear },
+            { "NoviceAClear", s_noviceAClear },
+            { "NoviceAFullClear", s_noviceAFullClear },
             { "EasyAClear", s_easyAClear },
             { "EasyAFullClear", s_easyAFullClear },
             { "EasyBClear", s_easyBClear },

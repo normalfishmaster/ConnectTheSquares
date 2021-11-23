@@ -80,7 +80,7 @@ public class CloudOnceManager : MonoBehaviour
 
 		if (color == 0 && alphabet == 0)
 		{
-			Achievements.TutorialAClear.Increment(fcurrent, fgoal);
+			Achievements.NoviceAClear.Increment(fcurrent, fgoal);
 		}
 		else if (color == 1 && alphabet == 0)
 		{
@@ -139,7 +139,7 @@ public class CloudOnceManager : MonoBehaviour
 
 		if (color == 0 && alphabet == 0)
 		{
-			Achievements.TutorialAFullClear.Increment(fcurrent, fgoal);
+			Achievements.NoviceAFullClear.Increment(fcurrent, fgoal);
 		}
 		else if (color == 1 && alphabet == 0)
 		{

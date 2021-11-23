@@ -20,7 +20,7 @@ namespace CloudOnce
         /// </summary>
         public static class AchievementIDs
         {
-            public static string TutorialAClear
+            public static string NoviceAClear
             {
                 get
                 {
@@ -33,14 +33,14 @@ namespace CloudOnce
 #elif (UNITY_IOS || UNITY_TVOS) && !UNITY_EDITOR
                     return "";
 #elif UNITY_EDITOR
-                    return "TutorialAClear";
+                    return "NoviceAClear";
 #else
                     return string.Empty;
 #endif
                 }
             }
 
-            public static string TutorialAFullClear
+            public static string NoviceAFullClear
             {
                 get
                 {
@@ -53,7 +53,7 @@ namespace CloudOnce
 #elif (UNITY_IOS || UNITY_TVOS) && !UNITY_EDITOR
                     return "";
 #elif UNITY_EDITOR
-                    return "TutorialAFullClear";
+                    return "NoviceAFullClear";
 #else
                     return string.Empty;
 #endif

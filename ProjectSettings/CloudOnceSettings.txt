@@ -1,12 +1,12 @@
 {
 	"AchievementIDs":[
 		{
-			"InternalID":"TutorialAClear",
+			"InternalID":"NoviceAClear",
 			"AppleID":"",
 			"GoogleID":"CgkIqeu6h8oLEAIQAg"
 		},
 		{
-			"InternalID":"TutorialAFullClear",
+			"InternalID":"NoviceAFullClear",
 			"AppleID":"",
 			"GoogleID":"CgkIqeu6h8oLEAIQAw"
 		},
