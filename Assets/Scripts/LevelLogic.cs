@@ -13,6 +13,7 @@ public class LevelLogic : MonoBehaviour
 	private BlockManager _block;
 	private CloudOnceManager _cloudOnce;
 	private DataManager _data;
+	private ItemManager _item;
 	private LevelManager _level;
 	private MessageManager _message;
 
@@ -1037,7 +1038,6 @@ public class LevelLogic : MonoBehaviour
 			int nextColor = _menuColor;
 			int nextAlphabet = _menuAlphabet;
 			int nextMap = _menuMap + 1;
-			bool enableNext;
 
 			if (nextMap >= _level.GetNumMap(_menuColor, _menuAlphabet))
 			{
@@ -1053,12 +1053,11 @@ public class LevelLogic : MonoBehaviour
 
 			if (nextColor >= _level.GetNumColor())
 			{
-				enableNext = false;
+				_ui.SetPermanentlyNonInteractableWinNextButton();
 				nextColor = 0;
 			}
 			else
 			{
-				enableNext = true;
 				_data.SetLevelLock(nextColor, nextAlphabet, nextMap, 0);
 			}
 
@@ -1130,8 +1129,6 @@ public class LevelLogic : MonoBehaviour
 			_ui.SetActiveBlinder(false);
 			BringBlockSortingLayerToBack();
 
-			_ui.SetInteractableWinNextButton(enableNext);
-
 			AnimateMapExit
 			(
 				()=>
@@ -1141,8 +1138,7 @@ public class LevelLogic : MonoBehaviour
 					_ui.SetActiveWin(true);
 					_ui.SetActiveWinMessagePerfect(false);
 					_ui.SetActiveWinMessageTry(false);
-					_ui.SetEnableWinButton(false);
-					_ui.SetInteractableWinNextButton(enableNext);
+					_ui.SetInteractableWinButton(false);
 
 					_ui.AnimateWinBoardEnter
 					(
@@ -1247,6 +1243,7 @@ public class LevelLogic : MonoBehaviour
 		if (status == AdManager.RewardStatus.SUCCESS)
 		{
 			_cloudOnce.IncrementHint(1);
+			_cloudOnce.Save();
 			_ui.SetControlHintCount(_cloudOnce.GetHint());
 			_ui.SetActiveControlHintAd(false);
 			_ui.SetActiveControlHintOn(false);
@@ -1277,7 +1274,7 @@ public class LevelLogic : MonoBehaviour
 				(
 					()=>
 					{
-						_ui.SetEnableWinButton(true);
+						_ui.SetInteractableWinButton(true);
 					}
 				);
 			}
@@ -1524,6 +1521,7 @@ public class LevelLogic : MonoBehaviour
 		if (_hintUsed == false)
 		{
 			_cloudOnce.DecrementHint(1);
+			_cloudOnce.Save();
 			_ui.SetControlHintCount(_cloudOnce.GetHint());
 			_hintUsed = true;
 		}
@@ -1562,7 +1560,7 @@ public class LevelLogic : MonoBehaviour
 
 		_pauseBlockSetNumber = _block.DecrementSetNumber(_pauseBlockSetNumber);
 		_ui.SetPauseBlockSprite(_pauseBlockSetNumber);
-		if (_block.IsBlockSetUnlocked(_pauseBlockSetNumber) == 1)
+		if (_block.IsBlockSetUnlocked(_pauseBlockSetNumber))
 		{
 			_ui.SetActivePauseLock(false);
 		}
@@ -1580,7 +1578,7 @@ public class LevelLogic : MonoBehaviour
 
 		_pauseBlockSetNumber = _block.IncrementSetNumber(_pauseBlockSetNumber);
 		_ui.SetPauseBlockSprite(_pauseBlockSetNumber);
-		if (_block.IsBlockSetUnlocked(_pauseBlockSetNumber) == 1)
+		if (_block.IsBlockSetUnlocked(_pauseBlockSetNumber))
 		{
 			_ui.SetActivePauseLock(false);
 		}
@@ -1643,7 +1641,7 @@ public class LevelLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-		if (_block.IsBlockSetUnlocked(_pauseBlockSetNumber) == 1)
+		if (_block.IsBlockSetUnlocked(_pauseBlockSetNumber))
 		{
 			_data.SetBlockSet(_pauseBlockSetNumber);
 			SetMapBlockSprite(_pauseBlockSetNumber);
@@ -1698,7 +1696,7 @@ public class LevelLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.SetEnableWinButton(false);
+		_ui.SetInteractableWinButton(false);
 		_ui.AnimateWinHintAdButtonPressed
 		(
 			()=>
@@ -1743,13 +1741,16 @@ public class LevelLogic : MonoBehaviour
 		bool playAd = false;
 		bool adPlayed = false;
 
-		if (_data.GetPlayTime() >= ADS_MAX_PLAY_TIME)
+		if (_item.IsItemUnlocked(ItemManager.REMOVE_ADS) == false)
 		{
-			playAd = true;
-		}
-		if (_data.GetSkippedAds() >= ADS_MAX_SKIPPED_ADS)
-		{
-			playAd = true;
+			if (_data.GetPlayTime() >= ADS_MAX_PLAY_TIME)
+			{
+				playAd = true;
+			}
+			if (_data.GetSkippedAds() >= ADS_MAX_SKIPPED_ADS)
+			{
+				playAd = true;
+			}
 		}
 
 		if (playAd)
@@ -1780,7 +1781,7 @@ public class LevelLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.SetEnableWinButton(false);
+		_ui.SetInteractableWinButton(false);
 		_ui.AnimateWinMenuButtonPressed
 		(
 			()=>
@@ -1802,7 +1803,7 @@ public class LevelLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.SetEnableWinButton(false);
+		_ui.SetInteractableWinButton(false);
 		_ui.AnimateWinReplayButtonPressed
 		(
 			()=>
@@ -1846,7 +1847,7 @@ public class LevelLogic : MonoBehaviour
 
 		_audio.PlayButtonPressed();
 
-		_ui.SetEnableWinButton(false);
+		_ui.SetInteractableWinButton(false);
 		_ui.AnimateWinNextButtonPressed
 		(
 			()=>
@@ -2018,7 +2019,7 @@ public class LevelLogic : MonoBehaviour
 			return;
 		}
 
-		_ui.SetEnableWinButton(true);
+		_ui.SetInteractableWinButton(true);
 	}
 
 	public void OnMessageAchievementBackButtonPressed()
@@ -2074,7 +2075,7 @@ public class LevelLogic : MonoBehaviour
 							(
 								()=>
 								{
-									_ui.SetEnableWinButton(true);
+									_ui.SetInteractableWinButton(true);
 								}
 							);
 						}
@@ -2130,7 +2131,7 @@ public class LevelLogic : MonoBehaviour
 							(
 								()=>
 								{
-									_ui.SetEnableWinButton(true);
+									_ui.SetInteractableWinButton(true);
 								}
 							);
 						}
@@ -2154,6 +2155,7 @@ public class LevelLogic : MonoBehaviour
 		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_item = GameObject.Find("ItemManager").GetComponent<ItemManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		_message = GameObject.Find("MessageManager").GetComponent<MessageManager>();
 

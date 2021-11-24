@@ -185,6 +185,62 @@
 			"DefaultValue":"0",
 			"PersistenceType":"0",
 			"AllowNegative":false
+		},
+		{
+			"Key":"RemoveAds",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"UnlockAllLevels",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"BlockMetalUnlocked",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"BlockWoodUnlocked",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"BlockGreenMarbleUnlocked",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"BlockBlueMarbleUnlocked",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"BlockRedMarbleUnlocked",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"BlockPurpleMarbleUnlocked",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
 		}
 	],
 	"AppleSupported":false,

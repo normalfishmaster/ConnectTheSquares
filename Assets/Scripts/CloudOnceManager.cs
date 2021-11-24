@@ -350,13 +350,16 @@ public class CloudOnceManager : MonoBehaviour
 	public void IncrementHint(int value)
 	{
 		CloudVariables.Hint += value;
-		Cloud.Storage.Save();
 	}
 
 	public void DecrementHint(int value)
 	{
 		CloudVariables.Hint -= value;
-		Cloud.Storage.Save();
+	}
+
+	public int GetHint()
+	{
+		return CloudVariables.Hint;
 	}
 
 	public void SetLastColor(int value)
@@ -389,19 +392,9 @@ public class CloudOnceManager : MonoBehaviour
 		return CloudVariables.LastMap;
 	}
 
-	public int GetHint()
-	{
-		return CloudVariables.Hint;
-	}
-
 	public void SetRewardsLastDateTime(DateTime value)
 	{
 		CloudVariables.RewardsLastDateTime = value;
-	}
-
-	public void SetRewardsDayCount(int value)
-	{
-		CloudVariables.RewardsDayCount = value;
 	}
 
 	public DateTime GetRewardsLastDateTime()
@@ -409,9 +402,94 @@ public class CloudOnceManager : MonoBehaviour
 		return CloudVariables.RewardsLastDateTime;
 	}
 
+	public void SetRewardsDayCount(int value)
+	{
+		CloudVariables.RewardsDayCount = value;
+	}
+
 	public int GetRewardsDayCount()
 	{
 		return CloudVariables.RewardsDayCount;
+	}
+
+	public void SetBlockMetalUnlocked(bool unlock)
+	{
+		CloudVariables.BlockMetalUnlocked = unlock;
+	}
+
+	public bool GetRemoveAds()
+	{
+		return CloudVariables.RemoveAds;
+	}
+
+	public void SetRemoveAds(bool unlock)
+	{
+		CloudVariables.RemoveAds = unlock;
+	}
+
+	public bool GetUnlockAllLevels()
+	{
+		return CloudVariables.UnlockAllLevels;
+	}
+
+	public void SetUnlockAllLevels(bool unlock)
+	{
+		CloudVariables.UnlockAllLevels = unlock;
+	}
+
+	public bool GetBlockMetalUnlocked()
+	{
+		return CloudVariables.BlockMetalUnlocked;
+	}
+
+	public void SetBlockWoodUnlocked(bool unlock)
+	{
+		CloudVariables.BlockWoodUnlocked = unlock;
+	}
+
+	public bool GetBlockWoodUnlocked()
+	{
+		return CloudVariables.BlockWoodUnlocked;
+	}
+
+	public void SetBlockGreenMarbleUnlocked(bool unlock)
+	{
+		CloudVariables.BlockGreenMarbleUnlocked = unlock;
+	}
+
+	public bool GetBlockGreenMarbleUnlocked()
+	{
+		return CloudVariables.BlockGreenMarbleUnlocked;
+	}
+
+	public void SetBlockBlueMarbleUnlocked(bool unlock)
+	{
+		CloudVariables.BlockBlueMarbleUnlocked = unlock;
+	}
+
+	public bool GetBlockBlueMarbleUnlocked()
+	{
+		return CloudVariables.BlockBlueMarbleUnlocked;
+	}
+
+	public void SetBlockRedMarbleUnlocked(bool unlock)
+	{
+		CloudVariables.BlockRedMarbleUnlocked = unlock;
+	}
+
+	public bool GetBlockRedMarbleUnlocked()
+	{
+		return CloudVariables.BlockRedMarbleUnlocked;
+	}
+
+	public void SetBlockPurpleMarbleUnlocked(bool unlock)
+	{
+		CloudVariables.BlockPurpleMarbleUnlocked = unlock;
+	}
+
+	public bool GetBlockPurpleMarbleUnlocked()
+	{
+		return CloudVariables.BlockPurpleMarbleUnlocked;
 	}
 
 	public void DeleteAll()

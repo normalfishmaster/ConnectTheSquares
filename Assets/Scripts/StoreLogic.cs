@@ -11,6 +11,7 @@ public class StoreLogic : MonoBehaviour
 	private BlockManager _block;
 	private CloudOnceManager _cloudOnce;
         private DataManager _data;
+	private ItemManager _item;
         private LevelManager _level;
 	private MessageManager _message;
 
@@ -142,7 +143,7 @@ public class StoreLogic : MonoBehaviour
 
 		_ui.AnimateProductSunburst();
 
-		if (_data.GetRemoveAds() == 1)
+		if (_item.IsItemUnlocked(ItemManager.REMOVE_ADS))
 		{
 			_ui.SetActiveProductRemoveAdsPriceAndPurchased(false, true);
 		}
@@ -151,7 +152,7 @@ public class StoreLogic : MonoBehaviour
 			_ui.SetActiveProductRemoveAdsPriceAndPurchased(true, false);
 		}
 
-		if (_data.GetUnlockAllLevels() == 1)
+		if (_item.IsItemUnlocked(ItemManager.UNLOCK_ALL_LEVELS))
 		{
 			_ui.SetActiveProductUnlockAllLevelsPriceAndPurchased(false, true);
 		}
@@ -165,7 +166,7 @@ public class StoreLogic : MonoBehaviour
 			_ui.SetActiveProductUnlockAllLevelsPriceAndPurchased(true, false);
 		}
 
-		if (_data.GetBlockMetalUnlocked() == 1)
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_METAL))
 		{
 			_ui.SetActiveProductBlockMetalPriceAndPurchased(false, true);
 			_ui.SetInteractableBlockMetal(false);
@@ -178,7 +179,7 @@ public class StoreLogic : MonoBehaviour
 			_ui.SetActiveBlockMetalTry(true);
 		}
 
-		if (_data.GetBlockWoodUnlocked() == 1)
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_WOOD))
 		{
 			_ui.SetActiveProductBlockWoodPriceAndPurchased(false, true);
 			_ui.SetInteractableBlockWood(false);
@@ -191,7 +192,7 @@ public class StoreLogic : MonoBehaviour
 			_ui.SetActiveBlockWoodTry(true);
 		}
 
-		if (_data.GetBlockGreenMarbleUnlocked() == 1)
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_GREEN_MARBLE))
 		{
 			_ui.SetActiveProductBlockGreenMarblePriceAndPurchased(false, true);
 			_ui.SetInteractableBlockGreenMarble(false);
@@ -204,7 +205,7 @@ public class StoreLogic : MonoBehaviour
 			_ui.SetActiveBlockGreenMarbleTry(true);
 		}
 
-		if (_data.GetBlockBlueMarbleUnlocked() == 1)
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_BLUE_MARBLE))
 		{
 			_ui.SetActiveProductBlockBlueMarblePriceAndPurchased(false, true);
 			_ui.SetInteractableBlockBlueMarble(false);
@@ -217,7 +218,7 @@ public class StoreLogic : MonoBehaviour
 			_ui.SetActiveBlockBlueMarbleTry(true);
 		}
 
-		if (_data.GetBlockRedMarbleUnlocked() == 1)
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_RED_MARBLE))
 		{
 			_ui.SetActiveProductBlockRedMarblePriceAndPurchased(false, true);
 			_ui.SetInteractableBlockRedMarble(false);
@@ -230,7 +231,7 @@ public class StoreLogic : MonoBehaviour
 			_ui.SetActiveBlockRedMarbleTry(true);
 		}
 
-		if (_data.GetBlockPurpleMarbleUnlocked() == 1)
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_PURPLE_MARBLE))
 		{
 			_ui.SetActiveProductBlockPurpleMarblePriceAndPurchased(false, true);
 			_ui.SetInteractableBlockPurpleMarble(false);
@@ -754,6 +755,7 @@ public class StoreLogic : MonoBehaviour
 		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_item = GameObject.Find("ItemManager").GetComponent<ItemManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		_message = GameObject.Find("MessageManager").GetComponent<MessageManager>();
 

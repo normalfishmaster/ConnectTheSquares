@@ -18,7 +18,7 @@ public class SettingsLogic : MonoBehaviour
 	{
 		_settingsBlockSetNumber = _block.GetBlockSetNumber();
 
-		if (_block.IsBlockSetUnlocked(_settingsBlockSetNumber) == 1)
+		if (_block.IsBlockSetUnlocked(_settingsBlockSetNumber))
 		{
 			_ui.SetActiveSettingsBlockLock(false);
 		}
@@ -58,7 +58,7 @@ public class SettingsLogic : MonoBehaviour
 
 		_ui.SetSettingsBlockBlockSprite(_settingsBlockSetNumber);
 
-		if (_block.IsBlockSetUnlocked(_settingsBlockSetNumber) == 1)
+		if (_block.IsBlockSetUnlocked(_settingsBlockSetNumber))
 		{
 			_ui.SetActiveSettingsBlockLock(false);
 			_block.SetBlockSetNumber(_settingsBlockSetNumber);
@@ -79,7 +79,7 @@ public class SettingsLogic : MonoBehaviour
 
 		_ui.SetSettingsBlockBlockSprite(_settingsBlockSetNumber);
 
-		if (_block.IsBlockSetUnlocked(_settingsBlockSetNumber) == 1)
+		if (_block.IsBlockSetUnlocked(_settingsBlockSetNumber))
 		{
 			_ui.SetActiveSettingsBlockLock(false);
 			_block.SetBlockSetNumber(_settingsBlockSetNumber);

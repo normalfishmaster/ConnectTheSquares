@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-	private static DataManager _instance;
-	private static LevelManager _level;
 	private static AudioManager _audio;
+	private static DataManager _instance;
+	private static ItemManager _item;
+	private static LevelManager _level;
 
 	// Keys and Default Values
 
@@ -16,12 +17,6 @@ public class DataManager : MonoBehaviour
 
 	public string GetNotificationKey()					{ return "NotificationKey";									}
 	public int    GetNotificationDefault()					{ return 1;											}
-
-	public string GetRemoveAdsKey()						{ return "RemoveAdsKey";									}
-	public int    GetRemoveAdsDefault()					{ return 0;											}
-
-	public string GetUnlockAllLevelsKey()					{ return "UnlockAllLevels";									}
-	public int    GetUnlockAllLevelsDefault()				{ return 0;											}
 
 	public string GetMenuColorKey()						{ return "MenuColorKey";									}
 	public int    GetMenuColorDefault()					{ return -1;											}
@@ -71,24 +66,6 @@ public class DataManager : MonoBehaviour
 	public string GetBlockSetKey()						{ return "BlockSetKey";										}
 	public int    GetBlockSetDefault()					{ return 0;											}
 
-	public string GetBlockMetalUnlockedKey()				{ return "BlockMetalUnlockedKey";								}
-	public int    GetBlockMetalUnlockedDefault()				{ return 0;											}
-
-	public string GetBlockWoodUnlockedKey()					{ return "BlockWoodUnlockedKey";								}
-	public int    GetBlockWoodUnlockedDefault()				{ return 0;											}
-
-	public string GetBlockGreenMarbleUnlockedKey()				{ return "BlockGreenMarbleUnlockedKey";								}
-	public int    GetBlockGreenMarbleUnlockedDefault()			{ return 0;											}
-
-	public string GetBlockBlueMarbleUnlockedKey()				{ return "BlockBlueMarbleUnlockedKey";								}
-	public int    GetBlockBlueMarbleUnlockedDefault()			{ return 0;											}
-
-	public string GetBlockRedMarbleUnlockedKey()				{ return "BlockRedMarbleUnlockedKey";								}
-	public int    GetBlockRedMarbleUnlockedDefault()			{ return 0;											}
-
-	public string GetBlockPurpleMarbleUnlockedKey()				{ return "BlockPurpleMarbleUnlockedKey";							}
-	public int    GetBlockPurpleMarbleUnlockedDefault()			{ return 0;											}
-
 	public string GetBlockPreviewKey()					{ return "BlockPreviewKey";									}
 	public int    GetBlockPreviewDefault()					{ return 0;											}
 
@@ -103,16 +80,6 @@ public class DataManager : MonoBehaviour
 	public int   GetNotification()						{ return PlayerPrefs.GetInt(GetNotificationKey());						}
 	public void  SetNotification(int value)					{        PlayerPrefs.SetInt(GetNotificationKey(), value);					}
 	public void  InitNotification()						{        PlayerPrefs.SetInt(GetNotificationKey(), GetNotificationDefault());			}
-
-	public bool  CheckRemoveAds()						{ return PlayerPrefs.HasKey(GetRemoveAdsKey());							}
-	public int   GetRemoveAds()						{ return PlayerPrefs.GetInt(GetRemoveAdsKey());							}
-	public void  SetRemoveAds(int value)					{        PlayerPrefs.SetInt(GetRemoveAdsKey(), value);						}
-	public void  InitRemoveAds()						{        PlayerPrefs.SetInt(GetRemoveAdsKey(), GetRemoveAdsDefault());				}
-
-	public bool  CheckUnlockAllLevels()					{ return PlayerPrefs.HasKey(GetUnlockAllLevelsKey());						}
-	public int   GetUnlockAllLevels()					{ return PlayerPrefs.GetInt(GetUnlockAllLevelsKey());						}
-	public void  SetUnlockAllLevels(int value)				{        PlayerPrefs.SetInt(GetUnlockAllLevelsKey(), value);					}
-	public void  InitUnlockAllLevels()					{        PlayerPrefs.SetInt(GetUnlockAllLevelsKey(), GetUnlockAllLevelsDefault());		}
 
 	public bool  CheckMenuColor()						{ return PlayerPrefs.HasKey(GetMenuColorKey());							}
 	public int   GetMenuColor()						{ return PlayerPrefs.GetInt(GetMenuColorKey());							}
@@ -193,36 +160,6 @@ public class DataManager : MonoBehaviour
 	public int   GetBlockSet()						{ return PlayerPrefs.GetInt(GetBlockSetKey());							}
 	public void  SetBlockSet(int value)					{        PlayerPrefs.SetInt(GetBlockSetKey(), value);						}
 	public void  InitBlockSet()						{        PlayerPrefs.SetInt(GetBlockSetKey(), GetBlockSetDefault());				}
-
-	public bool  CheckBlockMetalUnlocked()					{ return PlayerPrefs.HasKey(GetBlockMetalUnlockedKey());					}
-	public int   GetBlockMetalUnlocked()					{ return PlayerPrefs.GetInt(GetBlockMetalUnlockedKey());					}
-	public void  SetBlockMetalUnlocked(int value)				{        PlayerPrefs.SetInt(GetBlockMetalUnlockedKey(), value);					}
-	public void  InitBlockMetalUnlocked()					{        PlayerPrefs.SetInt(GetBlockMetalUnlockedKey(), GetBlockMetalUnlockedDefault());	}
-
-	public bool  CheckBlockWoodUnlocked()					{ return PlayerPrefs.HasKey(GetBlockWoodUnlockedKey());						}
-	public int   GetBlockWoodUnlocked()					{ return PlayerPrefs.GetInt(GetBlockWoodUnlockedKey());						}
-	public void  SetBlockWoodUnlocked(int value)				{        PlayerPrefs.SetInt(GetBlockWoodUnlockedKey(), value);					}
-	public void  InitBlockWoodUnlocked()					{        PlayerPrefs.SetInt(GetBlockWoodUnlockedKey(), GetBlockMetalUnlockedDefault());		}
-
-	public bool  CheckBlockGreenMarbleUnlocked()				{ return PlayerPrefs.HasKey(GetBlockGreenMarbleUnlockedKey());					}
-	public int   GetBlockGreenMarbleUnlocked()				{ return PlayerPrefs.GetInt(GetBlockGreenMarbleUnlockedKey());					}
-	public void  SetBlockGreenMarbleUnlocked(int value)			{        PlayerPrefs.SetInt(GetBlockGreenMarbleUnlockedKey(), value);				}
-	public void  InitBlockGreenMarbleUnlocked()				{        PlayerPrefs.SetInt(GetBlockGreenMarbleUnlockedKey(), GetBlockGreenMarbleUnlockedDefault()); }
-
-	public bool  CheckBlockBlueMarbleUnlocked()				{ return PlayerPrefs.HasKey(GetBlockBlueMarbleUnlockedKey());					}
-	public int   GetBlockBlueMarbleUnlocked()				{ return PlayerPrefs.GetInt(GetBlockBlueMarbleUnlockedKey());					}
-	public void  SetBlockBlueMarbleUnlocked(int value)			{        PlayerPrefs.SetInt(GetBlockBlueMarbleUnlockedKey(), value);				}
-	public void  InitBlockBlueMarbleUnlocked()				{        PlayerPrefs.SetInt(GetBlockBlueMarbleUnlockedKey(), GetBlockBlueMarbleUnlockedDefault()); }
-
-	public bool  CheckBlockRedMarbleUnlocked()				{ return PlayerPrefs.HasKey(GetBlockRedMarbleUnlockedKey());					}
-	public int   GetBlockRedMarbleUnlocked()				{ return PlayerPrefs.GetInt(GetBlockRedMarbleUnlockedKey());					}
-	public void  SetBlockRedMarbleUnlocked(int value)			{        PlayerPrefs.SetInt(GetBlockRedMarbleUnlockedKey(), value);				}
-	public void  InitBlockRedMarbleUnlocked()				{        PlayerPrefs.SetInt(GetBlockRedMarbleUnlockedKey(), GetBlockRedMarbleUnlockedDefault()); }
-
-	public bool  CheckBlockPurpleMarbleUnlocked()				{ return PlayerPrefs.HasKey(GetBlockPurpleMarbleUnlockedKey());					}
-	public int   GetBlockPurpleMarbleUnlocked()				{ return PlayerPrefs.GetInt(GetBlockPurpleMarbleUnlockedKey());					}
-	public void  SetBlockPurpleMarbleUnlocked(int value)			{        PlayerPrefs.SetInt(GetBlockPurpleMarbleUnlockedKey(), value);				}
-	public void  InitBlockPurpleMarbleUnlocked()				{        PlayerPrefs.SetInt(GetBlockPurpleMarbleUnlockedKey(), GetBlockPurpleMarbleUnlockedDefault()); }
 
 	public bool  CheckBlockPreview()					{ return PlayerPrefs.HasKey(GetBlockPreviewKey());						}
 	public int   GetBlockPreview()						{ return PlayerPrefs.GetInt(GetBlockPreviewKey());						}
@@ -353,7 +290,7 @@ public class DataManager : MonoBehaviour
 
 	private void UnlockAllLevels()
 	{
-		if (GetUnlockAllLevels() == 1)
+		if (_item.IsItemUnlocked(ItemManager.UNLOCK_ALL_LEVELS))
 		{
 			int numColor = _level.GetNumColor();
 
@@ -385,14 +322,6 @@ public class DataManager : MonoBehaviour
 		if (CheckNotification() == false)
 		{
 			InitNotification();
-		}
-		if (CheckRemoveAds() == false)
-		{
-			InitRemoveAds();
-		}
-		if (CheckUnlockAllLevels() == false)
-		{
-			InitUnlockAllLevels();
 		}
 		if (CheckMenuColor() == false)
 		{
@@ -451,30 +380,6 @@ public class DataManager : MonoBehaviour
 		{
 			InitBlockSet();
 		}
-		if (CheckBlockMetalUnlocked() == false)
-		{
-			InitBlockMetalUnlocked();
-		}
-		if (CheckBlockWoodUnlocked() == false)
-		{
-			InitBlockWoodUnlocked();
-		}
-		if (CheckBlockGreenMarbleUnlocked() == false)
-		{
-			InitBlockGreenMarbleUnlocked();
-		}
-		if (CheckBlockBlueMarbleUnlocked() == false)
-		{
-			InitBlockBlueMarbleUnlocked();
-		}
-		if (CheckBlockRedMarbleUnlocked() == false)
-		{
-			InitBlockRedMarbleUnlocked();
-		}
-		if (CheckBlockPurpleMarbleUnlocked() == false)
-		{
-			InitBlockPurpleMarbleUnlocked();
-		}
 		if (CheckBlockPreview() == false)
 		{
 			InitBlockPreview();
@@ -520,8 +425,9 @@ public class DataManager : MonoBehaviour
 		_instance = this;
 		DontDestroyOnLoad(this.gameObject);
 
-		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		_item = GameObject.Find("ItemManager").GetComponent<ItemManager>();
 	}
 
 	private void Start()

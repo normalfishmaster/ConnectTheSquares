@@ -510,6 +510,7 @@ public class LevelUI : MonoBehaviour
 	private GameObject _winMessagePerfect;
 	private GameObject _winMessageTry;
 
+	bool _winPermanentlyDisableNextButton;
 	int _winNumStar;
 
 	public void FindWinGameObject()
@@ -533,6 +534,8 @@ public class LevelUI : MonoBehaviour
 
 		_winMessagePerfect = GameObject.Find("/Canvas/Win/Board/MessagePerfect");
 		_winMessageTry = GameObject.Find("/Canvas/Win/Board/MessageTry");
+
+		_winPermanentlyDisableNextButton = false;
 	}
 
 	public void SetWinColor(int color)
@@ -560,17 +563,25 @@ public class LevelUI : MonoBehaviour
 		_winMessageTry.SetActive(active);
 	}
 
-	public void SetEnableWinButton(bool enable)
+	public void SetInteractableWinButton(bool interactable)
 	{
-		_winHintAdButton.GetComponent<Button>().enabled = enable;
-		_winMenuButton.GetComponent<Button>().enabled = enable;
-		_winReplayButton.GetComponent<Button>().enabled = enable;
-		_winNextButton.GetComponent<Button>().enabled = enable;
+		_winHintAdButton.GetComponent<Button>().interactable = interactable;
+		_winMenuButton.GetComponent<Button>().interactable = interactable;
+		_winReplayButton.GetComponent<Button>().interactable = interactable;
+
+		if (_winPermanentlyDisableNextButton)
+		{
+			_winNextButton.GetComponent<Button>().interactable = false;
+		}
+		else
+		{
+			_winNextButton.GetComponent<Button>().interactable = interactable;
+		}
 	}
 
-	public void SetInteractableWinNextButton(bool interactable)
+	public void SetPermanentlyNonInteractableWinNextButton()
 	{
-		_winNextButton.GetComponent<Button>().interactable = interactable;
+		_winPermanentlyDisableNextButton = true;
 	}
 
 	public void SetWinMessageTryMovesNumber(int moves)

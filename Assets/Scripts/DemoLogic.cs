@@ -680,7 +680,7 @@ public class DemoLogic : MonoBehaviour
 		_blockSet = _block.IncrementSetNumber(_blockSet);
 		SetMapBlockSprite(_blockSet);
 
-		if (_block.IsBlockSetUnlocked(_blockSet) == 1)
+		if (_block.IsBlockSetUnlocked(_blockSet))
 		{
 			_ui.SetActiveMiscLocked(false);
 			_ui.SetActiveMiscUnlocked(true);
@@ -712,7 +712,7 @@ public class DemoLogic : MonoBehaviour
 
 	private void SetupMisc()
 	{
-		if (_block.IsBlockSetUnlocked(_blockSet) == 1)
+		if (_block.IsBlockSetUnlocked(_blockSet))
 		{
 			_ui.SetActiveMiscLocked(false);
 			_ui.SetActiveMiscUnlocked(true);

@@ -7,6 +7,7 @@ public class ItemManager : MonoBehaviour
 {
 	private static ItemManager _instance;
 	private static DataManager _data;
+	private static CloudOnceManager _cloudOnce;
 
 	public Sprite _itemRemoveAds;
 	public Sprite _itemUnlockAllLevels;
@@ -16,30 +17,31 @@ public class ItemManager : MonoBehaviour
 	public static int REMOVE_ADS = 0;
 	public static int UNLOCK_ALL_LEVELS = 1;
 
-	public int IsItemUnlocked(int itemNumber)
+	public bool IsItemUnlocked(int itemNumber)
 	{
 		if (itemNumber == REMOVE_ADS)
 		{
-			return _data.GetRemoveAds();
+			return _cloudOnce.GetRemoveAds();
 		}
 		else if (itemNumber == UNLOCK_ALL_LEVELS)
 		{
-			return _data.GetUnlockAllLevels();
+			return _cloudOnce.GetUnlockAllLevels();
 		}
 
-		return 0;
+		return false;
 	}
 
-	public void SetItemUnlocked(int itemNumber, int unlock)
+	public void SetItemUnlocked(int itemNumber, bool unlock)
 	{
 		if (itemNumber == REMOVE_ADS)
 		{
-			_data.SetRemoveAds(unlock);
+			_cloudOnce.SetRemoveAds(unlock);
 		}
 		else if (itemNumber == UNLOCK_ALL_LEVELS)
 		{
-			_data.SetUnlockAllLevels(unlock);
+			_cloudOnce.SetUnlockAllLevels(unlock);
 		}
+		_cloudOnce.Save();
 	}
 
 	public Sprite GetItemSprite(int itemNumber)
@@ -71,5 +73,6 @@ public class ItemManager : MonoBehaviour
 		DontDestroyOnLoad(this.gameObject);
 
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 	}
 }

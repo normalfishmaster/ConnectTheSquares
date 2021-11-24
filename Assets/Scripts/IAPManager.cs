@@ -10,6 +10,7 @@ public class IAPManager : MonoBehaviour
 	private BlockManager _block;
 	private CloudOnceManager _cloudOnce;
 	private DataManager _data;
+	private ItemManager _item;
 	private LevelManager _level;
 
 	// Product
@@ -37,12 +38,12 @@ public class IAPManager : MonoBehaviour
 
 		if (product.definition.id == _productRemoveAds)
 		{
-			_data.SetRemoveAds(1);
+			_item.SetItemUnlocked(ItemManager.REMOVE_ADS, true);
 			itemNumber = ItemManager.REMOVE_ADS;
 		}
 		else if (product.definition.id == _productUnlockAllLevels)
 		{
-			_data.SetUnlockAllLevels(1);
+			_item.SetItemUnlocked(ItemManager.UNLOCK_ALL_LEVELS, true);
 
 			int numColor = _level.GetNumColor();
 
@@ -66,51 +67,55 @@ public class IAPManager : MonoBehaviour
 		else if (product.definition.id == _productHints3)
 		{
 			_cloudOnce.IncrementHint(3);
+			_cloudOnce.Save();
 			numHint = 3;
 		}
 		else if (product.definition.id == _productHints15p3)
 		{
 			_cloudOnce.IncrementHint(18);
+			_cloudOnce.Save();
 			numHint = 18;
 		}
 		else if (product.definition.id == _productHints30p9)
 		{
 			_cloudOnce.IncrementHint(39);
+			_cloudOnce.Save();
 			numHint = 39;
 		}
 		else if (product.definition.id == _productHints60p24)
 		{
 			_cloudOnce.IncrementHint(84);
+			_cloudOnce.Save();
 			numHint = 84;
 		}
 		else if (product.definition.id == _productBlockMetal)
 		{
-			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_METAL, 1);
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_METAL, true);
 			blockSetNumber = BlockManager.BLOCK_SET_METAL;
 		}
 		else if (product.definition.id == _productBlockWood)
 		{
-			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_WOOD, 1);
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_WOOD, true);
 			blockSetNumber = BlockManager.BLOCK_SET_WOOD;
 		}
 		else if (product.definition.id == _productBlockGreenMarble)
 		{
-			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_GREEN_MARBLE, 1);
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_GREEN_MARBLE, true);
 			blockSetNumber = BlockManager.BLOCK_SET_GREEN_MARBLE;
 		}
 		else if (product.definition.id == _productBlockBlueMarble)
 		{
-			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_BLUE_MARBLE, 1);
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_BLUE_MARBLE, true);
 			blockSetNumber = BlockManager.BLOCK_SET_BLUE_MARBLE;
 		}
 		else if (product.definition.id == _productBlockRedMarble)
 		{
-			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_RED_MARBLE, 1);
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_RED_MARBLE, true);
 			blockSetNumber = BlockManager.BLOCK_SET_RED_MARBLE;
 		}
 		else if (product.definition.id == _productBlockPurpleMarble)
 		{
-			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_PURPLE_MARBLE, 1);
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_PURPLE_MARBLE, true);
 			blockSetNumber = BlockManager.BLOCK_SET_PURPLE_MARBLE;
 		}
 		else
@@ -165,6 +170,7 @@ public class IAPManager : MonoBehaviour
 		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_item = GameObject.Find("ItemManager").GetComponent<ItemManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 	}
 }

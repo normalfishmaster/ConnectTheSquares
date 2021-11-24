@@ -7,6 +7,7 @@ public class BlockManager : MonoBehaviour
 {
 	private static BlockManager _instance;
 	private static DataManager _data;
+	private static CloudOnceManager _cloudOnce;
 
 	public Sprite[] _blockPlastic;
 	public Sprite[] _blockMetal;
@@ -47,66 +48,68 @@ public class BlockManager : MonoBehaviour
 		_data.SetBlockSet(setNumber);
 	}
 
-	public int IsBlockSetUnlocked(int setNumber)
+	public bool IsBlockSetUnlocked(int setNumber)
 	{
 		if (setNumber == BLOCK_SET_PLASTIC)
 		{
-			return 1;
+			return true;
 		}
 		else if (setNumber == BLOCK_SET_METAL)
 		{
-			return _data.GetBlockMetalUnlocked();
+			return _cloudOnce.GetBlockMetalUnlocked();
 		}
 		else if (setNumber == BLOCK_SET_WOOD)
 		{
-			return _data.GetBlockWoodUnlocked();
+			return _cloudOnce.GetBlockWoodUnlocked();
 		}
 		else if (setNumber == BLOCK_SET_GREEN_MARBLE)
 		{
-			return _data.GetBlockGreenMarbleUnlocked();
+			return _cloudOnce.GetBlockGreenMarbleUnlocked();
 		}
 		else if (setNumber == BLOCK_SET_BLUE_MARBLE)
 		{
-			return _data.GetBlockBlueMarbleUnlocked();
+			return _cloudOnce.GetBlockBlueMarbleUnlocked();
 		}
 		else if (setNumber == BLOCK_SET_RED_MARBLE)
 		{
-			return _data.GetBlockRedMarbleUnlocked();
+			return _cloudOnce.GetBlockRedMarbleUnlocked();
 		}
 		else if (setNumber == BLOCK_SET_PURPLE_MARBLE)
 		{
-			return _data.GetBlockPurpleMarbleUnlocked();
+			return _cloudOnce.GetBlockPurpleMarbleUnlocked();
 		}
 
-		return 0;
+		return false;
 	}
 
-	public void SetBlockSetUnlocked(int setNumber, int unlock)
+	public void SetBlockSetUnlocked(int setNumber, bool unlock)
 	{
 		if (setNumber == BLOCK_SET_METAL)
 		{
-			_data.SetBlockMetalUnlocked(unlock);
+			_cloudOnce.SetBlockMetalUnlocked(unlock);
 		}
 		else if (setNumber == BLOCK_SET_WOOD)
 		{
-			_data.SetBlockWoodUnlocked(unlock);
+			_cloudOnce.SetBlockWoodUnlocked(unlock);
 		}
 		else if (setNumber == BLOCK_SET_GREEN_MARBLE)
 		{
-			_data.SetBlockGreenMarbleUnlocked(unlock);
+			_cloudOnce.SetBlockGreenMarbleUnlocked(unlock);
 		}
 		else if (setNumber == BLOCK_SET_BLUE_MARBLE)
 		{
-			_data.SetBlockBlueMarbleUnlocked(unlock);
+			_cloudOnce.SetBlockBlueMarbleUnlocked(unlock);
 		}
 		else if (setNumber == BLOCK_SET_RED_MARBLE)
 		{
-			_data.SetBlockRedMarbleUnlocked(unlock);
+			_cloudOnce.SetBlockRedMarbleUnlocked(unlock);
 		}
 		else if (setNumber == BLOCK_SET_PURPLE_MARBLE)
 		{
-			_data.SetBlockPurpleMarbleUnlocked(unlock);
+			_cloudOnce.SetBlockPurpleMarbleUnlocked(unlock);
 		}
+
+		_cloudOnce.Save();
 	}
 
 	public void SetBlockPreview(int setNumber)
@@ -209,5 +212,6 @@ public class BlockManager : MonoBehaviour
 		DontDestroyOnLoad(this.gameObject);
 
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 	}
 }

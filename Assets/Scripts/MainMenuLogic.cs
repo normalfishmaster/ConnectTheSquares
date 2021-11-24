@@ -620,10 +620,12 @@ public class MainMenuLogic : MonoBehaviour
 			if (_rewardDay >= 3)
 			{
 				_cloudOnce.IncrementHint(2);
+				_cloudOnce.Save();
 			}
 			else
 			{
 				_cloudOnce.IncrementHint(1);
+				_cloudOnce.Save();
 			}
 
 			_cloudOnce.Save();
