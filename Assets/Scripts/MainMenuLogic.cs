@@ -12,10 +12,14 @@ public class MainMenuLogic : MonoBehaviour
 	private AudioManager _audio;
 	private CloudOnceManager _cloudOnce;
 	private DataManager _data;
+	private FrameRateManager _frameRate;
 	private LevelManager _level;
 	private MessageManager _message;
 
 	private bool _allowExit;
+
+	private const float BUTTON_FADE_DURATION = 0.1f;
+	private const float FRAME_RATE_CHANGE_DELAY = BUTTON_FADE_DURATION * 2;
 
 	// UI - Background
 
@@ -62,6 +66,8 @@ public class MainMenuLogic : MonoBehaviour
 		_data.SetMenuAlphabet(loadAlphabet);
 		_data.SetMenuMap(loadMap);
 
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayContinuePressed();
 
 		_allowExit = false;
@@ -87,6 +93,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void OnFrontLevelsButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_allowExit = false;
@@ -106,6 +114,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void OnFrontSettingsButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_allowExit = false;
@@ -125,6 +135,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void OnFrontStoreButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_allowExit = false;
@@ -157,6 +169,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void OnBottomGooglePlayButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_allowExit = false;
@@ -193,6 +207,7 @@ public class MainMenuLogic : MonoBehaviour
 				(
 					()=>
 					{
+						_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 						_ui.SetEnableCloudOnceButton(true);
 					}
 				);
@@ -214,6 +229,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void OnBottomRateButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_allowExit = false;
@@ -233,6 +250,7 @@ public class MainMenuLogic : MonoBehaviour
 				{
 					Application.OpenURL("market://details?id=com.normalfish.connectthesquares");
 				}
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 				_ui.SetEnableFrontButton(true);
 				_ui.SetEnableBottomButton(true);
 				_ui.SetEnableRewardsOpenButton(true);
@@ -240,7 +258,7 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
-	int count = 0;
+//	int count = 0;
 
 	public void OnBottomLanguageButtonPressed()
 	{
@@ -315,6 +333,8 @@ public class MainMenuLogic : MonoBehaviour
 			OnCloudOnceSignedOut();
 			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_OUT);
 		}
+
+		_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 	}
 
 	private void OnCloudOnceSignInFailed()
@@ -324,6 +344,8 @@ public class MainMenuLogic : MonoBehaviour
 
 		OnCloudOnceSignedOut();
 		_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGN_IN_FAILED);
+
+		_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 	}
 
 	private void OnCloudSaveComplete(bool success)
@@ -342,6 +364,8 @@ public class MainMenuLogic : MonoBehaviour
 		{
 			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SAVE_DATA_FAILED);
 		}
+
+		_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 	}
 
 	private void OnCloudLoadComplete(bool success)
@@ -362,10 +386,14 @@ public class MainMenuLogic : MonoBehaviour
 		_ui.SetInteractableCloudOnceSignInButton(true);
 		_ui.SetInteractableCloudOnceFunctionalButton(true);
 		_ui.SetInteractableCloudOnceCloseButton(true);
+
+		_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 	}
 
 	public void OnCloudOnceSignInButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		if (_cloudOnce.IsSignedIn())
@@ -396,6 +424,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void OnCloudOnceSignOutButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_ui.SetInteractableCloudOnceSignInButton(false);
@@ -423,6 +453,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void OnCloudOnceSaveButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		if (_cloudOnce.IsSignedIn())
@@ -452,6 +484,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void OnCloudOnceLoadButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		if (_cloudOnce.IsSignedIn())
@@ -480,6 +514,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void OnCloudOnceAchievementsButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		if (_cloudOnce.IsSignedIn())
@@ -503,6 +539,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void OnCloudOnceLeaderboardButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		if (_cloudOnce.IsSignedIn())
@@ -535,6 +573,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void OnCloudOnceCloseButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_ui.SetEnableCloudOnceButton(false);
@@ -547,6 +587,8 @@ public class MainMenuLogic : MonoBehaviour
 				(
 					()=>
 					{
+						_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+
 						_allowExit = true;
 
 						_ui.SetActiveCloudOnce(false);
@@ -688,6 +730,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void OnRewardsOpenButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_allowExit = false;
@@ -707,6 +751,8 @@ public class MainMenuLogic : MonoBehaviour
 
 	public void OnRewardsCloseButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_ui.SetEnableRewardsCloseButton(false);
@@ -724,6 +770,8 @@ public class MainMenuLogic : MonoBehaviour
 				(
 					()=>
 					{
+						_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+
 						_ui.SetActiveRewards(false);
 
 						_allowExit = true;
@@ -903,6 +951,7 @@ public class MainMenuLogic : MonoBehaviour
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_frameRate = GameObject.Find("FrameRateManager").GetComponent<FrameRateManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		_message = GameObject.Find("MessageManager").GetComponent<MessageManager>();
 	}
@@ -918,6 +967,8 @@ public class MainMenuLogic : MonoBehaviour
 		SetupMessageHint();
 
 		_allowExit = false;
+
+		_frameRate.setHighFrameRate();
 
 		_ui.SetEnableFrontButton(false);
 		_ui.SetEnableBottomButton(false);
@@ -935,6 +986,7 @@ public class MainMenuLogic : MonoBehaviour
 				}
 				else
 				{
+					_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 					_allowExit = true;
 					_ui.SetEnableFrontButton(true);
 					_ui.SetEnableBottomButton(true);

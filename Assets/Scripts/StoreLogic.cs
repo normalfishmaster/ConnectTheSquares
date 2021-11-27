@@ -10,9 +10,10 @@ public class StoreLogic : MonoBehaviour
         private AudioManager _audio;
 	private BlockManager _block;
 	private CloudOnceManager _cloudOnce;
-        private DataManager _data;
+	private DataManager _data;
+	private FrameRateManager _frameRate;
 	private ItemManager _item;
-        private LevelManager _level;
+	private LevelManager _level;
 	private MessageManager _message;
 
 	private int _purchasePending;
@@ -755,6 +756,7 @@ public class StoreLogic : MonoBehaviour
 		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_frameRate = GameObject.Find("FrameRateManager").GetComponent<FrameRateManager>();
 		_item = GameObject.Find("ItemManager").GetComponent<ItemManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		_message = GameObject.Find("MessageManager").GetComponent<MessageManager>();
@@ -774,6 +776,8 @@ public class StoreLogic : MonoBehaviour
 		SetupMessageBlock();
 		SetupMessageLoad();
 		SetupMessageError();
+
+		_frameRate.setHighFrameRate();
 
 		_ui.SetEnableProductButton(false);
 		_ui.AnimateProductEnter

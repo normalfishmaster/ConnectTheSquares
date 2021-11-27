@@ -11,6 +11,7 @@ public class DemoLogic : MonoBehaviour
 	private AudioManager _audio;
 	private BlockManager _block;
 	private DataManager _data;
+	private FrameRateManager _frameRate;
 	private LevelManager _level;
 
 	private int _menuColor;
@@ -38,6 +39,9 @@ public class DemoLogic : MonoBehaviour
 	private Vector2 DIRECTION_RIGHT = new Vector2( 1.0f,  0.0f);
 
 	private int _blockSet;
+
+	private const float BUTTON_FADE_DURATION = 0.1f;
+	private const float FRAME_RATE_CHANGE_DELAY = BUTTON_FADE_DURATION * 2;
 
 	// Map
 
@@ -543,6 +547,8 @@ public class DemoLogic : MonoBehaviour
 			return;
 		}
 
+		_frameRate.setHighFrameRate();
+
 		Touch touch = Input.GetTouch(0);
 
 		if (touch.phase != TouchPhase.Began)
@@ -571,6 +577,7 @@ public class DemoLogic : MonoBehaviour
 
 		if (Input.touchCount != 1)
 		{
+			_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 			_ui.SetInteractableControlButton(true);
 			_touchState = TouchState.NONE;
 			return;
@@ -580,6 +587,7 @@ public class DemoLogic : MonoBehaviour
 
 		if (touch.phase == TouchPhase.Began)
 		{
+			_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 			_ui.SetInteractableControlButton(true);
 			_touchState = TouchState.NONE;
 			return;
@@ -597,6 +605,7 @@ public class DemoLogic : MonoBehaviour
 
 			if (direction == DIRECTION_NONE)
 			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 				_ui.SetInteractableControlButton(true);
 				_touchState = TouchState.NONE;
 				return;
@@ -604,6 +613,7 @@ public class DemoLogic : MonoBehaviour
 
 			if (StartBlockMovement(direction) == false)
 			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 				_ui.SetInteractableControlButton(true);
 				_touchState = TouchState.NONE;
 				return;
@@ -619,6 +629,7 @@ public class DemoLogic : MonoBehaviour
 
 			if (Time.time - _touchStartTime > TOUCH_HOLD_TIME)
 			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 				_ui.SetInteractableControlButton(true);
 				_touchState = TouchState.NONE;
 				return;
@@ -630,6 +641,8 @@ public class DemoLogic : MonoBehaviour
 	{
 		if (MoveBlockFromStartToEnd() == true)
 		{
+			_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+
 			_ui.SetInteractableControlButton(true);
 
 			_audio.PlayMoveStartToEnd();
@@ -652,6 +665,8 @@ public class DemoLogic : MonoBehaviour
 
 	public void OnControlBackButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_ui.SetEnableControlButton(false);
@@ -673,9 +688,9 @@ public class DemoLogic : MonoBehaviour
 
 	public void OnControlBlockButtonPressed()
 	{
-		_audio.PlayButtonPressed();
+		_frameRate.setHighFrameRate();
 
-		_ui.AnimateControlBlockButtonPressed(()=>{});
+		_audio.PlayButtonPressed();
 
 		_blockSet = _block.IncrementSetNumber(_blockSet);
 		SetMapBlockSprite(_blockSet);
@@ -690,10 +705,20 @@ public class DemoLogic : MonoBehaviour
 			_ui.SetActiveMiscLocked(true);
 			_ui.SetActiveMiscUnlocked(false);
 		}
+
+		_ui.AnimateControlBlockButtonPressed
+		(
+			()=>
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
+		);
 	}
 
 	public void OnControlResetkButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		ResetBlockPos();
@@ -732,6 +757,7 @@ public class DemoLogic : MonoBehaviour
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_frameRate = GameObject.Find("FrameRateManager").GetComponent<FrameRateManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
 		_blockSet = _block.GetBlockPreview();
@@ -748,11 +774,15 @@ public class DemoLogic : MonoBehaviour
 		SetupBlinder();
 		SetupMisc();
 
+		_frameRate.setHighFrameRate();
+
 		_ui.SetActiveBlinder(true);
 		_ui.AnimateBlinderLighten
 		(
 			()=>
 			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+
 				_ui.SetActiveBlinder(false);
 				_ui.SetEnableControlButton(true);
 				_ui.SetInteractableControlButton(true);

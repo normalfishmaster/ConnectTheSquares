@@ -7,11 +7,15 @@ public class MapMenuLogic : MonoBehaviour
 {
 	private MapMenuUI _ui;
 	private DataManager _data;
+	private FrameRateManager _frameRate;
 	private LevelManager _level;
 	private AudioManager _audio;
 
 	private int _menuColor;
 	private int _menuAlphabet;
+
+	// Estimated scroll duration
+	private const float FRAME_RATE_CHANGE_DELAY = 4.0f;
 
 	// UI - Background
 
@@ -41,6 +45,8 @@ public class MapMenuLogic : MonoBehaviour
 
 	public void OnMapButtonPressed(int map)
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_data.SetMenuMap(map);
@@ -87,6 +93,7 @@ public class MapMenuLogic : MonoBehaviour
 	{
 		_ui = GameObject.Find("MapMenuUI").GetComponent<MapMenuUI>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_frameRate = GameObject.Find("FrameRateManager").GetComponent<FrameRateManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 	}
@@ -100,13 +107,33 @@ public class MapMenuLogic : MonoBehaviour
 		SetupTop();
 		SetupMap();
 
+		_frameRate.setHighFrameRate();
+
 		_ui.SetEnableMapButton(false);
 		_ui.AnimateMapEnter
 		(
 			()=>
 			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 				_ui.SetEnableMapButton(true);
 			}
 		);
+	}
+
+	private void Update()
+	{
+		if (Input.touchCount != 0)
+		{
+			_frameRate.setHighFrameRate();
+
+			Touch touch = Input.GetTouch(0);
+
+			if (touch.phase == TouchPhase.Ended)
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
+
+			return;
+		}
 	}
 }

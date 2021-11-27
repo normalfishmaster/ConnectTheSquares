@@ -9,6 +9,10 @@ public class SettingsLogic : MonoBehaviour
 	private AudioManager _audio;
 	private BlockManager _block;
 	private DataManager _data;
+	private FrameRateManager _frameRate;
+
+	// Estimated scroll duration
+	private const float FRAME_RATE_CHANGE_DELAY = 1.0f;
 
 	// UI - Settings
 
@@ -52,6 +56,8 @@ public class SettingsLogic : MonoBehaviour
 
 	public void OnSettingsBlockPrevButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_settingsBlockSetNumber = _block.DecrementSetNumber(_settingsBlockSetNumber);
@@ -68,11 +74,19 @@ public class SettingsLogic : MonoBehaviour
 			_ui.SetActiveSettingsBlockLock(true);
 		}
 
-		_ui.AnimateSettingsBlockPrevButtonPressed(()=>{});
+		_ui.AnimateSettingsBlockPrevButtonPressed
+		(
+			()=>
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
+		);
 	}
 
 	public void OnSettingsBlockNextButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_settingsBlockSetNumber = _block.IncrementSetNumber(_settingsBlockSetNumber);
@@ -89,11 +103,19 @@ public class SettingsLogic : MonoBehaviour
 			_ui.SetActiveSettingsBlockLock(true);
 		}
 
-		_ui.AnimateSettingsBlockNextButtonPressed(()=>{});
+		_ui.AnimateSettingsBlockNextButtonPressed
+		(
+			()=>
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
+		);
 	}
 
 	private void CommonSettingsAudioButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		if (_data.GetAudio() == 1)
 		{
 			_data.SetAudio(0);
@@ -116,18 +138,32 @@ public class SettingsLogic : MonoBehaviour
 	{
 		CommonSettingsAudioButtonPressed();
 
-		_ui.AnimateSettingsAudioPrevButtonPressed(()=>{});
+		_ui.AnimateSettingsAudioPrevButtonPressed
+		(
+			()=>
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
+		);
 	}
 
 	public void OnSettingsAudioNextButtonPressed()
 	{
 		CommonSettingsAudioButtonPressed();
 
-		_ui.AnimateSettingsAudioNextButtonPressed(()=>{});
+		_ui.AnimateSettingsAudioNextButtonPressed
+		(
+			()=>
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
+		);
 	}
 
 	private void CommonSettingsNotificationsButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		if (_data.GetNotification() == 1)
 		{
 			_data.SetNotification(0);
@@ -148,7 +184,13 @@ public class SettingsLogic : MonoBehaviour
 
 		CommonSettingsNotificationsButtonPressed();
 
-		_ui.AnimateSettingsNotificationsPrevButtonPressed(()=>{});
+		_ui.AnimateSettingsNotificationsPrevButtonPressed
+		(
+			()=>
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
+		);
 	}
 
 	public void OnSettingsNotificationsNextButtonPressed()
@@ -157,13 +199,21 @@ public class SettingsLogic : MonoBehaviour
 
 		CommonSettingsNotificationsButtonPressed();
 
-		_ui.AnimateSettingsNotificationsNextButtonPressed(()=>{});
+		_ui.AnimateSettingsNotificationsNextButtonPressed
+		(
+			()=>
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
+		);
 	}
 
 	// UI - Bottom
 
 	public void OnBottomBackButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_ui.SetEnableBottomButton(false);
@@ -189,12 +239,15 @@ public class SettingsLogic : MonoBehaviour
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_frameRate = GameObject.Find("FrameRateManager").GetComponent<FrameRateManager>();
 	}
 
 	private void Start()
 	{
 		SetupSettings();
 		SetupBottom();
+
+		_frameRate.setHighFrameRate();
 
 		_ui.SetEnableSettingsButton(false);
 		_ui.SetEnableBottomButton(false);
@@ -203,9 +256,28 @@ public class SettingsLogic : MonoBehaviour
 		(
 			()=>
 			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+
 				_ui.SetEnableSettingsButton(true);
 				_ui.SetEnableBottomButton(true);
 			}
 		);
+	}
+
+	private void Update()
+	{
+		if (Input.touchCount != 0)
+		{
+			_frameRate.setHighFrameRate();
+
+			Touch touch = Input.GetTouch(0);
+
+			if (touch.phase == TouchPhase.Ended)
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
+
+			return;
+		}
 	}
 }

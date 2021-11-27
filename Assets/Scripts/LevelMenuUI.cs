@@ -160,7 +160,7 @@ public class LevelMenuUI : MonoBehaviour
 		);
 	}
 
-	public void AnimateLevelPercentage()
+	public void AnimateLevelPercentage(Animate.AnimateComplete callback)
 	{
 		for (int i = 0; i < _levelButton.Length; i++)
 		{
@@ -175,6 +175,20 @@ public class LevelMenuUI : MonoBehaviour
 				AnimateLevelPercentageSingle(_levelButton[i], "PercentC", _levelPercentC[i]);
 			}
 		}
+
+		LeanTween.value(_levelPanel, 0.0f, 1.0f, LEVEL_ANIMATE_PERCENTAGE_DURATION).setEase(LeanTweenType.easeOutSine).setOnUpdate
+		(
+			(float val) =>
+			{
+			}
+		)
+		.setOnComplete
+		(
+			()=>
+			{
+				callback();
+			}
+		);
 	}
 
 	public void AnimateLevelButtonPressed(int color, int alphabet, Animate.AnimateComplete callback)

@@ -7,8 +7,12 @@ public class LevelMenuLogic : MonoBehaviour
 {
 	private LevelMenuUI _ui;
 	private DataManager _data;
+	private FrameRateManager _frameRate;
 	private LevelManager _level;
 	private AudioManager _audio;
+
+	// Estimated scroll duration
+	private const float FRAME_RATE_CHANGE_DELAY = 1.0f;
 
 	private int _menuColor;
 
@@ -63,6 +67,8 @@ public class LevelMenuLogic : MonoBehaviour
 
 	public void OnLevelButtonPressed(int color, int alphabet)
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_ui.SetEnableLevelButton(false);
@@ -82,6 +88,8 @@ public class LevelMenuLogic : MonoBehaviour
 
 	public void OnBottomBackButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_ui.SetEnableLevelButton(false);
@@ -102,6 +110,7 @@ public class LevelMenuLogic : MonoBehaviour
 	{
 		_ui = GameObject.Find("LevelMenuUI").GetComponent<LevelMenuUI>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_frameRate = GameObject.Find("FrameRateManager").GetComponent<FrameRateManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 	}
@@ -113,14 +122,39 @@ public class LevelMenuLogic : MonoBehaviour
 		SetupBackground();
 		SetupLevel();
 
+		_frameRate.setHighFrameRate();
+
 		_ui.SetEnableLevelButton(false);
 		_ui.AnimateLevelEnter
 		(
 			()=>
 			{
 				_ui.SetEnableLevelButton(true);
-				_ui.AnimateLevelPercentage();
+				_ui.AnimateLevelPercentage
+				(
+					()=>
+					{
+						_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+					}
+				);
 			}
 		);
         }
+
+	private void Update()
+	{
+		if (Input.touchCount != 0)
+		{
+			_frameRate.setHighFrameRate();
+
+	                Touch touch = Input.GetTouch(0);
+
+			if (touch.phase == TouchPhase.Ended)
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
+
+			return;
+		}
+	}
 }
