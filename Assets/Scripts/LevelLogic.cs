@@ -13,6 +13,7 @@ public class LevelLogic : MonoBehaviour
 	private BlockManager _block;
 	private CloudOnceManager _cloudOnce;
 	private DataManager _data;
+	private FrameRateManager _frameRate;
 	private ItemManager _item;
 	private LevelManager _level;
 	private MessageManager _message;
@@ -37,6 +38,9 @@ public class LevelLogic : MonoBehaviour
 	private Vector2 DIRECTION_RIGHT = new Vector2( 1.0f,  0.0f);
 
 	private const int MAX_MOVE_COUNT = 999;
+
+	private const float BUTTON_FADE_DURATION = 0.1f;
+	private const float FRAME_RATE_CHANGE_DELAY = BUTTON_FADE_DURATION * 2;
 
 	private const float MAX_AD_LOAD_TIME = 5.0f;
 
@@ -833,6 +837,8 @@ public class LevelLogic : MonoBehaviour
 			return;
 		}
 
+		_frameRate.setHighFrameRate();
+
 		_ui.SetInteractableControlButton(false);
 
 		_touchStartPos = touch.position;
@@ -847,6 +853,7 @@ public class LevelLogic : MonoBehaviour
 		if (Input.touchCount != 1)
 		{
 			_ui.SetInteractableControlButton(true);
+			_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 			_touchState = TouchState.NONE;
 			return;
 		}
@@ -856,6 +863,7 @@ public class LevelLogic : MonoBehaviour
 		if (touch.phase == TouchPhase.Began)
 		{
 			_ui.SetInteractableControlButton(true);
+			_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 			_touchState = TouchState.NONE;
 			return;
 		}
@@ -874,12 +882,14 @@ public class LevelLogic : MonoBehaviour
 			{
 				_ui.SetInteractableControlButton(true);
 				_touchState = TouchState.NONE;
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 				return;
 			}
 
 			if (GetBlockMoveCount() >= MAX_MOVE_COUNT)
 			{
 				_ui.SetInteractableControlButton(true);
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 				_touchState = TouchState.NONE;
 				return;
 			}
@@ -887,6 +897,7 @@ public class LevelLogic : MonoBehaviour
 			if ((_touchHint || _touchSolution) && CheckHintDirection(direction) == false)
 			{
 				_ui.SetInteractableControlButton(true);
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 				_touchState = TouchState.NONE;
 				return;
 			}
@@ -894,6 +905,7 @@ public class LevelLogic : MonoBehaviour
 			if (StartBlockMovement(direction) == false)
 			{
 				_ui.SetInteractableControlButton(true);
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 				_touchState = TouchState.NONE;
 				return;
 			}
@@ -952,9 +964,12 @@ public class LevelLogic : MonoBehaviour
 			{
 				_ui.StartAnimateSolution(_levelMap._hint[move]);
 			}
+			else
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
 
 			_audio.PlayMoveStartToEnd();
-
 			_touchState = TouchState.NONE;
 		}
 	}
@@ -1215,13 +1230,14 @@ public class LevelLogic : MonoBehaviour
 
 		if (_ad.IsRewardedLoaded())
 		{
+			_frameRate.setHighFrameRate();
 			_ad.ClearRewardStatus();
-
 			_message.AnimateLoadExit
 			(
 				()=>
 				{
 					_message.SetActiveLoad(false);
+					_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 					_ad.ShowRewarded();
 				}
 			);
@@ -1230,18 +1246,19 @@ public class LevelLogic : MonoBehaviour
 		}
 		else if (Time.time - _touchLoadAdStartTime > MAX_AD_LOAD_TIME)
 		{
+			_frameRate.setHighFrameRate();
 			_message.AnimateLoadExit
 			(
 				()=>
 				{
 					_message.SetActiveLoad(false);
-
 					_message.SetActiveError(true);
 					_message.SetEnableErrorBackButton(false);
 					_message.AnimateErrorEnter
 					(
 						()=>
 						{
+							_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 							_message.SetEnableErrorBackButton(true);
 						}
 					);
@@ -1265,6 +1282,8 @@ public class LevelLogic : MonoBehaviour
 			_ui.SetActiveControlHintOn(false);
 			_ui.SetActiveControlHintOff(true);
 
+			_frameRate.setHighFrameRate();
+
 			_audio.PlayRewardReceived();
 
 			_message.SetHintCount(1);
@@ -1284,18 +1303,22 @@ public class LevelLogic : MonoBehaviour
 		{
 			if (postAdState == TouchState.WIN)
 			{
+				_frameRate.setHighFrameRate();
+
 				_ui.SetActiveWin(true);
 
 				_ui.AnimateWinBoardEnter
 				(
 					()=>
 					{
+						_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 						_ui.SetInteractableWinButton(true);
 					}
 				);
 			}
 			else if (postAdState == TouchState.NONE)
 			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 				_ui.SetEnableControlButton(true);
 			}
 
@@ -1399,6 +1422,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void OnControlPauseButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_touchState = TouchState.PAUSE;
@@ -1440,6 +1465,7 @@ public class LevelLogic : MonoBehaviour
 		(
 			()=>
 			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 				_ui.SetEnablePauseButton(true);
 			}
 		);
@@ -1447,6 +1473,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void OnControlUndoButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		UndoBlockPos();
@@ -1459,11 +1487,19 @@ public class LevelLogic : MonoBehaviour
 			_ui.StartAnimateSolution(_levelMap._hint[move]);
 		}
 
-		_ui.AnimateControlUndoButtonPressed(()=>{});
+		_ui.AnimateControlUndoButtonPressed
+		(
+			()=>
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
+		);
 	}
 
 	public void OnControlResetButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		ResetBlockPos();
@@ -1476,7 +1512,16 @@ public class LevelLogic : MonoBehaviour
 			_ui.StartAnimateSolution(_levelMap._hint[move]);
 		}
 
-		_ui.AnimateControlResetButtonPressed(()=>{});
+		_ui.AnimateControlResetButtonPressed
+		(
+			()=>
+			{
+				if (_touchHint == false && _touchSolution == false)
+				{
+					_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+				}
+			}
+		);
 	}
 
 	public void OnControlHintAdButtonPressed()
@@ -1489,11 +1534,15 @@ public class LevelLogic : MonoBehaviour
 
 		if (_ad.IsRewardedLoaded())
 		{
+			_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+
 			_ad.ClearRewardStatus();
 			_ad.ShowRewarded();
 			_touchState = TouchState.HINT_AD;
 			return;
 		}
+
+		_frameRate.setHighFrameRate();
 
 		_messageLoadEnterInProgress = true;
 
@@ -1502,6 +1551,7 @@ public class LevelLogic : MonoBehaviour
 		(
 			()=>
 			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 				_messageLoadEnterInProgress = false;
 			}
 		);
@@ -1512,6 +1562,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void OnControlHintOnButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_touchHint = false;
 
 		_audio.PlayButtonPressed();
@@ -1522,11 +1574,19 @@ public class LevelLogic : MonoBehaviour
 		_ui.StopAnimateSolution();
 		_ui.SetActiveSolution(false);
 
-		_ui.AnimateControlHintOffButtonPressed(()=>{});
+		_ui.AnimateControlHintOffButtonPressed
+		(
+			()=>
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
+		);
 	}
 
 	public void OnControlHintOffButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_touchHint = true;
 
 		_audio.PlayHintPressed();
@@ -1572,6 +1632,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void OnPausePrevButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_pauseBlockSetNumber = _block.DecrementSetNumber(_pauseBlockSetNumber);
@@ -1585,11 +1647,19 @@ public class LevelLogic : MonoBehaviour
 			_ui.SetActivePauseLock(true);
 		}
 
-		_ui.AnimatePausePrevButtonPressed(()=>{});
+		_ui.AnimatePausePrevButtonPressed
+		(
+			()=>
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
+		);
 	}
 
 	public void OnPauseNextButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_pauseBlockSetNumber = _block.IncrementSetNumber(_pauseBlockSetNumber);
@@ -1603,22 +1673,38 @@ public class LevelLogic : MonoBehaviour
 			_ui.SetActivePauseLock(true);
 		}
 
-		_ui.AnimatePauseNextButtonPressed(()=>{});
+		_ui.AnimatePauseNextButtonPressed
+		(
+			()=>
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
+		);
 	}
 
 	public void OnPauseAudioOnButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_data.SetAudio(0);
 		_audio.SetEnable(false);
 
 		_ui.SetActivePauseAudioOnButton(false);
 		_ui.SetActivePauseAudioOffButton(true);
 
-		_ui.AnimatePauseAudioOffButtonPressed(()=>{});
+		_ui.AnimatePauseAudioOffButtonPressed
+		(
+			()=>
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
+		);
 	}
 
 	public void OnPauseAudioOffButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_data.SetAudio(1);
 		_audio.SetEnable(true);
 
@@ -1627,11 +1713,19 @@ public class LevelLogic : MonoBehaviour
 		_ui.SetActivePauseAudioOnButton(true);
 		_ui.SetActivePauseAudioOffButton(false);
 
-		_ui.AnimatePauseAudioOnButtonPressed(()=>{});
+		_ui.AnimatePauseAudioOnButtonPressed
+		(
+			()=>
+			{
+				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
+			}
+		);
 	}
 
 	public void OnPauseMenuButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_playEndTime = Time.realtimeSinceStartup;
@@ -1655,6 +1749,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void OnPauseResumeButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		if (_block.IsBlockSetUnlocked(_pauseBlockSetNumber))
@@ -1681,6 +1777,10 @@ public class LevelLogic : MonoBehaviour
 
 							_ui.SetActiveSolution(true);
 							_ui.StartAnimateSolution(_levelMap._hint[move]);
+						}
+						else
+						{
+							_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 						}
 
 						_touchState = TouchState.NONE;
@@ -1710,6 +1810,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void OnWinHintAdButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_ui.SetInteractableWinButton(false);
@@ -1727,6 +1829,7 @@ public class LevelLogic : MonoBehaviour
 
 						if (_ad.IsRewardedLoaded())
 						{
+							_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 							_ad.ClearRewardStatus();
 							_ad.ShowRewarded();
 							_touchState = TouchState.WIN_HINT_AD;
@@ -1795,6 +1898,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void OnWinMenuButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_ui.SetInteractableWinButton(false);
@@ -1817,6 +1922,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void OnWinReplayButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_ui.SetInteractableWinButton(false);
@@ -1839,6 +1946,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void OnWinNextButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		int nextColor = _menuColor;
 		int nextAlphabet = _menuAlphabet;
 		int nextMap = _menuMap;
@@ -1956,6 +2065,8 @@ public class LevelLogic : MonoBehaviour
 
 	private void ShowClearAchievement()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayAchievementReceived();
 
 		_message.SetActiveAchievement(true);
@@ -1976,6 +2087,8 @@ public class LevelLogic : MonoBehaviour
 
 	private void ShowFullClearAchievement()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayAchievementReceived();
 
 		_message.SetActiveAchievement(true);
@@ -1996,6 +2109,8 @@ public class LevelLogic : MonoBehaviour
 
 	private void ShowPerfectionistAchievement()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayAchievementReceived();
 
 		_message.SetActiveAchievement(true);
@@ -2035,6 +2150,7 @@ public class LevelLogic : MonoBehaviour
 			return;
 		}
 
+		_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 		_ui.SetInteractableWinButton(true);
 	}
 
@@ -2069,6 +2185,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void OnMessageHintBackButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_message.SetEnableHintBackButton(false);
@@ -2091,12 +2209,14 @@ public class LevelLogic : MonoBehaviour
 							(
 								()=>
 								{
+									_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 									_ui.SetInteractableWinButton(true);
 								}
 							);
 						}
 						else if (_touchState == TouchState.NONE)
 						{
+							_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 							_ui.SetEnableControlButton(true);
 						}
 					}
@@ -2125,6 +2245,8 @@ public class LevelLogic : MonoBehaviour
 
 	public void OnMessageErrorBackButtonPressed()
 	{
+		_frameRate.setHighFrameRate();
+
 		_audio.PlayButtonPressed();
 
 		_message.SetEnableErrorBackButton(false);
@@ -2147,12 +2269,14 @@ public class LevelLogic : MonoBehaviour
 							(
 								()=>
 								{
+									_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 									_ui.SetInteractableWinButton(true);
 								}
 							);
 						}
 						else if (_touchState == TouchState.NONE)
 						{
+							_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 							_ui.SetEnableControlButton(true);
 						}
 					}
@@ -2171,6 +2295,7 @@ public class LevelLogic : MonoBehaviour
 		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
 		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
+		_frameRate = GameObject.Find("FrameRateManager").GetComponent<FrameRateManager>();
 		_item = GameObject.Find("ItemManager").GetComponent<ItemManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		_message = GameObject.Find("MessageManager").GetComponent<MessageManager>();
@@ -2210,6 +2335,8 @@ public class LevelLogic : MonoBehaviour
 		SetupMessageHint();
 		SetupMessageLoad();
 		SetupMessageError();
+
+		_frameRate.setHighFrameRate();
 
 		_audio.PlayMapEnter();
 		AnimateMapEnter
@@ -2255,6 +2382,8 @@ public class LevelLogic : MonoBehaviour
 							_touchState = TouchState.NONE;
 
 							_playStartTime = Time.realtimeSinceStartup;
+
+							_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 						}
 					}
 				);

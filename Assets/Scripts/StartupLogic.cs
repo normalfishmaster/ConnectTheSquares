@@ -83,7 +83,7 @@ public class StartupLogic : MonoBehaviour
 
 	// Load States
 
-	enum LoadState
+	private enum LoadState
 	{
 		WAIT,
 		LOAD_CLOUD,
@@ -159,8 +159,6 @@ public class StartupLogic : MonoBehaviour
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-
-		Application.targetFrameRate = 300;
 
 		_dataInitComplete = false;
 		_data.SubscribeInitComplete(OnDataInitComplete);
