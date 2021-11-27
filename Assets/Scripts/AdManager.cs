@@ -29,6 +29,8 @@ public class AdManager : MonoBehaviour
 			string adUnitId = "ca-app-pub-8756652981399458/1129742826";
 		#elif BUILD_ANDROID_DEBUG
 			string adUnitId = "ca-app-pub-3940256099942544/1033173712";
+		#elif BUILD_IOS_DEBUG
+			string adUnitId = "ca-app-pub-3940256099942544/4411468910";
 		#else
 			#error "Unknown build configuration"
 		#endif
@@ -97,6 +99,8 @@ public class AdManager : MonoBehaviour
 			string adUnitId = "ca-app-pub-8756652981399458/9899955768";
 		#elif BUILD_ANDROID_DEBUG
 			string adUnitId = "ca-app-pub-3940256099942544/8691691433";
+		#elif BUILD_IOS_DEBUG
+			string adUnitId = "ca-app-pub-3940256099942544/5135589807"
 		#else
 			#error "Unknown build configuration"
 		#endif
@@ -166,6 +170,8 @@ public class AdManager : MonoBehaviour
 			string adUnitId = "ca-app-pub-8756652981399458/3001173793";
 		#elif BUILD_ANDROID_DEBUG
 			string adUnitId = "ca-app-pub-3940256099942544/5224354917";
+		#elif BUILD_IOS_DEBUG
+			string adUnitId = "ca-app-pub-3940256099942544/1712485313";
 		#else
 			#error "Unknown build configuration"
 		#endif

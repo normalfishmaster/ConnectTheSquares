@@ -48,6 +48,22 @@ public class LevelLogic : MonoBehaviour
 	public float ADS_MAX_PLAY_TIME;
 	public float ADS_MAX_SKIPPED_ADS;
 
+	// Camera
+
+	public float CAMERA_WORLD_GRID_WIDTH;
+
+	private void SetupCamera()
+	{
+		Camera camera = GameObject.Find("/MainCamera").GetComponent<Camera>();
+
+		float minimumSize = CAMERA_WORLD_GRID_WIDTH * Screen.height / Screen.width * 0.5f;
+
+		if (camera.orthographicSize < minimumSize)
+		{
+			camera.orthographicSize = minimumSize;
+		}
+	}
+
 	// Map
 
 	public float MAP_ANIMATE_WALL_ENTER_ROTATION;
@@ -2177,6 +2193,7 @@ public class LevelLogic : MonoBehaviour
 		_cloudOnce.SetLastMap(_menuMap);
 		_cloudOnce.Save();
 
+		SetupCamera();
 		SetupMap();	// SetupMap() must preceed SetupPhysics()
 		SetupPhysics();
 		SetupTouch();
