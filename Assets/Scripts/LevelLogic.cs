@@ -2235,6 +2235,7 @@ public class LevelLogic : MonoBehaviour
 
 							_ui.SetPermanentlyNonInteractableControlHintOffButton();
 
+							_audio.PlayHintPressed();
 							_ui.SetActiveTutorial(true);
 							_ui.SetEnableTutorialButton(false);
 							_ui.AnimateTutorialEnter

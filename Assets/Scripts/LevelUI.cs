@@ -926,7 +926,7 @@ public class LevelUI : MonoBehaviour
 		LeanTween.cancel(_tutorial);
 
 		LeanTween.scale(_tutorial, Vector3.one, TUTORIAL_ANIMATE_ENTER_DURATION)
-				.setEase(LeanTweenType.easeInOutQuint)
+				.setEase(LeanTweenType.easeOutBounce)
 				.setOnComplete
 				(
 					()=>

@@ -282,8 +282,6 @@ public class DataManager : MonoBehaviour
 			SetColorSolved(i, solvedColorEarned);
 			SetColorSolvedTotal(i, solvedColorTotal);
 		}
-
-		RecalculateBackgroundColor();
 	}
 
 	// Unlock Levels
@@ -439,6 +437,10 @@ public class DataManager : MonoBehaviour
 		// Calculate totals stars and background color
 
 		RecalculateLevelTotal();
+
+		// Calculate background color
+
+		RecalculateBackgroundColor();
 
 		// Unlock all levels if purchased
 

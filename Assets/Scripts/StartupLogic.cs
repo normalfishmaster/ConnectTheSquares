@@ -68,6 +68,10 @@ public class StartupLogic : MonoBehaviour
 	private void RunTestSequence()
 	{
 /*
+		_data.DeleteAll();
+		_cloudOnce.DeleteAll();
+		_data.InitializeData();
+
 		_cloudOnce.IncrementHint(100);
 
 		_data.DeleteAll();
@@ -134,7 +138,18 @@ public class StartupLogic : MonoBehaviour
 
 		RunTestSequence();
 
-		SceneManager.LoadScene("MainMenuScene");
+		if (_data.GetLevelStar(0, 0, 0) == 0)
+		{
+			_data.SetMenuColor(0);
+			_data.SetMenuAlphabet(0);
+			_data.SetMenuMap(0);
+
+			SceneManager.LoadScene("LevelScene");
+		}
+		else
+		{
+			SceneManager.LoadScene("MainMenuScene");
+		}
 	}
 
 	// Unity Lifecycle
