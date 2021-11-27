@@ -11,6 +11,8 @@ public class StartupLogic : MonoBehaviour
 
 	private bool _dataInitComplete;
 	private bool _cloudOnceInitComplete;
+	private bool _cloudOnceLoadComplete;
+	private bool _cloudOnceSaveComplete;
 
 	// InitComplete Callbacks
 
@@ -23,16 +25,7 @@ public class StartupLogic : MonoBehaviour
 	private void OnCloudOnceInitComplete()
 	{
 		_cloudOnce.UnsubscribeInitComplete(OnCloudOnceInitComplete);
-
-		if (_cloudOnce.IsSignedIn())
-		{
-			_cloudOnce.SubscribeCloudLoadComplete(OnCloudLoadComplete);
-			_cloudOnce.Load();
-		}
-		else
-		{
-			_cloudOnceInitComplete = true;
-		}
+		_cloudOnceInitComplete = true;
 	}
 
 	// Cloud Load
@@ -46,10 +39,15 @@ public class StartupLogic : MonoBehaviour
 			_cloudOnce.LoadCloudToData();
 		}
 
-		_cloudOnce.SaveDataToCloud();
-		_cloudOnce.Save();
+		_cloudOnceLoadComplete = true;
+	}
 
-		_cloudOnceInitComplete = true;
+	// Cloud Save
+
+	private void OnCloudSaveComplete(bool success)
+	{
+		_cloudOnce.UnsubscribeCloudSaveComplete(OnCloudSaveComplete);
+		_cloudOnceSaveComplete = true;
 	}
 
 	// Co-routine to delay and load MainMenuScene
@@ -63,18 +61,80 @@ public class StartupLogic : MonoBehaviour
 	IEnumerator DelayAndLoadMainMenu()
 	{
 		yield return new WaitForSeconds(_loadDelay);
-		SceneManager.LoadScene("MainMenuScene");
 	}
 
 	// Test
 
 	private void RunTestSequence()
 	{
-/*		_data.DeleteAll();
+/*
+		_cloudOnce.IncrementHint(100);
+
+		_data.DeleteAll();
+		_cloudOnce.DeleteAll();
 		_data.InitializeData();
 		_data.SetBlockMetalUnlocked(1);
-		_cloudOnce.DeleteAll();
 */
+	}
+
+	// Load States
+
+	enum LoadState
+	{
+		WAIT,
+		LOAD_CLOUD,
+		SAVE_CLOUD,
+		DELAY_BEFORE_EXIT,
+	}
+
+	LoadState _loadState;
+
+	public void DoLoadStateWait()
+	{
+		if (_dataInitComplete && _cloudOnceInitComplete)
+		{
+			if (_cloudOnce.IsSignedIn())
+			{
+				_cloudOnce.SubscribeCloudLoadComplete(OnCloudLoadComplete);
+				_cloudOnce.Load();
+
+				_loadState = LoadState.LOAD_CLOUD;
+			}
+			else
+			{
+				_loadState = LoadState.DELAY_BEFORE_EXIT;
+			}
+		}
+	}
+
+	public void DoLoadStateLoadCloud()
+	{
+		if (_cloudOnceLoadComplete)
+		{
+			_cloudOnce.SubscribeCloudSaveComplete(OnCloudSaveComplete);
+
+			_cloudOnce.SaveDataToCloud();
+			_cloudOnce.Save();
+
+			_loadState = LoadState.SAVE_CLOUD;
+		}
+	}
+
+	public void DoLoadStateSaveCloud()
+	{
+		if (_cloudOnceSaveComplete)
+		{
+			_loadState = LoadState.DELAY_BEFORE_EXIT;
+		}
+	}
+
+	public void DoLoadStateDelayBeforeExit()
+	{
+		StartCoroutine(DelayAndLoadMainMenu());
+
+		RunTestSequence();
+
+		SceneManager.LoadScene("MainMenuScene");
 	}
 
 	// Unity Lifecycle
@@ -92,19 +152,30 @@ public class StartupLogic : MonoBehaviour
 
 		_cloudOnceInitComplete = false;
 		_cloudOnce.SubscribeInitComplete(OnCloudOnceInitComplete);
+
+		_cloudOnceLoadComplete = false;
+		_cloudOnceSaveComplete = false;
+
+		_loadState = LoadState.WAIT;
 	}
 
 	private void Update()
 	{
-		if (_dataInitComplete && _cloudOnceInitComplete)
+		if (_loadState == LoadState.WAIT)
 		{
-			if (_loadDelayStarted == false)
-			{
-				RunTestSequence();
-
-				_loadDelayStarted = true;
-				StartCoroutine(DelayAndLoadMainMenu());
-			}
+			DoLoadStateWait();
+		}
+		else if (_loadState == LoadState.LOAD_CLOUD)
+		{
+			DoLoadStateLoadCloud();
+		}
+		else if (_loadState == LoadState.SAVE_CLOUD)
+		{
+			DoLoadStateSaveCloud();
+		}
+		else if (_loadState == LoadState.DELAY_BEFORE_EXIT)
+		{
+			DoLoadStateDelayBeforeExit();
 		}
 	}
 }
