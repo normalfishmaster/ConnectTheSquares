@@ -284,6 +284,7 @@ public class LevelLogic : MonoBehaviour
 		for (int i = 0; i < NUM_BLOCK; i++)
 		{
 			_mapBlock[i].GetComponent<SpriteRenderer>().sortingLayerName = "SquarePreEndToEnd";
+			_mapBlockShadow[i].GetComponent<SpriteRenderer>().sortingLayerName = "SquareShadowPreEndToEnd";
 		}
 	}
 
@@ -292,6 +293,7 @@ public class LevelLogic : MonoBehaviour
 		for (int i = 0; i < NUM_BLOCK; i++)
 		{
 			_mapBlock[i].GetComponent<SpriteRenderer>().sortingLayerName = "Square";
+			_mapBlockShadow[i].GetComponent<SpriteRenderer>().sortingLayerName = "SquareShadow";
 		}
 	}
 
@@ -982,7 +984,10 @@ public class LevelLogic : MonoBehaviour
 
 			BringBlockSortingLayerToFront();
 
+			_ui.SetActiveDarken(true);
 			_ui.SetActiveBlinder(true);
+			_ui.SetBlinderColor(_menuColor);
+			_ui.AnimateDarkenPreEndToEnd();
 			_ui.AnimateBlinder();
 
 			_touchState = TouchState.PRE_END_TO_END;
@@ -1157,6 +1162,7 @@ public class LevelLogic : MonoBehaviour
 			_ui.SetEnableControlButton(false);
 			_touchState = TouchState.WIN;
 
+			_ui.SetActiveDarken(false);
 			_ui.SetActiveBlinder(false);
 			BringBlockSortingLayerToBack();
 
@@ -1879,6 +1885,7 @@ public class LevelLogic : MonoBehaviour
 			if (_ad.ShowInterstitialVideo() == 0)
 			{
 				_ui.SetActiveBlinder(true);
+				_ui.ResetBlinderColor();
 				_touchState = nextState;
 				adPlayed = true;
 			}

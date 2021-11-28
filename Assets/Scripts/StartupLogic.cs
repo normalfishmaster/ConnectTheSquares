@@ -112,15 +112,17 @@ public class StartupLogic : MonoBehaviour
 	private void RunTestSequence()
 	{
 /*
-		_data.DeleteAll();
 		_cloudOnce.DeleteAll();
+		_data.DeleteAll();
 		_data.InitializeData();
-
 		_cloudOnce.IncrementHint(100);
 
-		_data.DeleteAll();
+
 		_cloudOnce.DeleteAll();
+		_data.DeleteAll();
 		_data.InitializeData();
+
+
 		_data.SetBlockMetalUnlocked(1);
 */
 	}

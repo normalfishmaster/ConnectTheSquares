@@ -746,6 +746,8 @@ public class LevelUI : MonoBehaviour
 	public float DARKEN_ANIMATE_EXIT_DELAY;
 	public float DARKEN_ANIMATE_EXIT_DURATION;
 
+	public float DARKEN_ANIMATE_PRE_END_TO_END_DURATION;
+
 	private GameObject _darken;
 
 	private void FindDarkenGameObject()
@@ -786,6 +788,21 @@ public class LevelUI : MonoBehaviour
 				);
 	}
 
+	public void AnimateDarkenPreEndToEnd()
+	{
+		_darken.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0f);
+
+		LeanTween.cancel(_darken);
+
+		LeanTween.value(_darken, 0f, 1f, DARKEN_ANIMATE_PRE_END_TO_END_DURATION).setEase(LeanTweenType.easeOutQuint).setOnUpdate
+		(
+			(float val) =>
+			{
+				_darken.GetComponent<Image>().color = new Color(0f, 0f, 0f, val);
+			}
+		);
+	}
+
 	// Blinder
 
 	public float BLINDER_ANIMATE_DURATION;
@@ -802,17 +819,48 @@ public class LevelUI : MonoBehaviour
 		_blinder.SetActive(active);
 	}
 
+	public void SetBlinderColor(int color)
+	{
+		if (color == 0)
+		{
+			_blinder.GetComponent<Image>().color = new Color32(229, 159, 66, 255);
+		}
+		else if (color == 1)
+		{
+			_blinder.GetComponent<Image>().color = new Color32(0, 194, 162, 255);
+		}
+		else if (color == 2)
+		{
+			_blinder.GetComponent<Image>().color = new Color32(107, 126, 203, 255);
+		}
+		else if (color == 3)
+		{
+			_blinder.GetComponent<Image>().color = new Color32(198, 69, 138, 255);
+		}
+		else if (color == 4)
+		{
+			_blinder.GetComponent<Image>().color = new Color32(115, 115, 115, 255);
+		}
+	}
+
+	public void ResetBlinderColor()
+	{
+		_blinder.GetComponent<Image>().color = new Color(0f, 0f, 0f, 1f);
+	}
+
 	public void AnimateBlinder()
 	{
-		_blinder.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0f);
-
 		LeanTween.cancel(_blinder);
+
+		Color currentColor = _blinder.GetComponent<Image>().color;
+		_blinder.GetComponent<Image>().color = new Color(currentColor.r, currentColor.g, currentColor.b, 0f);
 
 		LeanTween.value(_blinder, 0f, 1f, BLINDER_ANIMATE_DURATION).setEase(LeanTweenType.easeOutQuint).setOnUpdate
 		(
 			(float val) =>
 			{
-				_blinder.GetComponent<Image>().color = new Color(0f, 0f, 0f, val);
+				Color currColor = _blinder.GetComponent<Image>().color;
+				_blinder.GetComponent<Image>().color = new Color(currColor.r, currColor.g, currColor.b, val);
 			}
 		);
 	}

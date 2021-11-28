@@ -286,6 +286,7 @@ public class StoreLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 		_purchasePending = 1;
+		Debug.Log("purchase is now pending");
 	}
 
 	public void OnProductRemoveAdsButtonPricePressed()
@@ -515,15 +516,22 @@ public class StoreLogic : MonoBehaviour
 
 	public void OnPurchaseBlockSetSuccess(int setNumber)
 	{
+		Debug.Log("entry");
+
 		if (_purchasePending == 0)
 		{
+			Debug.Log("exit");
 			return;
 		}
+
+		Debug.Log("ok");
+
 
 		_purchasePending = 0;
 
 		if (setNumber == BlockManager.BLOCK_SET_METAL)
 		{
+			Debug.Log("metal");
 			_ui.SetActiveProductBlockMetalPriceAndPurchased(false, true);
 			_ui.SetInteractableBlockMetal(false);
 			_ui.SetActiveBlockMetalTry(false);

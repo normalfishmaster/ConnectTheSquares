@@ -65,6 +65,9 @@ TagManager:
   - name: UI
     uniqueID: 2691810077
     locked: 0
+  - name: SquareShadowPreEndToEnd
+    uniqueID: 2062159715
+    locked: 0
   - name: SquarePreEndToEnd
     uniqueID: 2073200301
     locked: 0

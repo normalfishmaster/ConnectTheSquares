@@ -3721,7 +3721,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1126723104}
         m_TargetAssemblyTypeName: StoreLogic, Assembly-CSharp
-        m_MethodName: OnProductBlockMetalButtonPricePressed
+        m_MethodName: OnProductBlockMetalPriceButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4904,7 +4904,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1126723104}
         m_TargetAssemblyTypeName: StoreLogic, Assembly-CSharp
-        m_MethodName: OnProductHints60p24ButtonPricePressed
+        m_MethodName: OnProductHints60p24PriceButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
