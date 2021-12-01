@@ -81,10 +81,40 @@ public class StartupLogic : MonoBehaviour
 		_cloudOnce.UnsubscribeCloudSaveComplete(OnCloudSaveComplete);
 		_cloudOnceSaveComplete = true;
 
+		LoadScene();
+	}
+
+	// Test
+
+	private void RunTestSequence()
+	{
+/*
+		_cloudOnce.IncrementHint(100);
+
+		_cloudOnce.DeleteAll();
+		_data.DeleteAll();
+		_data.InitializeData();
+		_cloudOnce.IncrementHint(100);
+
+
+		_cloudOnce.DeleteAll();
+		_data.DeleteAll();
+		_data.InitializeData();
+
+
+		_data.SetBlockMetalUnlocked(1);
+*/
+	}
+
+	// Load Scene
+
+	private void LoadScene()
+	{
 		_ui.AnimateLoadingSlider(100f,
 			()=>
 			{
-				LeanTween.delayedCall(_dummy, LOAD_DELAY, ()=>{}).setOnComplete(
+				LeanTween.delayedCall(_dummy, LOAD_DELAY, ()=>{}).setOnComplete
+				(
 					()=>
 					{
 						RunTestSequence();
@@ -105,26 +135,6 @@ public class StartupLogic : MonoBehaviour
 				);
 			}
 		);
-	}
-
-	// Test
-
-	private void RunTestSequence()
-	{
-/*
-		_cloudOnce.DeleteAll();
-		_data.DeleteAll();
-		_data.InitializeData();
-		_cloudOnce.IncrementHint(100);
-
-
-		_cloudOnce.DeleteAll();
-		_data.DeleteAll();
-		_data.InitializeData();
-
-
-		_data.SetBlockMetalUnlocked(1);
-*/
 	}
 
 	// Load States
@@ -152,6 +162,7 @@ public class StartupLogic : MonoBehaviour
 			}
 			else
 			{
+				LoadScene();
 				_loadState = LoadState.DELAY_BEFORE_EXIT;
 			}
 		}

@@ -20,12 +20,27 @@ public class LevelGreenB : Level
 					{ 0, 0, X, X, X, X, X, 0, },
 					{ 0, 0, X, X, X, X, X, 0, },
 					{ 0, D, X, X, X, X, X, C, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'D','L','U','L','D', },
 			},
 
+			new Map()
+			{
+				_layout = new sbyte[,]
+				{
+					{ 0, 0, 0, 0, 0, 0, 0, X, },
+					{ 0, 0, X, X, X, X, A, X, },
+					{ X, B, 0, 0, 0, 0, 0, 0, },
+					{ X, 0, 0, 0, 0, 0, 0, 0, },
+					{ X, 0, X, X, X, X, X, 0, },
+					{ X, 0, X, X, X, X, C, 0, },
+					{ X, D, X, X, X, X, X, X, },
+					{ X, X, X, X, X, X, X, X, },
+				},
+
+				_hint =  new char[] { 'D','R','U','L','U', },
+			},
 
 			new Map()
 			{
@@ -39,7 +54,6 @@ public class LevelGreenB : Level
 					{ X, 0, X, X, X, X, X, 0, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
 					{ C, X, 0, 0, 0, 0, 0, D, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'L','U','R','D','R', },
@@ -57,7 +71,6 @@ public class LevelGreenB : Level
 					{ 0, 0, X, X, X, 0, 0, 0, },
 					{ X, 0, X, X, X, X, X, D, },
 					{ X, 0, X, X, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'D','L','U','L','U', },
@@ -75,7 +88,6 @@ public class LevelGreenB : Level
 					{ 0, 0, X, X, X, X, X, X, },
 					{ 0, 0, X, X, X, X, X, X, },
 					{ C, D, X, X, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'U','L','D','L','D', },
@@ -89,10 +101,9 @@ public class LevelGreenB : Level
 					{ X, X, 0, 0, 0, X, X, X, },
 					{ X, 0, 0, 0, 0, 0, 0, A, },
 					{ B, 0, 0, 0, 0, X, X, X, },
-					{ X, 0, 0, 0, 0, 0, C, 0, },
+					{ X, 0, 0, 0, 0, 0, D, 0, },
 					{ X, X, X, X, X, X, 0, 0, },
-					{ X, D, 0, 0, 0, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
+					{ X, C, 0, 0, 0, 0, 0, 0, },
 					{ X, X, X, X, X, X, X, X, },
 				},
 
@@ -111,7 +122,6 @@ public class LevelGreenB : Level
 					{ X, B, X, X, C, 0, 0, 0, },
 					{ X, X, X, X, 0, D, 0, 0, },
 					{ X, X, X, X, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'R','U','L','U','L', },
@@ -124,12 +134,11 @@ public class LevelGreenB : Level
 					{ X, 0, 0, 0, X, X, X, X, },
 					{ 0, 0, 0, 0, 0, 0, A, B, },
 					{ 0, 0, 0, 0, X, X, X, X, },
-					{ 0, 0, 0, C, X, X, X, X, },
-					{ 0, D, X, X, X, X, X, X, },
+					{ 0, 0, 0, D, X, X, X, X, },
+					{ 0, C, X, X, X, X, X, X, },
 					{ 0, 0, X, X, X, X, X, X, },
 					{ 0, 0, X, X, X, X, X, X, },
 					{ 0, 0, X, X, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'U','R','D','L','D', },
@@ -143,10 +152,9 @@ public class LevelGreenB : Level
 					{ X, X, A, 0, X, 0, X, X, },
 					{ X, X, 0, 0, X, 0, X, X, },
 					{ X, X, 0, X, 0, 0, X, X, },
-					{ X, X, 0, B, C, 0, X, X, },
+					{ X, X, 0, D, C, 0, X, X, },
 					{ X, X, 0, 0, 0, X, X, X, },
-					{ X, X, X, D, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
+					{ X, X, X, B, X, X, X, X, },
 					{ X, X, X, X, X, X, X, X, },
 				},
 
@@ -164,8 +172,7 @@ public class LevelGreenB : Level
 					{ 0, 0, 0, X, X, X, X, 0, },
 					{ 0, 0, 0, X, X, X, X, 0, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
-					{ C, X, 0, 0, 0, 0, 0, D, },
-					{ X, X, X, X, X, X, X, X, },
+					{ D, X, 0, 0, 0, 0, 0, C, },
 				},
 
 				_hint =  new char[] { 'L','U','R','D','R', },
@@ -183,7 +190,6 @@ public class LevelGreenB : Level
 					{ X, X, X, X, 0, C, X, X, },
 					{ X, X, X, X, D, X, X, X, },
 					{ X, X, X, X, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'L','U','R','D','R', },
@@ -195,12 +201,11 @@ public class LevelGreenB : Level
 				{
 					{ 0, 0, 0, 0, 0, X, X, X, },
 					{ 0, 0, 0, 0, 0, 0, A, X, },
-					{ X, X, X, X, B, 0, 0, 0, },
+					{ X, X, X, X, D, 0, 0, 0, },
 					{ X, X, X, X, 0, X, 0, 0, },
 					{ X, X, X, X, 0, X, X, 0, },
 					{ X, X, X, X, C, X, X, 0, },
-					{ X, X, X, X, X, X, X, D, },
-					{ X, X, X, X, X, X, X, X, },
+					{ X, X, X, X, X, X, X, B, },
 					{ X, X, X, X, X, X, X, X, },
 				},
 
@@ -215,11 +220,10 @@ public class LevelGreenB : Level
 					{ X, X, X, X, X, X, 0, 0, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
 					{ X, X, 0, X, X, X, 0, X, },
-					{ X, X, C, 0, 0, 0, 0, 0, },
+					{ X, X, D, 0, 0, 0, 0, 0, },
 					{ X, X, X, X, X, X, 0, 0, },
 					{ X, X, X, X, X, X, 0, 0, },
-					{ X, X, X, X, X, X, D, 0, },
-					{ X, X, X, X, X, X, X, X, },
+					{ X, X, X, X, X, X, C, 0, },
 				},
 
 				_hint =  new char[] { 'D','L','U','R','U', },
@@ -232,33 +236,14 @@ public class LevelGreenB : Level
 					{ X, 0, 0, 0, 0, X, X, X, },
 					{ X, 0, 0, 0, 0, 0, A, X, },
 					{ X, 0, X, X, 0, B, X, X, },
-					{ X, C, 0, 0, 0, 0, X, X, },
+					{ X, D, 0, 0, 0, 0, X, X, },
 					{ X, 0, X, X, 0, 0, X, X, },
-					{ X, 0, 0, 0, 0, 0, D, X, },
+					{ X, 0, 0, 0, 0, 0, C, X, },
 					{ X, X, X, X, 0, 0, X, X, },
 					{ X, X, X, X, 0, 0, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'R','D','L','U','L', },
-			},
-
-			new Map()
-			{
-				_layout = new sbyte[,]
-				{
-					{ 0, 0, 0, 0, 0, 0, 0, X, },
-					{ 0, 0, X, X, X, X, A, X, },
-					{ X, B, 0, 0, 0, 0, 0, 0, },
-					{ X, 0, 0, 0, 0, 0, 0, 0, },
-					{ X, 0, X, X, X, X, X, 0, },
-					{ X, 0, X, X, X, X, C, 0, },
-					{ X, D, X, X, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
-				},
-
-				_hint =  new char[] { 'D','R','U','L','U', },
 			},
 
 			new Map()
@@ -273,7 +258,6 @@ public class LevelGreenB : Level
 					{ X, X, X, X, X, 0, X, 0, },
 					{ 0, 0, 0, 0, 0, 0, D, 0, },
 					{ X, X, X, X, X, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'L','U','R','D','R', },
@@ -285,13 +269,12 @@ public class LevelGreenB : Level
 				{
 					{ 0, 0, 0, A, 0, 0, X, X, },
 					{ 0, 0, B, X, X, 0, X, X, },
-					{ 0, 0, X, X, 0, 0, C, X, },
+					{ 0, 0, X, X, 0, 0, D, X, },
 					{ 0, 0, X, X, 0, 0, X, X, },
 					{ 0, 0, X, X, 0, 0, X, X, },
 					{ 0, 0, 0, 0, 0, 0, X, X, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
-					{ X, X, X, X, X, 0, D, 0, },
-					{ X, X, X, X, X, X, X, X, },
+					{ X, X, X, X, X, 0, C, 0, },
 				},
 
 				_hint =  new char[] { 'R','D','L','D','R', },
@@ -308,8 +291,7 @@ public class LevelGreenB : Level
 					{ 0, X, X, X, 0, 0, 0, 0, },
 					{ 0, X, X, X, 0, 0, 0, 0, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
-					{ C, 0, 0, 0, 0, 0, X, D, },
-					{ X, X, X, X, X, X, X, X, },
+					{ D, 0, 0, 0, 0, 0, X, C, },
 				},
 
 				_hint =  new char[] { 'R','U','L','D','L', },
@@ -327,7 +309,6 @@ public class LevelGreenB : Level
 					{ X, X, X, 0, X, X, X, X, },
 					{ C, 0, 0, 0, 0, 0, 0, 0, },
 					{ 0, D, 0, 0, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'R','D','L','D','L', },
@@ -345,7 +326,6 @@ public class LevelGreenB : Level
 					{ X, 0, 0, 0, X, X, 0, 0, },
 					{ X, B, 0, 0, X, X, 0, 0, },
 					{ X, X, X, 0, 0, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'D','R','U','L','U', },
@@ -356,15 +336,14 @@ public class LevelGreenB : Level
 			{
 				_layout = new sbyte[,]
 				{
-					{ A, 0, 0, 0, B, 0, X, X, },
+					{ A, 0, 0, 0, D, 0, X, X, },
 					{ X, 0, 0, 0, 0, 0, X, X, },
 					{ 0, 0, 0, 0, X, 0, X, X, },
-					{ C, 0, X, X, D, 0, 0, 0, },
+					{ C, 0, X, X, B, 0, 0, 0, },
 					{ 0, 0, X, X, X, 0, X, 0, },
 					{ 0, 0, X, X, X, 0, X, 0, },
 					{ 0, 0, X, X, X, 0, X, 0, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'U','R','D','L','D', },
@@ -382,7 +361,6 @@ public class LevelGreenB : Level
 					{ X, 0, 0, X, X, X, X, X, },
 					{ X, 0, 0, X, X, X, X, X, },
 					{ X, X, X, X, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'L','D','L','U','L', },
@@ -395,12 +373,11 @@ public class LevelGreenB : Level
 					{ X, X, X, X, A, 0, X, X, },
 					{ X, X, X, B, 0, 0, X, X, },
 					{ X, X, X, X, X, 0, 0, X, },
-					{ X, 0, 0, 0, C, 0, 0, 0, },
+					{ X, 0, 0, 0, D, 0, 0, 0, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
-					{ 0, 0, X, X, X, X, 0, D, },
+					{ 0, 0, X, X, X, X, 0, C, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'U','R','D','L','D', },
@@ -418,7 +395,6 @@ public class LevelGreenB : Level
 					{ X, X, 0, 0, 0, 0, 0, X, },
 					{ X, X, 0, 0, 0, 0, D, X, },
 					{ X, X, 0, 0, 0, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'R','U','L','D','L', },
@@ -433,10 +409,9 @@ public class LevelGreenB : Level
 					{ 0, 0, 0, 0, 0, X, X, 0, },
 					{ 0, 0, X, X, 0, X, X, 0, },
 					{ 0, 0, X, X, 0, X, X, 0, },
-					{ 0, 0, X, X, A, B, X, 0, },
+					{ 0, 0, X, X, A, D, X, 0, },
 					{ 0, 0, 0, C, 0, X, X, 0, },
-					{ 0, 0, X, X, X, X, X, D, },
-					{ X, X, X, X, X, X, X, X, },
+					{ 0, 0, X, X, X, X, X, B, },
 				},
 
 				_hint =  new char[] { 'L','U','L','D','L', },
@@ -454,7 +429,6 @@ public class LevelGreenB : Level
 					{ X, 0, 0, 0, 0, 0, 0, X, },
 					{ X, X, X, 0, X, 0, X, X, },
 					{ X, X, X, C, X, D, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'R','D','L','U','L', },
@@ -468,8 +442,7 @@ public class LevelGreenB : Level
 					{ X, X, X, X, X, X, X, X, },
 					{ X, 0, X, A, 0, 0, X, X, },
 					{ X, 0, 0, 0, 0, 0, 0, X, },
-					{ X, B, C, 0, D, 0, X, X, },
-					{ X, X, X, X, X, X, X, X, },
+					{ X, B, D, 0, C, 0, X, X, },
 					{ X, X, X, X, X, X, X, X, },
 					{ X, X, X, X, X, X, X, X, },
 					{ X, X, X, X, X, X, X, X, },
@@ -486,11 +459,10 @@ public class LevelGreenB : Level
 					{ 0, X, X, X, A, X, X, X, },
 					{ 0, 0, 0, 0, B, 0, 0, 0, },
 					{ 0, 0, 0, 0, 0, X, X, X, },
-					{ X, X, C, D, X, X, X, X, },
+					{ X, X, D, C, X, X, X, X, },
 					{ X, X, 0, X, X, X, X, X, },
 					{ X, X, 0, X, X, X, X, X, },
 					{ X, X, 0, X, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'L','U','R','D','L', },
@@ -501,14 +473,13 @@ public class LevelGreenB : Level
 				_layout = new sbyte[,]
 				{
 					{ A, 0, 0, 0, 0, 0, 0, 0, },
-					{ B, 0, 0, 0, X, X, 0, 0, },
+					{ D, 0, 0, 0, X, X, 0, 0, },
 					{ X, X, X, 0, X, X, 0, 0, },
 					{ X, X, X, 0, X, X, 0, 0, },
 					{ X, 0, 0, 0, 0, 0, 0, 0, },
 					{ X, 0, X, 0, X, X, X, 0, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
-					{ 0, 0, 0, 0, 0, 0, D, C, },
-					{ X, X, X, X, X, X, X, X, },
+					{ 0, 0, 0, 0, 0, 0, B, C, },
 				},
 
 				_hint =  new char[] { 'U','R','D','L','D', },
@@ -526,7 +497,6 @@ public class LevelGreenB : Level
 					{ 0, 0, 0, 0, 0, 0, 0, C, },
 					{ 0, 0, 0, 0, 0, 0, X, 0, },
 					{ D, 0, 0, 0, 0, 0, X, 0, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'L','D','R','U','R', },
@@ -536,15 +506,14 @@ public class LevelGreenB : Level
 			{
 				_layout = new sbyte[,]
 				{
-					{ A, 0, 0, B, 0, 0, C, X, },
+					{ A, 0, 0, D, 0, 0, C, X, },
 					{ 0, 0, 0, X, X, X, X, X, },
 					{ 0, 0, X, X, X, X, X, X, },
-					{ 0, 0, 0, D, X, X, X, X, },
+					{ 0, 0, 0, B, X, X, X, X, },
 					{ 0, 0, X, X, X, X, X, X, },
 					{ 0, 0, X, X, X, X, X, X, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
 					{ X, 0, 0, 0, 0, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'D','R','D','L','U', },
@@ -562,7 +531,6 @@ public class LevelGreenB : Level
 					{ 0, 0, 0, 0, X, 0, 0, 0, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
 					{ 0, 0, 0, C, 0, D, 0, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'R','U','L','D','L', },
@@ -580,7 +548,6 @@ public class LevelGreenB : Level
 					{ X, X, X, X, D, X, X, 0, },
 					{ X, X, X, X, X, X, X, X, },
 					{ X, X, X, X, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'L','D','R','U','L', },
@@ -592,13 +559,12 @@ public class LevelGreenB : Level
 				{
 					{ X, 0, 0, 0, 0, X, 0, A, },
 					{ X, 0, 0, X, 0, X, 0, 0, },
-					{ X, 0, B, X, 0, X, 0, 0, },
+					{ X, 0, D, X, 0, X, 0, 0, },
 					{ X, 0, 0, X, 0, X, C, 0, },
-					{ X, D, 0, X, 0, X, 0, 0, },
+					{ X, B, 0, X, 0, X, 0, 0, },
 					{ X, 0, 0, X, 0, X, 0, 0, },
 					{ X, 0, 0, 0, 0, 0, 0, 0, },
 					{ X, 0, X, X, 0, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'L','U','R','D','R', },
@@ -610,13 +576,12 @@ public class LevelGreenB : Level
 				{
 					{ X, X, X, X, A, X, X, X, },
 					{ 0, 0, 0, 0, 0, B, X, X, },
-					{ X, X, X, X, X, 0, C, X, },
-					{ X, X, X, 0, 0, 0, 0, D, },
+					{ X, X, X, X, X, 0, D, X, },
+					{ X, X, X, 0, 0, 0, 0, C, },
 					{ X, X, X, 0, 0, 0, 0, X, },
 					{ X, X, X, X, X, 0, 0, X, },
 					{ X, X, X, X, X, 0, 0, X, },
 					{ X, X, X, X, 0, 0, 0, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'D','L','D','R','D', },
@@ -631,10 +596,9 @@ public class LevelGreenB : Level
 					{ X, X, X, X, X, 0, 0, 0, },
 					{ X, X, X, 0, 0, 0, 0, 0, },
 					{ B, 0, 0, 0, 0, 0, 0, 0, },
-					{ X, X, X, C, 0, 0, 0, 0, },
+					{ X, X, X, D, 0, 0, 0, 0, },
 					{ X, X, X, 0, X, 0, 0, 0, },
-					{ X, X, X, D, X, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
+					{ X, X, X, C, X, 0, 0, 0, },
 				},
 
 				_hint =  new char[] { 'R','D','R','U','R', },
@@ -652,7 +616,6 @@ public class LevelGreenB : Level
 					{ X, X, X, X, X, 0, 0, 0, },
 					{ X, X, X, X, X, 0, 0, 0, },
 					{ X, X, X, D, 0, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'R','U','L','U','L', },
@@ -670,7 +633,6 @@ public class LevelGreenB : Level
 					{ X, X, 0, 0, 0, 0, 0, X, },
 					{ X, X, C, 0, D, X, X, X, },
 					{ X, X, X, X, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'U','L','U','R','D', },
@@ -681,14 +643,13 @@ public class LevelGreenB : Level
 				_layout = new sbyte[,]
 				{
 					{ 0, X, A, 0, 0, 0, 0, 0, },
-					{ 0, B, 0, 0, 0, 0, 0, 0, },
+					{ 0, D, 0, 0, 0, 0, 0, 0, },
 					{ 0, X, 0, 0, X, X, X, X, },
 					{ 0, X, 0, 0, X, X, X, X, },
 					{ C, X, 0, 0, X, X, X, X, },
 					{ 0, X, 0, 0, X, X, X, X, },
 					{ 0, 0, 0, 0, X, X, X, X, },
-					{ 0, 0, D, X, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
+					{ 0, 0, B, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'R','U','L','D','L', },
@@ -700,13 +661,12 @@ public class LevelGreenB : Level
 				{
 					{ X, X, 0, 0, X, A, X, X, },
 					{ X, X, 0, 0, 0, 0, 0, B, },
-					{ C, 0, 0, 0, X, 0, 0, X, },
-					{ 0, X, D, X, X, X, X, X, },
+					{ D, 0, 0, 0, X, 0, 0, X, },
+					{ 0, X, C, X, X, X, X, X, },
 					{ X, X, 0, X, X, X, X, X, },
 					{ X, X, 0, X, X, X, X, X, },
 					{ X, X, 0, X, X, X, X, X, },
 					{ X, X, 0, X, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'R','D','R','U','L', },
@@ -721,10 +681,9 @@ public class LevelGreenB : Level
 					{ 0, X, X, 0, 0, X, X, X, },
 					{ 0, 0, B, 0, 0, X, X, X, },
 					{ X, 0, 0, 0, 0, 0, X, X, },
-					{ X, X, X, X, 0, 0, 0, C, },
-					{ X, X, 0, D, 0, 0, X, X, },
+					{ X, X, X, X, 0, 0, 0, D, },
+					{ X, X, 0, C, 0, 0, X, X, },
 					{ X, X, 0, 0, 0, 0, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'D','L','D','R','D', },
@@ -739,9 +698,8 @@ public class LevelGreenB : Level
 					{ X, X, X, X, 0, X, X, X, },
 					{ B, X, X, X, 0, 0, 0, A, },
 					{ 0, 0, 0, 0, 0, X, X, X, },
-					{ 0, 0, 0, 0, 0, 0, C, D, },
+					{ 0, 0, 0, 0, 0, 0, D, C, },
 					{ X, 0, 0, 0, 0, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
 					{ X, X, X, X, X, X, X, X, },
 				},
 
@@ -758,9 +716,8 @@ public class LevelGreenB : Level
 					{ X, X, X, X, X, 0, X, X, },
 					{ X, X, X, X, 0, 0, 0, X, },
 					{ X, X, X, 0, 0, 0, 0, X, },
-					{ X, B, 0, C, 0, X, D, X, },
+					{ X, D, 0, C, 0, X, B, X, },
 					{ 0, 0, 0, 0, 0, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'L','D','R','U','R', },
@@ -778,7 +735,6 @@ public class LevelGreenB : Level
 					{ X, 0, 0, 0, 0, C, 0, 0, },
 					{ X, X, X, X, 0, 0, 0, 0, },
 					{ X, X, X, X, 0, 0, D, 0, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'D','R','U','L','U', },
@@ -790,13 +746,12 @@ public class LevelGreenB : Level
 				{
 					{ X, X, X, X, 0, 0, 0, X, },
 					{ X, X, X, A, 0, 0, X, X, },
-					{ X, X, X, X, 0, 0, B, X, },
+					{ X, X, X, X, 0, 0, D, X, },
 					{ X, X, X, X, 0, 0, X, X, },
 					{ X, X, X, X, 0, 0, X, X, },
 					{ X, C, 0, 0, 0, 0, X, X, },
 					{ X, X, X, X, X, 0, 0, X, },
-					{ X, X, X, X, X, D, 0, X, },
-					{ X, X, X, X, X, X, X, X, },
+					{ X, X, X, X, X, B, 0, X, },
 				},
 
 				_hint =  new char[] { 'U','R','D','L','U', },
@@ -808,13 +763,12 @@ public class LevelGreenB : Level
 				{
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
 					{ 0, 0, X, X, X, X, 0, 0, },
-					{ 0, 0, 0, A, X, B, 0, 0, },
+					{ 0, 0, 0, A, X, D, 0, 0, },
 					{ 0, 0, X, X, X, X, 0, X, },
-					{ 0, 0, 0, C, X, D, 0, X, },
+					{ 0, 0, 0, C, X, B, 0, X, },
 					{ 0, 0, 0, 0, 0, 0, 0, X, },
 					{ X, 0, 0, 0, 0, 0, 0, 0, },
 					{ X, X, X, X, X, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'D','L','U','R','U', },
@@ -825,14 +779,13 @@ public class LevelGreenB : Level
 				_layout = new sbyte[,]
 				{
 					{ X, 0, 0, 0, A, 0, B, X, },
-					{ X, 0, 0, X, 0, C, 0, X, },
+					{ X, 0, 0, X, 0, D, 0, X, },
 					{ X, 0, 0, X, 0, 0, X, X, },
 					{ X, 0, 0, X, 0, 0, X, X, },
-					{ X, 0, D, X, 0, 0, X, X, },
+					{ X, 0, C, X, 0, 0, X, X, },
 					{ X, 0, 0, X, 0, X, X, X, },
 					{ X, 0, 0, 0, 0, 0, X, X, },
 					{ X, X, 0, 0, 0, 0, 0, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'D','R','U','L','U', },
@@ -843,14 +796,13 @@ public class LevelGreenB : Level
 				_layout = new sbyte[,]
 				{
 					{ X, 0, X, A, 0, 0, 0, 0, },
-					{ X, B, 0, 0, 0, 0, 0, 0, },
+					{ X, D, 0, 0, 0, 0, 0, 0, },
 					{ 0, 0, 0, 0, 0, 0, X, X, },
 					{ C, 0, X, 0, 0, X, X, X, },
 					{ X, 0, X, 0, 0, X, X, X, },
 					{ X, 0, X, 0, 0, X, X, X, },
 					{ X, 0, 0, 0, 0, X, X, X, },
-					{ X, D, 0, 0, X, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
+					{ X, B, 0, 0, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'R','U','L','D','L', },
@@ -866,9 +818,8 @@ public class LevelGreenB : Level
 					{ 0, X, X, 0, X, X, X, 0, },
 					{ 0, 0, X, 0, X, X, X, 0, },
 					{ 0, 0, X, 0, X, B, X, 0, },
-					{ 0, 0, 0, C, 0, 0, 0, 0, },
-					{ X, D, X, 0, 0, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
+					{ 0, 0, 0, D, 0, 0, 0, 0, },
+					{ X, C, X, 0, 0, 0, 0, 0, },
 				},
 
 				_hint =  new char[] { 'R','U','L','D','R', },
@@ -881,12 +832,11 @@ public class LevelGreenB : Level
 					{ 0, 0, X, 0, 0, 0, 0, 0, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
 					{ 0, 0, 0, A, 0, 0, 0, 0, },
-					{ 0, 0, B, X, 0, 0, 0, 0, },
+					{ 0, 0, D, X, 0, 0, 0, 0, },
 					{ 0, 0, X, X, C, 0, 0, 0, },
-					{ D, 0, X, X, 0, 0, 0, 0, },
+					{ B, 0, X, X, 0, 0, 0, 0, },
 					{ X, 0, X, X, 0, 0, 0, 0, },
 					{ X, 0, 0, 0, 0, X, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'R','D','R','U','R', },
@@ -899,12 +849,11 @@ public class LevelGreenB : Level
 					{ X, X, X, X, X, A, X, X, },
 					{ X, X, X, X, X, 0, X, X, },
 					{ X, X, X, X, X, 0, X, X, },
-					{ B, 0, 0, 0, C, 0, 0, X, },
+					{ D, 0, 0, 0, C, 0, 0, X, },
 					{ 0, X, X, X, 0, 0, 0, 0, },
 					{ 0, X, 0, 0, 0, 0, 0, 0, },
 					{ 0, 0, 0, X, X, 0, 0, 0, },
-					{ 0, 0, X, D, 0, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
+					{ 0, 0, X, B, 0, 0, 0, 0, },
 				},
 
 				_hint =  new char[] { 'D','L','U','R','D', },
@@ -916,13 +865,12 @@ public class LevelGreenB : Level
 				{
 					{ X, X, X, A, X, X, 0, 0, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
-					{ 0, 0, 0, 0, 0, 0, B, 0, },
+					{ 0, 0, 0, 0, 0, 0, D, 0, },
 					{ 0, X, X, 0, X, X, 0, 0, },
 					{ 0, 0, X, 0, X, X, 0, 0, },
 					{ 0, 0, 0, C, 0, 0, 0, 0, },
-					{ X, 0, 0, D, 0, 0, 0, 0, },
+					{ X, 0, 0, B, 0, 0, 0, 0, },
 					{ X, X, X, 0, 0, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'L','U','R','D','R', },
@@ -930,18 +878,17 @@ public class LevelGreenB : Level
 
 			new Map()
 			{
-				_layout = new sbyte[,] {
-            								{ X, X, X, X, X, X, X, X, },
-            								{ X, 0, 0, 0, 0, 0, 0, 0, },
-            								{ X, A, B, X, 0, 0, 0, 0, },
-            								{ 0, 0, 0, C, D, 0, 0, 0, },
-            								{ 0, 0, 0, 0, X, X, 0, 0, },
-            								{ 0, 0, 0, 0, X, X, 0, 0, },
-            								{ X, 0, 0, 0, X, X, 0, 0, },
-            								{ X, X, 0, 0, X, X, 0, 0, },
-            								{ X, X, X, 0, X, X, 0, 0, },
-            								{ X, X, X, X, X, X, X, X, },
-            							 },
+				_layout = new sbyte[,]
+				{
+					{ X, 0, 0, 0, 0, 0, 0, 0, },
+					{ X, A, B, X, 0, 0, 0, 0, },
+					{ 0, 0, 0, D, C, 0, 0, 0, },
+					{ 0, 0, 0, 0, X, X, 0, 0, },
+					{ 0, 0, 0, 0, X, X, 0, 0, },
+					{ X, 0, 0, 0, X, X, 0, 0, },
+					{ X, X, 0, 0, X, X, 0, 0, },
+					{ X, X, X, 0, X, X, 0, 0, },
+				},
 
 				_hint =  new char[] { 'D','L','U','R','U', },
 			},
@@ -955,9 +902,8 @@ public class LevelGreenB : Level
 					{ 0, 0, 0, 0, A, 0, 0, 0, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
 					{ 0, X, 0, 0, 0, 0, 0, 0, },
-					{ 0, B, X, C, X, X, 0, 0, },
-					{ D, X, X, 0, 0, 0, 0, X, },
-					{ X, X, X, X, X, X, X, X, },
+					{ 0, D, X, C, X, X, 0, 0, },
+					{ B, X, X, 0, 0, 0, 0, X, },
 					{ X, X, X, X, X, X, X, X, },
 				},
 
@@ -972,11 +918,10 @@ public class LevelGreenB : Level
 					{ X, 0, X, X, X, X, 0, 0, },
 					{ X, 0, X, X, A, 0, 0, 0, },
 					{ X, 0, X, X, 0, 0, 0, X, },
-					{ X, 0, 0, B, 0, 0, C, 0, },
-					{ 0, 0, 0, 0, D, 0, 0, 0, },
+					{ X, 0, 0, B, 0, 0, D, 0, },
+					{ 0, 0, 0, 0, C, 0, 0, 0, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'U','L','U','R','U', },
@@ -989,12 +934,11 @@ public class LevelGreenB : Level
 					{ X, X, 0, 0, X, X, X, X, },
 					{ X, X, 0, 0, 0, 0, 0, A, },
 					{ X, 0, 0, 0, X, X, X, X, },
-					{ X, 0, X, 0, 0, 0, 0, B, },
+					{ X, 0, X, 0, 0, 0, 0, D, },
 					{ 0, 0, X, 0, X, X, X, X, },
 					{ 0, C, X, 0, X, X, X, X, },
 					{ 0, 0, 0, 0, X, X, X, X, },
-					{ 0, 0, X, 0, 0, 0, 0, D, },
-					{ X, X, X, X, X, X, X, X, },
+					{ 0, 0, X, 0, 0, 0, 0, B, },
 				},
 
 				_hint =  new char[] { 'U','R','U','L','U', },
@@ -1011,8 +955,7 @@ public class LevelGreenB : Level
 					{ 0, X, X, 0, X, 0, 0, 0, },
 					{ 0, X, X, 0, X, 0, 0, 0, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
-					{ C, 0, 0, 0, 0, 0, X, D, },
-					{ X, X, X, X, X, X, X, X, },
+					{ D, 0, 0, 0, 0, 0, X, C, },
 				},
 
 				_hint =  new char[] { 'R','U','L','D','L', },
@@ -1025,12 +968,11 @@ public class LevelGreenB : Level
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
 					{ X, A, B, X, X, 0, 0, 0, },
 					{ X, X, X, X, X, 0, 0, 0, },
-					{ X, X, X, C, X, 0, 0, 0, },
-					{ X, D, 0, 0, 0, 0, 0, 0, },
+					{ X, X, X, D, X, 0, 0, 0, },
+					{ X, C, 0, 0, 0, 0, 0, 0, },
 					{ X, 0, X, X, X, 0, 0, X, },
 					{ 0, 0, 0, 0, 0, 0, 0, X, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'D','L','U','R','U', },
@@ -1048,7 +990,6 @@ public class LevelGreenB : Level
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
 					{ X, 0, X, X, 0, 0, 0, X, },
 					{ C, D, 0, 0, 0, 0, 0, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'U','R','D','R','U', },
@@ -1059,14 +1000,13 @@ public class LevelGreenB : Level
 				_layout = new sbyte[,]
 				{
 					{ 0, 0, 0, 0, 0, X, X, X, },
-					{ 0, A, 0, 0, 0, B, X, X, },
+					{ 0, A, 0, 0, 0, D, X, X, },
 					{ 0, 0, 0, X, 0, X, X, X, },
 					{ 0, 0, 0, X, 0, X, X, X, },
 					{ 0, 0, X, 0, 0, 0, X, X, },
 					{ 0, 0, 0, 0, 0, 0, X, X, },
-					{ 0, 0, C, X, 0, 0, D, X, },
+					{ 0, 0, C, X, 0, 0, B, X, },
 					{ 0, 0, 0, X, 0, X, X, X, },
-					{ X, X, X, X, X, X, X, X, },
 				},
 
 				_hint =  new char[] { 'R','D','L','U','L', },
@@ -1079,12 +1019,11 @@ public class LevelGreenB : Level
 					{ 0, 0, 0, 0, X, 0, 0, X, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
 					{ 0, 0, 0, 0, X, 0, X, 0, },
-					{ 0, 0, 0, 0, 0, A, X, B, },
+					{ 0, 0, 0, 0, 0, A, X, D, },
 					{ 0, X, 0, X, 0, X, X, X, },
 					{ 0, X, 0, X, 0, C, 0, 0, },
 					{ 0, X, 0, 0, 0, 0, 0, 0, },
-					{ 0, 0, 0, 0, D, 0, 0, 0, },
-					{ X, X, X, X, X, X, X, X, },
+					{ 0, 0, 0, 0, B, 0, 0, 0, },
 				},
 
 				_hint =  new char[] { 'R','D','L','U','L', },
