@@ -221,6 +221,19 @@ public class CloudOnceManager : MonoBehaviour
 
 	// Cloud
 
+	private CloudInt[,,] _levelMoveVar;
+	private CloudInt[,,] _levelStarVar;
+
+	private int[,] _collectedAlphabetStar;
+	private int[] _collectedColorStar;
+	private int _collectedOverallStar;
+
+	private int[,] _solvedAlphabetMap;
+	private int[] _solvedColorMap;
+	private int _solvedOverallMap;
+
+	private int _backgroundColor;
+
 	public delegate void CloudSaveComplete(bool success);
 	private static event CloudSaveComplete _cloudSaveComplete;
 
@@ -263,88 +276,20 @@ public class CloudOnceManager : MonoBehaviour
                 }
 	}
 
-	public void LoadCloudToData()
+	public void DeleteAll()
 	{
-		int numColor = _level.GetNumColor();
-
-		for (int i = 0; i < numColor; i++)
-		{
-			int numAlphabet = _level.GetNumAlphabet(i);
-			int starColorEarned = 0;
-			int solvedColorEarned = 0;
-
-			for (int j = 0; j < numAlphabet; j++)
-			{
-				int numMap = _level.GetNumMap(i, j);
-				int starAlphabetEarned = 0;
-
-				for (int k = 0; k < numMap; k++)
-				{
-					string varName = i.ToString() + "." + j.ToString() + "." + k.ToString();
-					CloudInt variable = new CloudInt(varName, PersistenceType.Highest, -1);
-					int value = variable.Value;
-
-					if (value > -1)
-					{
-						_data.SetLevelLock(i, j, k, 0);
-
-						int star = _data.GetLevelStar(i, j, k);
-
-						if (value > star)
-						{
-							_data.SetLevelStar(i, j, k, value);
-						}
-					}
-
-					int finalStar = _data.GetLevelStar(i, j, k);
-					if (finalStar >= 1)
-					{
-						starAlphabetEarned += finalStar;
-						solvedColorEarned += 1;
-					}
-				}
-
-				_data.SetAlphabetStar(i, j, starAlphabetEarned);
-			}
-
-			_data.SetColorStar(i, starColorEarned);
-			_data.SetColorSolved(i, solvedColorEarned);
-		}
-
-		_data.RecalculateBackgroundColor();
+		Cloud.Storage.DeleteAll();;
+		SanitizeCloudVariables();
 	}
 
-	public void SaveDataToCloud()
+	public void Save()
 	{
-		int numColor = _level.GetNumColor();
+		Cloud.Storage.Save();
+	}
 
-		for (int i = 0; i < numColor; i++)
-		{
-			int numAlphabet = _level.GetNumAlphabet(i);
-
-			for (int j = 0; j < numAlphabet; j++)
-			{
-				int numMap = _level.GetNumMap(i, j);
-
-				for (int k = 0; k < numMap; k++)
-				{
-					if (_data.GetLevelLock(i, j, k) == 1)
-					{
-						continue;
-					}
-
-					string varName = i.ToString() + "." + j.ToString() + "." + k.ToString();
-					CloudInt variable = new CloudInt(varName, PersistenceType.Highest, -1);
-
-					int star = _data.GetLevelStar(i, j, k);
-
-					if (star > variable.Value)
-					{
-						variable.Value = star;
-					}
-				}
-			}
-		}
+	public void Load()
+	{
+		Cloud.Storage.Load();
 	}
 
 	public void IncrementHint(int value)
@@ -435,6 +380,11 @@ public class CloudOnceManager : MonoBehaviour
 	public void SetUnlockAllLevels(bool unlock)
 	{
 		CloudVariables.UnlockAllLevels = unlock;
+
+		if (unlock)
+		{
+			UnlockAllLevels();
+		}
 	}
 
 	public bool GetBlockMetalUnlocked()
@@ -492,25 +442,113 @@ public class CloudOnceManager : MonoBehaviour
 		return CloudVariables.BlockPurpleMarbleUnlocked;
 	}
 
-	public void DeleteAll()
+	public void SetLevelMove(int color, int alphabet, int map, int value)
 	{
-		Cloud.Storage.DeleteAll();;
+		_levelMoveVar[color, alphabet, map].Value = value;
 	}
 
-	public void Save()
+	public int GetLevelMove(int color, int alphabet, int map)
 	{
-		Cloud.Storage.Save();
+		return _levelMoveVar[color, alphabet, map].Value;
 	}
 
-	public void Load()
+	public void SetLevelStar(int color, int alphabet, int map, int value)
 	{
-		Cloud.Storage.Load();
+		int oldValue = _levelStarVar[color, alphabet, map].Value;
+		_levelStarVar[color, alphabet, map].Value = value;
+
+		if (value <= 0)
+		{
+			return;
+		}
+
+		oldValue = oldValue < 0 ? 0 : oldValue;
+
+		int diff = value - oldValue;
+
+		if (diff > 0)
+		{
+			_collectedAlphabetStar[color, alphabet] += diff;
+			_collectedColorStar[color] += diff;
+			_collectedOverallStar += diff;
+
+			if (oldValue == 0)
+			{
+				_solvedAlphabetMap[color, alphabet] += 1;
+				_solvedColorMap[color] += 1;
+				_solvedOverallMap += 1;
+
+				if (_solvedColorMap[color] == 180)
+				{
+					RecalculateBackgroundColor();
+				}
+			}
+		}
 	}
 
-	private void SetupCloud()
+	public int GetLevelStar(int color, int alphabet, int map)
 	{
-		// An initialization is required for the first load to work correctly.
+		return _levelStarVar[color, alphabet, map].Value;
+	}
 
+	public int GetCollectedAlphabetStar(int color, int alphabet)
+	{
+		return _collectedAlphabetStar[color, alphabet];
+	}
+
+	public int GetCollectedColorStar(int color)
+	{
+		return _collectedColorStar[color];
+	}
+
+	public int GetCollectedOverallStar()
+	{
+		return _collectedOverallStar;
+	}
+
+	public int GetSolvedAlphabetMap(int color, int alphabet)
+	{
+		return _solvedAlphabetMap[color, alphabet];
+	}
+
+	public int GetSolvedColorMap(int color)
+	{
+		return _solvedColorMap[color];
+	}
+
+	public int GetSolvedOverallMap()
+	{
+		return _solvedOverallMap;
+	}
+
+	public int GetBackgroundColor()
+	{
+		return _backgroundColor;
+	}
+
+	private void RecalculateBackgroundColor()
+	{
+		int highestColor = 0;
+		int numColor = _level.GetNumColor();
+
+		for (int i = 0; i < numColor - 1; i++)
+		{
+			Debug.Log("i:" + i + " n:" + _solvedColorMap[i]);
+
+			int numAlphabet = _level.GetNumAlphabet(i);
+
+			if (_solvedColorMap[i] == numAlphabet * 60)
+			{
+				highestColor = i + 1;
+			}
+		}
+
+		Debug.Log("color:" + _backgroundColor);
+		_backgroundColor = highestColor;
+	}
+
+	private void UnlockAllLevels()
+	{
 		int numColor = _level.GetNumColor();
 
 		for (int i = 0; i < numColor; i++)
@@ -523,11 +561,103 @@ public class CloudOnceManager : MonoBehaviour
 
 				for (int k = 0; k < numMap; k++)
 				{
-					string varName = i.ToString() + "." + j.ToString() + "." + k.ToString();
-					CloudInt variable = new CloudInt(varName, PersistenceType.Highest, -1);
+					_levelStarVar[i, j, k].Value = 0;
 				}
 			}
 		}
+	}
+
+	private void SanitizeCloudVariables(bool initialise)
+	{
+		if (initialise)
+		{
+			_levelMoveVar = new CloudInt[5, 3, 60];
+			_levelStarVar = new CloudInt[5, 3, 60];
+
+			_collectedAlphabetStar = new int[5, 3];
+			_collectedColorStar = new int[5];
+
+			_solvedAlphabetMap = new int[5, 3];
+			_solvedColorMap = new int[5];
+		}
+
+		int collectedOverallStar = 0;
+		int solvedOverallMap = 0;
+
+		int numColor = _level.GetNumColor();
+
+		for (int i = 0; i < numColor; i++)
+		{
+			int collectedColorStar = 0;
+			int solvedColorMap = 0;
+
+			int numAlphabet = _level.GetNumAlphabet(i);
+
+			for (int j = 0; j < numAlphabet; j++)
+			{
+				int collectedAlphabetStar = 0;
+				int solvedAlphabetMap = 0;
+
+				int numMap = _level.GetNumMap(i, j);
+
+				for (int k = 0; k < numMap; k++)
+				{
+					if (initialise)
+					{
+						string levelMoveName = "LevelMove." + i.ToString() + "." + j.ToString() + "." + k.ToString();
+						_levelMoveVar[i, j, k] = new CloudInt(levelMoveName, PersistenceType.Lowest, 1000);
+
+						string levelStarName = "LevelStar." + i.ToString() + "." + j.ToString() + "." + k.ToString();
+						_levelStarVar[i, j, k] = new CloudInt(levelStarName, PersistenceType.Highest, -1);
+					}
+
+					if (GetUnlockAllLevels())
+					{
+						_levelStarVar[i, j, k].Value = 0;
+					}
+
+					if (_levelStarVar[i, j, k].Value > 0)
+					{
+						collectedAlphabetStar += _levelStarVar[i, j, k].Value;
+						solvedAlphabetMap += 1;
+					}
+				}
+
+				_collectedAlphabetStar[i, j] = collectedAlphabetStar;
+				_solvedAlphabetMap[i, j] = solvedAlphabetMap;
+
+				collectedColorStar += collectedAlphabetStar;
+				solvedColorMap += solvedAlphabetMap;
+			}
+
+			_collectedColorStar[i] = collectedColorStar;
+			_solvedColorMap[i] = solvedColorMap;
+
+			collectedOverallStar += collectedColorStar;
+			solvedOverallMap += solvedColorMap;
+		}
+
+		_collectedOverallStar = collectedOverallStar;
+                _solvedOverallMap = solvedOverallMap;
+
+		_levelStarVar[0, 0, 0].Value = 0;
+
+		RecalculateBackgroundColor();
+	}
+
+	public void SanitizeCloudVariables()
+	{
+		SanitizeCloudVariables(false);
+	}
+
+	private void SetupCloud()
+	{
+		// Initialize variables not explicitly declared in CloudOnce editor.
+		// An initialization is required for the first load to work correctly.
+		// We also need to sanitize the cloud variables.
+		// We combine both operations in one for efficiency.
+
+		SanitizeCloudVariables(true);
 	}
 
         // Delegates

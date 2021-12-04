@@ -22,7 +22,7 @@ public class StoreLogic : MonoBehaviour
 
 	private void SetupBackground()
 	{
-		_ui.SetBackgroundColor(_data.GetBackgroundColor());
+		_ui.SetBackgroundColor(_cloudOnce.GetBackgroundColor());
 	}
 
 	// State
@@ -157,7 +157,7 @@ public class StoreLogic : MonoBehaviour
 		{
 			_ui.SetActiveProductUnlockAllLevelsPriceAndPurchased(false, true);
 		}
-		else if (_data.GetLevelLock(lastColor, lastAlphabet, lastMap) == 0)
+		else if (_cloudOnce.GetLevelStar(lastColor, lastAlphabet, lastMap) >= 0)
 		{
 			_ui.SetActiveProductUnlockAllLevelsPriceAndPurchased(true, false);
 			_ui.SetInteractableProductUnlockAllLevels(false);

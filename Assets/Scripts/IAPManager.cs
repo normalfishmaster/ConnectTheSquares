@@ -44,24 +44,6 @@ public class IAPManager : MonoBehaviour
 		else if (product.definition.id == _productUnlockAllLevels)
 		{
 			_item.SetItemUnlocked(ItemManager.UNLOCK_ALL_LEVELS, true);
-
-			int numColor = _level.GetNumColor();
-
-			for (int i = 0; i < numColor; i++)
-			{
-				int numAlphabet = _level.GetNumAlphabet(i);
-
-				for (int j = 0; j < numAlphabet; j++)
-				{
-					int numMap = _level.GetNumMap(i, j);
-
-					for (int k = 0; k < numMap; k++)
-					{
-						_data.SetLevelLock(i, j, k, 0);
-					}
-				}
-			}
-
 			itemNumber = ItemManager.UNLOCK_ALL_LEVELS;
 		}
 		else if (product.definition.id == _productHints3)

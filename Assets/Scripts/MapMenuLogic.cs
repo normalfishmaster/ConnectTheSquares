@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class MapMenuLogic : MonoBehaviour
 {
 	private MapMenuUI _ui;
+	private CloudOnceManager _cloudOnce;
 	private DataManager _data;
 	private FrameRateManager _frameRate;
 	private LevelManager _level;
@@ -21,7 +22,7 @@ public class MapMenuLogic : MonoBehaviour
 
 	private void SetupBackground()
 	{
-		_ui.SetBackgroundColor(_data.GetBackgroundColor());
+		_ui.SetBackgroundColor(_cloudOnce.GetBackgroundColor());
 	}
 
 	// UI - Map
@@ -36,10 +37,8 @@ public class MapMenuLogic : MonoBehaviour
 
 		for (int i = 0; i < numMap; i++)
 		{
-			int locked = _data.GetLevelLock(_menuColor, _menuAlphabet, i);
-			int star = _data.GetLevelStar(_menuColor, _menuAlphabet, i);
-
-			_ui.AddMap(i, locked, star);
+			int star = _cloudOnce.GetLevelStar(_menuColor, _menuAlphabet, i);
+			_ui.AddMap(i, star);
 		}
 	}
 
@@ -92,6 +91,7 @@ public class MapMenuLogic : MonoBehaviour
 	private void Awake()
 	{
 		_ui = GameObject.Find("MapMenuUI").GetComponent<MapMenuUI>();
+		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_frameRate = GameObject.Find("FrameRateManager").GetComponent<FrameRateManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();

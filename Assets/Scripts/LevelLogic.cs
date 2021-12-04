@@ -37,6 +37,7 @@ public class LevelLogic : MonoBehaviour
 	private Vector2 DIRECTION_LEFT  = new Vector2(-1.0f,  0.0f);
 	private Vector2 DIRECTION_RIGHT = new Vector2( 1.0f,  0.0f);
 
+	// One short of the default cloud value of 1000
 	private const int MAX_MOVE_COUNT = 999;
 
 	private const float BUTTON_FADE_DURATION = 0.1f;
@@ -1008,66 +1009,42 @@ public class LevelLogic : MonoBehaviour
 
 			// Get previous values for calculation of achievements.
 
-			int numSolvedPrevious = 0;
-			int numStarsPrevious = 0;
-			int totalStarsPrevious = 0;
-
-			for (int i = 0; i < _level.GetNumMap(_menuColor, _menuAlphabet); i++)
-			{
-				int tmpStar = _data.GetLevelStar(_menuColor, _menuAlphabet, i);
-
-				numStarsPrevious += tmpStar;
-
-				if (tmpStar >= 1)
-				{
-					numSolvedPrevious += 1;
-				}
-			}
-
-			for (int i = 0; i < _level.GetNumColor(); i++)
-			{
-				totalStarsPrevious += _data.GetColorStar(i);
-			}
+			int solvedAlphabetMapPrevious = _cloudOnce.GetSolvedAlphabetMap(_menuColor, _menuAlphabet);
+			int collectedAlphabetStarPrevious = _cloudOnce.GetCollectedAlphabetStar(_menuColor, _menuAlphabet);
+			int collectedOverallStarPrevious = _cloudOnce.GetCollectedOverallStar();
 
 			// Update stars and solved levels
+
+			int targetMove = _levelMap._hint.Length;
+			int moveAllowance = 3;
+
+			if (targetMove <= 2)
+			{
+				moveAllowance = 1;
+			}
+			else if (targetMove >= 3 && targetMove <= 6)
+			{
+				moveAllowance = 2;
+			}
 
 			int move = GetBlockMoveCount();
 			int star = 1;
 
-			if (move == _levelMap._hint.Length)
+			if (move == targetMove)
 			{
 				star = 3;
 			}
-			else if (move == _levelMap._hint.Length + 1)
+			else if (move <= targetMove + moveAllowance)
 			{
 				star = 2;
 			}
 
-			int currentStar = _data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap);
+			_cloudOnce.SetLevelStar(_menuColor, _menuAlphabet, _menuMap, star);
 
-			if (star > currentStar)
-			{
-				_data.SetLevelStar(_menuColor, _menuAlphabet, _menuMap, star);
+			// Update moves
 
-				int currentAlphabetStar = _data.GetAlphabetStar(_menuColor, _menuAlphabet);
-				_data.SetAlphabetStar(_menuColor, _menuAlphabet, currentAlphabetStar + (star - currentStar));
-
-				int currentColorStar = _data.GetColorStar(_menuColor);
-				_data.SetColorStar(_menuColor, currentColorStar + (star - currentStar));
-			}
-
-			if (currentStar == 0)
-			{
-				_data.SetColorSolved(_menuColor, _data.GetColorSolved(_menuColor) + 1);
-
-				if (_data.GetColorSolved(_menuColor) == _data.GetColorSolvedTotal(_menuColor))
-				{
-					if (_menuColor + 1 < _level.GetNumColor() && _menuColor + 1 > _data.GetBackgroundColor())
-					{
-						_data.SetBackgroundColor(_menuColor + 1);
-					}
-				}
-			}
+			int moveCount = GetBlockMoveCount();
+			_cloudOnce.SetLevelMove(_menuColor, _menuAlphabet, _menuMap, moveCount);
 
 			// Unlock next level
 
@@ -1094,7 +1071,7 @@ public class LevelLogic : MonoBehaviour
 			}
 			else
 			{
-				_data.SetLevelLock(nextColor, nextAlphabet, nextMap, 0);
+				_cloudOnce.SetLevelStar(nextColor, nextAlphabet, nextMap, 0);
 			}
 
 			_cloudOnce.SetLastColor(nextColor);
@@ -1103,61 +1080,37 @@ public class LevelLogic : MonoBehaviour
 
 			// Update achievements
 
-			int numSolved = 0;
-			int numStars = 0;
+			int solvedAlphabetMapCurrent = _cloudOnce.GetSolvedAlphabetMap(_menuColor, _menuAlphabet);
+			int collectedAlphabetStarCurrent = _cloudOnce.GetCollectedAlphabetStar(_menuColor, _menuAlphabet);
+			int collectedOverallStarCurrent = _cloudOnce.GetCollectedOverallStar();
 
-			for (int i = 0; i < _level.GetNumMap(_menuColor, _menuAlphabet); i++)
-			{
-				if (_data.GetLevelStar(_menuColor, _menuAlphabet, i) >= 1)
-				{
-					numSolved += 1;
-				}
-			}
-
-			numStars = _data.GetAlphabetStar(_menuColor, _menuAlphabet);
-
-			if (numSolved >= 60 && numSolvedPrevious < numSolved)
+			if (solvedAlphabetMapCurrent >= 60 && solvedAlphabetMapPrevious < 60)
 			{
 				_achievementShowClear = true;
 			}
 
-			if (numStars == 60 * 3 && numStarsPrevious < numStars)
+			if (collectedAlphabetStarCurrent >= 180 && collectedAlphabetStarPrevious < 180)
 			{
 				_achievementShowFullClear = true;
 			}
 
-			_cloudOnce.IncrementClearAchivement(_menuColor, _menuAlphabet, numSolved, 60);
-			_cloudOnce.IncrementFullClearAchivement(_menuColor, _menuAlphabet, numStars, 60 * 3);
-
-			int totalStars = 0;
-
-			for (int i = 0; i < _level.GetNumColor(); i++)
-			{
-				totalStars += _data.GetColorStar(i);
-			}
-
-			if (totalStars == 13 * 60 * 3 && totalStarsPrevious < totalStars)
+			if (collectedOverallStarCurrent >= 2340 && collectedOverallStarPrevious < 2340)
 			{
 				_achievementShowPerfectionist = true;
 			}
 
-			_cloudOnce.IncrementThePerfectionistAchivement(totalStars, 13 * 60 * 3);
-			_cloudOnce.SubmitLeaderboardHighScore(totalStars);
+			_cloudOnce.IncrementClearAchivement(_menuColor, _menuAlphabet, solvedAlphabetMapCurrent, 60);
+			_cloudOnce.IncrementFullClearAchivement(_menuColor, _menuAlphabet, collectedAlphabetStarCurrent, 180);
+			_cloudOnce.IncrementThePerfectionistAchivement(collectedOverallStarCurrent, 2340);
+			_cloudOnce.SubmitLeaderboardHighScore(collectedOverallStarCurrent);
 
 			// Save data to cloud
 
-			_cloudOnce.SaveDataToCloud();
 			_cloudOnce.Save();
 
-			// Update UI
+			// Update UI and moves
 
-			int moveCount = GetBlockMoveCount();
 			_ui.SetTopMoveCurrent(moveCount);
-			if (moveCount > _data.GetLevelMove(_menuColor, _menuAlphabet, _menuMap))
-			{
-				_data.SetLevelMove(_menuColor, _menuAlphabet, _menuMap, moveCount);
-				_ui.SetTopMoveBest(moveCount);
-			}
 
 			_ui.SetEnableControlButton(false);
 			_touchState = TouchState.WIN;
@@ -1386,9 +1339,12 @@ public class LevelLogic : MonoBehaviour
 
 		_ui.SetTopMoveCurrent(0);
 		_ui.SetTopMoveTarget(_levelMap._hint.Length);
-		_ui.SetTopMoveBest(_data.GetLevelMove(_menuColor, _menuAlphabet, _menuMap));
 
-		int star = _data.GetLevelStar(_menuColor, _menuAlphabet, _menuMap);
+		int best = _cloudOnce.GetLevelMove(_menuColor, _menuAlphabet, _menuMap);
+		best = best == 1000 ? 0 : best;
+		_ui.SetTopMoveBest(best);
+
+		int star = _cloudOnce.GetLevelStar(_menuColor, _menuAlphabet, _menuMap);
 
 		for (int i = 0; i < 3; i++)
 		{
@@ -2125,7 +2081,7 @@ public class LevelLogic : MonoBehaviour
 		_message.SetActiveAchievementMedalSiver(false);
 		_message.SetActiveAchievementMedalSiverGold(false);
 		_message.SetActiveAchievementMedalGold(true);
-		_message.SetAchievementMessage(_menuColor, _menuAlphabet, true, false);
+		_message.SetAchievementMessage(_menuColor, _menuAlphabet, false, true);
 
 		_message.AnimateAchievementEnter
 		(

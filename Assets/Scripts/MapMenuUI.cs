@@ -65,9 +65,9 @@ public class MapMenuUI : MonoBehaviour
 		}
 	}
 
-	public void AddMap(int map, int locked, int star)
+	public void AddMap(int map, int star)
 	{
-		if (locked == 1)
+		if (star < 0)
 		{
 			_mapButtonLock[map] = true;
 

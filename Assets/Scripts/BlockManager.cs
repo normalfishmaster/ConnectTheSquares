@@ -40,12 +40,27 @@ public class BlockManager : MonoBehaviour
 
 	public int GetBlockSetNumber()
 	{
-		return _data.GetBlockSet();
+		int setNumber = _data.GetBlockSet();
+
+		if (IsBlockSetUnlocked(setNumber))
+		{
+			return setNumber;
+		}
+
+		_data.SetBlockSet(BLOCK_SET_PLASTIC);
+		return BLOCK_SET_PLASTIC;
 	}
 
 	public void SetBlockSetNumber(int setNumber)
 	{
-		_data.SetBlockSet(setNumber);
+		if (IsBlockSetUnlocked(setNumber))
+		{
+			_data.SetBlockSet(setNumber);
+		}
+		else
+		{
+			_data.SetBlockSet(BLOCK_SET_PLASTIC);
+		}
 	}
 
 	public bool IsBlockSetUnlocked(int setNumber)

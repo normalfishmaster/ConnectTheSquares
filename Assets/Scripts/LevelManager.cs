@@ -41,6 +41,14 @@ public class LevelManager : MonoBehaviour
 		{ BLACK,  new Level[] { new LevelBlackA(),  new LevelBlackB(),  new LevelBlackC(),  } },
 	};
 
+	private static int[,] _totalAlphabetMaps;
+	private static int[] _totalColorMaps;
+	private static int _totalOverallMaps;
+
+	private static int[,] _totalAlphabetStars;
+	private static int[] _totalColorStars;
+	private static int _totalOverallStars;
+
 	// Conversion
 
 	public string GetColorString(int color)
@@ -101,6 +109,73 @@ public class LevelManager : MonoBehaviour
 		return new Level.Map();
 	}
 
+	// Totals
+
+	private void CalculateTotals()
+	{
+		_totalAlphabetMaps = new int[5, 3];
+		_totalColorMaps = new int[5];
+		_totalOverallMaps = 0;
+
+		_totalAlphabetStars = new int[5, 3];
+		_totalColorStars = new int[5];
+		_totalOverallStars = 0;
+
+		int numColors = GetNumColor();
+
+		for (int i = 0; i < numColors; i++)
+		{
+			_totalColorMaps[i] = 0;
+			_totalColorStars[i] = 0;
+
+			int numAlphabets = GetNumAlphabet(i);
+
+			for (int j = 0; j < numAlphabets; j++)
+			{
+				int numMaps = GetNumMap(i, j);
+
+				_totalAlphabetMaps[i, j] = numMaps;
+				_totalAlphabetStars[i, j] = numMaps * 3;
+
+				_totalColorMaps[i] += _totalAlphabetMaps[i, j];
+				_totalColorStars[i] += _totalAlphabetStars[i, j];
+			}
+
+			_totalOverallMaps += _totalColorMaps[i];
+			_totalOverallStars += _totalColorStars[i];
+		}
+	}
+
+	public int GetTotalAlphabetMaps(int color, int alphabet)
+	{
+		return _totalAlphabetMaps[color, alphabet];
+	}
+
+	public int GetTotalColorMaps(int color)
+	{
+		return _totalColorMaps[color];
+	}
+
+	public int GetTotalOverallMaps()
+	{
+		return _totalOverallMaps;
+	}
+
+	public int GetTotalAlphabetStars(int color, int alphabet)
+	{
+		return _totalAlphabetStars[color, alphabet];
+	}
+
+	public int GetTotalColorStars(int color)
+	{
+		return _totalColorStars[color];
+	}
+
+	public int GetTotalOverallStars()
+	{
+		return _totalOverallStars;
+	}
+
 	// Unity Lifecycle
 
 	private void Awake()
@@ -114,5 +189,11 @@ public class LevelManager : MonoBehaviour
 
 		_instance = this;
 		DontDestroyOnLoad(this.gameObject);
+
+		CalculateTotals();
+	}
+
+	private void Start()
+	{
 	}
 }

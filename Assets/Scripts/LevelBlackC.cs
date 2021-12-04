@@ -998,23 +998,6 @@ public class LevelBlackC : Level
 			{
 				_layout = new sbyte[,]
 				{
-					{ X, X, X, X, X, 0, 0, A, },
-					{ X, B, X, X, X, 0, 0, 0, },
-					{ 0, 0, 0, 0, 0, 0, 0, 0, },
-					{ X, 0, X, X, 0, 0, 0, X, },
-					{ 0, 0, 0, 0, 0, 0, C, X, },
-					{ 0, D, 0, 0, 0, 0, 0, 0, },
-					{ X, 0, X, X, 0, 0, 0, 0, },
-					{ X, 0, 0, 0, 0, 0, X, X, },
-				},
-
-				_hint = new char[] { 'L','D','R','U','L','U','R','U', },
-			},
-
-			new Map()
-			{
-				_layout = new sbyte[,]
-				{
 					{ 0, 0, 0, X, X, X, X, X, },
 					{ 0, 0, 0, X, X, X, X, A, },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, },
@@ -1026,6 +1009,23 @@ public class LevelBlackC : Level
 				},
 
 				_hint = new char[] { 'D','L','U','L','U','R','D','L', },
+			},
+
+			new Map()
+			{
+				_layout = new sbyte[,]
+				{
+					{ 0, A, 0, 0, 0, 0, B, X, },
+					{ 0, 0, X, X, X, X, X, X, },
+					{ 0, 0, X, X, X, X, X, 0, },
+					{ 0, 0, 0, 0, 0, 0, 0, 0, },
+					{ X, X, X, X, X, 0, 0, 0, },
+					{ X, X, X, X, X, C, 0, 0, },
+					{ X, X, 0, 0, 0, 0, 0, 0, },
+					{ X, X, X, 0, D, 0, X, X, },
+				},
+
+				_hint = new char[] { 'L','D','R','U','L','D','R','D', },
 			},
 		};
 	}

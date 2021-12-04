@@ -63,11 +63,7 @@ public class StartupLogic : MonoBehaviour
 	private void OnCloudLoadComplete(bool success)
 	{
                 _cloudOnce.UnsubscribeCloudLoadComplete(OnCloudLoadComplete);
-
-		if (success)
-		{
-			_cloudOnce.LoadCloudToData();
-		}
+		_cloudOnce.SanitizeCloudVariables();
 
 		_cloudOnceLoadComplete = true;
 
@@ -88,6 +84,23 @@ public class StartupLogic : MonoBehaviour
 
 	private void RunTestSequence()
 	{
+		int numColor = _level.GetNumColor();
+
+		for (int i = 0; i < numColor; i++)
+		{
+			int alphabet = _level.GetNumAlphabet(i);
+
+			for (int j = 0; j < alphabet; j++)
+			{
+				for (int k = 0; k < 58; k++)
+				{
+					_cloudOnce.SetLevelStar(i, j, k, 3);
+
+				}
+			}
+		}
+
+
 /*
 		_cloudOnce.IncrementHint(100);
 
@@ -119,7 +132,7 @@ public class StartupLogic : MonoBehaviour
 					{
 						RunTestSequence();
 
-						if (_data.GetLevelStar(0, 0, 0) == 0)
+						if (_cloudOnce.GetLevelStar(0, 0, 0) == 0)
 						{
 							_data.SetMenuColor(0);
 							_data.SetMenuAlphabet(0);
@@ -173,8 +186,6 @@ public class StartupLogic : MonoBehaviour
 		if (_cloudOnceLoadComplete)
 		{
 			_cloudOnce.SubscribeCloudSaveComplete(OnCloudSaveComplete);
-
-			_cloudOnce.SaveDataToCloud();
 			_cloudOnce.Save();
 
 			_loadState = LoadState.SAVE_CLOUD;

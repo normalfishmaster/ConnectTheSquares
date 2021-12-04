@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class LevelMenuLogic : MonoBehaviour
 {
 	private LevelMenuUI _ui;
+	private CloudOnceManager _cloudOnce;
 	private DataManager _data;
 	private FrameRateManager _frameRate;
 	private LevelManager _level;
@@ -20,7 +21,7 @@ public class LevelMenuLogic : MonoBehaviour
 
 	private void SetupBackground()
 	{
-		_ui.SetBackgroundColor(_data.GetBackgroundColor());
+		_ui.SetBackgroundColor(_cloudOnce.GetBackgroundColor());
 	}
 
 	// UI - Level
@@ -40,22 +41,22 @@ public class LevelMenuLogic : MonoBehaviour
 
 			if (numAlphabet == 1)
 			{
-				float starA = (float)(_data.GetAlphabetStar(i, 0));
-				float starATotal = (float)(_data.GetAlphabetStarTotal(i, 0));
+				float starA = (float)(_cloudOnce.GetCollectedAlphabetStar(i, 0));
+				float starATotal = (float)(_level.GetTotalAlphabetStars(i, 0));
 				string moves = "Moves:  2 - 4";
 
 				_ui.AddLevelSingle(i, moves, (starA / starATotal) * 100.0f);
 			}
 			else
 			{
-				float starA = (float)(_data.GetAlphabetStar(i, 0));
-				float starATotal = (float)(_data.GetAlphabetStarTotal(i, 0));
+				float starA = (float)(_cloudOnce.GetCollectedAlphabetStar(i, 0));
+				float starATotal = (float)(_level.GetTotalAlphabetStars(i, 0));
 
-				float starB = (float)(_data.GetAlphabetStar(i, 1));
-				float starBTotal = (float)(_data.GetAlphabetStarTotal(i, 1));
+				float starB = (float)(_cloudOnce.GetCollectedAlphabetStar(i, 1));
+				float starBTotal = (float)(_level.GetTotalAlphabetStars(i, 1));
 
-				float starC = (float)(_data.GetAlphabetStar(i, 2));
-				float starCTotal = (float)(_data.GetAlphabetStarTotal(i, 2));
+				float starC = (float)(_cloudOnce.GetCollectedAlphabetStar(i, 2));
+				float starCTotal = (float)(_level.GetTotalAlphabetStars(i, 2));
 
 				int move = 4 + i;
 				string moves = "Moves:  " + move.ToString();
@@ -109,6 +110,7 @@ public class LevelMenuLogic : MonoBehaviour
 	private void Awake()
 	{
 		_ui = GameObject.Find("LevelMenuUI").GetComponent<LevelMenuUI>();
+		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_frameRate = GameObject.Find("FrameRateManager").GetComponent<FrameRateManager>();
 		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();

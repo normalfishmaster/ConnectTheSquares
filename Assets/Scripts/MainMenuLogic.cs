@@ -25,7 +25,7 @@ public class MainMenuLogic : MonoBehaviour
 
 	private void SetupBackground()
 	{
-		_ui.SetBackgroundColor(_data.GetBackgroundColor());
+		_ui.SetBackgroundColor(_cloudOnce.GetBackgroundColor());
 	}
 
 	// UI - Front
@@ -37,7 +37,7 @@ public class MainMenuLogic : MonoBehaviour
 		int loadAlphabet = 0;
 		int loadMap = 0;
 
-		if (_data.GetLevelStar(0, 0, 0) != 0)
+		if (_cloudOnce.GetLevelStar(0, 0, 0) > 0)
 		{
 			label = "CONTINUE";
 			loadColor = _cloudOnce.GetLastColor();
@@ -55,7 +55,7 @@ public class MainMenuLogic : MonoBehaviour
 		int loadAlphabet = 0;
 		int loadMap = 0;
 
-		if (_data.GetLevelStar(0, 0, 0) != 0)
+		if (_cloudOnce.GetLevelStar(0, 0, 0) > 0)
 		{
 			loadColor = _cloudOnce.GetLastColor();
 			loadAlphabet = _cloudOnce.GetLastAlphabet();
@@ -276,7 +276,6 @@ public class MainMenuLogic : MonoBehaviour
 			{
 			}
 		);
-
 	}
 
 	// UI - CloudOnce
@@ -300,6 +299,56 @@ public class MainMenuLogic : MonoBehaviour
 		_ui.SetInteractableCloudOnceFunctionalButton(false);
 	}
 
+	private void OnSignInCloudSaveComplete(bool success)
+	{
+		_cloudOnce.UnsubscribeCloudSaveComplete(OnSignInCloudSaveComplete);
+
+		if (success)
+		{
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_IN);
+		}
+		else
+		{
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SAVE_DATA_FAILED);
+		}
+
+		OnCloudOnceSignedIn();
+	}
+
+	private void SignInCloudSave()
+	{
+		_cloudOnce.SubscribeCloudSaveComplete(OnSignInCloudSaveComplete);
+		_cloudOnce.Save();
+	}
+
+	private void OnSignInCloudLoadComplete(bool success)
+	{
+		_cloudOnce.UnsubscribeCloudLoadComplete(OnSignInCloudLoadComplete);
+
+		if (success)
+		{
+			_cloudOnce.SanitizeCloudVariables();
+
+			SetupBackground();
+			SetupFront();
+
+			SignInCloudSave();
+		}
+		else
+		{
+			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.LOAD_DATA_FAILED);
+			OnCloudOnceSignedIn();
+		}
+	}
+
+	private void SignInCloudLoad()
+	{
+		_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.LOADING_DATA);
+
+		_cloudOnce.SubscribeCloudLoadComplete(OnSignInCloudLoadComplete);
+		_cloudOnce.Load();
+	}
+
 	private void OnCloudOnceSignedIn()
 	{
 		_ui.SetActiveCloudOnceSignInButton(false);
@@ -307,6 +356,7 @@ public class MainMenuLogic : MonoBehaviour
 		_ui.SetInteractableCloudOnceSignInButton(true);
 		_ui.SetInteractableCloudOnceFunctionalButton(true);
 		_ui.SetInteractableCloudOnceCloseButton(true);
+		_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 	}
 
 	private void OnCloudOnceSignedOut()
@@ -316,6 +366,8 @@ public class MainMenuLogic : MonoBehaviour
 		_ui.SetInteractableCloudOnceSignInButton(true);
 		_ui.SetInteractableCloudOnceFunctionalButton(false);
 		_ui.SetInteractableCloudOnceCloseButton(true);
+		_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_OUT);
+		_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 	}
 
 	private void OnCloudOnceSignedInChanged(bool isSignedIn)
@@ -325,16 +377,12 @@ public class MainMenuLogic : MonoBehaviour
 
 		if (isSignedIn)
 		{
-			OnCloudOnceSignedIn();
-			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_IN);
+			SignInCloudLoad();
 		}
 		else
 		{
 			OnCloudOnceSignedOut();
-			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SIGNED_OUT);
 		}
-
-		_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
 	}
 
 	private void OnCloudOnceSignInFailed()
@@ -374,8 +422,11 @@ public class MainMenuLogic : MonoBehaviour
 
 		if (success)
 		{
-			_cloudOnce.LoadCloudToData();
-			_ui.SetBackgroundColor(_data.GetBackgroundColor());
+			_cloudOnce.SanitizeCloudVariables();
+
+			SetupBackground();
+			SetupFront();
+
 			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.DATA_LOADED);
 		}
 		else
@@ -465,7 +516,6 @@ public class MainMenuLogic : MonoBehaviour
 			_ui.SetActiveCloudOnceMessage(MainMenuUI.CloudOnceMessage.SAVING_DATA);
 
 			_cloudOnce.SubscribeCloudSaveComplete(OnCloudSaveComplete);
-			_cloudOnce.SaveDataToCloud();
 			_cloudOnce.Save();
 		}
 		else
@@ -549,7 +599,7 @@ public class MainMenuLogic : MonoBehaviour
 
 			for (int i = 0; i < _level.GetNumColor(); i++)
 			{
-				totalStars += _data.GetColorStar(i);
+				totalStars += _cloudOnce.GetCollectedColorStar(i);
 			}
 
 			_cloudOnce.SubmitLeaderboardHighScore(totalStars);
