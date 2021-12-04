@@ -1474,6 +1474,10 @@ public class LevelUI : MonoBehaviour
 	private GameObject _solutionArrowDown;
 	private GameObject _solutionArrowLeft;
 	private GameObject _solutionArrowRight;
+	private GameObject _solutionCircleArrowUp;
+	private GameObject _solutionCircleArrowDown;
+	private GameObject _solutionCircleArrowLeft;
+	private GameObject _solutionCircleArrowRight;
 
 	private Vector3 _solutionHandOriginalPos;
 
@@ -1486,6 +1490,10 @@ public class LevelUI : MonoBehaviour
 		_solutionArrowDown = GameObject.Find("/Canvas/Solution/ArrowDown");
 		_solutionArrowLeft = GameObject.Find("/Canvas/Solution/ArrowLeft");
 		_solutionArrowRight = GameObject.Find("/Canvas/Solution/ArrowRight");
+		_solutionCircleArrowUp = GameObject.Find("/Canvas/Solution/CircleArrowUp");
+		_solutionCircleArrowDown = GameObject.Find("/Canvas/Solution/CircleArrowDown");
+		_solutionCircleArrowLeft = GameObject.Find("/Canvas/Solution/CircleArrowLeft");
+		_solutionCircleArrowRight = GameObject.Find("/Canvas/Solution/CircleArrowRight");
 
 		_solutionHandOriginalPos = ((RectTransform)_solutionHandVertical.transform).anchoredPosition;
 	}
@@ -1525,6 +1533,11 @@ public class LevelUI : MonoBehaviour
 			_solutionArrowDown.SetActive(false);
 			_solutionArrowLeft.SetActive(false);
 			_solutionArrowRight.SetActive(false);
+
+			_solutionCircleArrowUp.SetActive(true);
+			_solutionCircleArrowDown.SetActive(false);
+			_solutionCircleArrowLeft.SetActive(false);
+			_solutionCircleArrowRight.SetActive(false);
 		}
 		else
 		{
@@ -1532,6 +1545,11 @@ public class LevelUI : MonoBehaviour
 			_solutionArrowDown.SetActive(true);
 			_solutionArrowLeft.SetActive(false);
 			_solutionArrowRight.SetActive(false);
+
+			_solutionCircleArrowUp.SetActive(false);
+			_solutionCircleArrowDown.SetActive(true);
+			_solutionCircleArrowLeft.SetActive(false);
+			_solutionCircleArrowRight.SetActive(false);
 		}
 
 		// Cancel Animation
@@ -1649,6 +1667,11 @@ public class LevelUI : MonoBehaviour
 			_solutionArrowDown.SetActive(false);
 			_solutionArrowLeft.SetActive(false);
 			_solutionArrowRight.SetActive(true);
+
+			_solutionCircleArrowUp.SetActive(false);
+			_solutionCircleArrowDown.SetActive(false);
+			_solutionCircleArrowLeft.SetActive(false);
+			_solutionCircleArrowRight.SetActive(true);
 		}
 		else
 		{
@@ -1656,6 +1679,11 @@ public class LevelUI : MonoBehaviour
 			_solutionArrowDown.SetActive(false);
 			_solutionArrowLeft.SetActive(true);
 			_solutionArrowRight.SetActive(false);
+
+			_solutionCircleArrowUp.SetActive(false);
+			_solutionCircleArrowDown.SetActive(false);
+			_solutionCircleArrowLeft.SetActive(true);
+			_solutionCircleArrowRight.SetActive(false);
 		}
 
 		// Cancel Animation

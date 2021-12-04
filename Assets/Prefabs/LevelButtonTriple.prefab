@@ -385,7 +385,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 70, y: 50}
-  m_SizeDelta: {x: 131, y: 50}
+  m_SizeDelta: {x: 131, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4383656003679675590
 CanvasRenderer:
@@ -419,7 +419,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 641f6fdea64071c82995856c88c96adb, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 4
@@ -428,7 +428,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0.0%
+  m_Text: 0%
 --- !u!1 &5261395073630471363
 GameObject:
   m_ObjectHideFlags: 0
@@ -1271,7 +1271,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 350, y: 50}
-  m_SizeDelta: {x: 131, y: 50}
+  m_SizeDelta: {x: 131, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8588810781703986579
 CanvasRenderer:
@@ -1305,7 +1305,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 641f6fdea64071c82995856c88c96adb, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 4
@@ -1314,7 +1314,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0.0%
+  m_Text: 0%
 --- !u!1 &9003405247594070311
 GameObject:
   m_ObjectHideFlags: 0
@@ -1350,7 +1350,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 210, y: 50}
-  m_SizeDelta: {x: 131, y: 50}
+  m_SizeDelta: {x: 131, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7092187920234022021
 CanvasRenderer:
@@ -1384,7 +1384,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 641f6fdea64071c82995856c88c96adb, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 4
@@ -1393,4 +1393,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0.0%
+  m_Text: 0%
