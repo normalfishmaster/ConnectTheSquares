@@ -432,6 +432,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5944282597285664682, guid: 0acfef75b9fb046c5905423b9920c0e7, type: 3}
+      propertyPath: _blockSpanishTile.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5944282597285664682, guid: 0acfef75b9fb046c5905423b9920c0e7, type: 3}
+      propertyPath: _blockMorocconTile.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5944282597285664682, guid: 0acfef75b9fb046c5905423b9920c0e7, type: 3}
+      propertyPath: _blockSpanishTile.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 30df97061f0bbcd358b1eee4a1ef4274, type: 3}
+    - target: {fileID: 5944282597285664682, guid: 0acfef75b9fb046c5905423b9920c0e7, type: 3}
+      propertyPath: _blockSpanishTile.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 30df97061f0bbcd358b1eee4a1ef4274, type: 3}
+    - target: {fileID: 5944282597285664682, guid: 0acfef75b9fb046c5905423b9920c0e7, type: 3}
+      propertyPath: _blockSpanishTile.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 30df97061f0bbcd358b1eee4a1ef4274, type: 3}
+    - target: {fileID: 5944282597285664682, guid: 0acfef75b9fb046c5905423b9920c0e7, type: 3}
+      propertyPath: _blockSpanishTile.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 30df97061f0bbcd358b1eee4a1ef4274, type: 3}
+    - target: {fileID: 5944282597285664682, guid: 0acfef75b9fb046c5905423b9920c0e7, type: 3}
+      propertyPath: _blockMorocconTile.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3a0a19d48ba663bf88b26fa251ba1000, type: 3}
+    - target: {fileID: 5944282597285664682, guid: 0acfef75b9fb046c5905423b9920c0e7, type: 3}
+      propertyPath: _blockMorocconTile.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3a0a19d48ba663bf88b26fa251ba1000, type: 3}
+    - target: {fileID: 5944282597285664682, guid: 0acfef75b9fb046c5905423b9920c0e7, type: 3}
+      propertyPath: _blockMorocconTile.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3a0a19d48ba663bf88b26fa251ba1000, type: 3}
+    - target: {fileID: 5944282597285664682, guid: 0acfef75b9fb046c5905423b9920c0e7, type: 3}
+      propertyPath: _blockMorocconTile.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3a0a19d48ba663bf88b26fa251ba1000, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0acfef75b9fb046c5905423b9920c0e7, type: 3}
 --- !u!1 &653896964

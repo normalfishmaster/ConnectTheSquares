@@ -21,12 +21,22 @@ public class IAPManager : MonoBehaviour
 	public static string _productHints15p3 = "com.normalfish.connectthesquares.hints15p3";
 	public static string _productHints30p9 = "com.normalfish.connectthesquares.hints30p9";
 	public static string _productHints60p24 = "com.normalfish.connectthesquares.hints60p24";
-	public static string _productBlockMetal = "com.normalfish.connectthesquares.blocksetmetal";
-	public static string _productBlockWood = "com.normalfish.connectthesquares.blocksetwood";
+	public static string _productBlockMetalA = "com.normalfish.connectthesquares.blocksetmetala";
+	public static string _productBlockMetalB = "com.normalfish.connectthesquares.blocksetmetalb";
+	public static string _productBlockWoodA = "com.normalfish.connectthesquares.blocksetwooda";
+	public static string _productBlockWoodB = "com.normalfish.connectthesquares.blocksetwoodb";
 	public static string _productBlockGreenMarble = "com.normalfish.connectthesquares.blocksetgreenmarble";
 	public static string _productBlockBlueMarble = "com.normalfish.connectthesquares.blocksetbluemarble";
 	public static string _productBlockRedMarble = "com.normalfish.connectthesquares.blocksetredmarble";
 	public static string _productBlockPurpleMarble = "com.normalfish.connectthesquares.blocksetpurplemarble";
+	public static string _productBlockTileA = "com.normalfish.connectthesquares.blocksettilea";
+	public static string _productBlockTileB = "com.normalfish.connectthesquares.blocksettileb";
+	public static string _productBlockTileC = "com.normalfish.connectthesquares.blocksettilec";
+	public static string _productBlockTileD = "com.normalfish.connectthesquares.blocksettiled";
+	public static string _productBlockEmbroidery = "com.normalfish.connectthesquares.blocksetembroidery";
+	public static string _productBlockFootprint = "com.normalfish.connectthesquares.blocksetfootprint";
+	public static string _productBlockLatte = "com.normalfish.connectthesquares.blocksetlatte";
+	public static string _productBlockWaffle = "com.normalfish.connectthesquares.blocksetwaffle";
 
 	public void OnPurchaseComplete(Product product)
 	{
@@ -70,15 +80,25 @@ public class IAPManager : MonoBehaviour
 			_cloudOnce.Save();
 			numHint = 84;
 		}
-		else if (product.definition.id == _productBlockMetal)
+		else if (product.definition.id == _productBlockMetalA)
 		{
-			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_METAL, true);
-			blockSetNumber = BlockManager.BLOCK_SET_METAL;
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_METAL_A, true);
+			blockSetNumber = BlockManager.BLOCK_SET_METAL_A;
 		}
-		else if (product.definition.id == _productBlockWood)
+		else if (product.definition.id == _productBlockMetalB)
 		{
-			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_WOOD, true);
-			blockSetNumber = BlockManager.BLOCK_SET_WOOD;
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_METAL_B, true);
+			blockSetNumber = BlockManager.BLOCK_SET_METAL_B;
+		}
+		else if (product.definition.id == _productBlockWoodA)
+		{
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_WOOD_A, true);
+			blockSetNumber = BlockManager.BLOCK_SET_WOOD_A;
+		}
+		else if (product.definition.id == _productBlockWoodB)
+		{
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_WOOD_B, true);
+			blockSetNumber = BlockManager.BLOCK_SET_WOOD_B;
 		}
 		else if (product.definition.id == _productBlockGreenMarble)
 		{
@@ -100,6 +120,46 @@ public class IAPManager : MonoBehaviour
 			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_PURPLE_MARBLE, true);
 			blockSetNumber = BlockManager.BLOCK_SET_PURPLE_MARBLE;
 		}
+		else if (product.definition.id == _productBlockTileA)
+		{
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_TILE_A, true);
+			blockSetNumber = BlockManager.BLOCK_SET_TILE_A;
+		}
+		else if (product.definition.id == _productBlockTileB)
+		{
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_TILE_B, true);
+			blockSetNumber = BlockManager.BLOCK_SET_TILE_B;
+		}
+		else if (product.definition.id == _productBlockTileC)
+		{
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_TILE_C, true);
+			blockSetNumber = BlockManager.BLOCK_SET_TILE_C;
+		}
+		else if (product.definition.id == _productBlockTileD)
+		{
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_TILE_D, true);
+			blockSetNumber = BlockManager.BLOCK_SET_TILE_D;
+		}
+		else if (product.definition.id == _productBlockEmbroidery)
+		{
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_EMBROIDERY, true);
+			blockSetNumber = BlockManager.BLOCK_SET_EMBROIDERY;
+		}
+		else if (product.definition.id == _productBlockFootprint)
+		{
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_FOOTPRINT, true);
+			blockSetNumber = BlockManager.BLOCK_SET_FOOTPRINT;
+		}
+		else if (product.definition.id == _productBlockLatte)
+		{
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_LATTE, true);
+			blockSetNumber = BlockManager.BLOCK_SET_LATTE;
+		}
+		else if (product.definition.id == _productBlockWaffle)
+		{
+			_block.SetBlockSetUnlocked(BlockManager.BLOCK_SET_WAFFLE, true);
+			blockSetNumber = BlockManager.BLOCK_SET_WAFFLE;
+		}
 		else
 		{
 			return;
@@ -109,13 +169,13 @@ public class IAPManager : MonoBehaviour
 		{
 			StoreLogic store = GameObject.Find("StoreLogic").GetComponent<StoreLogic>();
 
-			if (numHint != -1)
-			{
-				store.OnPurchaseHintSuccess(numHint);
-			}
-			else if (blockSetNumber != -1)
+			if (blockSetNumber != -1)
 			{
 				store.OnPurchaseBlockSetSuccess(blockSetNumber);
+			}
+			else if (numHint != -1)
+			{
+				store.OnPurchaseHintSuccess(numHint);
 			}
 			else if (itemNumber != -1)
 			{

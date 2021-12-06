@@ -357,24 +357,14 @@ public class CloudOnceManager : MonoBehaviour
 		return CloudVariables.RewardsDayCount;
 	}
 
-	public void SetBlockMetalUnlocked(bool unlock)
-	{
-		CloudVariables.BlockMetalUnlocked = unlock;
-	}
-
-	public bool GetRemoveAds()
-	{
-		return CloudVariables.RemoveAds;
-	}
-
 	public void SetRemoveAds(bool unlock)
 	{
 		CloudVariables.RemoveAds = unlock;
 	}
 
-	public bool GetUnlockAllLevels()
+	public bool GetRemoveAds()
 	{
-		return CloudVariables.UnlockAllLevels;
+		return CloudVariables.RemoveAds;
 	}
 
 	public void SetUnlockAllLevels(bool unlock)
@@ -387,19 +377,49 @@ public class CloudOnceManager : MonoBehaviour
 		}
 	}
 
-	public bool GetBlockMetalUnlocked()
+	public bool GetUnlockAllLevels()
 	{
-		return CloudVariables.BlockMetalUnlocked;
+		return CloudVariables.UnlockAllLevels;
 	}
 
-	public void SetBlockWoodUnlocked(bool unlock)
+	public void SetBlockMetalAUnlocked(bool unlock)
 	{
-		CloudVariables.BlockWoodUnlocked = unlock;
+		CloudVariables.BlockMetalAUnlocked = unlock;
 	}
 
-	public bool GetBlockWoodUnlocked()
+	public bool GetBlockMetalAUnlocked()
 	{
-		return CloudVariables.BlockWoodUnlocked;
+		return CloudVariables.BlockMetalAUnlocked;
+	}
+
+	public void SetBlockMetalBUnlocked(bool unlock)
+	{
+		CloudVariables.BlockMetalBUnlocked = unlock;
+	}
+
+	public bool GetBlockMetalBUnlocked()
+	{
+		return CloudVariables.BlockMetalBUnlocked;
+	}
+
+	public void SetBlockWoodAUnlocked(bool unlock)
+	{
+		CloudVariables.BlockWoodAUnlocked = unlock;
+	}
+
+	public bool GetBlockWoodAUnlocked()
+	{
+		return CloudVariables.BlockWoodAUnlocked;
+	}
+
+	public void SetBlockWoodBUnlocked(bool unlock)
+	{
+		CloudVariables.BlockWoodBUnlocked = unlock;
+	}
+
+	public bool GetBlockWoodBUnlocked()
+	{
+		return CloudVariables.BlockWoodBUnlocked;
 	}
 
 	public void SetBlockGreenMarbleUnlocked(bool unlock)
@@ -440,6 +460,86 @@ public class CloudOnceManager : MonoBehaviour
 	public bool GetBlockPurpleMarbleUnlocked()
 	{
 		return CloudVariables.BlockPurpleMarbleUnlocked;
+	}
+
+	public void SetBlockTileAUnlocked(bool unlock)
+	{
+		CloudVariables.BlockTileAUnlocked = unlock;
+	}
+
+	public bool GetBlockTileAUnlocked()
+	{
+		return CloudVariables.BlockTileAUnlocked;
+	}
+
+	public void SetBlockTileBUnlocked(bool unlock)
+	{
+		CloudVariables.BlockTileBUnlocked = unlock;
+	}
+
+	public bool GetBlockTileBUnlocked()
+	{
+		return CloudVariables.BlockTileBUnlocked;
+	}
+
+	public void SetBlockTileCUnlocked(bool unlock)
+	{
+		CloudVariables.BlockTileCUnlocked = unlock;
+	}
+
+	public bool GetBlockTileCUnlocked()
+	{
+		return CloudVariables.BlockTileCUnlocked;
+	}
+
+	public void SetBlockTileDUnlocked(bool unlock)
+	{
+		CloudVariables.BlockTileDUnlocked = unlock;
+	}
+
+	public bool GetBlockTileDUnlocked()
+	{
+		return CloudVariables.BlockTileDUnlocked;
+	}
+
+	public void SetBlockEmbroideryUnlocked(bool unlock)
+	{
+		CloudVariables.BlockEmbroideryUnlocked = unlock;
+	}
+
+	public bool GetBlockEmbroideryUnlocked()
+	{
+		return CloudVariables.BlockEmbroideryUnlocked;
+	}
+
+	public void SetBlockFootprintUnlocked(bool unlock)
+	{
+		CloudVariables.BlockFootprintUnlocked = unlock;
+	}
+
+	public bool GetBlockFootprintUnlocked()
+	{
+		return CloudVariables.BlockFootprintUnlocked;
+	}
+
+	public void SetBlockLatteUnlocked(bool unlock)
+	{
+		CloudVariables.BlockLatteUnlocked = unlock;
+	}
+
+	public bool GetBlockLatteUnlocked()
+	{
+		return CloudVariables.BlockLatteUnlocked;
+	}
+
+	public void SetBlockWaffleUnlocked(bool unlock)
+	{
+		CloudVariables.BlockWaffleUnlocked = unlock;
+	}
+
+	public bool GetBlockWaffleUnlocked()
+	{
+		return CloudVariables.BlockWaffleUnlocked;
 	}
 
 	public void SetLevelMove(int color, int alphabet, int map, int value)
@@ -533,8 +633,6 @@ public class CloudOnceManager : MonoBehaviour
 
 		for (int i = 0; i < numColor - 1; i++)
 		{
-			Debug.Log("i:" + i + " n:" + _solvedColorMap[i]);
-
 			int numAlphabet = _level.GetNumAlphabet(i);
 
 			if (_solvedColorMap[i] == numAlphabet * 60)
@@ -543,7 +641,6 @@ public class CloudOnceManager : MonoBehaviour
 			}
 		}
 
-		Debug.Log("color:" + _backgroundColor);
 		_backgroundColor = highestColor;
 	}
 

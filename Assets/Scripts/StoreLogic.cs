@@ -167,30 +167,58 @@ public class StoreLogic : MonoBehaviour
 			_ui.SetActiveProductUnlockAllLevelsPriceAndPurchased(true, false);
 		}
 
-		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_METAL))
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_METAL_A))
 		{
-			_ui.SetActiveProductBlockMetalPriceAndPurchased(false, true);
-			_ui.SetInteractableBlockMetal(false);
-			_ui.SetActiveBlockMetalTry(false);
+			_ui.SetActiveProductBlockMetalAPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockMetalA(false);
+			_ui.SetActiveBlockMetalATry(false);
 		}
 		else
 		{
-			_ui.SetActiveProductBlockMetalPriceAndPurchased(true, false);
-			_ui.SetInteractableBlockMetal(true);
-			_ui.SetActiveBlockMetalTry(true);
+			_ui.SetActiveProductBlockMetalAPriceAndPurchased(true, false);
+			_ui.SetInteractableBlockMetalA(true);
+			_ui.SetActiveBlockMetalATry(true);
 		}
 
-		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_WOOD))
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_METAL_B))
 		{
-			_ui.SetActiveProductBlockWoodPriceAndPurchased(false, true);
-			_ui.SetInteractableBlockWood(false);
-			_ui.SetActiveBlockWoodTry(false);
+			_ui.SetActiveProductBlockMetalBPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockMetalB(false);
+			_ui.SetActiveBlockMetalBTry(false);
+			_ui.SetActiveBlockMetalBRibbon(false);
 		}
 		else
 		{
-			_ui.SetActiveProductBlockWoodPriceAndPurchased(true, false);
-			_ui.SetInteractableBlockWood(true);
-			_ui.SetActiveBlockWoodTry(true);
+			_ui.SetActiveProductBlockMetalBPriceAndPurchased(true, false);
+			_ui.SetInteractableBlockMetalB(true);
+			_ui.SetActiveBlockMetalBTry(true);
+		}
+
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_WOOD_A))
+		{
+			_ui.SetActiveProductBlockWoodAPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockWoodA(false);
+			_ui.SetActiveBlockWoodATry(false);
+		}
+		else
+		{
+			_ui.SetActiveProductBlockWoodAPriceAndPurchased(true, false);
+			_ui.SetInteractableBlockWoodA(true);
+			_ui.SetActiveBlockWoodATry(true);
+		}
+
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_WOOD_B))
+		{
+			_ui.SetActiveProductBlockWoodBPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockWoodB(false);
+			_ui.SetActiveBlockWoodBTry(false);
+			_ui.SetActiveBlockWoodBRibbon(false);
+		}
+		else
+		{
+			_ui.SetActiveProductBlockWoodBPriceAndPurchased(true, false);
+			_ui.SetInteractableBlockWoodB(true);
+			_ui.SetActiveBlockWoodBTry(true);
 		}
 
 		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_GREEN_MARBLE))
@@ -224,6 +252,7 @@ public class StoreLogic : MonoBehaviour
 			_ui.SetActiveProductBlockRedMarblePriceAndPurchased(false, true);
 			_ui.SetInteractableBlockRedMarble(false);
 			_ui.SetActiveBlockRedMarbleTry(false);
+			_ui.SetActiveBlockRedMarbleRibbon(false);
 		}
 		else
 		{
@@ -243,6 +272,114 @@ public class StoreLogic : MonoBehaviour
 			_ui.SetActiveProductBlockPurpleMarblePriceAndPurchased(true, false);
 			_ui.SetInteractableBlockPurpleMarble(true);
 			_ui.SetActiveBlockPurpleMarbleTry(true);
+		}
+
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_TILE_A))
+		{
+			_ui.SetActiveProductBlockTileAPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockTileA(false);
+			_ui.SetActiveBlockTileATry(false);
+		}
+		else
+		{
+			_ui.SetActiveProductBlockTileAPriceAndPurchased(true, false);
+			_ui.SetInteractableBlockTileA(true);
+			_ui.SetActiveBlockTileATry(true);
+		}
+
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_TILE_B))
+		{
+			_ui.SetActiveProductBlockTileBPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockTileB(false);
+			_ui.SetActiveBlockTileBTry(false);
+		}
+		else
+		{
+			_ui.SetActiveProductBlockTileBPriceAndPurchased(true, false);
+			_ui.SetInteractableBlockTileB(true);
+			_ui.SetActiveBlockTileBTry(true);
+		}
+
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_TILE_C))
+		{
+			_ui.SetActiveProductBlockTileCPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockTileC(false);
+			_ui.SetActiveBlockTileCTry(false);
+			_ui.SetActiveBlockTileCRibbon(false);
+		}
+		else
+		{
+			_ui.SetActiveProductBlockTileCPriceAndPurchased(true, false);
+			_ui.SetInteractableBlockTileC(true);
+			_ui.SetActiveBlockTileCTry(true);
+		}
+
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_TILE_D))
+		{
+			_ui.SetActiveProductBlockTileDPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockTileD(false);
+			_ui.SetActiveBlockTileDTry(false);
+		}
+		else
+		{
+			_ui.SetActiveProductBlockTileDPriceAndPurchased(true, false);
+			_ui.SetInteractableBlockTileD(true);
+			_ui.SetActiveBlockTileDTry(true);
+		}
+
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_EMBROIDERY))
+		{
+			_ui.SetActiveProductBlockEmbroideryPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockEmbroidery(false);
+			_ui.SetActiveBlockEmbroideryTry(false);
+		}
+		else
+		{
+			_ui.SetActiveProductBlockEmbroideryPriceAndPurchased(true, false);
+			_ui.SetInteractableBlockEmbroidery(true);
+			_ui.SetActiveBlockEmbroideryTry(true);
+		}
+
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_FOOTPRINT))
+		{
+			_ui.SetActiveProductBlockFootprintPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockFootprint(false);
+			_ui.SetActiveBlockFootprintTry(false);
+			_ui.SetActiveBlockFootprintRibbon(false);
+		}
+		else
+		{
+			_ui.SetActiveProductBlockFootprintPriceAndPurchased(true, false);
+			_ui.SetInteractableBlockFootprint(true);
+			_ui.SetActiveBlockFootprintTry(true);
+		}
+
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_LATTE))
+		{
+			_ui.SetActiveProductBlockLattePriceAndPurchased(false, true);
+			_ui.SetInteractableBlockLatte(false);
+			_ui.SetActiveBlockLatteTry(false);
+			_ui.SetActiveBlockLatteRibbon(false);
+		}
+		else
+		{
+			_ui.SetActiveProductBlockLattePriceAndPurchased(true, false);
+			_ui.SetInteractableBlockLatte(true);
+			_ui.SetActiveBlockLatteTry(true);
+		}
+
+		if (_block.IsBlockSetUnlocked(BlockManager.BLOCK_SET_WAFFLE))
+		{
+			_ui.SetActiveProductBlockWafflePriceAndPurchased(false, true);
+			_ui.SetInteractableBlockWaffle(false);
+			_ui.SetActiveBlockWaffleTry(false);
+			_ui.SetActiveBlockWaffleRibbon(false);
+		}
+		else
+		{
+			_ui.SetActiveProductBlockWafflePriceAndPurchased(true, false);
+			_ui.SetInteractableBlockWaffle(true);
+			_ui.SetActiveBlockWaffleTry(true);
 		}
 	}
 
@@ -286,7 +423,6 @@ public class StoreLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 		_purchasePending = 1;
-		Debug.Log("purchase is now pending");
 	}
 
 	public void OnProductRemoveAdsButtonPricePressed()
@@ -325,16 +461,28 @@ public class StoreLogic : MonoBehaviour
 		_ui.AnimateProductHints60p24PriceButtonPressed(()=>{});
 	}
 
-	public void OnProductBlockMetalPriceButtonPressed()
+	public void OnProductBlockMetalAPriceButtonPressed()
 	{
 		OnProductPriceButtonPressedCommon();
-		_ui.AnimateProductBlockMetalPriceButtonPressed(()=>{});
+		_ui.AnimateProductBlockMetalAPriceButtonPressed(()=>{});
 	}
 
-	public void OnProductBlockWoodButtonPricePressed()
+	public void OnProductBlockMetalBPriceButtonPressed()
 	{
 		OnProductPriceButtonPressedCommon();
-		_ui.AnimateProductBlockWoodPriceButtonPressed(()=>{});
+		_ui.AnimateProductBlockMetalBPriceButtonPressed(()=>{});
+	}
+
+	public void OnProductBlockWoodAButtonPricePressed()
+	{
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductBlockWoodAPriceButtonPressed(()=>{});
+	}
+
+	public void OnProductBlockWoodBButtonPricePressed()
+	{
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductBlockWoodBPriceButtonPressed(()=>{});
 	}
 
 	public void OnProductBlockGreenMarbleButtonPricePressed()
@@ -361,6 +509,54 @@ public class StoreLogic : MonoBehaviour
 		_ui.AnimateProductBlockPurpleMarblePriceButtonPressed(()=>{});
 	}
 
+	public void OnProductBlockTileAButtonPricePressed()
+	{
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductBlockTileAPriceButtonPressed(()=>{});
+	}
+
+	public void OnProductBlockTileBButtonPricePressed()
+	{
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductBlockTileBPriceButtonPressed(()=>{});
+	}
+
+	public void OnProductBlockTileCButtonPricePressed()
+	{
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductBlockTileCPriceButtonPressed(()=>{});
+	}
+
+	public void OnProductBlockTileDButtonPricePressed()
+	{
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductBlockTileDPriceButtonPressed(()=>{});
+	}
+
+	public void OnProductBlockEmbroideryButtonPricePressed()
+	{
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductBlockEmbroideryPriceButtonPressed(()=>{});
+	}
+
+	public void OnProductBlockFootprintButtonPricePressed()
+	{
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductBlockFootprintPriceButtonPressed(()=>{});
+	}
+
+	public void OnProductBlockLatteButtonPricePressed()
+	{
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductBlockLattePriceButtonPressed(()=>{});
+	}
+
+	public void OnProductBlockWaffleButtonPricePressed()
+	{
+		OnProductPriceButtonPressedCommon();
+		_ui.AnimateProductBlockWafflePriceButtonPressed(()=>{});
+	}
+
 	public void OnProductTryButtonPressedCommon()
 	{
 		_audio.PlayButtonPressed();
@@ -368,11 +564,11 @@ public class StoreLogic : MonoBehaviour
 		_ui.SetEnableBottomButton(false);
 	}
 
-	public void OnProductBlockMetalButtonTryPressed()
+	public void OnProductBlockMetalAButtonTryPressed()
 	{
 		OnProductTryButtonPressedCommon();
-		_block.SetBlockPreview(BlockManager.BLOCK_SET_METAL);
-		_ui.AnimateProductBlockMetalButtonPressed
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_METAL_A);
+		_ui.AnimateProductBlockMetalAButtonPressed
 		(
 			()=>
 			{
@@ -381,11 +577,37 @@ public class StoreLogic : MonoBehaviour
 		);
 	}
 
-	public void OnProductBlockWoodButtonTryPressed()
+	public void OnProductBlockMetalBButtonTryPressed()
 	{
 		OnProductTryButtonPressedCommon();
-		_block.SetBlockPreview(BlockManager.BLOCK_SET_WOOD);
-		_ui.AnimateProductBlockWoodButtonPressed
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_METAL_B);
+		_ui.AnimateProductBlockMetalBButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("DemoScene");
+			}
+		);
+	}
+
+	public void OnProductBlockWoodAButtonTryPressed()
+	{
+		OnProductTryButtonPressedCommon();
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_WOOD_A);
+		_ui.AnimateProductBlockWoodAButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("DemoScene");
+			}
+		);
+	}
+
+	public void OnProductBlockWoodBButtonTryPressed()
+	{
+		OnProductTryButtonPressedCommon();
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_WOOD_B);
+		_ui.AnimateProductBlockWoodBButtonPressed
 		(
 			()=>
 			{
@@ -438,6 +660,110 @@ public class StoreLogic : MonoBehaviour
 		OnProductTryButtonPressedCommon();
 		_block.SetBlockPreview(BlockManager.BLOCK_SET_PURPLE_MARBLE);
 		_ui.AnimateProductBlockPurpleMarbleButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("DemoScene");
+			}
+		);
+	}
+
+	public void OnProductBlockTileAButtonTryPressed()
+	{
+		OnProductTryButtonPressedCommon();
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_TILE_A);
+		_ui.AnimateProductBlockTileAButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("DemoScene");
+			}
+		);
+	}
+
+	public void OnProductBlockTileBButtonTryPressed()
+	{
+		OnProductTryButtonPressedCommon();
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_TILE_B);
+		_ui.AnimateProductBlockTileBButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("DemoScene");
+			}
+		);
+	}
+
+	public void OnProductBlockTileCButtonTryPressed()
+	{
+		OnProductTryButtonPressedCommon();
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_TILE_C);
+		_ui.AnimateProductBlockTileCButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("DemoScene");
+			}
+		);
+	}
+
+	public void OnProductBlockTileDButtonTryPressed()
+	{
+		OnProductTryButtonPressedCommon();
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_TILE_D);
+		_ui.AnimateProductBlockTileDButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("DemoScene");
+			}
+		);
+	}
+
+	public void OnProductBlockEmbroideryButtonTryPressed()
+	{
+		OnProductTryButtonPressedCommon();
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_EMBROIDERY);
+		_ui.AnimateProductBlockEmbroideryButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("DemoScene");
+			}
+		);
+	}
+
+	public void OnProductBlockFootprintButtonTryPressed()
+	{
+		OnProductTryButtonPressedCommon();
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_FOOTPRINT);
+		_ui.AnimateProductBlockFootprintButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("DemoScene");
+			}
+		);
+	}
+
+	public void OnProductBlockLatteButtonTryPressed()
+	{
+		OnProductTryButtonPressedCommon();
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_LATTE);
+		_ui.AnimateProductBlockLatteButtonPressed
+		(
+			()=>
+			{
+				SceneManager.LoadScene("DemoScene");
+			}
+		);
+	}
+
+	public void OnProductBlockWaffleButtonTryPressed()
+	{
+		OnProductTryButtonPressedCommon();
+		_block.SetBlockPreview(BlockManager.BLOCK_SET_WAFFLE);
+		_ui.AnimateProductBlockWaffleButtonPressed
 		(
 			()=>
 			{
@@ -516,32 +842,38 @@ public class StoreLogic : MonoBehaviour
 
 	public void OnPurchaseBlockSetSuccess(int setNumber)
 	{
-		Debug.Log("entry");
-
 		if (_purchasePending == 0)
 		{
-			Debug.Log("exit");
 			return;
 		}
 
-		Debug.Log("ok");
-
-
 		_purchasePending = 0;
 
-		if (setNumber == BlockManager.BLOCK_SET_METAL)
+		if (setNumber == BlockManager.BLOCK_SET_METAL_A)
 		{
-			Debug.Log("metal");
-			_ui.SetActiveProductBlockMetalPriceAndPurchased(false, true);
-			_ui.SetInteractableBlockMetal(false);
-			_ui.SetActiveBlockMetalTry(false);
+			_ui.SetActiveProductBlockMetalAPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockMetalA(false);
+			_ui.SetActiveBlockMetalATry(false);
 		}
-		else if (setNumber == BlockManager.BLOCK_SET_WOOD)
+		else if (setNumber == BlockManager.BLOCK_SET_METAL_B)
 		{
-			_ui.SetActiveProductBlockWoodPriceAndPurchased(false, true);
-			_ui.SetInteractableBlockWood(false);
-			_ui.SetActiveBlockWoodTry(false);
-			_ui.SetActiveBlockWoodRibbon(false);
+			_ui.SetActiveProductBlockMetalBPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockMetalB(false);
+			_ui.SetActiveBlockMetalBTry(false);
+			_ui.SetActiveBlockMetalBRibbon(false);
+		}
+		else if (setNumber == BlockManager.BLOCK_SET_WOOD_A)
+		{
+			_ui.SetActiveProductBlockWoodAPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockWoodA(false);
+			_ui.SetActiveBlockWoodATry(false);
+		}
+		else if (setNumber == BlockManager.BLOCK_SET_WOOD_B)
+		{
+			_ui.SetActiveProductBlockWoodBPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockWoodB(false);
+			_ui.SetActiveBlockWoodBTry(false);
+			_ui.SetActiveBlockWoodBRibbon(false);
 		}
 		else if (setNumber == BlockManager.BLOCK_SET_GREEN_MARBLE)
 		{
@@ -567,6 +899,58 @@ public class StoreLogic : MonoBehaviour
 			_ui.SetActiveProductBlockPurpleMarblePriceAndPurchased(false, true);
 			_ui.SetInteractableBlockPurpleMarble(false);
 			_ui.SetActiveBlockPurpleMarbleTry(false);
+		}
+		else if (setNumber == BlockManager.BLOCK_SET_TILE_A)
+		{
+			_ui.SetActiveProductBlockTileAPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockTileA(false);
+			_ui.SetActiveBlockTileATry(false);
+		}
+		else if (setNumber == BlockManager.BLOCK_SET_TILE_B)
+		{
+			_ui.SetActiveProductBlockTileBPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockTileB(false);
+			_ui.SetActiveBlockTileBTry(false);
+		}
+		else if (setNumber == BlockManager.BLOCK_SET_TILE_C)
+		{
+			_ui.SetActiveProductBlockTileCPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockTileC(false);
+			_ui.SetActiveBlockTileCTry(false);
+			_ui.SetActiveBlockTileCRibbon(false);
+		}
+		else if (setNumber == BlockManager.BLOCK_SET_TILE_D)
+		{
+			_ui.SetActiveProductBlockTileDPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockTileD(false);
+			_ui.SetActiveBlockTileDTry(false);
+		}
+		else if (setNumber == BlockManager.BLOCK_SET_EMBROIDERY)
+		{
+			_ui.SetActiveProductBlockEmbroideryPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockEmbroidery(false);
+			_ui.SetActiveBlockEmbroideryTry(false);
+		}
+		else if (setNumber == BlockManager.BLOCK_SET_FOOTPRINT)
+		{
+			_ui.SetActiveProductBlockFootprintPriceAndPurchased(false, true);
+			_ui.SetInteractableBlockFootprint(false);
+			_ui.SetActiveBlockFootprintTry(false);
+			_ui.SetActiveBlockFootprintRibbon(false);
+		}
+		else if (setNumber == BlockManager.BLOCK_SET_LATTE)
+		{
+			_ui.SetActiveProductBlockLattePriceAndPurchased(false, true);
+			_ui.SetInteractableBlockLatte(false);
+			_ui.SetActiveBlockLatteTry(false);
+			_ui.SetActiveBlockLatteRibbon(false);
+		}
+		else if (setNumber == BlockManager.BLOCK_SET_WAFFLE)
+		{
+			_ui.SetActiveProductBlockWafflePriceAndPurchased(false, true);
+			_ui.SetInteractableBlockWaffle(false);
+			_ui.SetActiveBlockWaffleTry(false);
+			_ui.SetActiveBlockWaffleRibbon(false);
 		}
 
 		_audio.PlayRewardReceived();

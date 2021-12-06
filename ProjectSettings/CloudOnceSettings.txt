@@ -201,14 +201,28 @@
 			"AllowNegative":false
 		},
 		{
-			"Key":"BlockMetalUnlocked",
+			"Key":"BlockMetalAUnlocked",
 			"Type":"4",
 			"DefaultValue":"False",
 			"PersistenceType":"1",
 			"AllowNegative":false
 		},
 		{
-			"Key":"BlockWoodUnlocked",
+			"Key":"BlockMetalBUnlocked",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"BlockWoodAUnlocked",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"BlockWoodBUnlocked",
 			"Type":"4",
 			"DefaultValue":"False",
 			"PersistenceType":"1",
@@ -237,6 +251,62 @@
 		},
 		{
 			"Key":"BlockPurpleMarbleUnlocked",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"BlockTileAUnlocked",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"BlockTileBUnlocked",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"BlockTileCUnlocked",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"BlockTileDUnlocked",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"BlockEmbroideryUnlocked",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"BlockFootprintUnlocked",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"BlockWaffleUnlocked",
+			"Type":"4",
+			"DefaultValue":"False",
+			"PersistenceType":"1",
+			"AllowNegative":false
+		},
+		{
+			"Key":"BlockLatteUnlocked",
 			"Type":"4",
 			"DefaultValue":"False",
 			"PersistenceType":"1",

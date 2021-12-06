@@ -84,6 +84,10 @@ public class StartupLogic : MonoBehaviour
 
 	private void RunTestSequence()
 	{
+/*
+
+
+
 		int numColor = _level.GetNumColor();
 
 		for (int i = 0; i < numColor; i++)
@@ -101,7 +105,6 @@ public class StartupLogic : MonoBehaviour
 		}
 
 
-/*
 		_cloudOnce.IncrementHint(100);
 
 		_cloudOnce.DeleteAll();

@@ -43,6 +43,22 @@ public class DemoLogic : MonoBehaviour
 	private const float BUTTON_FADE_DURATION = 0.1f;
 	private const float FRAME_RATE_CHANGE_DELAY = BUTTON_FADE_DURATION * 2;
 
+	// Camera
+
+	public float CAMERA_WORLD_GRID_WIDTH;
+
+	private void SetupCamera()
+	{
+		Camera camera = GameObject.Find("/MainCamera").GetComponent<Camera>();
+
+		float minimumSize = CAMERA_WORLD_GRID_WIDTH * Screen.height / Screen.width * 0.5f;
+
+		if (camera.orthographicSize < minimumSize)
+		{
+			camera.orthographicSize = minimumSize;
+		}
+	}
+
 	// Map
 
 	private GameObject[,] _mapWall;
@@ -694,16 +710,15 @@ public class DemoLogic : MonoBehaviour
 
 		_blockSet = _block.IncrementSetNumber(_blockSet);
 		SetMapBlockSprite(_blockSet);
+		_ui.SetMiscSetName(_blockSet);
 
 		if (_block.IsBlockSetUnlocked(_blockSet))
 		{
 			_ui.SetActiveMiscLocked(false);
-			_ui.SetActiveMiscUnlocked(true);
 		}
 		else
 		{
 			_ui.SetActiveMiscLocked(true);
-			_ui.SetActiveMiscUnlocked(false);
 		}
 
 		_ui.AnimateControlBlockButtonPressed
@@ -737,15 +752,15 @@ public class DemoLogic : MonoBehaviour
 
 	private void SetupMisc()
 	{
+		_ui.SetMiscSetName(_blockSet);
+
 		if (_block.IsBlockSetUnlocked(_blockSet))
 		{
 			_ui.SetActiveMiscLocked(false);
-			_ui.SetActiveMiscUnlocked(true);
 		}
 		else
 		{
 			_ui.SetActiveMiscLocked(true);
-			_ui.SetActiveMiscUnlocked(false);
 		}
 	}
 
@@ -767,6 +782,7 @@ public class DemoLogic : MonoBehaviour
 
 	private void Start()
 	{
+		SetupCamera();
 		SetupMap();	// SetupMap() must preceed SetupPhysics()
 		SetupPhysics();
 		SetupTouch();

@@ -77,20 +77,36 @@ namespace CloudOnce
             set { s_unlockAllLevels.Value = value; }
         }
 
-        private static readonly CloudBool s_blockMetalUnlocked = new CloudBool("BlockMetalUnlocked", PersistenceType.Highest, false);
+        private static readonly CloudBool s_blockMetalAUnlocked = new CloudBool("BlockMetalAUnlocked", PersistenceType.Highest, false);
 
-        public static bool BlockMetalUnlocked
+        public static bool BlockMetalAUnlocked
         {
-            get { return s_blockMetalUnlocked.Value; }
-            set { s_blockMetalUnlocked.Value = value; }
+            get { return s_blockMetalAUnlocked.Value; }
+            set { s_blockMetalAUnlocked.Value = value; }
         }
 
-        private static readonly CloudBool s_blockWoodUnlocked = new CloudBool("BlockWoodUnlocked", PersistenceType.Highest, false);
+        private static readonly CloudBool s_blockMetalBUnlocked = new CloudBool("BlockMetalBUnlocked", PersistenceType.Highest, false);
 
-        public static bool BlockWoodUnlocked
+        public static bool BlockMetalBUnlocked
         {
-            get { return s_blockWoodUnlocked.Value; }
-            set { s_blockWoodUnlocked.Value = value; }
+            get { return s_blockMetalBUnlocked.Value; }
+            set { s_blockMetalBUnlocked.Value = value; }
+        }
+
+        private static readonly CloudBool s_blockWoodAUnlocked = new CloudBool("BlockWoodAUnlocked", PersistenceType.Highest, false);
+
+        public static bool BlockWoodAUnlocked
+        {
+            get { return s_blockWoodAUnlocked.Value; }
+            set { s_blockWoodAUnlocked.Value = value; }
+        }
+
+        private static readonly CloudBool s_blockWoodBUnlocked = new CloudBool("BlockWoodBUnlocked", PersistenceType.Highest, false);
+
+        public static bool BlockWoodBUnlocked
+        {
+            get { return s_blockWoodBUnlocked.Value; }
+            set { s_blockWoodBUnlocked.Value = value; }
         }
 
         private static readonly CloudBool s_blockGreenMarbleUnlocked = new CloudBool("BlockGreenMarbleUnlocked", PersistenceType.Highest, false);
@@ -123,6 +139,70 @@ namespace CloudOnce
         {
             get { return s_blockPurpleMarbleUnlocked.Value; }
             set { s_blockPurpleMarbleUnlocked.Value = value; }
+        }
+
+        private static readonly CloudBool s_blockTileAUnlocked = new CloudBool("BlockTileAUnlocked", PersistenceType.Highest, false);
+
+        public static bool BlockTileAUnlocked
+        {
+            get { return s_blockTileAUnlocked.Value; }
+            set { s_blockTileAUnlocked.Value = value; }
+        }
+
+        private static readonly CloudBool s_blockTileBUnlocked = new CloudBool("BlockTileBUnlocked", PersistenceType.Highest, false);
+
+        public static bool BlockTileBUnlocked
+        {
+            get { return s_blockTileBUnlocked.Value; }
+            set { s_blockTileBUnlocked.Value = value; }
+        }
+
+        private static readonly CloudBool s_blockTileCUnlocked = new CloudBool("BlockTileCUnlocked", PersistenceType.Highest, false);
+
+        public static bool BlockTileCUnlocked
+        {
+            get { return s_blockTileCUnlocked.Value; }
+            set { s_blockTileCUnlocked.Value = value; }
+        }
+
+        private static readonly CloudBool s_blockTileDUnlocked = new CloudBool("BlockTileDUnlocked", PersistenceType.Highest, false);
+
+        public static bool BlockTileDUnlocked
+        {
+            get { return s_blockTileDUnlocked.Value; }
+            set { s_blockTileDUnlocked.Value = value; }
+        }
+
+        private static readonly CloudBool s_blockEmbroideryUnlocked = new CloudBool("BlockEmbroideryUnlocked", PersistenceType.Highest, false);
+
+        public static bool BlockEmbroideryUnlocked
+        {
+            get { return s_blockEmbroideryUnlocked.Value; }
+            set { s_blockEmbroideryUnlocked.Value = value; }
+        }
+
+        private static readonly CloudBool s_blockFootprintUnlocked = new CloudBool("BlockFootprintUnlocked", PersistenceType.Highest, false);
+
+        public static bool BlockFootprintUnlocked
+        {
+            get { return s_blockFootprintUnlocked.Value; }
+            set { s_blockFootprintUnlocked.Value = value; }
+        }
+
+        private static readonly CloudBool s_blockWaffleUnlocked = new CloudBool("BlockWaffleUnlocked", PersistenceType.Highest, false);
+
+        public static bool BlockWaffleUnlocked
+        {
+            get { return s_blockWaffleUnlocked.Value; }
+            set { s_blockWaffleUnlocked.Value = value; }
+        }
+
+        private static readonly CloudBool s_blockLatteUnlocked = new CloudBool("BlockLatteUnlocked", PersistenceType.Highest, false);
+
+        public static bool BlockLatteUnlocked
+        {
+            get { return s_blockLatteUnlocked.Value; }
+            set { s_blockLatteUnlocked.Value = value; }
         }
     }
 }

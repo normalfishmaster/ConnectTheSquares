@@ -119,25 +119,22 @@ public class DemoUI : MonoBehaviour
 	// Misc
 
 	private GameObject _miscLockedImage;
-	private GameObject _miscLocked;
-	private GameObject _miscUnlocked;
+	private GameObject _miscSetName;
 
 	private void FindMiscGameObject()
 	{
 		_miscLockedImage = GameObject.Find("/Canvas/LockedImage");
-		_miscLocked = GameObject.Find("/Canvas/Locked");
-		_miscUnlocked = GameObject.Find("/Canvas/Unlocked");
+		_miscSetName = GameObject.Find("/Canvas/SetName");
 	}
 
 	public void SetActiveMiscLocked(bool active)
 	{
 		_miscLockedImage.SetActive(active);
-		_miscLocked.SetActive(active);
 	}
 
-	public void SetActiveMiscUnlocked(bool active)
+	public void SetMiscSetName(int setNumber)
 	{
-		_miscUnlocked.SetActive(active);
+		_miscSetName.GetComponent<TextMeshProUGUI>().SetText(BlockManager.BLOCK_SET_STRING[setNumber]);
 	}
 
 	// Unity Lifecycle
