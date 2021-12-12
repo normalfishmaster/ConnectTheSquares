@@ -39,13 +39,17 @@ public class LevelMenuLogic : MonoBehaviour
 		{
 			int numAlphabet = _level.GetNumAlphabet(i);
 
-			if (numAlphabet == 1)
+			if (numAlphabet == 2)
 			{
 				float starA = (float)(_cloudOnce.GetCollectedAlphabetStar(i, 0));
 				float starATotal = (float)(_level.GetTotalAlphabetStars(i, 0));
-				string moves = "Moves:  2 - 4";
 
-				_ui.AddLevelSingle(i, moves, (starA / starATotal) * 100.0f);
+				float starB = (float)(_cloudOnce.GetCollectedAlphabetStar(i, 1));
+				float starBTotal = (float)(_level.GetTotalAlphabetStars(i, 1));
+
+				string moves = "( 2 - 4 Moves )";
+
+				_ui.AddLevelDouble(i, moves, (starA / starATotal) * 100.0f, (starB / starBTotal) * 100.0f);
 			}
 			else
 			{
@@ -59,7 +63,7 @@ public class LevelMenuLogic : MonoBehaviour
 				float starCTotal = (float)(_level.GetTotalAlphabetStars(i, 2));
 
 				int move = 4 + i;
-				string moves = "Moves:  " + move.ToString();
+				string moves = "( " + move.ToString() + " Moves )";
 
 				_ui.AddLevelTriple(i, moves, (starA / starATotal) * 100.0f, (starB / starBTotal) * 100.0f, (starC / starCTotal) * 100.0f);
 			}

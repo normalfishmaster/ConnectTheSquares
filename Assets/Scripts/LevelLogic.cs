@@ -1084,24 +1084,29 @@ public class LevelLogic : MonoBehaviour
 			int collectedAlphabetStarCurrent = _cloudOnce.GetCollectedAlphabetStar(_menuColor, _menuAlphabet);
 			int collectedOverallStarCurrent = _cloudOnce.GetCollectedOverallStar();
 
-			if (solvedAlphabetMapCurrent >= 60 && solvedAlphabetMapPrevious < 60)
+			int totalAlphabetMaps = _level.GetTotalAlphabetMaps(_menuColor, _menuAlphabet);
+			int totalAlphabetStars = _level.GetTotalAlphabetStars(_menuColor, _menuAlphabet);
+			int totalOverallStars = _level.GetTotalOverallStars();
+
+			if (solvedAlphabetMapCurrent >= solvedAlphabetMapCurrent && solvedAlphabetMapPrevious < solvedAlphabetMapCurrent)
 			{
 				_achievementShowClear = true;
 			}
 
-			if (collectedAlphabetStarCurrent >= 180 && collectedAlphabetStarPrevious < 180)
+			if (collectedAlphabetStarCurrent >= _level.GetTotalAlphabetStars(_menuColor, _menuAlphabet)
+					&& collectedAlphabetStarPrevious < _level.GetTotalAlphabetStars(_menuColor, _menuAlphabet))
 			{
 				_achievementShowFullClear = true;
 			}
 
-			if (collectedOverallStarCurrent >= 2340 && collectedOverallStarPrevious < 2340)
+			if (collectedOverallStarCurrent >= totalOverallStars && collectedOverallStarPrevious < totalOverallStars)
 			{
 				_achievementShowPerfectionist = true;
 			}
 
-			_cloudOnce.IncrementClearAchivement(_menuColor, _menuAlphabet, solvedAlphabetMapCurrent, 60);
-			_cloudOnce.IncrementFullClearAchivement(_menuColor, _menuAlphabet, collectedAlphabetStarCurrent, 180);
-			_cloudOnce.IncrementThePerfectionistAchivement(collectedOverallStarCurrent, 2340);
+			_cloudOnce.IncrementClearAchivement(_menuColor, _menuAlphabet, solvedAlphabetMapCurrent, solvedAlphabetMapCurrent);
+			_cloudOnce.IncrementFullClearAchivement(_menuColor, _menuAlphabet, collectedAlphabetStarCurrent, totalAlphabetStars);
+			_cloudOnce.IncrementThePerfectionistAchivement(collectedOverallStarCurrent, totalOverallStars);
 			_cloudOnce.SubmitLeaderboardHighScore(collectedOverallStarCurrent);
 
 			// Save data to cloud

@@ -350,7 +350,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 864, y: -450}
+  m_SizeDelta: {x: 835, y: -450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &199253343
 MonoBehaviour:
@@ -1653,9 +1653,9 @@ MonoBehaviour:
     m_Left: 0
     m_Right: 0
     m_Top: 90
-    m_Bottom: 35
+    m_Bottom: 90
   m_ChildAlignment: 1
-  m_Spacing: 60
+  m_Spacing: 40
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -2009,13 +2009,13 @@ MonoBehaviour:
   LEVEL_ANIMATE_BUTTON_PRESSED_SCALE: 1.1
   LEVEL_ANIMATE_BUTTON_PRESSED_DURATION: 0.15
   _levelButtonColor:
-  - {fileID: 21300000, guid: affd6559a89d0081e9045cfd491e828d, type: 3}
-  - {fileID: 21300000, guid: 46c52abf3160075e39d62401e8a09ff8, type: 3}
-  - {fileID: 21300000, guid: 4d159e2951763e69c88f0c0c26049ed4, type: 3}
-  - {fileID: 21300000, guid: 8eaf838a54eb94c03b6b0a5f8abdd0d1, type: 3}
-  - {fileID: 21300000, guid: 8ce49a976ba9bd8ddb016f6e2349501a, type: 3}
-  _levelButtonSinglePrefab: {fileID: 7660679513493152306, guid: 8ab408f019951ad6aa2504c142d4dff8, type: 3}
-  _levelButtonTriplePrefab: {fileID: 8060267582285321287, guid: 2f6e6dc6dd109fa07a9b6de4755d5948, type: 3}
+  - {fileID: 21300000, guid: b573707773ed76f3b808983e1fcf19e8, type: 3}
+  - {fileID: 21300000, guid: 79fb260cac755f1c7ae13de687114af6, type: 3}
+  - {fileID: 21300000, guid: 3c5552ff347d29edbb3bfa1ae95e952a, type: 3}
+  - {fileID: 21300000, guid: c158feabc8edfc1d4b0cb172efa3b786, type: 3}
+  - {fileID: 21300000, guid: 2575fa2cf637d0a47958a6b27af88874, type: 3}
+  _levelButtonDoublePrefab: {fileID: 7660679513493152306, guid: 91c482118cf477c13bfc324a2a1103d4, type: 3}
+  _levelButtonTriplePrefab: {fileID: 7660679513493152306, guid: 64556414cec8f4808807439c52812b60, type: 3}
   BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE: 1.15
   BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION: 0.15
 --- !u!4 &2137377380

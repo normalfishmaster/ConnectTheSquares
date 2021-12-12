@@ -39,11 +39,11 @@ public class LevelMenuUI : MonoBehaviour
 
 	private enum LevelButtonType
 	{
-		SINGLE,
+		DOUBLE,
 		TRIPLE,
 	};
 
-	public GameObject _levelButtonSinglePrefab;
+	public GameObject _levelButtonDoublePrefab;
 	public GameObject _levelButtonTriplePrefab;
 
 	private GameObject[] _levelButton;
@@ -74,9 +74,10 @@ public class LevelMenuUI : MonoBehaviour
 	{
 		for (int i = 0; i < _levelButton.Length; i++)
 		{
-			if (_levelButtonType[i] == LevelButtonType.SINGLE)
+			if (_levelButtonType[i] == LevelButtonType.DOUBLE)
 			{
 				_levelButton[i].transform.Find("A").GetComponent<Button>().enabled = enable;
+				_levelButton[i].transform.Find("B").GetComponent<Button>().enabled = enable;
 			}
 			else
 			{
@@ -87,19 +88,21 @@ public class LevelMenuUI : MonoBehaviour
 		}
 	}
 
-	public void AddLevelSingle(int color, string moves, float percentA)
+	public void AddLevelDouble(int color, string moves, float percentA, float percentB)
 	{
-		_levelButtonType[color] = LevelButtonType.SINGLE;
+		_levelButtonType[color] = LevelButtonType.DOUBLE;
 
 		_levelPercentA[color] = (float)(Math.Floor((double)(percentA * 100)) / 100);
+		_levelPercentB[color] = (float)(Math.Floor((double)(percentB * 100)) / 100);
 
-		_levelButton[color] = Instantiate(_levelButtonSinglePrefab);
+		_levelButton[color] = Instantiate(_levelButtonDoublePrefab);
 		_levelButton[color].transform.SetParent(_levelContent.transform);
 		_levelButton[color].transform.localScale = new Vector3(1, 1, 1);
 		_levelButton[color].transform.Find("Color").GetComponent<Image>().sprite = _levelButtonColor[color];
-		_levelButton[color].transform.Find("Color/Label").GetComponent<TextMeshProUGUI>().SetText(_level.GetColorString(color));
-		_levelButton[color].transform.Find("Difficulty/Label").GetComponent<Text>().text = moves;
+		_levelButton[color].transform.Find("Color/LabelColor").GetComponent<TextMeshProUGUI>().SetText(_level.GetColorString(color));
+		_levelButton[color].transform.Find("Color/LabelMoves").GetComponent<TextMeshProUGUI>().SetText(moves);
 		_levelButton[color].transform.Find("A").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 0); });
+		_levelButton[color].transform.Find("B").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 1); });
 	}
 
 	public void AddLevelTriple(int color, string moves, float percentA, float percentB, float percentC)
@@ -115,8 +118,8 @@ public class LevelMenuUI : MonoBehaviour
 		_levelButton[color].transform.localScale = new Vector3(1, 1, 1);
 
 		_levelButton[color].transform.Find("Color").GetComponent<Image>().sprite = _levelButtonColor[color];
-		_levelButton[color].transform.Find("Color/Label").GetComponent<TextMeshProUGUI>().SetText(_level.GetColorString(color));
-		_levelButton[color].transform.Find("Difficulty/Label").GetComponent<Text>().text = moves;
+		_levelButton[color].transform.Find("Color/LabelColor").GetComponent<TextMeshProUGUI>().SetText(_level.GetColorString(color));
+		_levelButton[color].transform.Find("Color/LabelMoves").GetComponent<TextMeshProUGUI>().SetText(moves);
 		_levelButton[color].transform.Find("A").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 0); });
 		_levelButton[color].transform.Find("B").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 1); });
 		_levelButton[color].transform.Find("C").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 2); });
@@ -164,9 +167,10 @@ public class LevelMenuUI : MonoBehaviour
 	{
 		for (int i = 0; i < _levelButton.Length; i++)
 		{
-			if (_levelButtonType[i] == LevelButtonType.SINGLE)
+			if (_levelButtonType[i] == LevelButtonType.DOUBLE)
 			{
 				AnimateLevelPercentageSingle(_levelButton[i], "PercentA", _levelPercentA[i]);
+				AnimateLevelPercentageSingle(_levelButton[i], "PercentB", _levelPercentB[i]);
 			}
 			else
 			{

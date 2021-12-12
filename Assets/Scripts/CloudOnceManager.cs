@@ -75,6 +75,9 @@ public class CloudOnceManager : MonoBehaviour
 
 	public void IncrementClearAchivement(int color, int alphabet, int current, int goal)
 	{
+		// TODO: Rework Achievement
+		return;
+
 		float fcurrent = (float)(current);
 		float fgoal = (float)(goal);
 
@@ -134,6 +137,9 @@ public class CloudOnceManager : MonoBehaviour
 
 	public void IncrementFullClearAchivement(int color, int alphabet, int current, int goal)
 	{
+		// TODO: Rework Achievement
+		return;
+
 		float fcurrent = (float)(current);
 		float fgoal = (float)(goal);
 
@@ -193,6 +199,9 @@ public class CloudOnceManager : MonoBehaviour
 
 	public void IncrementThePerfectionistAchivement(int current, int goal)
 	{
+		// TODO: Rework Achievement
+		return;
+
 		Achievements.ThePerfectionist.Increment(current, goal);
 	}
 
@@ -578,10 +587,7 @@ public class CloudOnceManager : MonoBehaviour
 				_solvedColorMap[color] += 1;
 				_solvedOverallMap += 1;
 
-				if (_solvedColorMap[color] == 180)
-				{
-					RecalculateBackgroundColor();
-				}
+				RecalculateBackgroundColor();
 			}
 		}
 	}
@@ -629,13 +635,20 @@ public class CloudOnceManager : MonoBehaviour
 	private void RecalculateBackgroundColor()
 	{
 		int highestColor = 0;
+
 		int numColor = _level.GetNumColor();
 
 		for (int i = 0; i < numColor - 1; i++)
 		{
 			int numAlphabet = _level.GetNumAlphabet(i);
+			int totalMap = 0;
 
-			if (_solvedColorMap[i] == numAlphabet * 60)
+			for (int j = 0; j < numAlphabet; j++)
+			{
+				totalMap += _level.GetNumMap(i, j)
+			}
+
+			if (_solvedColorMap[i] == totalMap)
 			{
 				highestColor = i + 1;
 			}

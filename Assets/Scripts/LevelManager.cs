@@ -19,10 +19,10 @@ public class LevelManager : MonoBehaviour
 	private static Dictionary<int, string> _tableColor = new Dictionary<int, string>()
 	{
 		{ BROWN,  "Novice" },
-		{ GREEN,  "Easy"   },
-		{ BLUE,   "Medium" },
-		{ RED,    "Hard"   },
-		{ BLACK,  "Expert" },
+		{ GREEN,  "Adept"   },
+		{ BLUE,   "Expert" },
+		{ RED,    "Veteran"   },
+		{ BLACK,  "Master" },
 	};
 
 	private static Dictionary<int, string> _tableAlphabet = new Dictionary<int, string>()
@@ -34,7 +34,7 @@ public class LevelManager : MonoBehaviour
 
 	private static Dictionary<int, Level[]> _tableLevel = new Dictionary<int, Level[]>()
 	{
-		{ BROWN,  new Level[] { new LevelBrownA(),                                          } },
+		{ BROWN,  new Level[] { new LevelBrownA(),  new LevelBrownB(),                      } },
 		{ GREEN,  new Level[] { new LevelGreenA(),  new LevelGreenB(),  new LevelGreenC(),  } },
 		{ BLUE,   new Level[] { new LevelBlueA(),   new LevelBlueB(),   new LevelBlueC(),   } },
 		{ RED,    new Level[] { new LevelRedA(),    new LevelRedB(),    new LevelRedC(),    } },
