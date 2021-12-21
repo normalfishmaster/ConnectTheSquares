@@ -157,15 +157,6 @@ public class LevelUI : MonoBehaviour
 		_controlHintOffPermanentlyNonInteractable = false;
 	}
 
-	public void SetEnableControlButton(bool enable)
-	{
-		_controlHintAdButton.GetComponent<Button>().enabled = enable;
-		_controlHintOnButton.GetComponent<Button>().enabled = enable;
-		_controlPauseButton.GetComponent<Button>().enabled = enable;
-		_controlUndoButton.GetComponent<Button>().enabled = enable;
-		_controlResetButton.GetComponent<Button>().enabled = enable;
-	}
-
 	public void SetPermanentlyNonInteractableControlHintOffButton()
 	{
 		_controlHintOffButton.GetComponent<Button>().interactable = false;
@@ -359,12 +350,15 @@ public class LevelUI : MonoBehaviour
 	public float PAUSE_ANIMATE_BOARD_ENTER_DURATION;
 	public float PAUSE_ANIMATE_BOARD_EXIT_DURATION;
 
+	public float PAUSE_ANIMATE_SUNBURST_ROTATE_DURATION;
+
 	public float PAUSE_ANIMATE_BUTTON_PRESSED_SCALE;
 	public float PAUSE_ANIMATE_BUTTON_PRESSED_DURATION;
 
 	private GameObject _pause;
 	private GameObject _pauseBoard;
 
+	private GameObject _pauseSunburstWide;
 	private GameObject[] _pauseBlock;
 
 	private GameObject _pauseLock;
@@ -382,6 +376,7 @@ public class LevelUI : MonoBehaviour
 		_pause = GameObject.Find("/Canvas/Pause");
 		_pauseBoard = GameObject.Find("/Canvas/Pause/Board");
 
+		_pauseSunburstWide = GameObject.Find("/Canvas/Pause/Board/SunburstWide");
 		_pauseBlock = new GameObject[4];
 
 		for (int i = 0; i < 4; i++)
@@ -446,6 +441,19 @@ public class LevelUI : MonoBehaviour
 	public void AnimatePauseBoardExit(Animate.AnimateComplete callback)
 	{
 		Animate.AnimateBoardExit(_pause, _pauseBoard, PAUSE_ANIMATE_BOARD_EXIT_DURATION, callback);
+	}
+
+	public void AnimatePauseSunburstRotate()
+	{
+		LeanTween.cancel(_pauseSunburstWide);
+
+                LeanTween.rotateAround(_pauseSunburstWide, Vector3.forward, -360.0f, PAUSE_ANIMATE_SUNBURST_ROTATE_DURATION).setOnComplete
+                (
+                        ()=>
+                        {
+                                AnimatePauseSunburstRotate();
+                        }
+                );
 	}
 
 	public void AnimatePausePrevButtonPressed(Animate.AnimateComplete callback)

@@ -47,7 +47,7 @@ public class LevelMenuLogic : MonoBehaviour
 				float starB = (float)(_cloudOnce.GetCollectedAlphabetStar(i, 1));
 				float starBTotal = (float)(_level.GetTotalAlphabetStars(i, 1));
 
-				string moves = "( 2 - 4 Moves )";
+				string moves = "2 - 4 Moves";
 
 				_ui.AddLevelDouble(i, moves, (starA / starATotal) * 100.0f, (starB / starBTotal) * 100.0f);
 			}
@@ -63,7 +63,7 @@ public class LevelMenuLogic : MonoBehaviour
 				float starCTotal = (float)(_level.GetTotalAlphabetStars(i, 2));
 
 				int move = 4 + i;
-				string moves = "( " + move.ToString() + " Moves )";
+				string moves = move.ToString() + " Moves";
 
 				_ui.AddLevelTriple(i, moves, (starA / starATotal) * 100.0f, (starB / starBTotal) * 100.0f, (starC / starCTotal) * 100.0f);
 			}

@@ -645,7 +645,7 @@ public class CloudOnceManager : MonoBehaviour
 
 			for (int j = 0; j < numAlphabet; j++)
 			{
-				totalMap += _level.GetNumMap(i, j)
+				totalMap += _level.GetNumMap(i, j);
 			}
 
 			if (_solvedColorMap[i] == totalMap)

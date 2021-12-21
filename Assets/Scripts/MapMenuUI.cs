@@ -12,8 +12,6 @@ public class MapMenuUI : MonoBehaviour
 
 	// Background
 
-	public Sprite[] _backgroundSprite;
-
 	private GameObject _background;
 
 	private void FindBackgroundGameObject()
@@ -23,7 +21,7 @@ public class MapMenuUI : MonoBehaviour
 
 	public void SetBackgroundColor(int color)
 	{
-		_background.GetComponent<Image>().sprite = _backgroundSprite[color];
+		_background.GetComponent<Image>().color = _level.GetBackgroundColor(color);
 	}
 
 	// Map

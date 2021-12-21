@@ -18,11 +18,11 @@ public class LevelManager : MonoBehaviour
 
 	private static Dictionary<int, string> _tableColor = new Dictionary<int, string>()
 	{
-		{ BROWN,  "Novice" },
-		{ GREEN,  "Adept"   },
-		{ BLUE,   "Expert" },
-		{ RED,    "Veteran"   },
-		{ BLACK,  "Master" },
+		{ BROWN,  "Novice"   },
+		{ GREEN,  "Advanced" },
+		{ BLUE,   "Expert"   },
+		{ RED,    "Veteran"  },
+		{ BLACK,  "Master"   },
 	};
 
 	private static Dictionary<int, string> _tableAlphabet = new Dictionary<int, string>()
@@ -174,6 +174,30 @@ public class LevelManager : MonoBehaviour
 	public int GetTotalOverallStars()
 	{
 		return _totalOverallStars;
+	}
+
+	// Color
+
+	public Color32 GetBackgroundColor(int color)
+	{
+		if (color == 0)
+		{
+			return new Color32(229, 159, 66, 255);
+		}
+		else if (color == 1)
+		{
+			return new Color32(0, 194, 162, 255);
+		}
+		else if (color == 2)
+		{
+			return new Color32(107, 126, 203, 255);
+		}
+		else if (color == 3)
+		{
+			return new Color32(198, 69, 138, 255);
+		}
+
+		return new Color32(115, 115, 115, 255);
 	}
 
 	// Unity Lifecycle

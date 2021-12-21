@@ -13,8 +13,6 @@ public class LevelMenuUI : MonoBehaviour
 
 	// Background
 
-	public Sprite[] _backgroundSprite;
-
 	private GameObject _background;
 
 	private void FindBackgroundGameObject()
@@ -24,7 +22,7 @@ public class LevelMenuUI : MonoBehaviour
 
 	public void SetBackgroundColor(int color)
 	{
-		_background.GetComponent<Image>().sprite = _backgroundSprite[color];
+		_background.GetComponent<Image>().color = _level.GetBackgroundColor(color);
 	}
 
 	// Level
@@ -99,8 +97,8 @@ public class LevelMenuUI : MonoBehaviour
 		_levelButton[color].transform.SetParent(_levelContent.transform);
 		_levelButton[color].transform.localScale = new Vector3(1, 1, 1);
 		_levelButton[color].transform.Find("Color").GetComponent<Image>().sprite = _levelButtonColor[color];
-		_levelButton[color].transform.Find("Color/LabelColor").GetComponent<TextMeshProUGUI>().SetText(_level.GetColorString(color));
-		_levelButton[color].transform.Find("Color/LabelMoves").GetComponent<TextMeshProUGUI>().SetText(moves);
+		_levelButton[color].transform.Find("Color/Label").GetComponent<TextMeshProUGUI>().SetText(_level.GetColorString(color));
+		_levelButton[color].transform.Find("Moves/Label").GetComponent<Text>().text = moves;
 		_levelButton[color].transform.Find("A").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 0); });
 		_levelButton[color].transform.Find("B").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 1); });
 	}
@@ -118,8 +116,8 @@ public class LevelMenuUI : MonoBehaviour
 		_levelButton[color].transform.localScale = new Vector3(1, 1, 1);
 
 		_levelButton[color].transform.Find("Color").GetComponent<Image>().sprite = _levelButtonColor[color];
-		_levelButton[color].transform.Find("Color/LabelColor").GetComponent<TextMeshProUGUI>().SetText(_level.GetColorString(color));
-		_levelButton[color].transform.Find("Color/LabelMoves").GetComponent<TextMeshProUGUI>().SetText(moves);
+		_levelButton[color].transform.Find("Color/Label").GetComponent<TextMeshProUGUI>().SetText(_level.GetColorString(color));
+		_levelButton[color].transform.Find("Moves/Label").GetComponent<Text>().text = moves;
 		_levelButton[color].transform.Find("A").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 0); });
 		_levelButton[color].transform.Find("B").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 1); });
 		_levelButton[color].transform.Find("C").GetComponent<Button>().onClick.AddListener(delegate { _logic.OnLevelButtonPressed(color, 2); });

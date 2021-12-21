@@ -77,7 +77,7 @@ public class LevelLogic : MonoBehaviour
 
 	public float MAP_ANIMATE_WALL_EXIT_ROTATION;
 	public float MAP_ANIMATE_WALL_EXIT_INITIAL_SPEED;
-	public float MAP_ANIMATE_WALL_EXIT_SPEED_MULTIPLIER;
+	public float MAP_ANIMATE_WALL_EXIT_GRAVITY;
 	public float MAP_ANIMATE_WALL_EXIT_TIME;
 
 	private GameObject[,] _mapWall;
@@ -229,7 +229,10 @@ public class LevelLogic : MonoBehaviour
 
 				_mapWall[i, j].GetComponent<SpriteRenderer>().sortingLayerName = "WallExit";
 				_mapWallOriginalPos[i, j] = _mapWall[i, j].transform.position;
-				_mapWallExitAngle[i, j] = Mathf.Atan(_mapWallOriginalPos[i, j].x / (_mapWallOriginalPos[i, j].y + 16.5F));
+
+				float multiplierX = Mathf.Abs((i - 3.5F) / 3.5F);
+				float multiplierY = Mathf.Abs(j / 7F);
+				_mapWallExitAngle[i, j] = 1.50F - (multiplierX * 0.1F) + (multiplierY * 0.05F);
 
 				LeanTween.cancel(_mapWall[i, j]);
 				LeanTween.cancel(_mapWallShadow[i, j]);
@@ -238,15 +241,14 @@ public class LevelLogic : MonoBehaviour
 
 				if (i < NUM_X / 2)
 				{
-					LeanTween.rotateAround(_mapWall[i, j], Vector3.forward, -MAP_ANIMATE_WALL_EXIT_ROTATION, MAP_ANIMATE_WALL_EXIT_TIME);
-					LeanTween.rotateAround(_mapWallShadow[i, j], Vector3.forward, -MAP_ANIMATE_WALL_EXIT_ROTATION, MAP_ANIMATE_WALL_EXIT_TIME);
-				}
-				else
-				{
 					LeanTween.rotateAround(_mapWall[i, j], Vector3.back, -MAP_ANIMATE_WALL_EXIT_ROTATION, MAP_ANIMATE_WALL_EXIT_TIME);
 					LeanTween.rotateAround(_mapWallShadow[i, j], Vector3.back, -MAP_ANIMATE_WALL_EXIT_ROTATION, MAP_ANIMATE_WALL_EXIT_TIME);
 				}
-
+				else
+				{
+					LeanTween.rotateAround(_mapWall[i, j], Vector3.forward, -MAP_ANIMATE_WALL_EXIT_ROTATION, MAP_ANIMATE_WALL_EXIT_TIME);
+					LeanTween.rotateAround(_mapWallShadow[i, j], Vector3.forward, -MAP_ANIMATE_WALL_EXIT_ROTATION, MAP_ANIMATE_WALL_EXIT_TIME);
+				}
 			}
 		}
 
@@ -256,14 +258,23 @@ public class LevelLogic : MonoBehaviour
 		(
 			(float duration) =>
 			{
-				float durationMod = duration * MAP_ANIMATE_WALL_EXIT_SPEED_MULTIPLIER;
-
 				for (int i = 0; i < NUM_X; i++)
 				{
 					for (int j = 0; j < NUM_Y; j++)
 					{
-						Vector2 distance = new Vector2(MAP_ANIMATE_WALL_EXIT_INITIAL_SPEED * Mathf.Sin(_mapWallExitAngle[i, j]) * durationMod,
-								(MAP_ANIMATE_WALL_EXIT_INITIAL_SPEED * Mathf.Cos(_mapWallExitAngle[i, j]) - 90.0F * durationMod) * durationMod);
+						float dir = 1.0F;
+
+						if (i < NUM_X / 2)
+						{
+							dir = -1.0F;
+						}
+
+						int m = (j - 7) * - 1;
+						float gravityMultiplier = 0.25F - (((49F - (m * m)) / 49F) * 0.25F);
+						float gravity = MAP_ANIMATE_WALL_EXIT_GRAVITY + MAP_ANIMATE_WALL_EXIT_GRAVITY * gravityMultiplier;
+
+						Vector2 distance = new Vector2(MAP_ANIMATE_WALL_EXIT_INITIAL_SPEED * Mathf.Cos(_mapWallExitAngle[i, j]) * duration * dir,
+								(MAP_ANIMATE_WALL_EXIT_INITIAL_SPEED * Mathf.Sin(_mapWallExitAngle[i, j]) * duration) - (0.5F * gravity * duration * duration));
 
 						_mapWall[i, j].transform.position = _mapWallOriginalPos[i, j] + distance;
 						_mapWallShadow[i, j].transform.position = _mapWallOriginalPos[i, j] + distance;
@@ -917,17 +928,14 @@ public class LevelLogic : MonoBehaviour
 			{
 				if (_touchHint || _touchSolution)
 				{
-					_touchHint = false;
-					_touchSolution = false;
-
-					if (_touchHint)
-					{
-						_ui.SetActiveControlHintOn(false);
-						_ui.SetActiveControlHintOff(true);
-					}
+					_ui.SetActiveControlHintOn(false);
+					_ui.SetActiveControlHintOff(true);
 
 					_ui.StopAnimateSolution();
 					_ui.SetActiveSolution(false);
+
+					_touchHint = false;
+					_touchSolution = false;
 				}
 
 				_ui.SetInteractableControlButton(false);
@@ -1088,13 +1096,12 @@ public class LevelLogic : MonoBehaviour
 			int totalAlphabetStars = _level.GetTotalAlphabetStars(_menuColor, _menuAlphabet);
 			int totalOverallStars = _level.GetTotalOverallStars();
 
-			if (solvedAlphabetMapCurrent >= solvedAlphabetMapCurrent && solvedAlphabetMapPrevious < solvedAlphabetMapCurrent)
+			if (solvedAlphabetMapCurrent >= totalAlphabetMaps && solvedAlphabetMapPrevious < totalAlphabetMaps)
 			{
 				_achievementShowClear = true;
 			}
 
-			if (collectedAlphabetStarCurrent >= _level.GetTotalAlphabetStars(_menuColor, _menuAlphabet)
-					&& collectedAlphabetStarPrevious < _level.GetTotalAlphabetStars(_menuColor, _menuAlphabet))
+			if (collectedAlphabetStarCurrent >= totalAlphabetStars && collectedAlphabetStarPrevious < totalAlphabetStars)
 			{
 				_achievementShowFullClear = true;
 			}
@@ -1117,7 +1124,7 @@ public class LevelLogic : MonoBehaviour
 
 			_ui.SetTopMoveCurrent(moveCount);
 
-			_ui.SetEnableControlButton(false);
+			_ui.SetInteractableControlButton(false);
 			_touchState = TouchState.WIN;
 
 			_ui.SetActiveDarken(false);
@@ -1164,10 +1171,7 @@ public class LevelLogic : MonoBehaviour
 												ShowAchievements();
 											}
 										);
-
 									}
-
-
 								}
 							);
 						}
@@ -1283,7 +1287,7 @@ public class LevelLogic : MonoBehaviour
 			else if (postAdState == TouchState.NONE)
 			{
 				_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
-				_ui.SetEnableControlButton(true);
+				_ui.SetInteractableControlButton(true);
 			}
 
 			_touchState = postAdState;
@@ -1368,7 +1372,6 @@ public class LevelLogic : MonoBehaviour
 
 	private void SetupControl()
 	{
-		_ui.SetEnableControlButton(false);
 		_ui.SetInteractableControlButton(false);
 
 		_ui.SetControlHintCount(_cloudOnce.GetHint());
@@ -1409,8 +1412,9 @@ public class LevelLogic : MonoBehaviour
 			_ui.SetActiveSolution(false);
 		}
 
-		_ui.SetEnableControlButton(false);
+		_ui.SetInteractableControlButton(false);
 		_ui.SetActivePause(true);
+		_ui.AnimatePauseSunburstRotate();
 		_ui.SetEnablePauseButton(false);
 		_ui.SetPauseBlockSprite(_data.GetBlockSet());
 		_pauseBlockSetNumber = _data.GetBlockSet();
@@ -1495,7 +1499,7 @@ public class LevelLogic : MonoBehaviour
 	{
 		_audio.PlayButtonPressed();
 
-		_ui.SetEnableControlButton(false);
+		_ui.SetInteractableControlButton(false);
 
 		_ui.AnimateControlHintAdButtonPressed(()=>{});
 
@@ -1736,7 +1740,7 @@ public class LevelLogic : MonoBehaviour
 					()=>
 					{
 						_ui.SetActivePause(false);
-						_ui.SetEnableControlButton(true);
+						_ui.SetInteractableControlButton(true);
 
 						if (_touchSolution)
 						{
@@ -1999,7 +2003,6 @@ public class LevelLogic : MonoBehaviour
 						_ui.SetActiveSolution(true);
 						_ui.StartAnimateSolution(_levelMap._hint[move]);
 
-						_ui.SetEnableControlButton(true);
 						_ui.SetInteractableControlButton(true);
 
 						_touchState = TouchState.NONE;
@@ -2185,7 +2188,7 @@ public class LevelLogic : MonoBehaviour
 						else if (_touchState == TouchState.NONE)
 						{
 							_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
-							_ui.SetEnableControlButton(true);
+							_ui.SetInteractableControlButton(true);
 						}
 					}
 				);
@@ -2245,7 +2248,7 @@ public class LevelLogic : MonoBehaviour
 						else if (_touchState == TouchState.NONE)
 						{
 							_frameRate.setLowFrameRate(FRAME_RATE_CHANGE_DELAY);
-							_ui.SetEnableControlButton(true);
+							_ui.SetInteractableControlButton(true);
 						}
 					}
 				);
@@ -2344,7 +2347,6 @@ public class LevelLogic : MonoBehaviour
 						}
 						else
 						{
-							_ui.SetEnableControlButton(true);
 							_ui.SetInteractableControlButton(true);
 
 							_touchState = TouchState.NONE;

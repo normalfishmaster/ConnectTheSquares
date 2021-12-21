@@ -350,7 +350,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 835, y: -450}
+  m_SizeDelta: {x: 840, y: -450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &199253343
 MonoBehaviour:
@@ -805,7 +805,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7c06b5311c2ee2dc89df633e8d03c0dc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 247a22acd4b35578fadacb70d6c811e5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -880,8 +880,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c16e19fc3ae0330e99b5682682fc7369, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1655,7 +1655,7 @@ MonoBehaviour:
     m_Top: 90
     m_Bottom: 90
   m_ChildAlignment: 1
-  m_Spacing: 40
+  m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -2014,8 +2014,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3c5552ff347d29edbb3bfa1ae95e952a, type: 3}
   - {fileID: 21300000, guid: c158feabc8edfc1d4b0cb172efa3b786, type: 3}
   - {fileID: 21300000, guid: 2575fa2cf637d0a47958a6b27af88874, type: 3}
-  _levelButtonDoublePrefab: {fileID: 7660679513493152306, guid: 91c482118cf477c13bfc324a2a1103d4, type: 3}
-  _levelButtonTriplePrefab: {fileID: 7660679513493152306, guid: 64556414cec8f4808807439c52812b60, type: 3}
+  _levelButtonDoublePrefab: {fileID: 7660679513493152306, guid: e091f4db4dcd5958d9a78539cdadb872, type: 3}
+  _levelButtonTriplePrefab: {fileID: 7660679513493152306, guid: dd4aee43ab0401e68b33338bc2978458, type: 3}
   BOTTOM_ANIMATE_BUTTON_PRESSED_SCALE: 1.15
   BOTTOM_ANIMATE_BUTTON_PRESSED_DURATION: 0.15
 --- !u!4 &2137377380

@@ -7,6 +7,21 @@ public class SettingsUI : MonoBehaviour
 {
 	private SettingsLogic _logic;
 	private BlockManager _block;
+	private LevelManager _level;
+
+        // Background
+
+	private GameObject _background;
+
+	private void FindBackgroundGameObject()
+	{
+		_background = GameObject.Find("/Background/Color");
+	}
+
+	public void SetBackgroundColor(int color)
+	{
+		_background.GetComponent<Image>().color = _level.GetBackgroundColor(color);
+	}
 
 	// Settings
 
@@ -184,7 +199,9 @@ public class SettingsUI : MonoBehaviour
 	{
 		_logic = GameObject.Find("SettingsLogic").GetComponent<SettingsLogic>();
 		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
+		_level = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
+		FindBackgroundGameObject();
 		FindSettingsGameObject();
 		FindBottomGameObject();
 	}

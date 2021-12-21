@@ -258,18 +258,18 @@ public class MainMenuLogic : MonoBehaviour
 		);
 	}
 
-//	int count = 0;
+	int count = 0;
 
 	public void OnBottomLanguageButtonPressed()
 	{
 		_audio.PlayButtonPressed();
-/*
+
 		count += 1;
 		if (count >= 5)
 			count = 0;
 
 		_ui.SetBackgroundColor(count);
-*/
+
 		_ui.AnimateBottomLanguageButtonPressed
 		(
 			()=>
@@ -692,7 +692,7 @@ public class MainMenuLogic : MonoBehaviour
 		}
 
 		_rewardClaimed = rewardClaimed;
-		_rewardDay = rewardDay;
+		_rewardDay = rewardDay > 3 ? 3 : rewardDay;
 		_rewardToday = today;
 
 		_ui.SetActiveRewards(false);

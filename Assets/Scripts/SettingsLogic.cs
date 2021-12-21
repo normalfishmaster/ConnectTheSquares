@@ -8,11 +8,19 @@ public class SettingsLogic : MonoBehaviour
 	private SettingsUI _ui;
 	private AudioManager _audio;
 	private BlockManager _block;
+	private CloudOnceManager _cloudOnce;
 	private DataManager _data;
 	private FrameRateManager _frameRate;
 
 	// Estimated scroll duration
 	private const float FRAME_RATE_CHANGE_DELAY = 1.0f;
+
+	// UI - Background
+
+	private void SetupBackground()
+	{
+		_ui.SetBackgroundColor(_cloudOnce.GetBackgroundColor());
+	}
 
 	// UI - Settings
 
@@ -238,12 +246,14 @@ public class SettingsLogic : MonoBehaviour
 		_ui = GameObject.Find("SettingsUI").GetComponent<SettingsUI>();
 		_audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		_block = GameObject.Find("BlockManager").GetComponent<BlockManager>();
+		_cloudOnce = GameObject.Find("CloudOnceManager").GetComponent<CloudOnceManager>();
 		_data = GameObject.Find("DataManager").GetComponent<DataManager>();
 		_frameRate = GameObject.Find("FrameRateManager").GetComponent<FrameRateManager>();
 	}
 
 	private void Start()
 	{
+		SetupBackground();
 		SetupSettings();
 		SetupBottom();
 
